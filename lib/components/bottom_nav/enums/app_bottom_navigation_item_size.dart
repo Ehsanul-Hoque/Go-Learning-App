@@ -1,0 +1,4 @@
+enum AppBottomNavigationItemSize {
+  flex,
+  content,
+}
