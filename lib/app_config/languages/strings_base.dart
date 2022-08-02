@@ -1,4 +1,6 @@
 abstract class StringsBase {
+  final String appName = "";
+
   /// Sample texts
   final String page1 = "";
   final String page2 = "";

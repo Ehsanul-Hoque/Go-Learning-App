@@ -1,6 +1,6 @@
-import 'package:app/utils/app_colors.dart';
-import 'package:app/utils/app_parameters.dart';
-import 'package:flutter/widgets.dart';
+import "package:app/utils/app_colors.dart";
+import 'package:app/app_config/default_parameters.dart';
+import "package:flutter/widgets.dart";
 
 class AppBottomNavigationItem extends StatefulWidget {
   final double? width;
@@ -30,10 +30,12 @@ class AppBottomNavigationItem extends StatefulWidget {
     this.spaceBetweenIconAndText = 4,
     this.isSelected = false,
     this.onTap,
-    this.animationDuration = AppParameters.defaultAnimationDuration,
-    this.animationCurve = AppParameters.defaultAnimationCurve,
-  })  : assert((axis == Axis.horizontal && width != null) ||
-            (axis == Axis.vertical && height != null)),
+    this.animationDuration = DefaultParameters.defaultAnimationDuration,
+    this.animationCurve = DefaultParameters.defaultAnimationCurve,
+  })  : assert(
+          (axis == Axis.horizontal && width != null) ||
+              (axis == Axis.vertical && height != null),
+        ),
         super(key: key);
 
   @override
@@ -120,7 +122,7 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               SizedBox(
                 width: widget.iconSize,
                 height: widget.iconSize,
@@ -142,7 +144,7 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
                     ),
                     child: Text(
                       widget.text,
-                      style: AppParameters.defaultTextStyle.copyWith(
+                      style: DefaultParameters.defaultTextStyle.copyWith(
                         fontSize: widget.textSize,
                         fontWeight: FontWeight.w500,
                       ),

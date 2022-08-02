@@ -1,12 +1,14 @@
-import 'package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart';
-import 'package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart';
-import 'package:app/components/bottom_nav/views/app_bottom_navigation_item.dart';
-import 'package:app/utils/app_colors.dart';
-import 'package:app/utils/app_parameters.dart';
-import 'package:flutter/widgets.dart';
+import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
+import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
+import "package:app/components/bottom_nav/views/app_bottom_navigation_item.dart";
+import "package:app/utils/app_colors.dart";
+import 'package:app/app_config/default_parameters.dart';
+import "package:flutter/widgets.dart";
 
 class AppBottomNavigationBar extends StatefulWidget {
   final List<AppBottomNavigationBarModel> items;
+  final int selectedIndex;
+  final Function(int newSelectedIndex) onItemChangeListener;
   final double? width, height;
   final double contentMinWidth;
   final Color backgroundColor, indicatorColor, activeColor, inactiveColor;
@@ -21,9 +23,11 @@ class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({
     Key? key,
     required this.items,
+    required this.selectedIndex,
+    required this.onItemChangeListener,
     this.width,
-    this.height = AppParameters.defaultBottomNavBarHeight,
-    this.contentMinWidth = AppParameters.defaultBottomNavBarContentMinWidth,
+    this.height = DefaultParameters.defaultBottomNavBarHeight,
+    this.contentMinWidth = DefaultParameters.defaultBottomNavBarContentMinWidth,
     this.backgroundColor = AppColors.white,
     this.indicatorColor = AppColors.themeYellow,
     this.activeColor = AppColors.white,
@@ -33,8 +37,8 @@ class AppBottomNavigationBar extends StatefulWidget {
     this.flex = 1,
     this.itemContentAxis = Axis.horizontal,
     this.spaceBetweenIconAndText = 4,
-    this.animationDuration = AppParameters.defaultAnimationDuration,
-    this.animationCurve = AppParameters.defaultAnimationCurve,
+    this.animationDuration = DefaultParameters.defaultAnimationDuration,
+    this.animationCurve = DefaultParameters.defaultAnimationCurve,
   }) : super(key: key);
 
   @override
@@ -42,8 +46,6 @@ class AppBottomNavigationBar extends StatefulWidget {
 }
 
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     double width = widget.width ?? MediaQuery.of(context).size.width;
@@ -54,7 +56,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       color: widget.backgroundColor,
       child: Stack(
         alignment: Alignment.center,
-        children: [
+        children: <Widget>[
           AnimatedPositioned(
             left: calculateIndicatorLeft(width),
             duration: widget.animationDuration,
@@ -67,7 +69,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
                 duration: widget.animationDuration,
                 curve: widget.animationCurve,
                 decoration: BoxDecoration(
-                  color: widget.items[_selectedIndex].indicatorColor ??
+                  color: widget.items[widget.selectedIndex].indicatorColor ??
                       widget.indicatorColor,
                   borderRadius: BorderRadius.circular(999),
                 ),
@@ -78,7 +80,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             children: widget.items
                 .asMap()
                 .map((int index, AppBottomNavigationBarModel item) {
-                  return MapEntry(
+                  return MapEntry<int, Widget>(
                     index,
                     AppBottomNavigationItem(
                       icon: item.icon,
@@ -87,14 +89,15 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
                           item.contentActiveColor ?? widget.activeColor,
                       inactiveColor:
                           item.contentInactiveColor ?? widget.inactiveColor,
-                      width: calculateItemWidth(width, index == _selectedIndex),
+                      width: calculateItemWidth(
+                        width,
+                        index == widget.selectedIndex,
+                      ),
                       height: widget.height,
                       axis: widget.itemContentAxis,
                       spaceBetweenIconAndText: widget.spaceBetweenIconAndText,
-                      isSelected: index == _selectedIndex,
-                      onTap: () {
-                        onItemTap(index);
-                      },
+                      isSelected: index == widget.selectedIndex,
+                      onTap: () => widget.onItemChangeListener(index),
                       animationDuration: widget.animationDuration,
                       animationCurve: widget.animationCurve,
                     ),
@@ -129,12 +132,6 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
 
   double calculateIndicatorLeft(double parentWidth) {
     double itemWidth = calculateItemWidth(parentWidth, false);
-    return _selectedIndex * itemWidth;
-  }
-
-  void onItemTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    return widget.selectedIndex * itemWidth;
   }
 }

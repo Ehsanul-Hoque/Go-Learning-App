@@ -1,6 +1,7 @@
-import 'package:app/pages/home.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import "package:app/app_config/app_state.dart";
+import "package:app/pages/home/landing.dart";
+import "package:flutter/widgets.dart";
+import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
 void main() {
   runApp(const MyApp());
@@ -11,9 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const PlatformApp(
-      title: 'Go Learning',
-      home: Home(),
+    return PlatformApp(
+      title: AppState().strings.appName,
+      home: const LandingPage(),
     );
   }
 }

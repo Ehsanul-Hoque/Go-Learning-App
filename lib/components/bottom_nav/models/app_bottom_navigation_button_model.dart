@@ -1,12 +1,12 @@
-import 'package:flutter/widgets.dart';
+import "package:flutter/widgets.dart";
 
 class AppBottomNavigationBarModel {
-  Widget icon;
-  String text;
-  Color? contentInactiveColor, contentActiveColor;
-  Color? indicatorColor;
+  final Widget icon;
+  final String text;
+  final Color? contentInactiveColor, contentActiveColor;
+  final Color? indicatorColor;
 
-  AppBottomNavigationBarModel({
+  const AppBottomNavigationBarModel({
     required this.icon,
     required this.text,
     this.contentInactiveColor,
