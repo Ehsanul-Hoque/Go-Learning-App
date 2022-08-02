@@ -1,6 +1,6 @@
-import 'package:flutter/widgets.dart';
+import "package:flutter/widgets.dart";
 
-class AppParameters {
+class DefaultParameters {
   static const double defaultBottomNavBarHeight = 56;
   static const double defaultBottomNavBarContentMinWidth = 56;
   static const Duration defaultAnimationDuration = Duration(milliseconds: 200);
