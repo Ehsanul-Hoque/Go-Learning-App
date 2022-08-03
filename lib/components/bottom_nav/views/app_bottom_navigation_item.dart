@@ -1,5 +1,5 @@
 import "package:app/utils/app_colors.dart";
-import 'package:app/app_config/default_parameters.dart';
+import "package:app/app_config/default_parameters.dart";
 import "package:flutter/widgets.dart";
 
 class AppBottomNavigationItem extends StatefulWidget {

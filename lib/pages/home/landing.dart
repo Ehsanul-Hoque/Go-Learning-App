@@ -1,3 +1,4 @@
+import "package:app/app_config/default_parameters.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
@@ -20,7 +21,9 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   late final List<PageViewModel> _pageModels;
   late final PageController _pageController;
+  // int _prevPageIndex = -1;
   int _currentPageIndex = 0;
+  bool _pageViewScrolling = false;
 
   @override
   void initState() {
@@ -62,58 +65,83 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_currentPageIndex > 0) {
-          setState(() {
-            _currentPageIndex = 0;
-            /*_pageController.animateToPage(
-              _currentPageIndex,
-              duration: AppParameters.defaultAnimationDuration,
-              curve: AppParameters.defaultAnimationCurve,
-            );*/
-          });
-          return false;
-        } else {
-          return true;
-        }
+        return goBack();
       },
-      child: PlatformScaffold(
-        backgroundColor: AppColors.veryLightGrey,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: PageView(
-                  controller: _pageController,
-                  children: _pageModels.map((PageViewModel model) {
-                    return model.page;
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification notification) {
+          if (notification.depth == 0 &&
+              notification is ScrollEndNotification) {
+            _pageViewScrolling = false;
+          }
+          return false;
+        },
+        child: PlatformScaffold(
+          backgroundColor: AppColors.veryLightGrey,
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: PageView(
+                    controller: _pageController,
+                    children: _pageModels.map((PageViewModel model) {
+                      return model.page;
+                    }).toList(),
+                    onPageChanged: (int newSelectedIndex) {
+                      if (!_pageViewScrolling) {
+                        updatePage(newSelectedIndex, false);
+                      }
+
+                      _pageViewScrolling = true;
+                    },
+                  ),
+                ),
+                AppBottomNavigationBar(
+                  items: _pageModels.map((PageViewModel model) {
+                    return AppBottomNavigationBarModel(
+                      icon: model.icon,
+                      text: model.title,
+                    );
                   }).toList(),
-                  onPageChanged: (int newSelectedIndex) {
-                    setState(() {
-                      _currentPageIndex = newSelectedIndex;
-                    });
+                  selectedIndex: _currentPageIndex,
+                  itemSize: AppBottomNavigationItemSize.flex,
+                  flex: 2.5,
+                  onItemChangeListener: (int newSelectedIndex) {
+                    _pageViewScrolling = true;
+                    updatePage(newSelectedIndex, true);
                   },
                 ),
-              ),
-              AppBottomNavigationBar(
-                items: _pageModels.map((PageViewModel model) {
-                  return AppBottomNavigationBarModel(
-                    icon: model.icon,
-                    text: model.title,
-                  );
-                }).toList(),
-                selectedIndex: _currentPageIndex,
-                itemSize: AppBottomNavigationItemSize.flex,
-                flex: 2,
-                onItemChangeListener: (int newSelectedIndex) {
-                  setState(() {
-                    _currentPageIndex = newSelectedIndex;
-                  });
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  void updatePage(int newPageIndex, bool updatePageView) {
+    if (_currentPageIndex != newPageIndex) {
+      setState(() {
+        _currentPageIndex = newPageIndex;
+
+        if (updatePageView) {
+          _pageController.animateToPage(
+            _currentPageIndex,
+            duration: DefaultParameters.defaultAnimationDuration,
+            curve: DefaultParameters.defaultAnimationCurve,
+          );
+        }
+      });
+    }
+  }
+
+  bool goBack() {
+    if (_currentPageIndex > 0) {
+      setState(() {
+        updatePage(0, true);
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 }
