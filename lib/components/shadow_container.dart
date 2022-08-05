@@ -5,28 +5,31 @@ import "package:flutter/widgets.dart";
 class ShadowContainer extends StatelessWidget {
   final Widget child;
   final double? width, height;
-  final bool enableMargin, enablePadding;
+  final EdgeInsets margin, padding;
+  final Duration animationDuration;
+  final Curve animationCurve;
 
   const ShadowContainer({
     Key? key,
     required this.child,
     this.width,
     this.height,
-    this.enableMargin = true,
-    this.enablePadding = true,
+    this.margin = DefaultParameters.defaultNormalInsetAll,
+    this.padding = DefaultParameters.defaultNormalInsetAll,
+    this.animationDuration = DefaultParameters.defaultAnimationDuration,
+    this.animationCurve = DefaultParameters.defaultAnimationCurve,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: animationDuration,
+      curve: animationCurve,
       width: width,
       height: height,
-      margin: enableMargin
-          ? DefaultParameters.defaultNormalInsetAll
-          : EdgeInsets.zero,
-      padding: enablePadding
-          ? DefaultParameters.defaultNormalInsetAll
-          : EdgeInsets.zero,
+      margin: margin,
+      padding: padding,
+      clipBehavior: Clip.none,
       decoration: const BoxDecoration(
         color: AppColors.white,
         borderRadius: DefaultParameters.defaultBorderRadius,

@@ -10,7 +10,7 @@ class Courses extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: Text(
-          AppState().strings.page2,
+          AppState.strings.page2,
           style: DefaultParameters.defaultTextStyle,
         ),
       ),

@@ -71,7 +71,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
                 decoration: BoxDecoration(
                   color: widget.items[widget.selectedIndex].indicatorColor ??
                       widget.indicatorColor,
-                  borderRadius: BorderRadius.circular(999),
+                  borderRadius: DefaultParameters.fullRoundedBorderRadius,
                 ),
               ),
             ),

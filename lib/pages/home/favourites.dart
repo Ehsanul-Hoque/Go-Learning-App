@@ -10,7 +10,7 @@ class Favourites extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: Text(
-          AppState().strings.page3,
+          AppState.strings.page3,
           style: DefaultParameters.defaultTextStyle,
         ),
       ),

@@ -2,7 +2,7 @@ import "package:app/app_config/default_parameters.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
-import "package:app/models/page_view_model.dart";
+import "package:app/models/page_model.dart";
 import "package:app/pages/home/explore.dart";
 import "package:app/pages/home/favourites.dart";
 import "package:app/pages/home/home.dart";
@@ -19,7 +19,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  late final List<PageViewModel> _pageModels;
+  late final List<PageModel> _pageModels;
   late final PageController _pageController;
   // int _prevPageIndex = -1;
   int _currentPageIndex = 0;
@@ -27,23 +27,23 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   void initState() {
-    _pageModels = const <PageViewModel>[
-      PageViewModel(
+    _pageModels = const <PageModel>[
+      PageModel(
         title: "Admission",
         icon: Icon(CupertinoIcons.home),
         page: Home(),
       ),
-      PageViewModel(
+      PageModel(
         title: "Explore",
         icon: Icon(CupertinoIcons.search_circle),
         page: Courses(),
       ),
-      PageViewModel(
+      PageModel(
         title: "Favourites",
         icon: Icon(CupertinoIcons.square_favorites_alt),
         page: Favourites(),
       ),
-      PageViewModel(
+      PageModel(
         title: "Exams",
         icon: Icon(CupertinoIcons.pencil_outline),
         page: Exams(),
@@ -83,7 +83,7 @@ class _LandingPageState extends State<LandingPage> {
                 Expanded(
                   child: PageView(
                     controller: _pageController,
-                    children: _pageModels.map((PageViewModel model) {
+                    children: _pageModels.map((PageModel model) {
                       return model.page;
                     }).toList(),
                     onPageChanged: (int newSelectedIndex) {
@@ -96,7 +96,7 @@ class _LandingPageState extends State<LandingPage> {
                   ),
                 ),
                 AppBottomNavigationBar(
-                  items: _pageModels.map((PageViewModel model) {
+                  items: _pageModels.map((PageModel model) {
                     return AppBottomNavigationBarModel(
                       icon: model.icon,
                       text: model.title,

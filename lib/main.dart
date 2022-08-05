@@ -1,5 +1,5 @@
 import "package:app/app_config/app_state.dart";
-import "package:app/pages/home/landing.dart";
+import "package:app/pages/welcome/auth.dart";
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformApp(
-      title: AppState().strings.appName,
-      home: const LandingPage(),
+      debugShowCheckedModeBanner: false,
+      title: AppState.strings.appName,
+      home: const AuthPage(),
     );
   }
 }

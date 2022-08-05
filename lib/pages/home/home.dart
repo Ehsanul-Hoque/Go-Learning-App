@@ -10,7 +10,7 @@ class Home extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: Text(
-          AppState().strings.page1,
+          AppState.strings.page1,
           style: DefaultParameters.defaultTextStyle,
         ),
       ),

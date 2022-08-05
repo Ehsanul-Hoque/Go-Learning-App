@@ -1,6 +1,24 @@
 abstract class StringsBase {
   final String appName = "";
 
+  final String logIn = "";
+  final String signUp = "";
+  final String email = "";
+  final String password = "";
+  final String confirmPassword = "";
+  final String or = "";
+  final String googleLogIn = "";
+  final String byContinuingYouAgreeTo = "";
+  final String privacyPolicy = "";
+  final String termsOfUse = "";
+  final String and = "";
+
+  /// Messages
+  final String invalidEmail = "";
+  final String enterPassword = "";
+  final String passwordTooSmall = "";
+  final String passwordsNotMatched = "";
+
   /// Sample texts
   final String page1 = "";
   final String page2 = "";
