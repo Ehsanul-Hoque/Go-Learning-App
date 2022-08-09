@@ -102,7 +102,7 @@ class _LandingPageState extends State<LandingPage> {
                     );
                   }).toList(),
                   selectedIndex: _currentPageIndex,
-                  itemSize: AppBottomNavigationItemSize.content,
+                  itemSize: AppBottomNavigationItemSize.flex,
                   flex: 2.5,
                   onItemChange: (int newSelectedIndex) {
                     _pageViewScrolling = true;

@@ -33,6 +33,7 @@ dependencies:
   flutter_platform_widgets: ^2.0.0
   email_validator: ^2.0.1
   flutter_svg: ^1.0.0
+  optimized_cached_image: ^3.0.1
 
 dev_dependencies:
   flutter_test:

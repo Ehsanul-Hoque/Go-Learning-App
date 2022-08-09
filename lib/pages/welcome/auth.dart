@@ -35,15 +35,15 @@ class _AuthPageState extends State<AuthPage> {
   void initState() {
     _pageModels = <PageModel>[
       PageModel(
-        title: Res.str.signUp,
-        configs: <String, bool>{
-          _isLogInPageKey: false,
-        },
-      ),
-      PageModel(
         title: Res.str.logIn,
         configs: <String, bool>{
           _isLogInPageKey: true,
+        },
+      ),
+      PageModel(
+        title: Res.str.signUp,
+        configs: <String, bool>{
+          _isLogInPageKey: false,
         },
       ),
     ];
@@ -75,6 +75,9 @@ class _AuthPageState extends State<AuthPage> {
             child: ShadowContainer(
               margin: EdgeInsets.all(Res.dimen.largeSpacingValue),
               padding: EdgeInsets.all(Res.dimen.largeSpacingValue),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.height,
+              ),
               child: DefaultTabController(
                 length: _pageModels.length,
                 child: Form(
@@ -229,6 +232,7 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       Wrap(
                         alignment: WrapAlignment.center,
+                        spacing: Res.dimen.extraSmallSpacingValue,
                         runSpacing: Res.dimen.extraSmallSpacingValue,
                         children: <Widget>[
                           Text(

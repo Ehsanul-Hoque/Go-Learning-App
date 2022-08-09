@@ -1,1 +1,3 @@
 - Set app name for iOS in Xcode
+- Set placeholder images for banner and other places
+- Update page view infinite scroll in widget_carousal.dart

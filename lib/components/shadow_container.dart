@@ -4,6 +4,7 @@ import "package:flutter/widgets.dart";
 class ShadowContainer extends StatelessWidget {
   final Widget child;
   final double? width, height;
+  final BoxConstraints? constraints;
   final BorderRadius? borderRadius;
   final EdgeInsets? margin, padding;
   final Duration? animationDuration;
@@ -14,6 +15,7 @@ class ShadowContainer extends StatelessWidget {
     required this.child,
     this.width,
     this.height,
+    this.constraints,
     this.borderRadius,
     this.margin,
     this.padding,
@@ -28,6 +30,7 @@ class ShadowContainer extends StatelessWidget {
       curve: animationCurve ?? Res.animParams.defaultCurve,
       width: width,
       height: height,
+      constraints: constraints,
       margin: margin ?? EdgeInsets.all(Res.dimen.normalSpacingValue),
       padding: padding ?? EdgeInsets.all(Res.dimen.normalSpacingValue),
       clipBehavior: Clip.none,
