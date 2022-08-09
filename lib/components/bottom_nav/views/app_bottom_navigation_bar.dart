@@ -1,44 +1,46 @@
+import "package:app/app_config/resources.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_item.dart";
-import "package:app/utils/app_colors.dart";
-import "package:app/app_config/default_parameters.dart";
+import "package:app/utils/typedefs.dart" show OnItemChangeListener;
 import "package:flutter/widgets.dart";
 
 class AppBottomNavigationBar extends StatefulWidget {
   final List<AppBottomNavigationBarModel> items;
   final int selectedIndex;
-  final Function(int newSelectedIndex) onItemChangeListener;
+  final OnItemChangeListener onItemChange;
   final double? width, height;
-  final double contentMinWidth;
-  final Color backgroundColor, indicatorColor, activeColor, inactiveColor;
-  final EdgeInsets indicatorPadding;
+  final double? contentMinWidth;
+  final Color? backgroundColor, indicatorColor, activeColor, inactiveColor;
+  final EdgeInsets? indicatorPadding;
+  final BorderRadius? indicatorBorderRadius;
   final AppBottomNavigationItemSize itemSize;
   final double flex;
   final Axis itemContentAxis;
-  final double spaceBetweenIconAndText;
-  final Duration animationDuration;
-  final Curve animationCurve;
+  final double? spaceBetweenIconAndText;
+  final Duration? animationDuration;
+  final Curve? animationCurve;
 
   const AppBottomNavigationBar({
     Key? key,
     required this.items,
     required this.selectedIndex,
-    required this.onItemChangeListener,
+    required this.onItemChange,
     this.width,
-    this.height = DefaultParameters.defaultBottomNavBarHeight,
-    this.contentMinWidth = DefaultParameters.defaultBottomNavBarContentMinWidth,
-    this.backgroundColor = AppColors.white,
-    this.indicatorColor = AppColors.themeYellow,
-    this.activeColor = AppColors.white,
-    this.inactiveColor = AppColors.themeBlue,
-    this.indicatorPadding = const EdgeInsets.all(8),
+    this.height,
+    this.contentMinWidth,
+    this.backgroundColor,
+    this.indicatorColor,
+    this.activeColor,
+    this.inactiveColor,
+    this.indicatorPadding,
+    this.indicatorBorderRadius,
     this.itemSize = AppBottomNavigationItemSize.flex,
     this.flex = 1,
     this.itemContentAxis = Axis.horizontal,
-    this.spaceBetweenIconAndText = 4,
-    this.animationDuration = DefaultParameters.defaultAnimationDuration,
-    this.animationCurve = DefaultParameters.defaultAnimationCurve,
+    this.spaceBetweenIconAndText,
+    this.animationDuration,
+    this.animationCurve,
   }) : super(key: key);
 
   @override
@@ -46,32 +48,65 @@ class AppBottomNavigationBar extends StatefulWidget {
 }
 
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
+  late double width, height;
+  late double contentMinWidth;
+  late Color backgroundColor, indicatorColor, activeColor, inactiveColor;
+  late EdgeInsets indicatorPadding;
+  late BorderRadius indicatorBorderRadius;
+  late Duration animationDuration;
+  late Curve animationCurve;
+
+  @override
+  void initState() {
+    height = widget.height ?? Res.dimen.bottomNavBarHeight;
+    contentMinWidth =
+        widget.contentMinWidth ?? Res.dimen.bottomNavBarContentMinWidth;
+
+    backgroundColor = widget.backgroundColor ?? Res.color.bottomNavBg;
+    indicatorColor = widget.indicatorColor ?? Res.color.bottomNavIndicator;
+    activeColor = widget.activeColor ?? Res.color.bottomNavItemActive;
+    inactiveColor = widget.inactiveColor ?? Res.color.bottomNavItemInactive;
+
+    indicatorPadding =
+        widget.indicatorPadding ?? EdgeInsets.all(Res.dimen.smallSpacingValue);
+    indicatorBorderRadius = widget.indicatorBorderRadius ??
+        BorderRadius.circular(
+          Res.dimen.fullRoundedBorderRadiusValue,
+        );
+
+    animationDuration =
+        widget.animationDuration ?? Res.animParams.defaultDuration;
+    animationCurve = widget.animationCurve ?? Res.animParams.defaultCurve;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double width = widget.width ?? MediaQuery.of(context).size.width;
+    width = widget.width ?? MediaQuery.of(context).size.width;
 
     return Container(
       width: width,
-      height: widget.height,
-      color: widget.backgroundColor,
+      height: height,
+      color: backgroundColor,
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
           AnimatedPositioned(
             left: calculateIndicatorLeft(width),
-            duration: widget.animationDuration,
-            curve: widget.animationCurve,
+            duration: animationDuration,
+            curve: animationCurve,
             child: Container(
               width: calculateItemWidth(width, true),
-              height: widget.height,
-              padding: widget.indicatorPadding,
+              height: height,
+              padding: indicatorPadding,
               child: AnimatedContainer(
-                duration: widget.animationDuration,
-                curve: widget.animationCurve,
+                duration: animationDuration,
+                curve: animationCurve,
                 decoration: BoxDecoration(
                   color: widget.items[widget.selectedIndex].indicatorColor ??
-                      widget.indicatorColor,
-                  borderRadius: DefaultParameters.fullRoundedBorderRadius,
+                      indicatorColor,
+                  borderRadius: indicatorBorderRadius,
                 ),
               ),
             ),
@@ -85,21 +120,19 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
                     AppBottomNavigationItem(
                       icon: item.icon,
                       text: item.text,
-                      activeColor:
-                          item.contentActiveColor ?? widget.activeColor,
-                      inactiveColor:
-                          item.contentInactiveColor ?? widget.inactiveColor,
+                      activeColor: item.contentActiveColor ?? activeColor,
+                      inactiveColor: item.contentInactiveColor ?? inactiveColor,
                       width: calculateItemWidth(
                         width,
                         index == widget.selectedIndex,
                       ),
-                      height: widget.height,
+                      height: height,
                       axis: widget.itemContentAxis,
                       spaceBetweenIconAndText: widget.spaceBetweenIconAndText,
                       isSelected: index == widget.selectedIndex,
-                      onTap: () => widget.onItemChangeListener(index),
-                      animationDuration: widget.animationDuration,
-                      animationCurve: widget.animationCurve,
+                      onTap: () => widget.onItemChange(index),
+                      animationDuration: animationDuration,
+                      animationCurve: animationCurve,
                     ),
                   );
                 })
@@ -122,10 +155,9 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       }
     } else {
       if (isSelected) {
-        return parentWidth -
-            (widget.contentMinWidth * (widget.items.length - 1));
+        return parentWidth - (contentMinWidth * (widget.items.length - 1));
       } else {
-        return widget.contentMinWidth;
+        return contentMinWidth;
       }
     }
   }

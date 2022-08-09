@@ -1,40 +1,42 @@
-import "package:app/app_config/default_parameters.dart";
-import "package:app/utils/app_colors.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class ShadowContainer extends StatelessWidget {
   final Widget child;
   final double? width, height;
-  final EdgeInsets margin, padding;
-  final Duration animationDuration;
-  final Curve animationCurve;
+  final BorderRadius? borderRadius;
+  final EdgeInsets? margin, padding;
+  final Duration? animationDuration;
+  final Curve? animationCurve;
 
   const ShadowContainer({
     Key? key,
     required this.child,
     this.width,
     this.height,
-    this.margin = DefaultParameters.defaultNormalInsetAll,
-    this.padding = DefaultParameters.defaultNormalInsetAll,
-    this.animationDuration = DefaultParameters.defaultAnimationDuration,
-    this.animationCurve = DefaultParameters.defaultAnimationCurve,
+    this.borderRadius,
+    this.margin,
+    this.padding,
+    this.animationDuration,
+    this.animationCurve,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: animationDuration,
-      curve: animationCurve,
+      duration: animationDuration ?? Res.animParams.defaultDuration,
+      curve: animationCurve ?? Res.animParams.defaultCurve,
       width: width,
       height: height,
-      margin: margin,
-      padding: padding,
+      margin: margin ?? EdgeInsets.all(Res.dimen.normalSpacingValue),
+      padding: padding ?? EdgeInsets.all(Res.dimen.normalSpacingValue),
       clipBehavior: Clip.none,
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-        borderRadius: DefaultParameters.defaultBorderRadius,
+      decoration: BoxDecoration(
+        color: Res.color.containerBg,
+        borderRadius: borderRadius ??
+            BorderRadius.circular(Res.dimen.defaultBorderRadiusValue),
         boxShadow: <BoxShadow>[
-          DefaultParameters.defaultShadow,
+          Res.shadows.normal,
         ],
       ),
       child: child,

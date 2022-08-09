@@ -1,20 +1,23 @@
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/material.dart";
 
 class DecoratedTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabBar tabBar;
+  final bool showBottomBorder;
   final BoxDecoration decoration;
 
   DecoratedTabBar({
     Key? key,
     required this.tabBar,
+    this.showBottomBorder = true,
     Color? bottomBorderColor,
+    double? bottomBorderThickness,
   })  : decoration = BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: bottomBorderColor ??
-                  DefaultParameters.defaultTabIndicatorBgColor,
-              width: 1,
+              color: bottomBorderColor ?? Res.color.tabIndicatorBg,
+              width: bottomBorderThickness ??
+                  Res.dimen.tabBarBottomBorderThickness,
             ),
           ),
         ),
@@ -25,15 +28,17 @@ class DecoratedTabBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(
-          child: Container(
-            decoration: decoration,
-          ),
-        ),
-        tabBar,
-      ],
-    );
+    return showBottomBorder
+        ? Stack(
+            children: <Widget>[
+              Positioned.fill(
+                child: Container(
+                  decoration: decoration,
+                ),
+              ),
+              tabBar,
+            ],
+          )
+        : tabBar;
   }
 }

@@ -17,6 +17,11 @@ class StringsEn implements StringsBase {
   final String termsOfUse = "Terms of Use";
   final String and = "and";
 
+  final String admission = "Admission";
+  final String explore = "Explore";
+  final String favourites = "Favourites";
+  final String exams = "Exams";
+
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";
   final String passwordTooSmall = "Should be at least 4 characters long.";

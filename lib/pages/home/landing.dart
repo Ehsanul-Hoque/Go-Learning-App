@@ -1,4 +1,4 @@
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
@@ -7,7 +7,6 @@ import "package:app/pages/home/explore.dart";
 import "package:app/pages/home/favourites.dart";
 import "package:app/pages/home/home.dart";
 import "package:app/pages/home/exams.dart";
-import "package:app/utils/app_colors.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
@@ -21,32 +20,31 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   late final List<PageModel> _pageModels;
   late final PageController _pageController;
-  // int _prevPageIndex = -1;
   int _currentPageIndex = 0;
   bool _pageViewScrolling = false;
 
   @override
   void initState() {
-    _pageModels = const <PageModel>[
+    _pageModels = <PageModel>[
       PageModel(
-        title: "Admission",
-        icon: Icon(CupertinoIcons.home),
-        page: Home(),
+        title: Res.str.admission,
+        icon: const Icon(CupertinoIcons.home),
+        page: const Home(),
       ),
       PageModel(
-        title: "Explore",
-        icon: Icon(CupertinoIcons.search_circle),
-        page: Courses(),
+        title: Res.str.explore,
+        icon: const Icon(CupertinoIcons.search_circle),
+        page: const Courses(),
       ),
       PageModel(
-        title: "Favourites",
-        icon: Icon(CupertinoIcons.square_favorites_alt),
-        page: Favourites(),
+        title: Res.str.favourites,
+        icon: const Icon(CupertinoIcons.square_favorites_alt),
+        page: const Favourites(),
       ),
       PageModel(
-        title: "Exams",
-        icon: Icon(CupertinoIcons.pencil_outline),
-        page: Exams(),
+        title: Res.str.exams,
+        icon: const Icon(CupertinoIcons.pencil_outline),
+        page: const Exams(),
       ),
     ];
 
@@ -76,12 +74,13 @@ class _LandingPageState extends State<LandingPage> {
           return false;
         },
         child: PlatformScaffold(
-          backgroundColor: AppColors.veryLightGrey,
+          backgroundColor: Res.color.pageBg,
           body: SafeArea(
             child: Column(
               children: <Widget>[
                 Expanded(
                   child: PageView(
+                    physics: const NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: _pageModels.map((PageModel model) {
                       return model.page;
@@ -103,9 +102,9 @@ class _LandingPageState extends State<LandingPage> {
                     );
                   }).toList(),
                   selectedIndex: _currentPageIndex,
-                  itemSize: AppBottomNavigationItemSize.flex,
+                  itemSize: AppBottomNavigationItemSize.content,
                   flex: 2.5,
-                  onItemChangeListener: (int newSelectedIndex) {
+                  onItemChange: (int newSelectedIndex) {
                     _pageViewScrolling = true;
                     updatePage(newSelectedIndex, true);
                   },
@@ -126,8 +125,8 @@ class _LandingPageState extends State<LandingPage> {
         if (updatePageView) {
           _pageController.animateToPage(
             _currentPageIndex,
-            duration: DefaultParameters.defaultAnimationDuration,
-            curve: DefaultParameters.defaultAnimationCurve,
+            duration: Res.animParams.defaultDuration,
+            curve: Res.animParams.defaultCurve,
           );
         }
       });

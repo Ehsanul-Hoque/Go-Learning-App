@@ -1,26 +1,35 @@
+import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class DefaultTabIndicator extends Decoration {
-  final Color color;
-  final double height;
-  final double radius;
+  final Color? color;
+  final double? height;
+  final BorderRadius? radius;
 
   const DefaultTabIndicator({
-    required this.color,
-    required this.height,
-    required this.radius,
+    this.color,
+    this.height,
+    this.radius,
   });
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _DefaultTabIndicatorPainter(color, height, radius);
+    return _DefaultTabIndicatorPainter(
+      color ?? Res.color.tabIndicator,
+      height ?? Res.dimen.tabIndicatorHeight,
+      radius ??
+          BorderRadius.only(
+            topLeft: Radius.circular(Res.dimen.fullRoundedBorderRadiusValue),
+            topRight: Radius.circular(Res.dimen.fullRoundedBorderRadiusValue),
+          ),
+    );
   }
 }
 
 class _DefaultTabIndicatorPainter extends BoxPainter {
   final Color color;
   final double height;
-  final double radius;
+  final BorderRadius radius;
 
   const _DefaultTabIndicatorPainter(
     this.color,
@@ -43,8 +52,10 @@ class _DefaultTabIndicatorPainter extends BoxPainter {
     canvas.drawRRect(
       RRect.fromRectAndCorners(
         rect,
-        topLeft: Radius.circular(radius),
-        topRight: Radius.circular(radius),
+        topLeft: radius.topLeft,
+        topRight: radius.topRight,
+        bottomRight: radius.bottomRight,
+        bottomLeft: radius.bottomLeft,
       ),
       paint,
     );

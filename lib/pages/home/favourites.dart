@@ -1,5 +1,4 @@
-import "package:app/app_config/app_state.dart";
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class Favourites extends StatelessWidget {
@@ -10,8 +9,8 @@ class Favourites extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: Text(
-          AppState.strings.page3,
-          style: DefaultParameters.defaultTextStyle,
+          Res.str.page3,
+          style: Res.textStyles.general,
         ),
       ),
     );

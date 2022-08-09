@@ -1,10 +1,8 @@
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:app/components/tab_bar/decoration/default_tab_indicator.dart";
 import "package:app/components/tab_bar/views/decorated_tab_bar.dart";
-import "package:app/utils/app_colors.dart";
+import "package:app/utils/typedefs.dart" show OnTabChangeListener;
 import "package:flutter/material.dart";
-
-typedef OnTabChangeListener = void Function(int index);
 
 class AppTabBar extends StatelessWidget {
   final List<Tab> tabs;
@@ -13,6 +11,8 @@ class AppTabBar extends StatelessWidget {
       indicatorColor,
       selectedLabelColor,
       unselectedLabelColor;
+  final double? indicatorHeight;
+  final BorderRadius? indicatorBorderRadius;
   final TextStyle? selectedLabelStyle, unselectedLabelStyle;
 
   const AppTabBar({
@@ -25,6 +25,8 @@ class AppTabBar extends StatelessWidget {
     this.selectedLabelStyle,
     this.unselectedLabelColor,
     this.unselectedLabelStyle,
+    this.indicatorHeight,
+    this.indicatorBorderRadius,
   }) : super(key: key);
 
   @override
@@ -33,19 +35,14 @@ class AppTabBar extends StatelessWidget {
       bottomBorderColor: bottomBorderColor,
       tabBar: TabBar(
         indicator: DefaultTabIndicator(
-          color: indicatorColor ?? DefaultParameters.defaultTabIndicatorColor,
-          height: 2,
-          radius: 100,
+          color: indicatorColor,
+          height: indicatorHeight,
+          radius: indicatorBorderRadius,
         ),
-        labelStyle: selectedLabelStyle ??
-            DefaultParameters.defaultTextStyle.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-        labelColor: selectedLabelColor ?? AppColors.themeBlue,
-        unselectedLabelStyle:
-            unselectedLabelStyle ?? DefaultParameters.defaultTextStyle,
-        unselectedLabelColor:
-            unselectedLabelColor ?? AppColors.themeBlue.withOpacity(0.6),
+        labelStyle: selectedLabelStyle ?? Res.textStyles.tabSelectedLabel,
+        labelColor: selectedLabelColor ?? Res.color.tabSelectedLabel,
+        unselectedLabelStyle: unselectedLabelStyle ?? Res.textStyles.general,
+        unselectedLabelColor: unselectedLabelColor ?? Res.color.tabLabel,
         onTap: onTabChange,
         tabs: tabs,
         labelPadding: EdgeInsets.zero,

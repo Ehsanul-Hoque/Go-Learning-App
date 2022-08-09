@@ -1,9 +1,10 @@
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class AnimatedSizeContainer extends StatefulWidget {
-  final Duration animationDuration;
-  final Curve animationCurve;
+  final Duration? animationDuration;
+  final Curve? animationCurve;
+  final Animation<double>? animation;
   final bool animateForward, animateOnInit;
   final double axisAlignment;
   final Axis axis;
@@ -11,8 +12,9 @@ class AnimatedSizeContainer extends StatefulWidget {
 
   const AnimatedSizeContainer({
     Key? key,
-    this.animationDuration = DefaultParameters.defaultAnimationDuration,
-    this.animationCurve = DefaultParameters.defaultAnimationCurve,
+    this.animationDuration,
+    this.animationCurve,
+    this.animation,
     this.animateForward = true,
     this.animateOnInit = false,
     this.axisAlignment = 0,
@@ -26,26 +28,34 @@ class AnimatedSizeContainer extends StatefulWidget {
 
 class _AnimatedSizeContainerState extends State<AnimatedSizeContainer>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _curvedAnimation;
+  Duration? animationDuration;
+  Curve? animationCurve;
+  AnimationController? _animationController;
+  Animation<double>? _curvedAnimation;
 
   @override
   void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: widget.animationDuration,
-    );
+    if (widget.animation == null) {
+      animationDuration =
+          widget.animationDuration ?? Res.animParams.defaultDuration;
+      animationCurve = widget.animationCurve ?? Res.animParams.defaultCurve;
 
-    _curvedAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: widget.animationCurve,
-    );
+      _animationController = AnimationController(
+        vsync: this,
+        duration: animationDuration,
+      );
 
-    if (widget.animateOnInit) {
-      if (widget.animateForward) {
-        _animationController.forward();
-      } else {
-        _animationController.reverse();
+      _curvedAnimation = CurvedAnimation(
+        parent: _animationController!,
+        curve: animationCurve!,
+      );
+
+      if (widget.animateOnInit) {
+        if (widget.animateForward) {
+          _animationController!.forward();
+        } else {
+          _animationController!.reverse();
+        }
       }
     }
 
@@ -55,18 +65,20 @@ class _AnimatedSizeContainerState extends State<AnimatedSizeContainer>
   @override
   void didUpdateWidget(covariant AnimatedSizeContainer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.animateForward != oldWidget.animateForward) {
-      if (widget.animateForward) {
-        _animationController.forward();
-      } else {
-        _animationController.reverse();
+    if (widget.animation == null) {
+      if (widget.animateForward != oldWidget.animateForward) {
+        if (widget.animateForward) {
+          _animationController?.forward();
+        } else {
+          _animationController?.reverse();
+        }
       }
     }
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -74,7 +86,7 @@ class _AnimatedSizeContainerState extends State<AnimatedSizeContainer>
   Widget build(BuildContext context) {
     return SizeTransition(
       axisAlignment: widget.axisAlignment,
-      sizeFactor: _curvedAnimation,
+      sizeFactor: widget.animation ?? _curvedAnimation!,
       axis: widget.axis,
       child: widget.child,
     );

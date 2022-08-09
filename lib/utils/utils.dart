@@ -1,7 +1,6 @@
 import "dart:developer" as devtools show log;
 
-import "package:app/app_config/default_parameters.dart";
-import "package:app/utils/app_colors.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
@@ -25,7 +24,7 @@ class Utils {
   static InputDecoration getAppInputDecoration({
     String? hint,
     String? label,
-    double borderRadius = DefaultParameters.defaultBorderRadiusValue,
+    double? borderRadius,
     Widget? prefix,
     String? prefixText,
     Widget? prefixIcon,
@@ -37,65 +36,86 @@ class Utils {
     bool showCounterText = true,
     TextStyle? counterTextStyle,
     Color? hintOrLabelColor,
+    Color? errorColor,
+    Color? errorOutlineColor,
     Color? enabledBorderColor,
     Color? focusedBorderColor,
     Color? backgroundColor,
+    double? borderThickness,
+    double? focusedBorderThickness,
+    double? errorBorderThickness,
+    double? focusedErrorBorderThickness,
     EdgeInsets? contentPadding,
     bool? isCollapsed,
     bool? isDense,
   }) {
-    hintOrLabelColor ??= AppColors.grey600;
-    enabledBorderColor ??= AppColors.grey300;
-    focusedBorderColor ??= AppColors.themeBlue;
+    borderRadius ??= Res.dimen.defaultBorderRadiusValue;
+    hintOrLabelColor ??= Res.color.textSecondary;
+    errorColor ??= Res.color.textError;
+    errorOutlineColor ??= Res.color.outlineError;
+    enabledBorderColor ??= Res.color.outline;
+    focusedBorderColor ??= Res.color.outlineFocused;
+    backgroundColor ??= Res.color.inputFieldBg;
+
+    borderThickness ??= Res.dimen.defaultBorderThickness;
+    focusedBorderThickness ??= Res.dimen.defaultBorderThickness;
+    errorBorderThickness ??= borderThickness;
+    focusedErrorBorderThickness ??= focusedBorderThickness;
 
     return InputDecoration(
       hintText: hint,
-      hintStyle: DefaultParameters.defaultTextStyle.copyWith(
+      hintStyle: Res.textStyles.secondary.copyWith(
         color: hintOrLabelColor,
       ),
-      helperStyle: DefaultParameters.defaultTextStyle.copyWith(
-        color: AppColors.grey400,
-        fontSize: 12,
+      helperStyle: Res.textStyles.ternary.copyWith(
+        fontSize: Res.dimen.fontSizeSmall,
       ),
       labelText: label,
       floatingLabelBehavior: FloatingLabelBehavior.auto,
-      labelStyle: DefaultParameters.defaultTextStyle.copyWith(
+      labelStyle: Res.textStyles.secondary.copyWith(
         color: hintOrLabelColor,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+        borderSide: BorderSide(
+          color: enabledBorderColor,
+          width: borderThickness,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         borderSide: BorderSide(
           color: focusedBorderColor,
-          width: 1,
+          width: focusedBorderThickness,
         ),
       ),
-      errorStyle: DefaultParameters.defaultTextStyle.copyWith(
-        color: AppColors.redAccent,
-        fontSize: 12,
+      errorStyle: Res.textStyles.error.copyWith(
+        color: errorColor,
+        fontSize: Res.dimen.fontSizeSmall,
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: const BorderSide(
-          color: AppColors.redAccent,
-          width: 1,
+        borderSide: BorderSide(
+          color: errorOutlineColor,
+          width: errorBorderThickness,
         ),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: const BorderSide(
-          color: AppColors.redAccent,
-          width: 1,
+        borderSide: BorderSide(
+          color: errorOutlineColor,
+          width: focusedErrorBorderThickness,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         borderSide: BorderSide(
           color: enabledBorderColor,
-          width: 1,
+          width: borderThickness,
         ),
       ),
       fillColor: backgroundColor,
-      filled: backgroundColor != null ? true : false,
+      filled: true,
       contentPadding: contentPadding,
       isCollapsed: isCollapsed ?? false,
       isDense: isDense,

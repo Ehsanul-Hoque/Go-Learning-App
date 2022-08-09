@@ -1,16 +1,15 @@
-import "package:app/app_config/default_parameters.dart";
-import "package:app/utils/app_colors.dart";
+import "package:app/app_config/resources.dart";
+import "package:app/components/fields/app_input_base_widget.dart";
+import "package:app/utils/typedefs.dart" show OnValueChangeListener;
 import "package:app/utils/utils.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
-typedef OnChangeListener = void Function(String value);
-
-class AppInputField extends StatelessWidget {
-  final OnChangeListener? onChange;
+class AppInputField extends StatelessWidget implements AppInputBaseWidget {
+  final OnValueChangeListener<String>? onChange;
   final FormFieldValidator<String>? validator;
   final String? label, hint;
-  final double borderRadius;
+  final double? borderRadius;
   final bool goNextOnComplete, obscureText;
   final bool? isCollapsed, isDense;
   final String? prefixText, suffixText;
@@ -23,12 +22,19 @@ class AppInputField extends StatelessWidget {
   final int maxLines;
   final int maxLength;
   final bool expands;
-  final Color textColor,
+  final double? fontSize;
+  final Color? textColor,
       cursorColor,
       hintOrLabelColor,
+      errorColor,
+      errorOutlineColor,
       enabledBorderColor,
       focusedBorderColor;
   final Color? backgroundColor;
+  final double? borderThickness,
+      focusedBorderThickness,
+      errorBorderThickness,
+      focusedErrorBorderThickness;
   final bool noBorder, showCounterText;
   final FocusNode? focusNode;
   final TextStyle? counterTextStyle;
@@ -40,7 +46,7 @@ class AppInputField extends StatelessWidget {
     this.validator,
     this.label,
     this.hint,
-    this.borderRadius = DefaultParameters.defaultBorderRadiusValue,
+    this.borderRadius,
     this.prefixText,
     this.prefixIcon,
     this.prefixIconConstraints,
@@ -56,12 +62,19 @@ class AppInputField extends StatelessWidget {
     this.maxLength = 1000,
     this.expands = false,
     this.obscureText = false,
-    Color? textColor,
-    Color? cursorColor,
-    Color? hintOrLabelColor,
-    Color? enabledBorderColor,
-    Color? focusedBorderColor,
+    this.fontSize,
+    this.textColor,
+    this.cursorColor,
+    this.hintOrLabelColor,
+    this.errorColor,
+    this.errorOutlineColor,
+    this.enabledBorderColor,
+    this.focusedBorderColor,
     this.backgroundColor,
+    this.borderThickness,
+    this.focusedBorderThickness,
+    this.errorBorderThickness,
+    this.focusedErrorBorderThickness,
     this.noBorder = false,
     this.showCounterText = true,
     this.focusNode,
@@ -69,19 +82,19 @@ class AppInputField extends StatelessWidget {
     this.contentPadding,
     this.isCollapsed,
     this.isDense,
-  })  : textColor = textColor ?? AppColors.black,
-        cursorColor = cursorColor ?? AppColors.black,
-        hintOrLabelColor = hintOrLabelColor ?? AppColors.grey600,
-        enabledBorderColor = enabledBorderColor ?? AppColors.grey300,
-        focusedBorderColor = focusedBorderColor ?? AppColors.grey600,
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double fontSize = this.fontSize ?? Res.dimen.fontSizeNormal;
+    Color textColor = this.textColor ?? Res.color.textPrimary;
+    Color cursorColor = this.cursorColor ?? Res.color.textPrimary;
+
     return TextFormField(
       expands: expands,
-      style: DefaultParameters.defaultTextStyle.copyWith(
+      style: Res.textStyles.general.copyWith(
         color: textColor,
+        fontSize: fontSize,
       ),
       keyboardType: textInputType ?? TextInputType.text,
       minLines: expands ? null : minLines,
@@ -89,7 +102,7 @@ class AppInputField extends StatelessWidget {
       maxLength: maxLength > 0 ? maxLength : null,
       controller: textEditingController,
       autofocus: false,
-      cursorColor: textColor,
+      cursorColor: cursorColor,
       focusNode: focusNode,
       onChanged: onChanged,
       validator: validator,
@@ -111,9 +124,15 @@ class AppInputField extends StatelessWidget {
         suffixIcon: suffixIcon,
         suffixIconConstraints: suffixIconConstraints,
         hintOrLabelColor: hintOrLabelColor,
+        errorColor: errorColor,
+        errorOutlineColor: errorOutlineColor,
         enabledBorderColor: enabledBorderColor,
         focusedBorderColor: focusedBorderColor,
         backgroundColor: backgroundColor,
+        borderThickness: borderThickness,
+        focusedBorderThickness: focusedBorderThickness,
+        errorBorderThickness: errorBorderThickness,
+        focusedErrorBorderThickness: focusedErrorBorderThickness,
         showCounterText: showCounterText,
         counterTextStyle: counterTextStyle,
         contentPadding: contentPadding,

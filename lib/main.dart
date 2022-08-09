@@ -1,4 +1,4 @@
-import "package:app/app_config/app_state.dart";
+import "package:app/app_config/resources.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformApp(
       debugShowCheckedModeBanner: false,
-      title: AppState.strings.appName,
+      title: Res.str.appName,
       home: const AuthPage(),
     );
   }

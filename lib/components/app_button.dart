@@ -1,14 +1,16 @@
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class AppButton extends StatelessWidget {
   final Widget? icon;
   final String text;
-  final Color contentColor, backgroundColor;
+  final Color? contentColor, backgroundColor;
   final bool tintIconWithContentColor;
-  final double borderRadius;
+  final double? borderRadius;
   final Border? border;
-  final double minHeight;
+  final double? minHeight;
+  final EdgeInsets? padding;
+  final double? spaceBetweenIconAndText;
   final Function() onTap;
 
   const AppButton({
@@ -16,26 +18,37 @@ class AppButton extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.icon,
-    this.contentColor = DefaultParameters.defaultButtonContentColor,
-    this.backgroundColor = DefaultParameters.defaultButtonBgColor,
+    this.contentColor,
+    this.backgroundColor,
     this.tintIconWithContentColor = true,
-    this.borderRadius = DefaultParameters.defaultBorderRadiusValue,
-    this.minHeight = DefaultParameters.defaultButtonHeight,
+    this.borderRadius,
+    this.minHeight,
     this.border,
+    this.padding,
+    this.spaceBetweenIconAndText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Color contentColor = this.contentColor ?? Res.color.buttonFilledContent;
+    Color backgroundColor = this.backgroundColor ?? Res.color.buttonFilledBg;
+    double borderRadius =
+        this.borderRadius ?? Res.dimen.defaultBorderRadiusValue;
+    double minHeight = this.minHeight ?? Res.dimen.buttonHeight;
+    double spaceBetweenIconAndText =
+        this.spaceBetweenIconAndText ?? Res.dimen.normalSpacingValue;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         constraints: BoxConstraints(
           minHeight: minHeight,
         ),
-        padding: const EdgeInsets.symmetric(
-          vertical: DefaultParameters.defaultSmallSpacingValue,
-          horizontal: DefaultParameters.defaultNormalSpacingValue,
-        ),
+        padding: padding ??
+            EdgeInsets.symmetric(
+              vertical: Res.dimen.smallSpacingValue,
+              horizontal: Res.dimen.normalSpacingValue,
+            ),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
           border: border,
@@ -55,17 +68,16 @@ class AppButton extends StatelessWidget {
                       child: icon!,
                     )
                   : icon!,
-              const SizedBox(
-                width: DefaultParameters.defaultNormalSpacingValue,
+              SizedBox(
+                width: spaceBetweenIconAndText,
               ),
             ],
             Text(
               text,
-              style: DefaultParameters.defaultTextStyle.copyWith(
+              style: Res.textStyles.button.copyWith(
                 color: contentColor,
-                fontWeight: FontWeight.w500,
               ),
-              textAlign: TextAlign.center,
+              textAlign: (icon != null) ? TextAlign.start : TextAlign.center,
             ),
           ],
         ),

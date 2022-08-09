@@ -1,5 +1,4 @@
-import "package:app/app_config/app_state.dart";
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_button.dart";
 import "package:app/components/app_divider.dart";
@@ -8,7 +7,7 @@ import "package:app/components/fields/app_input_field.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/components/shadow_container.dart";
 import "package:app/models/page_model.dart";
-import "package:app/utils/app_colors.dart";
+import "package:app/pages/home/landing.dart";
 import "package:email_validator/email_validator.dart";
 import "package:flutter/material.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
@@ -36,15 +35,15 @@ class _AuthPageState extends State<AuthPage> {
   void initState() {
     _pageModels = <PageModel>[
       PageModel(
-        title: AppState.strings.logIn,
+        title: Res.str.signUp,
         configs: <String, bool>{
-          _isLogInPageKey: true,
+          _isLogInPageKey: false,
         },
       ),
       PageModel(
-        title: AppState.strings.signUp,
+        title: Res.str.logIn,
         configs: <String, bool>{
-          _isLogInPageKey: false,
+          _isLogInPageKey: true,
         },
       ),
     ];
@@ -69,13 +68,13 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      backgroundColor: DefaultParameters.defaultPageBgColor,
+      backgroundColor: Res.color.pageBg,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: ShadowContainer(
-              margin: DefaultParameters.defaultLargeInsetAll,
-              padding: DefaultParameters.defaultLargeInsetAll,
+              margin: EdgeInsets.all(Res.dimen.largeSpacingValue),
+              padding: EdgeInsets.all(Res.dimen.largeSpacingValue),
               child: DefaultTabController(
                 length: _pageModels.length,
                 child: Form(
@@ -98,31 +97,31 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: DefaultParameters.defaultLargeSpacingValue,
+                      SizedBox(
+                        height: Res.dimen.largeSpacingValue,
                       ),
                       AppFormField(
                         appInputField: AppInputField(
                           textEditingController: _emailTextController,
-                          label: AppState.strings.email,
+                          label: Res.str.email,
                           textInputType: TextInputType.emailAddress,
                           goNextOnComplete: true,
-                          borderRadius:
-                              DefaultParameters.defaultBorderRadiusValue,
+                          borderRadius: Res.dimen.defaultBorderRadiusValue,
                           validator: onEmailValidation,
                         ),
                       ),
                       AppFormField(
                         appInputField: AppInputField(
                           textEditingController: _passwordTextController,
-                          label: AppState.strings.password,
+                          label: Res.str.password,
                           textInputType: TextInputType.visiblePassword,
                           obscureText: _hidePassword,
-                          goNextOnComplete: true,
-                          borderRadius:
-                              DefaultParameters.defaultBorderRadiusValue,
+                          goNextOnComplete:
+                              isCurrentPageLogInPage ? false : true,
+                          borderRadius: Res.dimen.defaultBorderRadiusValue,
                           validator: onPasswordValidation,
                           suffixIcon: IconButton(
+                            focusNode: FocusNode(skipTraversal: true),
                             onPressed: () {
                               setState(() {
                                 _hidePassword = !_hidePassword;
@@ -132,29 +131,29 @@ class _AuthPageState extends State<AuthPage> {
                               _hidePassword
                                   ? Icons.visibility_off_outlined
                                   : Icons.visibility_outlined,
-                              color: DefaultParameters.secondaryIconButtonColor,
-                              size: DefaultParameters.defaultIconSize,
+                              color: Res.color.secondaryIconButton,
+                              size: Res.dimen.iconSizeNormal,
                             ),
                           ),
                         ),
                       ),
                       AnimatedSizeContainer(
                         animateForward: !isCurrentPageLogInPage,
-                        animateOnInit: false,
+                        animateOnInit: true,
                         axisAlignment: 1,
                         axis: Axis.vertical,
                         child: AppFormField(
                           appInputField: AppInputField(
                             textEditingController:
                                 _confirmPasswordTextController,
-                            label: AppState.strings.confirmPassword,
+                            label: Res.str.confirmPassword,
                             textInputType: TextInputType.visiblePassword,
                             obscureText: _hideConfirmPassword,
-                            goNextOnComplete: true,
-                            borderRadius:
-                                DefaultParameters.defaultBorderRadiusValue,
+                            goNextOnComplete: false,
+                            borderRadius: Res.dimen.defaultBorderRadiusValue,
                             validator: onConfirmPasswordValidation,
                             suffixIcon: IconButton(
+                              focusNode: FocusNode(skipTraversal: true),
                               onPressed: () {
                                 setState(() {
                                   _hideConfirmPassword = !_hideConfirmPassword;
@@ -164,83 +163,77 @@ class _AuthPageState extends State<AuthPage> {
                                 _hideConfirmPassword
                                     ? Icons.visibility_off_outlined
                                     : Icons.visibility_outlined,
-                                color:
-                                    DefaultParameters.secondaryIconButtonColor,
-                                size: DefaultParameters.defaultIconSize,
+                                color: Res.color.secondaryIconButton,
+                                size: Res.dimen.iconSizeNormal,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: DefaultParameters.defaultNormalSpacingValue,
+                      SizedBox(
+                        height: Res.dimen.normalSpacingValue,
                       ),
                       AppButton(
                         text: isCurrentPageLogInPage
-                            ? AppState.strings.logIn
-                            : AppState.strings.signUp,
+                            ? Res.str.logIn
+                            : Res.str.signUp,
                         onTap: onSubmitTap,
-                        borderRadius:
-                            DefaultParameters.fullRoundedBorderRadiusValue,
+                        borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
                       ),
-                      const SizedBox(
-                        height: DefaultParameters.defaultNormalSpacingValue,
+                      SizedBox(
+                        height: Res.dimen.normalSpacingValue,
                       ),
                       Row(
                         children: <Widget>[
-                          const Expanded(
+                          Expanded(
                             child: AppDivider(
                               margin: EdgeInsets.symmetric(
-                                horizontal:
-                                    DefaultParameters.defaultNormalSpacingValue,
+                                horizontal: Res.dimen.normalSpacingValue,
                               ),
                             ),
                           ),
                           Text(
-                            AppState.strings.or,
-                            style: DefaultParameters.defaultTextStyle.copyWith(
-                              color: AppColors.grey400,
-                            ),
+                            Res.str.or,
+                            style: Res.textStyles.ternary,
                           ),
-                          const Expanded(
+                          Expanded(
                             child: AppDivider(
                               margin: EdgeInsets.symmetric(
-                                horizontal:
-                                    DefaultParameters.defaultNormalSpacingValue,
+                                horizontal: Res.dimen.normalSpacingValue,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: DefaultParameters.defaultNormalSpacingValue,
+                      SizedBox(
+                        height: Res.dimen.normalSpacingValue,
                       ),
                       AppButton(
-                        text: AppState.strings.googleLogIn,
+                        text: Res.str.googleLogIn,
                         onTap: onGoogleLogInTap,
                         icon: SvgPicture.asset(
                           "assets/icons/ic_google.svg",
-                          width: DefaultParameters.defaultIconSize,
-                          height: DefaultParameters.defaultIconSize,
+                          width: Res.dimen.iconSizeNormal,
+                          height: Res.dimen.iconSizeNormal,
                         ),
+                        backgroundColor: Res.color.buttonHollowBg,
+                        contentColor: Res.color.buttonHollowContent,
                         tintIconWithContentColor: false,
-                        borderRadius:
-                            DefaultParameters.fullRoundedBorderRadiusValue,
+                        borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
                         border: Border.all(
-                          color: AppColors.grey300,
+                          color: Res.color.buttonHollowBorder,
                         ),
                       ),
-                      const SizedBox(
-                        height: DefaultParameters.defaultLargeSpacingValue * 2,
+                      SizedBox(
+                        height: Res.dimen.hugeSpacingValue,
                       ),
                       Wrap(
                         alignment: WrapAlignment.center,
-                        runSpacing:
-                            DefaultParameters.defaultExtraSmallSpacingValue,
+                        runSpacing: Res.dimen.extraSmallSpacingValue,
                         children: <Widget>[
                           Text(
-                            AppState.strings.byContinuingYouAgreeTo,
-                            style: DefaultParameters.secondaryTextStyle,
+                            Res.str.byContinuingYouAgreeTo,
+                            style: Res.textStyles.secondary,
                             textAlign: TextAlign.center,
                           ),
                           Row(
@@ -249,21 +242,21 @@ class _AuthPageState extends State<AuthPage> {
                               GestureDetector(
                                 onTap: onPrivacyPolicyTap,
                                 child: Text(
-                                  AppState.strings.privacyPolicy,
-                                  style: DefaultParameters.linkTextStyle,
+                                  Res.str.privacyPolicy,
+                                  style: Res.textStyles.link,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                               Text(
-                                " ${AppState.strings.and} ",
-                                style: DefaultParameters.secondaryTextStyle,
+                                " ${Res.str.and} ",
+                                style: Res.textStyles.secondary,
                                 textAlign: TextAlign.center,
                               ),
                               GestureDetector(
                                 onTap: onTermsOfUseTap,
                                 child: Text(
-                                  AppState.strings.termsOfUse,
-                                  style: DefaultParameters.linkTextStyle,
+                                  Res.str.termsOfUse,
+                                  style: Res.textStyles.link,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -293,24 +286,22 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   String? onEmailValidation(String? value) {
-    return EmailValidator.validate(value ?? "")
-        ? null
-        : AppState.strings.invalidEmail;
+    return EmailValidator.validate(value ?? "") ? null : Res.str.invalidEmail;
   }
 
   String? onPasswordValidation(String? value) {
     String password = _passwordTextController.text;
 
     if (password.isEmpty) {
-      return AppState.strings.enterPassword;
+      return Res.str.enterPassword;
     } else if (password.length < 4) {
-      return AppState.strings.passwordTooSmall;
+      return Res.str.passwordTooSmall;
     }
 
     if (!isCurrentPageLogInPage) {
       String confirmPassword = _confirmPasswordTextController.text;
       if (password != confirmPassword) {
-        return AppState.strings.passwordsNotMatched;
+        return Res.str.passwordsNotMatched;
       }
     }
 
@@ -322,7 +313,7 @@ class _AuthPageState extends State<AuthPage> {
       String password = _passwordTextController.text;
       String confirmPassword = _confirmPasswordTextController.text;
       if (password != confirmPassword) {
-        return AppState.strings.passwordsNotMatched;
+        return Res.str.passwordsNotMatched;
       }
     }
 
@@ -330,9 +321,19 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void onSubmitTap() {
-    if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-    }
+    // TODO Uncomment validation when auth is properly implemented
+    // if (_formKey.currentState?.validate() ?? false) {
+    // _formKey.currentState?.save();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return const LandingPage();
+        },
+      ),
+    );
+    // }
   }
 
   void onGoogleLogInTap() {}

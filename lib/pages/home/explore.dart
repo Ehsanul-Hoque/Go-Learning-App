@@ -1,5 +1,4 @@
-import "package:app/app_config/app_state.dart";
-import "package:app/app_config/default_parameters.dart";
+import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class Courses extends StatelessWidget {
@@ -10,8 +9,8 @@ class Courses extends StatelessWidget {
     return SafeArea(
       child: Center(
         child: Text(
-          AppState.strings.page2,
-          style: DefaultParameters.defaultTextStyle,
+          Res.str.page2,
+          style: Res.textStyles.general,
         ),
       ),
     );
