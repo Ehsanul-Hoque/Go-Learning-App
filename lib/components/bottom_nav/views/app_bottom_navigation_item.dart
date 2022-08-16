@@ -60,8 +60,8 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
   @override
   void initState() {
     animationDuration =
-        widget.animationDuration ?? Res.animParams.defaultDuration;
-    animationCurve = widget.animationCurve ?? Res.animParams.defaultCurve;
+        widget.animationDuration ?? Res.durations.defaultDuration;
+    animationCurve = widget.animationCurve ?? Res.curves.defaultCurve;
 
     iconSize = widget.iconSize ?? Res.dimen.iconSizeNormal;
     textSize = widget.textSize ?? Res.dimen.fontSizeNormal;

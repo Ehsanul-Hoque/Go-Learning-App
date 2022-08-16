@@ -29,8 +29,8 @@ class _WidgetCarousalState extends State<WidgetCarousal> {
   @override
   void initState() {
     animationDuration =
-        widget.animationDuration ?? Res.animParams.defaultDuration;
-    animationCurve = widget.animationCurve ?? Res.animParams.defaultCurve;
+        widget.animationDuration ?? Res.durations.defaultDuration;
+    animationCurve = widget.animationCurve ?? Res.curves.defaultCurve;
     currentPageIndex = 0;
 
     _pageController = PageController(

@@ -105,10 +105,17 @@ class TextStyles {
       );
 }
 
-class AnimationParams {
-  const AnimationParams();
+class Durations {
+  const Durations();
 
   final Duration defaultDuration = const Duration(milliseconds: 200);
+  // final Duration animatedSwitcherDuration = const Duration(milliseconds: 500);
+  final Duration fakeLoadingDuration = const Duration(milliseconds: 100);
+}
+
+class MyCurves {
+  const MyCurves();
+
   final Curve defaultCurve = Curves.easeInOut;
 }
 

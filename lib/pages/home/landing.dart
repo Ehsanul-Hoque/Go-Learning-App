@@ -125,8 +125,8 @@ class _LandingPageState extends State<LandingPage> {
         if (updatePageView) {
           _pageController.animateToPage(
             _currentPageIndex,
-            duration: Res.animParams.defaultDuration,
-            curve: Res.animParams.defaultCurve,
+            duration: Res.durations.defaultDuration,
+            curve: Res.curves.defaultCurve,
           );
         }
       });

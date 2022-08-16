@@ -32,8 +32,8 @@ class AppContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: animationDuration ?? Res.animParams.defaultDuration,
-      curve: animationCurve ?? Res.animParams.defaultCurve,
+      duration: animationDuration ?? Res.durations.defaultDuration,
+      curve: animationCurve ?? Res.curves.defaultCurve,
       width: width,
       height: height,
       constraints: constraints,

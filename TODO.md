@@ -7,3 +7,6 @@
 - Home banner ratio fix (Give aspect ratio to children instead of the whole page view)
 - Home page view pages should not be removed when off-screen
 - Make AnimParams two separate classes - Durations and Curves
+- fake_loading.dart: load the child after the loading starts, but before the loading finishes.
+  Else when the child is loaded after loading widget, a rough transition appears if the child takes too long to be created.
+- 

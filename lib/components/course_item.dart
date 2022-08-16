@@ -32,10 +32,10 @@ class CourseItem extends StatelessWidget {
               children: <Widget>[
                 CachedNetworkImage(
                   imageUrl: course["banner"]!, // TODO Get banner from API
-                  fadeInDuration: Res.animParams.defaultDuration,
-                  fadeOutDuration: Res.animParams.defaultDuration,
-                  fadeInCurve: Res.animParams.defaultCurve,
-                  fadeOutCurve: Res.animParams.defaultCurve,
+                  fadeInDuration: Res.durations.defaultDuration,
+                  fadeOutDuration: Res.durations.defaultDuration,
+                  fadeInCurve: Res.curves.defaultCurve,
+                  fadeOutCurve: Res.curves.defaultCurve,
                   placeholder: (BuildContext context, String url) {
                     return Padding(
                       padding: EdgeInsets.all(

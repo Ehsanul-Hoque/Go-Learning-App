@@ -13,7 +13,8 @@ class Res {
 
   static const Dimensions dimen = Dimensions();
   static const TextStyles textStyles = TextStyles();
-  static const AnimationParams animParams = AnimationParams();
+  static const Durations durations = Durations();
+  static const MyCurves curves = MyCurves();
   static const Shadows shadows = Shadows();
   static const Assets assets = Assets();
 }

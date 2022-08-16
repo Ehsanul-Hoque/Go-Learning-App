@@ -37,8 +37,8 @@ class _AnimatedSizeContainerState extends State<AnimatedSizeContainer>
   void initState() {
     if (widget.animation == null) {
       animationDuration =
-          widget.animationDuration ?? Res.animParams.defaultDuration;
-      animationCurve = widget.animationCurve ?? Res.animParams.defaultCurve;
+          widget.animationDuration ?? Res.durations.defaultDuration;
+      animationCurve = widget.animationCurve ?? Res.curves.defaultCurve;
 
       _animationController = AnimationController(
         vsync: this,
