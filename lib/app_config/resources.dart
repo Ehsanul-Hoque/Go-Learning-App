@@ -15,4 +15,5 @@ class Res {
   static const TextStyles textStyles = TextStyles();
   static const AnimationParams animParams = AnimationParams();
   static const Shadows shadows = Shadows();
+  static const Assets assets = Assets();
 }

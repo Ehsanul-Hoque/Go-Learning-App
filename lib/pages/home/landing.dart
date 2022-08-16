@@ -103,7 +103,7 @@ class _LandingPageState extends State<LandingPage> {
                   }).toList(),
                   selectedIndex: _currentPageIndex,
                   itemSize: AppBottomNavigationItemSize.flex,
-                  flex: 2.5,
+                  flex: 2,
                   onItemChange: (int newSelectedIndex) {
                     _pageViewScrolling = true;
                     updatePage(newSelectedIndex, true);
@@ -136,6 +136,7 @@ class _LandingPageState extends State<LandingPage> {
   bool goBack() {
     if (_currentPageIndex > 0) {
       setState(() {
+        _pageViewScrolling = true;
         updatePage(0, true);
       });
       return false;

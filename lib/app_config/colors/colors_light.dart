@@ -44,8 +44,13 @@ class ColorsLightMode implements ColorsBase {
   final Color bottomNavItemActive = AppColors.white;
   final Color bottomNavItemInactive = AppColors.themeBlue;
 
+  /// Carousal Indicator
+  final Color carousalIndicator = AppColors.grey300;
+  final Color carousalIndicatorActive = AppColors.themeYellow;
+
   /// Shadows
   final Color shadow = AppColors.shadowGrey;
+  final Color shadowLighter = AppColors.shadowLightGrey;
 
   /// Outlines
   final Color outline = AppColors.grey300;
@@ -54,6 +59,8 @@ class ColorsLightMode implements ColorsBase {
 
   /// Miscellaneous
   final Color divider = AppColors.grey300;
+  final Color priceColor = AppColors.themeBlue;
+  final Color priceBgColor = AppColors.white;
 
   /// const constructor
   const ColorsLightMode();

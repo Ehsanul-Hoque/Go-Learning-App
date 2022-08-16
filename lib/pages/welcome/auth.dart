@@ -5,7 +5,7 @@ import "package:app/components/app_divider.dart";
 import "package:app/components/fields/app_form_field.dart";
 import "package:app/components/fields/app_input_field.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
-import "package:app/components/shadow_container.dart";
+import "package:app/components/app_container.dart";
 import "package:app/models/page_model.dart";
 import "package:app/pages/home/landing.dart";
 import "package:email_validator/email_validator.dart";
@@ -72,7 +72,7 @@ class _AuthPageState extends State<AuthPage> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            child: ShadowContainer(
+            child: AppContainer(
               margin: EdgeInsets.all(Res.dimen.largeSpacingValue),
               padding: EdgeInsets.all(Res.dimen.largeSpacingValue),
               constraints: BoxConstraints(
@@ -215,7 +215,7 @@ class _AuthPageState extends State<AuthPage> {
                         text: Res.str.googleLogIn,
                         onTap: onGoogleLogInTap,
                         icon: SvgPicture.asset(
-                          "assets/icons/ic_google.svg",
+                          Res.assets.icGoogleSvg,
                           width: Res.dimen.iconSizeNormal,
                           height: Res.dimen.iconSizeNormal,
                         ),
@@ -232,8 +232,8 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                       Wrap(
                         alignment: WrapAlignment.center,
-                        spacing: Res.dimen.extraSmallSpacingValue,
-                        runSpacing: Res.dimen.extraSmallSpacingValue,
+                        spacing: Res.dimen.xsSpacingValue,
+                        runSpacing: Res.dimen.xsSpacingValue,
                         children: <Widget>[
                           Text(
                             Res.str.byContinuingYouAgreeTo,
@@ -340,9 +340,15 @@ class _AuthPageState extends State<AuthPage> {
     // }
   }
 
-  void onGoogleLogInTap() {}
+  void onGoogleLogInTap() {
+    // TODO Implement google log in
+  }
 
-  void onPrivacyPolicyTap() {}
+  void onPrivacyPolicyTap() {
+    // TODO Show privacy policy
+  }
 
-  void onTermsOfUseTap() {}
+  void onTermsOfUseTap() {
+    // TODO Show terms of use
+  }
 }

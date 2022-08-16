@@ -18,6 +18,9 @@ abstract class StringsBase {
   final String favourites = "";
   final String exams = "";
 
+  final String courses = "";
+  final String by = "";
+
   /// Messages
   final String invalidEmail = "";
   final String enterPassword = "";

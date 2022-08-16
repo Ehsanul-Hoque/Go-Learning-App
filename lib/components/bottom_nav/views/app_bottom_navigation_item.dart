@@ -66,7 +66,7 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
     iconSize = widget.iconSize ?? Res.dimen.iconSizeNormal;
     textSize = widget.textSize ?? Res.dimen.fontSizeNormal;
     spaceBetweenIconAndText =
-        widget.spaceBetweenIconAndText ?? Res.dimen.extraSmallSpacingValue;
+        widget.spaceBetweenIconAndText ?? Res.dimen.xsSpacingValue;
     backgroundColor = widget.backgroundColor ?? Res.color.bottomNavItemBg;
     activeColor = widget.activeColor ?? Res.color.bottomNavItemActive;
     inactiveColor = widget.inactiveColor ?? Res.color.bottomNavItemInactive;

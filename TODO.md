@@ -1,3 +1,9 @@
 - Set app name for iOS in Xcode
 - Set placeholder images for banner and other places
-- Update page view infinite scroll in widget_carousal.dart
+- Update landing page bottom navigation to change by page view offset instead of page view current page
+- Make page view infinitely scrollable in widget_carousal.dart
+- Make carousal indicator by yourself if possible
+- Make home page banner auto-scroll after a certain duration
+- Home banner ratio fix (Give aspect ratio to children instead of the whole page view)
+- Home page view pages should not be removed when off-screen
+- Make AnimParams two separate classes - Durations and Curves

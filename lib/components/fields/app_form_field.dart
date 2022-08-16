@@ -53,7 +53,7 @@ class AppFormField extends StatelessWidget {
                   height: Res.dimen.inputFieldHeight,
                   padding: subLabelMargin ??
                       EdgeInsets.only(
-                        left: Res.dimen.mediumSmallSpacingValue,
+                        left: Res.dimen.msSpacingValue,
                         right: Res.dimen.smallSpacingValue,
                         bottom: 2,
                       ),

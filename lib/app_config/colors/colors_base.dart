@@ -41,8 +41,13 @@ abstract class ColorsBase {
   final Color bottomNavItemActive = AppColors.transparent;
   final Color bottomNavItemInactive = AppColors.transparent;
 
+  /// Carousal Indicator
+  final Color carousalIndicator = AppColors.transparent;
+  final Color carousalIndicatorActive = AppColors.transparent;
+
   /// Shadows
   final Color shadow = AppColors.transparent;
+  final Color shadowLighter = AppColors.transparent;
 
   /// Outlines
   final Color outline = AppColors.transparent;
@@ -51,6 +56,8 @@ abstract class ColorsBase {
 
   /// Miscellaneous
   final Color divider = AppColors.transparent;
+  final Color priceColor = AppColors.transparent;
+  final Color priceBgColor = AppColors.transparent;
 
   /// Private const constructor
   const ColorsBase._();
