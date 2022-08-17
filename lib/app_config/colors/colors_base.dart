@@ -34,6 +34,10 @@ abstract class ColorsBase {
   final Color tabLabel = AppColors.transparent;
   final Color tabSelectedLabel = AppColors.transparent;
 
+  /// App Bar
+  final Color appBarBg = AppColors.transparent;
+  final Color appBarAvatarBg = AppColors.transparent;
+
   /// Bottom Navigation
   final Color bottomNavBg = AppColors.transparent;
   final Color bottomNavIndicator = AppColors.transparent;

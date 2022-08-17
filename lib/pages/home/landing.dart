@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
@@ -8,7 +9,7 @@ import "package:app/pages/home/favourites.dart";
 import "package:app/pages/home/home.dart";
 import "package:app/pages/home/exams.dart";
 import "package:flutter/cupertino.dart";
-import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
+import "package:flutter/material.dart";
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -73,44 +74,52 @@ class _LandingPageState extends State<LandingPage> {
           }
           return false;
         },
-        child: PlatformScaffold(
+        child: Scaffold(
           backgroundColor: Res.color.pageBg,
-          body: SafeArea(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: PageView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    controller: _pageController,
-                    children: _pageModels.map((PageModel model) {
-                      return model.page;
-                    }).toList(),
-                    onPageChanged: (int newSelectedIndex) {
-                      if (!_pageViewScrolling) {
-                        updatePage(newSelectedIndex, false);
-                      }
+          body: Stack(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Expanded(
+                    child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      children: _pageModels.map((PageModel model) {
+                        return model.page;
+                      }).toList(),
+                      onPageChanged: (int newSelectedIndex) {
+                        if (!_pageViewScrolling) {
+                          updatePage(newSelectedIndex, false);
+                        }
 
+                        _pageViewScrolling = true;
+                      },
+                    ),
+                  ),
+                  AppBottomNavigationBar(
+                    items: _pageModels.map((PageModel model) {
+                      return AppBottomNavigationBarModel(
+                        icon: model.icon,
+                        text: model.title,
+                      );
+                    }).toList(),
+                    selectedIndex: _currentPageIndex,
+                    itemSize: AppBottomNavigationItemSize.flex,
+                    flex: 2,
+                    onItemChange: (int newSelectedIndex) {
                       _pageViewScrolling = true;
+                      updatePage(newSelectedIndex, true);
                     },
                   ),
-                ),
-                AppBottomNavigationBar(
-                  items: _pageModels.map((PageModel model) {
-                    return AppBottomNavigationBarModel(
-                      icon: model.icon,
-                      text: model.title,
-                    );
-                  }).toList(),
-                  selectedIndex: _currentPageIndex,
-                  itemSize: AppBottomNavigationItemSize.flex,
-                  flex: 2,
-                  onItemChange: (int newSelectedIndex) {
-                    _pageViewScrolling = true;
-                    updatePage(newSelectedIndex, true);
-                  },
-                ),
-              ],
-            ),
+                ],
+              ),
+              const Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: MyPlatformAppBar(),
+              ),
+            ],
           ),
         ),
       ),

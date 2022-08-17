@@ -19,8 +19,17 @@ class Dimensions {
   final double largeSpacingValue = 24;
   final double hugeSpacingValue = 48;
   final double carousalItemSpacing = 16;
+  final double appBarAvatarRadiusToHolePaddingRatio = 1 / 5;
+  final double appBarAvatarCenterX = 60;
+  double pageTopPaddingWithAppBar(BuildContext context) {
+    return MediaQuery.of(context).padding.top +
+        56 +
+        30 +
+        16; // toolbarHeight + appBarAvatarRadius + normalSpacingValue
+  }
 
   /// Widths and heights
+  final double toolbarHeight = 56;
   final double bottomNavBarContentMinWidth = 56;
   final double bottomNavBarHeight = 56;
   final double carousalIndicatorItemSize = 12;
@@ -36,6 +45,8 @@ class Dimensions {
   final double fontSizeMedium = 16;
   final double fontSizeLarge = 18;
   final double pageLoadingSize = 200;
+  final double appBarAvatarRadius = 30;
+  final double appBarAvatarToHoleFilletRadiusRatio = 1 / 5;
 
   /// Ratio
   final double bannerAspectRatioWidth = 16;
@@ -110,7 +121,7 @@ class Durations {
 
   final Duration defaultDuration = const Duration(milliseconds: 200);
   // final Duration animatedSwitcherDuration = const Duration(milliseconds: 500);
-  final Duration fakeLoadingDuration = const Duration(milliseconds: 100);
+  final Duration fakeLoadingDuration = const Duration(milliseconds: 200);
 }
 
 class MyCurves {

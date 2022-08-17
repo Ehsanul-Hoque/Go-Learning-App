@@ -22,68 +22,66 @@ class Home extends StatelessWidget {
     _courseGridHorizontalGap = Res.dimen.normalSpacingValue;
     _courseGridVerticalGap = Res.dimen.normalSpacingValue;
 
-    return SafeArea(
-      child: FakeLoading(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            int courseGridCrossAxisCount = 1;
+    return FakeLoading(
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          int courseGridCrossAxisCount = 1;
 
-            for (int i = 2; i < 10; ++i) {
-              double w = calculateCourseGridItemWidth(i, constraints.maxWidth);
-              if (w < 170) break;
-              courseGridCrossAxisCount = i;
-            }
+          for (int i = 2; i < 10; ++i) {
+            double w = calculateCourseGridItemWidth(i, constraints.maxWidth);
+            if (w < 170) break;
+            courseGridCrossAxisCount = i;
+          }
 
-            return CustomScrollView(
-              slivers: <Widget>[
-                SliverSizedBox(
-                  height: Res.dimen.largeSpacingValue,
+          return CustomScrollView(
+            slivers: <Widget>[
+              SliverSizedBox(
+                height: Res.dimen.pageTopPaddingWithAppBar(context),
+              ),
+              SliverToBoxAdapter(
+                child: WidgetCarousal(
+                  images: SampleData.images, // TODO Show banners from API
                 ),
-                SliverToBoxAdapter(
-                  child: WidgetCarousal(
-                    images: SampleData.images, // TODO Show banners from API
+              ),
+              SliverSizedBox(
+                height: Res.dimen.largeSpacingValue,
+              ),
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Res.dimen.normalSpacingValue,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    " ${Res.str.courses}",
+                    style: Res.textStyles.label,
                   ),
                 ),
-                SliverSizedBox(
-                  height: Res.dimen.largeSpacingValue,
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Res.dimen.normalSpacingValue,
-                  ),
-                  sliver: SliverToBoxAdapter(
-                    child: Text(
-                      " ${Res.str.courses}",
-                      style: Res.textStyles.label,
+              ),
+              SliverPadding(
+                padding: EdgeInsets.all(_courseGridPadding),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: courseGridCrossAxisCount,
+                    mainAxisSpacing: _courseGridVerticalGap,
+                    crossAxisSpacing: _courseGridHorizontalGap,
+                    mainAxisExtent: calculateCourseGridItemHeight(
+                      courseGridCrossAxisCount,
+                      constraints.maxWidth,
                     ),
                   ),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.all(_courseGridPadding),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: courseGridCrossAxisCount,
-                      mainAxisSpacing: _courseGridVerticalGap,
-                      crossAxisSpacing: _courseGridHorizontalGap,
-                      mainAxisExtent: calculateCourseGridItemHeight(
-                        courseGridCrossAxisCount,
-                        constraints.maxWidth,
-                      ),
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        // TODO Show courses from API
-                        return CourseItem(
-                          course: _sampleCourses.elementAt(index),
-                        );
-                      },
-                    ),
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      // TODO Show courses from API
+                      return CourseItem(
+                        course: _sampleCourses.elementAt(index),
+                      );
+                    },
                   ),
                 ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
