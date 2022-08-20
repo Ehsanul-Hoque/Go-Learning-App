@@ -1,27 +1,22 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/utils/painters/app_bar_with_avatar_painter.dart";
 import "package:app/utils/typedefs.dart" show OnAnimationListener;
 import "package:flutter/material.dart";
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final double? avatarCenterX;
-  final double? avatarRadius;
-  final Duration? animationDuration;
-  final Curve? animationCurve;
+  final MyAppBarConfig config;
 
   const MyAppBar({
     Key? key,
-    this.avatarCenterX,
-    this.avatarRadius,
-    this.animationDuration,
-    this.animationCurve,
+    required this.config,
   }) : super(key: key);
 
   @override
   State<MyAppBar> createState() => _MyAppBarState();
 
   @override
-  Size get preferredSize => Size.fromHeight(Res.dimen.toolbarHeight);
+  Size get preferredSize => Size.fromHeight(config.toolbarHeight);
 }
 
 class _MyAppBarState extends State<MyAppBar>
@@ -45,9 +40,8 @@ class _MyAppBarState extends State<MyAppBar>
       });
     };
 
-    _animationDuration =
-        widget.animationDuration ?? Res.durations.defaultDuration;
-    _animationCurve = widget.animationCurve ?? Res.curves.defaultCurve;
+    _animationDuration = widget.config.animationDuration;
+    _animationCurve = widget.config.animationCurve;
 
     _animationController = AnimationController(
       vsync: this,
@@ -76,12 +70,10 @@ class _MyAppBarState extends State<MyAppBar>
 
   void updateTweenData() {
     _avatarXAnimTween.begin = avatarCenterX;
-    _avatarXAnimTween.end =
-        widget.avatarCenterX ?? Res.dimen.appBarAvatarCenterX;
+    _avatarXAnimTween.end = widget.config.avatarCenterX;
 
     _avatarSizeAnimTween.begin = avatarRadius;
-    _avatarSizeAnimTween.end =
-        widget.avatarRadius ?? Res.dimen.appBarAvatarRadius;
+    _avatarSizeAnimTween.end = widget.config.avatarRadius;
   }
 
   @override
@@ -114,6 +106,7 @@ class _MyAppBarState extends State<MyAppBar>
         builder: (BuildContext context, Widget? child) {
           return CustomPaint(
             painter: AppBarWithAvatarPainter(
+              color: widget.config.backgroundColor,
               avatarCenterX: avatarCenterX,
               avatarRadius: avatarRadius,
             ),
@@ -128,7 +121,7 @@ class _MyAppBarState extends State<MyAppBar>
                     height: avatarRadius * 2,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Res.color.appBarAvatarBg,
+                      color: widget.config.avatarBackgroundColor,
                     ),
                   ),
                 ),

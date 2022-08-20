@@ -83,12 +83,21 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    width = widget.width ?? MediaQuery.of(context).size.width;
+    width = widget.width ??
+        MediaQuery.of(context).size.width - (Res.dimen.navBarMargin * 2);
 
     return Container(
       width: width,
       height: height,
-      color: backgroundColor,
+      margin: EdgeInsets.all(Res.dimen.navBarMargin),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius:
+            BorderRadius.circular(Res.dimen.fullRoundedBorderRadiusValue),
+        boxShadow: <BoxShadow>[
+          Res.shadows.normal,
+        ],
+      ),
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[

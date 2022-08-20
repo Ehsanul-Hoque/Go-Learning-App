@@ -38,7 +38,7 @@ class ColorsLightMode implements ColorsBase {
   final Color tabSelectedLabel = AppColors.themeBlue;
 
   /// App Bar
-  final Color appBarBg = AppColors.themeYellowAlpha90;
+  final Color appBarBg = AppColors.white;
   final Color appBarAvatarBg = AppColors.themeBlueAlpha90;
 
   /// Bottom Navigation

@@ -78,46 +78,45 @@ class _LandingPageState extends State<LandingPage> {
           backgroundColor: Res.color.pageBg,
           body: Stack(
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Expanded(
-                    child: PageView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: _pageController,
-                      children: _pageModels.map((PageModel model) {
-                        return model.page;
-                      }).toList(),
-                      onPageChanged: (int newSelectedIndex) {
-                        if (!_pageViewScrolling) {
-                          updatePage(newSelectedIndex, false);
-                        }
+              PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: _pageController,
+                children: _pageModels.map((PageModel model) {
+                  return model.page;
+                }).toList(),
+                onPageChanged: (int newSelectedIndex) {
+                  if (!_pageViewScrolling) {
+                    updatePage(newSelectedIndex, false);
+                  }
 
-                        _pageViewScrolling = true;
-                      },
-                    ),
-                  ),
-                  AppBottomNavigationBar(
-                    items: _pageModels.map((PageModel model) {
-                      return AppBottomNavigationBarModel(
-                        icon: model.icon,
-                        text: model.title,
-                      );
-                    }).toList(),
-                    selectedIndex: _currentPageIndex,
-                    itemSize: AppBottomNavigationItemSize.flex,
-                    flex: 2,
-                    onItemChange: (int newSelectedIndex) {
-                      _pageViewScrolling = true;
-                      updatePage(newSelectedIndex, true);
-                    },
-                  ),
-                ],
+                  _pageViewScrolling = true;
+                },
               ),
               const Positioned(
                 top: 0,
                 left: 0,
                 right: 0,
                 child: MyPlatformAppBar(),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: AppBottomNavigationBar(
+                  items: _pageModels.map((PageModel model) {
+                    return AppBottomNavigationBarModel(
+                      icon: model.icon,
+                      text: model.title,
+                    );
+                  }).toList(),
+                  selectedIndex: _currentPageIndex,
+                  itemSize: AppBottomNavigationItemSize.flex,
+                  flex: 2,
+                  onItemChange: (int newSelectedIndex) {
+                    _pageViewScrolling = true;
+                    updatePage(newSelectedIndex, true);
+                  },
+                ),
               ),
             ],
           ),

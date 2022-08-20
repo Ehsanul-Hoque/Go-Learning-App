@@ -9,7 +9,7 @@ import "package:flutter/widgets.dart";
 
 class Home extends StatelessWidget {
   static final Iterable<Map<String, String>> _sampleCourses =
-      SampleData.courses.getRandoms(1000);
+      SampleData.courses.getRandoms(10);
   static double _courseGridPadding = 0;
   static double _courseGridHorizontalGap = 0;
   static double _courseGridVerticalGap = 0;
@@ -76,8 +76,12 @@ class Home extends StatelessWidget {
                         course: _sampleCourses.elementAt(index),
                       );
                     },
+                    childCount: _sampleCourses.length,
                   ),
                 ),
+              ),
+              SliverSizedBox(
+                height: Res.dimen.pageBottomPaddingWithNavBar,
               ),
             ],
           );

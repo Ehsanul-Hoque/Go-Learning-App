@@ -21,6 +21,8 @@ class Dimensions {
   final double carousalItemSpacing = 16;
   final double appBarAvatarRadiusToHolePaddingRatio = 1 / 5;
   final double appBarAvatarCenterX = 60;
+  final double navBarMargin = 8;
+  final double pageBottomPaddingWithNavBar = 96;
   double pageTopPaddingWithAppBar(BuildContext context) {
     return MediaQuery.of(context).padding.top +
         56 +
@@ -56,27 +58,16 @@ class Dimensions {
 
   /// Miscellaneous
   final double homeBannerViewportFraction = 0.8;
-
-  /// Paddings, Margins and Borders
-  /*final EdgeInsets defaultLargeInsetAll =
-  EdgeInsets.all(defaultLargeSpacingValue);
-  final EdgeInsets defaultNormalInsetAll =
-  EdgeInsets.all(defaultNormalSpacingValue);
-  final EdgeInsets defaultSmallInsetAll =
-  EdgeInsets.all(defaultSmallSpacingValue);
-  final BorderRadius defaultBorderRadius =
-  BorderRadius.all(Radius.circular(defaultBorderRadiusValue));
-  final BorderRadius fullRoundedBorderRadius =
-  BorderRadius.all(Radius.circular(fullRoundedBorderRadiusValue));*/
 }
 
 class TextStyles {
   const TextStyles();
 
-  TextStyle get general => TextStyle(
+  TextStyle get general => GoogleFonts.hindSiliguri(
         fontSize: Res.dimen.fontSizeNormal,
         // fontFamily: "Poppins",
         color: Res.color.textPrimary,
+        height: 1.2,
       );
 
   TextStyle get secondary => general.copyWith(

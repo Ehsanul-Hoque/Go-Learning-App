@@ -1,5 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar.dart";
+import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
@@ -16,11 +17,11 @@ const Border _kDefaultNavBarBorder = Border(
 );*/
 
 class MyPlatformAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Color? backgroundColor;
+  final MyAppBarConfig? config;
 
   const MyPlatformAppBar({
     Key? key,
-    this.backgroundColor,
+    this.config,
   }) : super(key: key);
 
   @override
@@ -40,10 +41,10 @@ class MyPlatformAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(Res.dimen.toolbarHeight);
 
   PreferredSizeWidget createMaterialWidget(BuildContext context) {
-    return const MyAppBar();
+    return MyAppBar(config: config ?? MyAppBarConfig());
   }
 
   PreferredSizeWidget createCupertinoWidget(BuildContext context) {
-    return const MyAppBar();
+    return MyAppBar(config: config ?? MyAppBarConfig());
   }
 }
