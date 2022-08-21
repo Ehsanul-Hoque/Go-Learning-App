@@ -13,6 +13,10 @@ abstract class StringsBase {
   final String termsOfUse = "";
   final String and = "";
 
+  final String editProfile = "";
+  final String paymentHistory = "";
+  final String logOut = "";
+
   final String admission = "";
   final String explore = "";
   final String favourites = "";

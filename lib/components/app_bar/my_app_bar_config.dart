@@ -6,6 +6,7 @@ class MyAppBarConfig {
   final Color backgroundColor, avatarBackgroundColor;
   final double avatarCenterX;
   final double avatarRadius;
+  final List<Widget> endActions;
   final Duration animationDuration;
   final Curve animationCurve;
 
@@ -15,6 +16,7 @@ class MyAppBarConfig {
     Color? avatarBackgroundColor,
     double? avatarCenterX,
     double? avatarRadius,
+    List<Widget>? endActions,
     Duration? animationDuration,
     Curve? animationCurve,
   })  : toolbarHeight = toolbarHeight ?? Res.dimen.toolbarHeight,
@@ -23,6 +25,7 @@ class MyAppBarConfig {
             avatarBackgroundColor ?? Res.color.appBarAvatarBg,
         avatarCenterX = avatarCenterX ?? Res.dimen.appBarAvatarCenterX,
         avatarRadius = avatarRadius ?? Res.dimen.appBarAvatarRadius,
+        endActions = endActions ?? <Widget>[],
         animationDuration = animationDuration ?? Res.durations.defaultDuration,
         animationCurve = animationCurve ?? Res.curves.defaultCurve;
 }

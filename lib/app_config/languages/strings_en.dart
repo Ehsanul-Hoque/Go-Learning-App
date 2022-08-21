@@ -17,6 +17,10 @@ class StringsEn implements StringsBase {
   final String termsOfUse = "Terms of Use";
   final String and = "and";
 
+  final String editProfile = "Edit Profile";
+  final String paymentHistory = "Payment History";
+  final String logOut = "Log Out";
+
   final String admission = "Admission";
   final String explore = "Explore";
   final String favourites = "Favourites";

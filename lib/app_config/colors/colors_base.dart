@@ -36,6 +36,7 @@ abstract class ColorsBase {
 
   /// App Bar
   final Color appBarBg = AppColors.transparent;
+  final Color appBarAvatarIcon = AppColors.transparent;
   final Color appBarAvatarBg = AppColors.transparent;
 
   /// Bottom Navigation
@@ -44,6 +45,13 @@ abstract class ColorsBase {
   final Color bottomNavItemBg = AppColors.transparent;
   final Color bottomNavItemActive = AppColors.transparent;
   final Color bottomNavItemInactive = AppColors.transparent;
+
+  /// Drawer
+  final Color drawerBg = AppColors.transparent;
+  final Color drawerAvatarIcon = AppColors.transparent;
+  final Color drawerAvatarBg = AppColors.transparent;
+  final Color drawerItem = AppColors.transparent;
+  final Color drawerLogOutItem = AppColors.transparent;
 
   /// Carousal Indicator
   final Color carousalIndicator = AppColors.transparent;

@@ -39,7 +39,8 @@ class ColorsLightMode implements ColorsBase {
 
   /// App Bar
   final Color appBarBg = AppColors.white;
-  final Color appBarAvatarBg = AppColors.themeBlueAlpha90;
+  final Color appBarAvatarIcon = AppColors.white;
+  final Color appBarAvatarBg = AppColors.themeYellow;
 
   /// Bottom Navigation
   final Color bottomNavBg = AppColors.white;
@@ -47,6 +48,13 @@ class ColorsLightMode implements ColorsBase {
   final Color bottomNavItemBg = AppColors.transparent;
   final Color bottomNavItemActive = AppColors.white;
   final Color bottomNavItemInactive = AppColors.themeBlue;
+
+  /// Drawer
+  final Color drawerBg = AppColors.grey300;
+  final Color drawerAvatarIcon = AppColors.white;
+  final Color drawerAvatarBg = AppColors.themeYellow;
+  final Color drawerItem = AppColors.themeBlue;
+  final Color drawerLogOutItem = AppColors.redAccent;
 
   /// Carousal Indicator
   final Color carousalIndicator = AppColors.grey300;

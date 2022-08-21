@@ -12,7 +12,7 @@ class AppColors {
   static const Color themeBlueAlpha90 = Color(0xe628295B);
   static const Color themeYellowAlpha80 = Color(0xccF8AF3E);
   static const Color veryLightGrey = Color(0xffF5F5F5);
-  static const Color shadowGrey = Color(0x4d9E9E9E);
+  static const Color shadowGrey = Color(0x4d757575);
   static const Color shadowLightGrey = Color(0x4dE0E0E0);
 
   static const Color blackAlpha60 = Color(0x99000000);

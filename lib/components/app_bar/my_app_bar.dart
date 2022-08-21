@@ -1,8 +1,9 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
+import "package:app/components/my_circle_avatar.dart";
 import "package:app/utils/painters/app_bar_with_avatar_painter.dart";
 import "package:app/utils/typedefs.dart" show OnAnimationListener;
-import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final MyAppBarConfig config;
@@ -116,15 +117,29 @@ class _MyAppBarState extends State<MyAppBar>
                 Positioned(
                   bottom: -avatarRadius,
                   left: avatarCenterX - avatarRadius,
-                  child: Container(
-                    width: avatarRadius * 2,
-                    height: avatarRadius * 2,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: widget.config.avatarBackgroundColor,
-                    ),
+                  child: MyCircleAvatar(
+                    imageUrl:
+                        "https://preview.redd.it/gwqupsh46yn51.png?width=301&format=png&auto=webp&s=60efa3b8c4375c7589c929945a840c60c713c949", // TODO Get profile picture from API
+                    radius: avatarRadius,
+                    padding: 1,
                   ),
                 ),
+                if (widget.config.endActions.isNotEmpty)
+                  Positioned(
+                    right: Res.dimen.normalSpacingValue,
+                    bottom: 0,
+                    child: SizedBox(
+                      height: widget.config.toolbarHeight,
+                      child: Wrap(
+                        // alignment: WrapAlignment.center,
+                        // crossAxisAlignment: WrapCrossAlignment.center,
+                        runAlignment: WrapAlignment.center,
+                        spacing: Res.dimen.normalSpacingValue,
+                        runSpacing: Res.dimen.xsSpacingValue,
+                        children: widget.config.endActions,
+                      ),
+                    ),
+                  ),
               ],
             ),
           );

@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/utils/typedefs.dart" show OnTapListener;
 import "package:flutter/widgets.dart";
 
 class AppButton extends StatelessWidget {
@@ -6,12 +7,14 @@ class AppButton extends StatelessWidget {
   final String text;
   final Color? contentColor, backgroundColor;
   final bool tintIconWithContentColor;
+  final bool alignCenter;
   final double? borderRadius;
   final Border? border;
   final double? minHeight;
   final EdgeInsets? padding;
+  final double? fontSize;
   final double? spaceBetweenIconAndText;
-  final Function() onTap;
+  final OnTapListener onTap;
 
   const AppButton({
     Key? key,
@@ -21,10 +24,12 @@ class AppButton extends StatelessWidget {
     this.contentColor,
     this.backgroundColor,
     this.tintIconWithContentColor = true,
+    this.alignCenter = true,
     this.borderRadius,
     this.minHeight,
     this.border,
     this.padding,
+    this.fontSize,
     this.spaceBetweenIconAndText,
   }) : super(key: key);
 
@@ -55,7 +60,8 @@ class AppButton extends StatelessWidget {
           color: backgroundColor,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment:
+              alignCenter ? MainAxisAlignment.center : MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             if (icon != null) ...<Widget>[
@@ -76,6 +82,7 @@ class AppButton extends StatelessWidget {
               text,
               style: Res.textStyles.button.copyWith(
                 color: contentColor,
+                fontSize: fontSize ?? Res.dimen.fontSizeNormal,
               ),
               textAlign: (icon != null) ? TextAlign.start : TextAlign.center,
             ),

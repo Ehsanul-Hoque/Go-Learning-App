@@ -9,4 +9,4 @@
 - Make AnimParams two separate classes - Durations and Curves
 - fake_loading.dart: load the child after the loading starts, but before the loading finishes.
   Else when the child is loaded after loading widget, a rough transition appears if the child takes too long to be created.
-- 
+- When opening drawer, if the main screen contains many widgets, the animation lags. This should be fixed.

@@ -6,6 +6,7 @@ class Dimensions {
 
   /// Border
   final double defaultBorderRadiusValue = 8;
+  final double mediumBorderRadiusValue = 16;
   final double fullRoundedBorderRadiusValue = 9999;
   final double defaultBorderThickness = 1;
 
@@ -22,6 +23,7 @@ class Dimensions {
   final double appBarAvatarRadiusToHolePaddingRatio = 1 / 5;
   final double appBarAvatarCenterX = 60;
   final double navBarMargin = 8;
+  final double drawerTopMargin = 88;
   final double pageBottomPaddingWithNavBar = 96;
   double pageTopPaddingWithAppBar(BuildContext context) {
     return MediaQuery.of(context).padding.top +
@@ -46,9 +48,11 @@ class Dimensions {
   final double fontSizeNormal = 14;
   final double fontSizeMedium = 16;
   final double fontSizeLarge = 18;
+  final double fontSizeXXXl = 24;
   final double pageLoadingSize = 200;
   final double appBarAvatarRadius = 30;
   final double appBarAvatarToHoleFilletRadiusRatio = 1 / 5;
+  final double drawerAvatarRadius = 48;
 
   /// Ratio
   final double bannerAspectRatioWidth = 16;
@@ -76,6 +80,11 @@ class TextStyles {
 
   TextStyle get ternary => general.copyWith(
         color: Res.color.textTernary,
+      );
+
+  TextStyle get header => general.copyWith(
+        fontSize: Res.dimen.fontSizeXXXl,
+        fontWeight: FontWeight.w500,
       );
 
   TextStyle get label => general.copyWith(

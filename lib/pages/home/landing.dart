@@ -1,15 +1,24 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
+import "package:app/components/app_drawer/app_drawer.dart";
+import "package:app/components/app_drawer/app_drawer_item_model.dart";
+import "package:app/components/app_drawer/my_app_drawer_config.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
 import "package:app/models/page_model.dart";
+import "package:app/pages/home/exams.dart";
 import "package:app/pages/home/explore.dart";
 import "package:app/pages/home/favourites.dart";
 import "package:app/pages/home/home.dart";
-import "package:app/pages/home/exams.dart";
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart" show CupertinoIcons;
+import "package:flutter/material.dart" show IconButton, Icons, Scaffold;
+import "package:flutter/widgets.dart";
+import "package:flutter_zoom_drawer/config.dart";
+import "package:flutter_zoom_drawer/flutter_zoom_drawer.dart";
+
+part "package:app/pages/home/landing_main_section.dart";
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -19,137 +28,77 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  late final List<PageModel> _pageModels;
-  late final PageController _pageController;
-  int _currentPageIndex = 0;
-  bool _pageViewScrolling = false;
+  late final List<AppDrawerItemModel> _appDrawerItems;
+  late final ZoomDrawerController _drawerController;
 
   @override
   void initState() {
-    _pageModels = <PageModel>[
-      PageModel(
-        title: Res.str.admission,
-        icon: const Icon(CupertinoIcons.home),
-        page: const Home(),
+    _appDrawerItems = <AppDrawerItemModel>[
+      AppDrawerItemModel(
+        iconData: Icons.edit_note_outlined,
+        text: Res.str.editProfile,
+        onTap: onEditProfileTap,
       ),
-      PageModel(
-        title: Res.str.explore,
-        icon: const Icon(CupertinoIcons.search_circle),
-        page: const Courses(),
+      AppDrawerItemModel(
+        iconData: Icons.payments_outlined,
+        text: Res.str.paymentHistory,
+        onTap: onPaymentHistoryTap,
       ),
-      PageModel(
-        title: Res.str.favourites,
-        icon: const Icon(CupertinoIcons.square_favorites_alt),
-        page: const Favourites(),
+      AppDrawerItemModel(
+        iconData: Icons.notes_outlined,
+        text: Res.str.termsOfUse,
+        onTap: onTermsOfUseTap,
       ),
-      PageModel(
-        title: Res.str.exams,
-        icon: const Icon(CupertinoIcons.pencil_outline),
-        page: const Exams(),
+      AppDrawerItemModel(
+        iconData: Icons.privacy_tip_outlined,
+        text: Res.str.privacyPolicy,
+        onTap: onPrivacyPolicyTap,
       ),
     ];
 
-    _pageController = PageController(initialPage: 0);
-
+    _drawerController = ZoomDrawerController();
     super.initState();
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return goBack();
-      },
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification notification) {
-          if (notification.depth == 0 &&
-              notification is ScrollEndNotification) {
-            _pageViewScrolling = false;
-          }
-          return false;
-        },
-        child: Scaffold(
-          backgroundColor: Res.color.pageBg,
-          body: Stack(
-            children: <Widget>[
-              PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                children: _pageModels.map((PageModel model) {
-                  return model.page;
-                }).toList(),
-                onPageChanged: (int newSelectedIndex) {
-                  if (!_pageViewScrolling) {
-                    updatePage(newSelectedIndex, false);
-                  }
-
-                  _pageViewScrolling = true;
-                },
-              ),
-              const Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: MyPlatformAppBar(),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: AppBottomNavigationBar(
-                  items: _pageModels.map((PageModel model) {
-                    return AppBottomNavigationBarModel(
-                      icon: model.icon,
-                      text: model.title,
-                    );
-                  }).toList(),
-                  selectedIndex: _currentPageIndex,
-                  itemSize: AppBottomNavigationItemSize.flex,
-                  flex: 2,
-                  onItemChange: (int newSelectedIndex) {
-                    _pageViewScrolling = true;
-                    updatePage(newSelectedIndex, true);
-                  },
-                ),
-              ),
-            ],
-          ),
+    return ZoomDrawer(
+      menuScreen: AppDrawer(
+        config: MyAppDrawerConfig(
+          drawerItems: _appDrawerItems,
         ),
       ),
+      mainScreen: LandingMainSection(
+        drawerController: _drawerController,
+      ),
+      controller: _drawerController,
+      borderRadius: Res.dimen.mediumBorderRadiusValue,
+      menuBackgroundColor: Res.color.drawerBg,
+      showShadow: true,
+      slideWidth: MediaQuery.of(context).size.width * 0.85,
+      openCurve: Res.curves.defaultCurve,
+      closeCurve: Res.curves.defaultCurve,
+      duration: Res.durations.defaultDuration,
+      reverseDuration: Res.durations.defaultDuration,
+      // androidCloseOnBackTap: true,
+      isRtl: true,
+      mainScreenTapClose: true,
     );
   }
 
-  void updatePage(int newPageIndex, bool updatePageView) {
-    if (_currentPageIndex != newPageIndex) {
-      setState(() {
-        _currentPageIndex = newPageIndex;
-
-        if (updatePageView) {
-          _pageController.animateToPage(
-            _currentPageIndex,
-            duration: Res.durations.defaultDuration,
-            curve: Res.curves.defaultCurve,
-          );
-        }
-      });
-    }
+  void onEditProfileTap() {
+    // TODO Go to edit profile
   }
 
-  bool goBack() {
-    if (_currentPageIndex > 0) {
-      setState(() {
-        _pageViewScrolling = true;
-        updatePage(0, true);
-      });
-      return false;
-    } else {
-      return true;
-    }
+  void onPaymentHistoryTap() {
+    // TODO Show payment history
+  }
+
+  void onTermsOfUseTap() {
+    // TODO Show terms of use
+  }
+
+  void onPrivacyPolicyTap() {
+    // TODO Show privacy policy
   }
 }
