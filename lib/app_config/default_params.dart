@@ -18,6 +18,7 @@ class Dimensions {
   final double normalSpacingValue = 16;
   final double mlSpacingValue = 20;
   final double largeSpacingValue = 24;
+  final double xxlSpacingValue = 32;
   final double hugeSpacingValue = 48;
   final double carousalItemSpacing = 16;
   final double appBarAvatarRadiusToHolePaddingRatio = 1 / 5;
@@ -25,7 +26,7 @@ class Dimensions {
   final double navBarMargin = 8;
   final double drawerTopMargin = 88;
   final double pageBottomPaddingWithNavBar = 96;
-  double pageTopPaddingWithAppBar(BuildContext context) {
+  double getPageTopPaddingWithAppBar(BuildContext context) {
     return MediaQuery.of(context).padding.top +
         56 +
         30 +
@@ -53,11 +54,16 @@ class Dimensions {
   final double appBarAvatarRadius = 30;
   final double appBarAvatarToHoleFilletRadiusRatio = 1 / 5;
   final double drawerAvatarRadius = 48;
+  final double courseItemWidth = 225;
+  final double courseItemDescriptionHeight = 76;
+  double getCourseItemHeight(double width) =>
+      // (width * bannerAspectRatio^-1) + courseItemDescriptionHeight
+      (width * (1 / bannerAspectRatio)) + 76;
 
   /// Ratio
-  final double bannerAspectRatioWidth = 16;
-  final double bannerAspectRatioHeight = 9;
-  // final double bannerAspectRatio = 16 / 9;
+  // final double bannerAspectRatioWidth = 16;
+  // final double bannerAspectRatioHeight = 9;
+  final double bannerAspectRatio = 16 / 9;
   final double bannerAspectRatioAfterPadding = 16 / 7.5;
 
   /// Miscellaneous

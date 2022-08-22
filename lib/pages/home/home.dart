@@ -7,20 +7,35 @@ import "package:app/components/sliver_sized_box.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/widgets.dart";
 
-class Home extends StatelessWidget {
-  static final Iterable<Map<String, String>> _sampleCourses =
-      SampleData.courses.getRandoms(10);
-  static double _courseGridPadding = 0;
-  static double _courseGridHorizontalGap = 0;
-  static double _courseGridVerticalGap = 0;
-
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
+  late final Iterable<Map<String, String>> _sampleCourses;
+  late final double _courseGridPadding;
+  late final double _courseGridHorizontalGap;
+  late final double _courseGridVerticalGap;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    _sampleCourses = SampleData.courses.getRandoms(100);
     _courseGridPadding = Res.dimen.normalSpacingValue;
     _courseGridHorizontalGap = Res.dimen.normalSpacingValue;
     _courseGridVerticalGap = Res.dimen.normalSpacingValue;
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
 
     return FakeLoading(
       child: LayoutBuilder(
@@ -36,7 +51,7 @@ class Home extends StatelessWidget {
           return CustomScrollView(
             slivers: <Widget>[
               SliverSizedBox(
-                height: Res.dimen.pageTopPaddingWithAppBar(context),
+                height: Res.dimen.getPageTopPaddingWithAppBar(context),
               ),
               SliverToBoxAdapter(
                 child: WidgetCarousal(
@@ -103,10 +118,6 @@ class Home extends StatelessWidget {
       parentWidth,
     );
 
-    return (contentWidth /
-            Res.dimen.bannerAspectRatioWidth *
-            Res.dimen.bannerAspectRatioHeight) +
-        76;
-    // 76 is the height of the description area that are below the banner
+    return Res.dimen.getCourseItemHeight(contentWidth);
   }
 }

@@ -8,16 +8,23 @@ import "package:flutter_svg/flutter_svg.dart";
 
 class CourseItem extends StatelessWidget {
   final Map<String, String> course;
+  final double? width, height;
+  final EdgeInsets margin;
 
   const CourseItem({
     Key? key,
     required this.course,
+    this.width,
+    this.height,
+    this.margin = EdgeInsets.zero,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppContainer(
-      margin: EdgeInsets.zero,
+      width: width,
+      height: height,
+      margin: margin,
       padding: EdgeInsets.zero,
       shadow: <BoxShadow>[
         Res.shadows.lighter,
