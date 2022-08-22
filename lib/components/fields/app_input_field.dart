@@ -2,8 +2,9 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/fields/app_input_base_widget.dart";
 import "package:app/utils/typedefs.dart" show OnValueChangeListener;
 import "package:app/utils/utils.dart";
-import "package:flutter/material.dart";
+import "package:flutter/material.dart" show TextFormField;
 import "package:flutter/services.dart";
+import "package:flutter/widgets.dart";
 
 class AppInputField extends StatelessWidget implements AppInputBaseWidget {
   final OnValueChangeListener<String>? onChange;

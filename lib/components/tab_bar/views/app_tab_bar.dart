@@ -2,7 +2,8 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/tab_bar/decoration/default_tab_indicator.dart";
 import "package:app/components/tab_bar/views/decorated_tab_bar.dart";
 import "package:app/utils/typedefs.dart" show OnTabChangeListener;
-import "package:flutter/material.dart";
+import "package:flutter/material.dart" show Tab, TabBar;
+import "package:flutter/widgets.dart";
 
 class AppTabBar extends StatelessWidget {
   final List<Tab> tabs;

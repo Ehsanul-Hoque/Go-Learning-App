@@ -2,7 +2,7 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:flutter/foundation.dart";
-import "package:flutter/material.dart";
+import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
 //the default has alpha which will cause the content to slide under the header for ios

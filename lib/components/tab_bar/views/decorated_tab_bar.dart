@@ -1,5 +1,6 @@
 import "package:app/app_config/resources.dart";
-import "package:flutter/material.dart";
+import "package:flutter/material.dart" show TabBar;
+import "package:flutter/widgets.dart";
 
 class DecoratedTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabBar tabBar;
