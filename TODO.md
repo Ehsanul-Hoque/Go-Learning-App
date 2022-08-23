@@ -10,3 +10,5 @@
 - fake_loading.dart: load the child after the loading starts, but before the loading finishes.
   Else when the child is loaded after loading widget, a rough transition appears if the child takes too long to be created.
 - When opening drawer, if the main screen contains many widgets, the animation lags. This should be fixed.
+- In nav item, if the text is too large, an widget overflow error is shown.
+  But if I wrap it inside a container and set maxWidth constraint, then the text gets ellipsized when being animated. FIX THIS.

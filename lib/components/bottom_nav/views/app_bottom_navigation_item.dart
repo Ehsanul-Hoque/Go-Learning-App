@@ -1,15 +1,18 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
+import "package:app/components/bottom_nav/views/app_bottom_navigation_item_text.dart";
 import "package:app/utils/typedefs.dart" show OnTapListener;
 import "package:flutter/widgets.dart";
 
 class AppBottomNavigationItem extends StatefulWidget {
   final double? width, height;
+  final EdgeInsets padding;
   final double? spaceBetweenIconAndText;
   final OnTapListener onTap;
   final Widget icon;
   final String text;
   final double? iconSize, textSize;
+  final bool showOnlyIconForInactiveItem;
   final Axis axis;
   final bool isSelected;
   final Color? backgroundColor, activeColor, inactiveColor;
@@ -26,8 +29,10 @@ class AppBottomNavigationItem extends StatefulWidget {
     this.inactiveColor,
     this.width,
     this.height,
+    this.padding = EdgeInsets.zero,
     this.iconSize,
     this.textSize,
+    this.showOnlyIconForInactiveItem = true,
     this.axis = Axis.horizontal,
     this.spaceBetweenIconAndText,
     this.isSelected = false,
@@ -51,6 +56,7 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
 
   late double iconSize, textSize;
   late double spaceBetweenIconAndText;
+  late EdgeInsets padding;
   late Color backgroundColor, activeColor, inactiveColor;
 
   late AnimationController _animationController;
@@ -67,6 +73,12 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
     textSize = widget.textSize ?? Res.dimen.fontSizeNormal;
     spaceBetweenIconAndText =
         widget.spaceBetweenIconAndText ?? Res.dimen.xsSpacingValue;
+    padding = EdgeInsets.only(
+      left: widget.padding.left + Res.dimen.xsSpacingValue,
+      top: widget.padding.top + Res.dimen.xsSpacingValue,
+      right: widget.padding.right + Res.dimen.xsSpacingValue,
+      bottom: widget.padding.bottom + Res.dimen.xsSpacingValue,
+    );
     backgroundColor = widget.backgroundColor ?? Res.color.bottomNavItemBg;
     activeColor = widget.activeColor ?? Res.color.bottomNavItemActive;
     inactiveColor = widget.inactiveColor ?? Res.color.bottomNavItemInactive;
@@ -120,7 +132,7 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
         curve: animationCurve,
         width: widget.width,
         height: widget.height,
-        // color: Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1),
+        padding: padding,
         color: backgroundColor,
         child: AnimatedBuilder(
           animation: _colorAnimation,
@@ -144,31 +156,25 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
                 height: iconSize,
                 child: widget.icon,
               ),
-              AnimatedSizeContainer(
-                animateForward: widget.isSelected,
-                animateOnInit: true,
-                axisAlignment: 1,
-                axis: widget.axis,
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: (widget.axis == Axis.horizontal)
-                          ? spaceBetweenIconAndText
-                          : 0,
-                      top: (widget.axis == Axis.vertical)
-                          ? spaceBetweenIconAndText
-                          : 0,
-                    ),
-                    child: Text(
-                      widget.text,
-                      style: Res.textStyles.general.copyWith(
-                        fontSize: textSize,
-                        fontWeight: FontWeight.w500,
+              widget.showOnlyIconForInactiveItem
+                  ? AnimatedSizeContainer(
+                      animateForward: widget.isSelected,
+                      animateOnInit: true,
+                      axisAlignment: 1,
+                      axis: widget.axis,
+                      child: AppBottomNavigationItemText(
+                        spaceBetweenIconAndText: spaceBetweenIconAndText,
+                        navItemAxis: widget.axis,
+                        text: widget.text,
+                        textSize: textSize,
                       ),
+                    )
+                  : AppBottomNavigationItemText(
+                      spaceBetweenIconAndText: spaceBetweenIconAndText,
+                      navItemAxis: widget.axis,
+                      text: widget.text,
+                      textSize: textSize,
                     ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),

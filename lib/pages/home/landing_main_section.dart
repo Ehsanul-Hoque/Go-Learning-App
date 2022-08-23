@@ -110,19 +110,27 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: AppBottomNavigationBar(
-                  items: _pageModels.map((PageModel model) {
-                    return AppBottomNavigationBarModel(
-                      icon: model.icon,
-                      text: model.title,
+                child: Builder(
+                  builder: (BuildContext context) {
+                    bool isPortrait = (MediaQuery.of(context).orientation ==
+                        Orientation.portrait);
+
+                    return AppBottomNavigationBar(
+                      items: _pageModels.map((PageModel model) {
+                        return AppBottomNavigationBarModel(
+                          icon: model.icon,
+                          text: model.title,
+                        );
+                      }).toList(),
+                      selectedIndex: _currentPageIndex,
+                      itemSize: AppBottomNavigationItemSize.flex,
+                      flex: isPortrait ? 2 : 1,
+                      showOnlyIconForInactiveItem: isPortrait,
+                      onItemChange: (int newSelectedIndex) {
+                        _pageViewScrolling = true;
+                        updatePage(newSelectedIndex, true);
+                      },
                     );
-                  }).toList(),
-                  selectedIndex: _currentPageIndex,
-                  itemSize: AppBottomNavigationItemSize.flex,
-                  flex: 2,
-                  onItemChange: (int newSelectedIndex) {
-                    _pageViewScrolling = true;
-                    updatePage(newSelectedIndex, true);
                   },
                 ),
               ),

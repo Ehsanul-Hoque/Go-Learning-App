@@ -44,7 +44,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
           for (int i = 2; i < 10; ++i) {
             double w = calculateCourseGridItemWidth(i, constraints.maxWidth);
-            if (w < 170) break;
+            if (w < 150) break;
             courseGridCrossAxisCount = i;
           }
 

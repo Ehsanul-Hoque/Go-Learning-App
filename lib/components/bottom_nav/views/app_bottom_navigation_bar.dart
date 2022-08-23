@@ -10,6 +10,7 @@ class AppBottomNavigationBar extends StatefulWidget {
   final int selectedIndex;
   final OnItemChangeListener onItemChange;
   final double? width, height;
+  final bool showOnlyIconForInactiveItem;
   final double? contentMinWidth;
   final Color? backgroundColor, indicatorColor, activeColor, inactiveColor;
   final EdgeInsets? indicatorPadding;
@@ -28,6 +29,7 @@ class AppBottomNavigationBar extends StatefulWidget {
     required this.onItemChange,
     this.width,
     this.height,
+    this.showOnlyIconForInactiveItem = true,
     this.contentMinWidth,
     this.backgroundColor,
     this.indicatorColor,
@@ -129,13 +131,15 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
                     AppBottomNavigationItem(
                       icon: item.icon,
                       text: item.text,
+                      showOnlyIconForInactiveItem:
+                          widget.showOnlyIconForInactiveItem,
                       activeColor: item.contentActiveColor ?? activeColor,
                       inactiveColor: item.contentInactiveColor ?? inactiveColor,
                       width: calculateItemWidth(
                         width,
                         index == widget.selectedIndex,
                       ),
-                      height: height,
+                      padding: indicatorPadding,
                       axis: widget.itemContentAxis,
                       spaceBetweenIconAndText: widget.spaceBetweenIconAndText,
                       isSelected: index == widget.selectedIndex,
