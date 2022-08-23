@@ -69,6 +69,9 @@ class ColorsLightMode implements ColorsBase {
   final Color outlineFocused = AppColors.themeBlue;
   final Color outlineError = AppColors.redAccent;
 
+  /// Splash
+  final Color splash = AppColors.themeBlueAlpha10;
+
   /// Miscellaneous
   final Color divider = AppColors.grey300;
   final Color priceColor = AppColors.themeBlue;

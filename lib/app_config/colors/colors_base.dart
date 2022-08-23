@@ -66,6 +66,9 @@ abstract class ColorsBase {
   final Color outlineFocused = AppColors.transparent;
   final Color outlineError = AppColors.transparent;
 
+  /// Splash
+  final Color splash = AppColors.transparent;
+
   /// Miscellaneous
   final Color divider = AppColors.transparent;
   final Color priceColor = AppColors.transparent;
