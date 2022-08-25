@@ -2,7 +2,9 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/icon_and_text.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/pages/course/course_before_enroll.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
+import "package:app/utils/utils.dart";
 import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter_svg/flutter_svg.dart";
@@ -31,13 +33,15 @@ class CourseItem extends StatelessWidget {
         Res.shadows.lighter,
       ],
       child: SplashEffect(
-        onTap: onItemTap,
+        onTap: () {
+          onItemTap(context);
+        },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             AspectRatio(
-              aspectRatio: 16 / 9,
+              aspectRatio: Res.dimen.bannerAspectRatio,
               child: Stack(
                 children: <Widget>[
                   CachedNetworkImage(
@@ -90,7 +94,7 @@ class CourseItem extends StatelessWidget {
               ),
               child: Text(
                 course["title"]!, // TODO Get title from API
-                style: Res.textStyles.subLabel,
+                style: Res.textStyles.labelSmall,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
@@ -142,7 +146,12 @@ class CourseItem extends StatelessWidget {
     );
   }
 
-  void onItemTap() {
-    // TODO Implement on tap
+  void onItemTap(BuildContext context) {
+    Utils.goToPage(
+      context,
+      CourseBeforeEnroll(
+        course: course,
+      ),
+    );
   }
 }

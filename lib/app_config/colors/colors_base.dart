@@ -4,6 +4,7 @@ import "package:app/app_config/colors/app_colors.dart";
 
 abstract class ColorsBase {
   /// Page
+  final Color pageRootBg = AppColors.transparent;
   final Color pageBg = AppColors.transparent;
 
   /// Containers
@@ -68,6 +69,12 @@ abstract class ColorsBase {
 
   /// Splash
   final Color splash = AppColors.transparent;
+
+  /// Video
+  final Color videoBg = AppColors.transparent;
+  final Color videoProgressIndicator = AppColors.transparent;
+  final Color videoProgressPlayed = AppColors.transparent;
+  final Color videoProgressHandle = AppColors.transparent;
 
   /// Miscellaneous
   final Color divider = AppColors.transparent;

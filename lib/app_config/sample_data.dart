@@ -1,4 +1,7 @@
 class SampleData {
+  static String avatar =
+      "https://preview.redd.it/gwqupsh46yn51.png?width=301&format=png&auto=webp&s=60efa3b8c4375c7589c929945a840c60c713c949";
+
   static List<String> images = <String>[
     "https://scontent.fdac13-1.fna.fbcdn.net/v/t39.30808-6/299104060_5300220913431344_7156505617194951511_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeGuLSf6Gc83_KYaLd5fF0kthfPi7e-5Ib6F8-Lt77khvnr8K2iF3Oa7CggPVHAbmDy-DgTelSaP2Z3y48sXT4rD&_nc_ohc=36MYrsisNf8AX_noeYH&_nc_ht=scontent.fdac13-1.fna&oh=00_AT-n49IJeLncXazAVP3IP_8FV2Nf0G8oExhzaE9UtJw_dA&oe=62FCD099",
     "https://scontent.fdac13-1.fna.fbcdn.net/v/t39.30808-6/299837775_5311034712349964_8304425855218233976_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=730e14&_nc_eui2=AeHY39-0bFqGpA9KnEv4nrwA7tVaVM_QLtTu1VpUz9Au1BlZ270XVeuZ_fETjLxcI1ZYHSbd3rQcSuhsENMoDkh0&_nc_ohc=YUUdItmOAS4AX9JzOSG&_nc_ht=scontent.fdac13-1.fna&oh=00_AT8DeIuwvLu5290XhNMG3d33x-o6URc9zaU584vbQYsLfA&oe=630213AD",

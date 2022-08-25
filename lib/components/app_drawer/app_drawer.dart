@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/app_config/sample_data.dart";
 import "package:app/components/app_button.dart";
 import "package:app/components/app_drawer/app_drawer_item_model.dart";
 import "package:app/components/app_drawer/my_app_drawer_config.dart";
@@ -36,7 +37,7 @@ class AppDrawer extends StatelessWidget {
               ),
               MyCircleAvatar(
                 imageUrl:
-                    "https://preview.redd.it/gwqupsh46yn51.png?width=301&format=png&auto=webp&s=60efa3b8c4375c7589c929945a840c60c713c949", // TODO Get profile picture from API
+                    SampleData.avatar, // TODO Get profile picture from API
                 radius: config.avatarRadius,
                 padding: 1,
                 backgroundColor: config.avatarBackgroundColor,

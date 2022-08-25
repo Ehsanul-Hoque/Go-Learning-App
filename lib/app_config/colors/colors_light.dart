@@ -7,6 +7,7 @@ import "package:app/app_config/colors/app_colors.dart";
 
 class ColorsLightMode implements ColorsBase {
   /// Page
+  final Color pageRootBg = AppColors.black;
   final Color pageBg = AppColors.veryLightGrey;
 
   /// Containers
@@ -71,6 +72,12 @@ class ColorsLightMode implements ColorsBase {
 
   /// Splash
   final Color splash = AppColors.themeBlueAlpha10;
+
+  /// Video
+  final Color videoBg = AppColors.themeBlue;
+  final Color videoProgressIndicator = AppColors.themeYellow;
+  final Color videoProgressPlayed = AppColors.themeYellow;
+  final Color videoProgressHandle = AppColors.flatSunflower;
 
   /// Miscellaneous
   final Color divider = AppColors.grey300;

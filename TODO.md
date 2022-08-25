@@ -12,3 +12,5 @@
 - When opening drawer, if the main screen contains many widgets, the animation lags. This should be fixed.
 - In nav item, if the text is too large, an widget overflow error is shown.
   But if I wrap it inside a container and set maxWidth constraint, then the text gets ellipsized when being animated. FIX THIS.
+- Resize image in cache to load and animate faster
+- Fix YouTube player warnings (may need to fork the original repo is necessary)

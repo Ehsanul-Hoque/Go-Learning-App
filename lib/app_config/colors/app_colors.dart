@@ -25,4 +25,5 @@ class AppColors {
   static const Color grey300 = Color(0xffE0E0E0);
 
   static const Color flatBlue = Color(0xff74B9FF);
+  static const Color flatSunflower = Color(0xffF1C40F);
 }

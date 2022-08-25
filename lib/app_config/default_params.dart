@@ -65,6 +65,7 @@ class Dimensions {
   // final double bannerAspectRatioHeight = 9;
   final double bannerAspectRatio = 16 / 9;
   final double bannerAspectRatioAfterPadding = 16 / 7.5;
+  final double videoAspectRatio = 16 / 9;
 
   /// Miscellaneous
   final double homeBannerViewportFraction = 0.8;
@@ -73,9 +74,9 @@ class Dimensions {
 class TextStyles {
   const TextStyles();
 
-  TextStyle get general => GoogleFonts.hindSiliguri(
+  TextStyle get general => TextStyle(
         fontSize: Res.dimen.fontSizeNormal,
-        // fontFamily: "Poppins",
+        fontFamily: "HindSiliguri",
         color: Res.color.textPrimary,
         height: 1.2,
       );
@@ -98,9 +99,11 @@ class TextStyles {
         fontWeight: FontWeight.w500,
       );
 
-  TextStyle get subLabel => general.copyWith(
+  TextStyle get labelSmall => general.copyWith(
         fontSize: Res.dimen.fontSizeMedium,
       );
+
+  TextStyle get subLabel => general;
 
   TextStyle get link => general.copyWith(
         color: Res.color.textLink,

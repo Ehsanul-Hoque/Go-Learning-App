@@ -8,9 +8,10 @@ import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/components/app_container.dart";
 import "package:app/models/page_model.dart";
 import "package:app/pages/home/landing.dart";
+import "package:app/utils/utils.dart";
 import "package:email_validator/email_validator.dart";
 import "package:flutter/material.dart"
-    show DefaultTabController, IconButton, Icons, MaterialPageRoute, Tab;
+    show DefaultTabController, IconButton, Icons, Tab;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 import "package:flutter_svg/svg.dart";
@@ -81,6 +82,7 @@ class _AuthPageState extends State<AuthPage> {
                 maxWidth: MediaQuery.of(context).size.height,
               ),
               child: DefaultTabController(
+                animationDuration: Res.durations.defaultDuration,
                 length: _pageModels.length,
                 child: Form(
                   key: _formKey,
@@ -331,14 +333,7 @@ class _AuthPageState extends State<AuthPage> {
     // if (_formKey.currentState?.validate() ?? false) {
     // _formKey.currentState?.save();
 
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          return const LandingPage();
-        },
-      ),
-    );
+    Utils.goToPage(context, const LandingPage());
     // }
   }
 
