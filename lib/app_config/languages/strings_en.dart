@@ -29,15 +29,21 @@ class StringsEn implements StringsBase {
   final String courses = "Courses";
   final String by = "by";
 
+  final String courseDetails = "Course Details";
+  final String coursePlaylist = "Course Playlist";
+
+  /// Messages
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";
   final String passwordTooSmall = "Should be at least 4 characters long.";
   final String passwordsNotMatched = "Passwords do not match.";
 
+  /// Sample texts
   final String page1 = "Page 1";
   final String page2 = "Page 2";
   final String page3 = "Page 3";
   final String page4 = "Page 4";
 
+  /// const constructor
   const StringsEn();
 }

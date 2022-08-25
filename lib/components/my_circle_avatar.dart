@@ -1,9 +1,11 @@
 import "dart:io";
 
 import "package:app/app_config/resources.dart";
+import "package:app/components/my_cached_image.dart";
+import "package:app/utils/typedefs.dart" show ErrorBuilder, PlaceholderBuilder;
 import "package:app/utils/utils.dart";
-import "package:cached_network_image/cached_network_image.dart";
-import "package:flutter/cupertino.dart";
+import "package:flutter/cupertino.dart" show CupertinoIcons;
+import "package:flutter/widgets.dart";
 
 class MyCircleAvatar extends StatelessWidget {
   final File? imageFile;
@@ -12,9 +14,8 @@ class MyCircleAvatar extends StatelessWidget {
   final double padding;
   final Color? backgroundColor;
   final List<BoxShadow>? shadow;
-  final Widget Function(BuildContext context, String url)? placeholderBuilder;
-  final Widget Function(BuildContext context, String url, dynamic error)?
-      errorBuilder;
+  final PlaceholderBuilder? placeholderBuilder;
+  final ErrorBuilder? errorBuilder;
 
   const MyCircleAvatar({
     Key? key,
@@ -57,17 +58,17 @@ class MyCircleAvatar extends StatelessWidget {
                     size: 2 * (radius - padding),
                     color: Res.color.appBarAvatarIcon,
                   )
-                : CachedNetworkImage(
+                : MyCachedImage(
                     imageUrl: imageUrl ?? "",
-                    fadeInDuration: Res.durations.defaultDuration,
-                    fadeOutDuration: Res.durations.defaultDuration,
-                    fit: BoxFit.cover,
                     placeholder: placeholderBuilder ??
                         (BuildContext context, String url) {
                           return const SizedBox.shrink();
                         },
-                    errorWidget:
-                        (BuildContext context, String url, dynamic error) {
+                    errorWidget: (
+                      BuildContext context,
+                      String url,
+                      dynamic error,
+                    ) {
                       if (url.isNotEmpty) {
                         Utils.log(
                           "Error while loading image: \"$url\"",

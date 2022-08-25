@@ -44,6 +44,11 @@ class _LandingMainSectionState extends State<LandingMainSection> {
     ];
 
     _pageController = PageController(initialPage: 0);
+    /*..addListener(() {
+        double a = _pageController.offset;
+        double b = MediaQuery.of(context).size.width;
+        Utils.log("offset = $a, width = $b, page fraction = ${a / b}");
+      })*/
 
     super.initState();
   }

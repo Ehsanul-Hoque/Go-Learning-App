@@ -25,6 +25,9 @@ abstract class StringsBase {
   final String courses = "";
   final String by = "";
 
+  final String courseDetails = "";
+  final String coursePlaylist = "";
+
   /// Messages
   final String invalidEmail = "";
   final String enterPassword = "";

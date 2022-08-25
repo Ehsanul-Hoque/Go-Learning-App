@@ -4,7 +4,7 @@ import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/my_circle_avatar.dart";
 import "package:app/utils/painters/app_bar_with_avatar_painter.dart";
 import "package:app/utils/typedefs.dart" show OnAnimationListener;
-import "package:flutter/cupertino.dart";
+import "package:flutter/widgets.dart";
 
 part "package:app/components/app_bar/my_app_bar_contents.dart";
 

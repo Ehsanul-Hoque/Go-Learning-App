@@ -1,13 +1,13 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/icon_and_text.dart";
+import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/pages/course/course_before_enroll.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
 import "package:app/utils/utils.dart";
-import "package:cached_network_image/cached_network_image.dart";
-import "package:flutter/cupertino.dart";
-import "package:flutter_svg/flutter_svg.dart";
+import "package:flutter/cupertino.dart" show CupertinoIcons;
+import "package:flutter/widgets.dart";
 
 class CourseItem extends StatelessWidget {
   final Map<String, String> course;
@@ -44,21 +44,8 @@ class CourseItem extends StatelessWidget {
               aspectRatio: Res.dimen.bannerAspectRatio,
               child: Stack(
                 children: <Widget>[
-                  CachedNetworkImage(
+                  MyCachedImage(
                     imageUrl: course["banner"]!, // TODO Get banner from API
-                    fadeInDuration: Res.durations.defaultDuration,
-                    fadeOutDuration: Res.durations.defaultDuration,
-                    fadeInCurve: Res.curves.defaultCurve,
-                    fadeOutCurve: Res.curves.defaultCurve,
-                    placeholder: (BuildContext context, String url) {
-                      return Padding(
-                        padding: EdgeInsets.all(
-                          Res.dimen.normalSpacingValue,
-                        ),
-                        child: SvgPicture.asset(Res.assets.loadingSvg),
-                      );
-                    },
-                    fit: BoxFit.cover,
                   ),
                   Positioned(
                     bottom: -2,

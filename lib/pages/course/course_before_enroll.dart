@@ -1,12 +1,14 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/my_cached_image.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
-import "package:cached_network_image/cached_network_image.dart";
-import "package:flutter/material.dart" show IconButton, Icons, Scaffold;
+import "package:app/components/tab_bar/views/app_tab_bar.dart";
+import "package:app/models/page_model.dart";
+import "package:flutter/material.dart"
+    show DefaultTabController, IconButton, Icons, Scaffold, Tab;
 import "package:flutter/services.dart"
     show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
-import "package:flutter_svg/flutter_svg.dart";
 import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class CourseBeforeEnroll extends StatefulWidget {
@@ -24,6 +26,9 @@ class CourseBeforeEnroll extends StatefulWidget {
 class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   late final YoutubePlayerController _youtubePlayerController;
 
+  late final List<PageModel> _pageModels;
+  int _selectedTabBarIndex = 0;
+
   @override
   void initState() {
     _youtubePlayerController = YoutubePlayerController(
@@ -33,6 +38,15 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
         forceHD: true,
       ),
     );
+
+    _pageModels = <PageModel>[
+      PageModel(
+        title: Res.str.courseDetails,
+      ),
+      PageModel(
+        title: Res.str.coursePlaylist,
+      ),
+    ];
 
     super.initState();
   }
@@ -58,21 +72,8 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                 playedColor: Res.color.videoProgressPlayed,
                 handleColor: Res.color.videoProgressHandle,
               ),
-              thumbnail: CachedNetworkImage(
+              thumbnail: MyCachedImage(
                 imageUrl: widget.course["banner"]!, // TODO Get banner from API
-                fadeInDuration: Res.durations.defaultDuration,
-                fadeOutDuration: Res.durations.defaultDuration,
-                fadeInCurve: Res.curves.defaultCurve,
-                fadeOutCurve: Res.curves.defaultCurve,
-                placeholder: (BuildContext context, String url) {
-                  return Padding(
-                    padding: EdgeInsets.all(
-                      Res.dimen.normalSpacingValue,
-                    ),
-                    child: SvgPicture.asset(Res.assets.loadingSvg),
-                  );
-                },
-                fit: BoxFit.cover,
               ),
               onReady: () {},
               // thumbnail: ,
@@ -115,6 +116,40 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                       ],
                     ),
                   ),
+                  Expanded(
+                    child: DefaultTabController(
+                      animationDuration: Res.durations.defaultDuration,
+                      length: _pageModels.length,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            height: Res.dimen.smallSpacingValue,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Res.dimen.normalSpacingValue,
+                            ),
+                            child: AppTabBar(
+                              tabs: _pageModels.map((PageModel page) {
+                                return Tab(
+                                  text: page.title,
+                                );
+                              }).toList(),
+                              onTabChange: onTabChange,
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: const <Widget>[],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               );
             },
@@ -122,5 +157,12 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
         ),
       ),
     );
+  }
+
+  void onTabChange(int index) {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _selectedTabBarIndex = index;
+    });
   }
 }
