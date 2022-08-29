@@ -4,6 +4,7 @@ import "package:flutter/widgets.dart";
 class MyAppBarConfig {
   final double toolbarHeight;
   final Color backgroundColor;
+  final List<BoxShadow>? shadow;
   final MyAppBarAvatarConfig? avatarConfig;
   final Widget? title;
   final String? subtitle;
@@ -16,6 +17,7 @@ class MyAppBarConfig {
   MyAppBarConfig({
     double? toolbarHeight,
     Color? backgroundColor,
+    this.shadow,
     MyAppBarAvatarConfig? avatarConfig,
     this.title,
     this.subtitle,

@@ -25,7 +25,7 @@ class CourseCategoryItem extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: itemSpacing,
+            horizontal: listHorizontalPadding,
           ),
           child: Text(
             " $title",

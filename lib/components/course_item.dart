@@ -4,8 +4,8 @@ import "package:app/components/icon_and_text.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/pages/course/course_before_enroll.dart";
+import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
-import "package:app/utils/utils.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 
@@ -134,7 +134,7 @@ class CourseItem extends StatelessWidget {
   }
 
   void onItemTap(BuildContext context) {
-    Utils.goToPage(
+    PageNav.to(
       context,
       CourseBeforeEnroll(
         course: course,

@@ -31,6 +31,10 @@ class StringsEn implements StringsBase {
 
   final String courseDetails = "Course Details";
   final String coursePlaylist = "Course Playlist";
+  final String videosAllCaps = "VIDEOS";
+  final String quizzesAllCaps = "QUIZZES";
+  final String runtimeAllCaps = "RUNTIME";
+  final String instructor = "Instructor";
 
   /// Messages
   final String invalidEmail = "The email is invalid.";

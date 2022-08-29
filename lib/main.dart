@@ -4,7 +4,7 @@ import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
 void main() {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

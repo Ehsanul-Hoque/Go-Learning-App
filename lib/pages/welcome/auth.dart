@@ -8,13 +8,13 @@ import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/components/app_container.dart";
 import "package:app/models/page_model.dart";
 import "package:app/pages/home/landing.dart";
-import "package:app/utils/utils.dart";
+import "package:app/utils/app_page_nav.dart";
 import "package:email_validator/email_validator.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Tab;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
-import "package:flutter_svg/svg.dart";
+import "package:flutter_svg/flutter_svg.dart";
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -333,7 +333,7 @@ class _AuthPageState extends State<AuthPage> {
     // if (_formKey.currentState?.validate() ?? false) {
     // _formKey.currentState?.save();
 
-    Utils.goToPage(context, const LandingPage());
+    PageNav.to(context, const LandingPage());
     // }
   }
 

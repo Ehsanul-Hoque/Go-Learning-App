@@ -12,6 +12,9 @@ class ColorsLightMode implements ColorsBase {
 
   /// Containers
   final Color containerBg = AppColors.white;
+  final Color infoContainerBg1 = AppColors.blueAccent100Alpha50;
+  final Color infoContainerBg2 = AppColors.green100Alpha50;
+  final Color infoContainerBg3 = AppColors.purple100Alpha50;
 
   /// Texts
   final Color textPrimary = AppColors.grey900;
@@ -40,6 +43,7 @@ class ColorsLightMode implements ColorsBase {
 
   /// App Bar
   final Color appBarBg = AppColors.white;
+  final Color appBarBgTransparent = AppColors.transparent;
   final Color appBarAvatarIcon = AppColors.white;
   final Color appBarAvatarBg = AppColors.themeYellow;
 

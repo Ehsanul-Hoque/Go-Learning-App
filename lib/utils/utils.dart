@@ -3,11 +3,7 @@ import "dart:developer" as devtools show log;
 import "package:app/app_config/resources.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart"
-    show
-        FloatingLabelBehavior,
-        InputDecoration,
-        MaterialPageRoute,
-        OutlineInputBorder;
+    show FloatingLabelBehavior, InputDecoration, OutlineInputBorder;
 import "package:flutter/widgets.dart";
 
 class Utils {
@@ -25,15 +21,6 @@ class Utils {
         stackTrace: stackTrace,
       );
     }
-  }
-
-  static void goToPage(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => page,
-      ),
-    );
   }
 
   static InputDecoration getAppInputDecoration({

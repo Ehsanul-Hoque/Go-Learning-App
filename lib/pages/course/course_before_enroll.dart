@@ -4,6 +4,8 @@ import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/models/page_model.dart";
+import "package:app/pages/course/course_playlist.dart";
+import "package:app/utils/app_page_nav.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
 import "package:flutter/services.dart"
@@ -88,69 +90,66 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
               );
             },
             builder: (BuildContext context, Widget player) {
-              return Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: Res.dimen.videoAspectRatio,
-                    child: Container(
-                      color: Res.color.videoBg,
-                      child: player,
-                    ),
-                  ),
-                  MyPlatformAppBar(
-                    config: MyAppBarConfig(
-                      avatarConfig: MyAppBarAvatarConfig.noAvatar(),
-                      title: Text(
-                        widget.course["title"]!,
+              return DefaultTabController(
+                animationDuration: Res.durations.defaultDuration,
+                length: _pageModels.length,
+                child: Column(
+                  children: <Widget>[
+                    AspectRatio(
+                      aspectRatio: Res.dimen.videoAspectRatio,
+                      child: Container(
+                        color: Res.color.videoBg,
+                        child: player,
                       ),
-                      subtitle:
-                          "${Res.str.by} ${widget.course["instructor"]!}", // TODO change if necessary
-                      startActions: <Widget>[
-                        IconButton(
-                          constraints: const BoxConstraints(),
-                          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                          iconSize: Res.dimen.iconSizeNormal,
-                          color: Res.color.iconButton,
-                          onPressed: () {},
-                        ),
-                      ],
                     ),
-                  ),
-                  Expanded(
-                    child: DefaultTabController(
-                      animationDuration: Res.durations.defaultDuration,
-                      length: _pageModels.length,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: Res.dimen.smallSpacingValue,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: Res.dimen.normalSpacingValue,
-                            ),
-                            child: AppTabBar(
-                              tabs: _pageModels.map((PageModel page) {
-                                return Tab(
-                                  text: page.title,
-                                );
-                              }).toList(),
-                              onTabChange: onTabChange,
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const <Widget>[],
-                            ),
+                    SizedBox(
+                      height: Res.dimen.smallSpacingValue,
+                    ),
+                    MyPlatformAppBar(
+                      config: MyAppBarConfig(
+                        backgroundColor: Res.color.appBarBgTransparent,
+                        shadow: const <BoxShadow>[],
+                        avatarConfig: MyAppBarAvatarConfig.noAvatar(),
+                        title: Text(
+                          widget.course["title"]!, // TODO Get title from API
+                        ),
+                        subtitle:
+                            "${Res.str.by} ${widget.course["instructor"]!}", // TODO change if necessary
+                        startActions: <Widget>[
+                          IconButton(
+                            // TODO extract this back button as a component
+                            constraints: const BoxConstraints(),
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                            iconSize: Res.dimen.iconSizeNormal,
+                            color: Res.color.iconButton,
+                            onPressed: () {
+                              PageNav.back(context);
+                            },
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Res.dimen.normalSpacingValue,
+                      ),
+                      child: AppTabBar(
+                        tabs: _pageModels.map((PageModel page) {
+                          return Tab(
+                            text: page.title,
+                          );
+                        }).toList(),
+                        onTabChange: onTabChange,
+                      ),
+                    ),
+                    Expanded(
+                      // TODO convert to PageView
+                      child: CoursePlaylist(
+                        course: widget.course,
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           ),

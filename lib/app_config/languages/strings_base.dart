@@ -27,6 +27,10 @@ abstract class StringsBase {
 
   final String courseDetails = "";
   final String coursePlaylist = "";
+  final String videosAllCaps = "";
+  final String quizzesAllCaps = "";
+  final String runtimeAllCaps = "";
+  final String instructor = "";
 
   /// Messages
   final String invalidEmail = "";

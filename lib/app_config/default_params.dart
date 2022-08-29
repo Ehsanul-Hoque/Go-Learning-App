@@ -123,6 +123,10 @@ class TextStyles {
   TextStyle get small => secondary.copyWith(
         fontSize: Res.dimen.fontSizeSmall,
       );
+
+  TextStyle get smallThick => small.copyWith(
+        fontWeight: FontWeight.w500,
+      );
 }
 
 class Durations {

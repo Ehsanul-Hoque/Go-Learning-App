@@ -112,9 +112,10 @@ class _MyAppBarState extends State<MyAppBar>
     return Container(
       height: widget.preferredSize.height + MediaQuery.of(context).padding.top,
       decoration: BoxDecoration(
-        boxShadow: <BoxShadow>[
-          Res.shadows.normal,
-        ],
+        boxShadow: widget.config.shadow ??
+            <BoxShadow>[
+              Res.shadows.normal,
+            ],
       ),
       child: animationController != null
           ? AnimatedBuilder(
