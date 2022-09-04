@@ -1,21 +1,20 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_container.dart";
+import "package:app/app_config/sample_data.dart";
 import "package:app/components/sliver_sized_box.dart";
-import "package:app/components/two_line_info.dart";
-import "package:app/pages/app_webview.dart";
-import "package:app/utils/app_page_nav.dart";
-import "package:flutter/material.dart" show Colors;
+import "package:app/components/video_item.dart";
+import "package:app/utils/typedefs.dart";
 import "package:flutter/widgets.dart";
-import "package:flutter_html/flutter_html.dart";
-import "package:flutter_lorem/flutter_lorem.dart";
-import "package:html/dom.dart" as dom show Element;
 
 class CoursePlaylist extends StatefulWidget {
   final Map<String, String> course; // TODO Get data from calling activity
+  final String? selectedVideoId;
+  final OnVideoItemClickListener onVideoClick;
 
   const CoursePlaylist({
     Key? key,
     required this.course,
+    required this.onVideoClick,
+    this.selectedVideoId,
   }) : super(key: key);
 
   @override
@@ -23,81 +22,40 @@ class CoursePlaylist extends StatefulWidget {
 }
 
 class _CoursePlaylistState extends State<CoursePlaylist> {
+  String? selectedVideoId;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedVideoId = widget.selectedVideoId;
+  }
+
   @override
   Widget build(BuildContext context) {
-    String courseDescriptionHtml = """
-        ${lorem().replaceAll("\n", "<br>")}
-        <br><br>
-        <a href='https://github.com'>websites</a>
-      """;
-
-    return Padding(
+    return Container(
       padding: EdgeInsets.symmetric(
         horizontal: Res.dimen.normalSpacingValue,
       ),
+      decoration: const BoxDecoration(),
+      clipBehavior: Clip.antiAlias,
       child: CustomScrollView(
+        clipBehavior: Clip.none,
         slivers: <Widget>[
           SliverSizedBox(
-            height: Res.dimen.normalSpacingValue,
+            height: Res.dimen.xxlSpacingValue,
           ),
           SliverToBoxAdapter(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TwoLineInfo(
-                    // TODO Get data from API
-                    topText: "18",
-                    bottomText: Res.str.videosAllCaps,
-                    backgroundColor: Res.color.infoContainerBg1,
-                  ),
-                ),
-                Expanded(
-                  child: TwoLineInfo(
-                    // TODO Get data from API
-                    topText: "20",
-                    bottomText: Res.str.quizzesAllCaps,
-                    backgroundColor: Res.color.infoContainerBg2,
-                  ),
-                ),
-                Expanded(
-                  child: TwoLineInfo(
-                    // TODO Get data from API
-                    topText: "3.25h",
-                    bottomText: Res.str.runtimeAllCaps,
-                    backgroundColor: Res.color.infoContainerBg3,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: DefaultTextStyle(
-              style: Res.textStyles.general,
-              child: Html(
-                // TODO Extract to component
-                data: courseDescriptionHtml,
-                style: <String, Style>{
-                  "body": Style.fromTextStyle(Res.textStyles.general),
-                  "h3": Style.fromTextStyle(Res.textStyles.label),
-                  "h4": Style.fromTextStyle(Res.textStyles.labelSmall),
-                  "h6": Style.fromTextStyle(Res.textStyles.subLabel),
-                  "a": Style.fromTextStyle(Res.textStyles.link),
-                },
-                onLinkTap: (
-                  String? url,
-                  RenderContext renderContext,
-                  Map<String, String> attributes,
-                  dom.Element? element,
-                ) {
-                  PageNav.to(
-                    context,
-                    AppWebView(
-                      url: url ??
-                          "https://www.golearningbd.com", // TODO Extract the constant
-                    ),
-                  );
-                },
-              ),
+            child: VideoItem(
+              title: Res.str.previewVideo,
+              videoId: SampleData.previewVideoId,
+              isLocked: false,
+              isSelected: (selectedVideoId == SampleData.previewVideoId),
+              onVideoClick: (String videoId, bool isLocked) {
+                widget.onVideoClick(SampleData.previewVideoId, isLocked);
+                setState(() {
+                  selectedVideoId = SampleData.previewVideoId;
+                });
+              },
             ),
           ),
           SliverSizedBox(
@@ -105,41 +63,43 @@ class _CoursePlaylistState extends State<CoursePlaylist> {
           ),
           SliverToBoxAdapter(
             child: Text(
-              " ${Res.str.instructor}",
+              " ${Res.str.courseContents}",
               style: Res.textStyles.label,
             ),
           ),
           SliverSizedBox(
             height: Res.dimen.normalSpacingValue,
           ),
-          SliverToBoxAdapter(
-            child: AppContainer(
-              margin: EdgeInsets.zero,
-              shadow: const <BoxShadow>[],
-              backgroundColor: Colors.grey.shade200,
-              border: Border.all(
-                color: Colors.grey.shade200,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    widget.course["instructor"] ?? "", // TODO Get from API
-                    style: Res.textStyles.labelSmall,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    "Dhaka Medical College", // TODO Get from API
-                    style: Res.textStyles.general,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              // Get videos from API
+              SampleData.videos.map((Map<String, String> item) {
+                bool isLocked = (item["locked"] == "true"); // TODO Get from API
+                bool isSelected =
+                    (selectedVideoId == item["video_id"]); // TODO Get from API
+
+                return VideoItem(
+                  title: item["title"]!, // TODO Get from API
+                  videoId: item["video_id"]!, // TODO Get from API
+                  isLocked: isLocked,
+                  isSelected: isSelected,
+                  onVideoClick: (String videoId, bool isLocked) {
+                    widget.onVideoClick(
+                      item["video_id"]!, // TODO Get from API
+                      isLocked,
+                    );
+                    if (!isLocked) {
+                      setState(() {
+                        selectedVideoId = item["video_id"]; // TODO Get from API
+                      });
+                    }
+                  },
+                );
+              }).toList(),
             ),
           ),
           SliverSizedBox(
-            height: Res.dimen.xxlSpacingValue,
+            height: Res.dimen.normalSpacingValue,
           ),
         ],
       ),

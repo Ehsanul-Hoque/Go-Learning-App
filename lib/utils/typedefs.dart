@@ -8,6 +8,8 @@ typedef OnTabChangeListener = OnItemChangeListener;
 
 typedef OnValueChangeListener<T> = void Function(T value);
 
+typedef OnVideoItemClickListener = void Function(String videoId, bool isLocked);
+
 typedef OnAnimationListener = void Function();
 
 typedef PlaceholderBuilder = Widget Function(

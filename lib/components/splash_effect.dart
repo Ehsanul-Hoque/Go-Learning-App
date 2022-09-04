@@ -19,15 +19,17 @@ class SplashEffect extends StatelessWidget {
     return Stack(
       children: <Widget>[
         child,
-        Material(
-          color: AppColors.transparent,
-          animationDuration: Res.durations.defaultDuration,
-          child: InkWell(
-            onTap: onTap,
-            highlightColor: Res.color.splash,
-            splashColor: Res.color.splash,
-            child: Container(
-              color: AppColors.transparent,
+        Positioned.fill(
+          child: Material(
+            color: AppColors.transparent,
+            animationDuration: Res.durations.defaultDuration,
+            child: InkWell(
+              onTap: onTap,
+              highlightColor: Res.color.splash,
+              splashColor: Res.color.splash,
+              child: Container(
+                color: AppColors.transparent,
+              ),
             ),
           ),
         ),

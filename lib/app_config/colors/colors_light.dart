@@ -82,6 +82,13 @@ class ColorsLightMode implements ColorsBase {
   final Color videoProgressIndicator = AppColors.themeYellow;
   final Color videoProgressPlayed = AppColors.themeYellow;
   final Color videoProgressHandle = AppColors.flatSunflower;
+  final Color videoItemBg = AppColors.white;
+  final Color videoItemSelectedBg = AppColors.themeYellow;
+  final Color videoItemIcon = AppColors.themeYellow;
+  final Color videoItemText = AppColors.grey900;
+  final Color videoItemLock = AppColors.grey600;
+  final Color videoItemContentSelected = AppColors.white;
+  final Color videoItemContentLocked = AppColors.grey400;
 
   /// Miscellaneous
   final Color divider = AppColors.grey300;

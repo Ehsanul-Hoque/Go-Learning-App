@@ -79,6 +79,13 @@ abstract class ColorsBase {
   final Color videoProgressIndicator = AppColors.transparent;
   final Color videoProgressPlayed = AppColors.transparent;
   final Color videoProgressHandle = AppColors.transparent;
+  final Color videoItemBg = AppColors.transparent;
+  final Color videoItemSelectedBg = AppColors.transparent;
+  final Color videoItemIcon = AppColors.transparent;
+  final Color videoItemText = AppColors.transparent;
+  final Color videoItemLock = AppColors.transparent;
+  final Color videoItemContentSelected = AppColors.transparent;
+  final Color videoItemContentLocked = AppColors.transparent;
 
   /// Miscellaneous
   final Color divider = AppColors.transparent;

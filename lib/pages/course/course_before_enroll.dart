@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/app_config/sample_data.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
@@ -34,7 +35,7 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   @override
   void initState() {
     _youtubePlayerController = YoutubePlayerController(
-      initialVideoId: "iLnmTe5Q2Qw", // TODO change initial video id
+      initialVideoId: SampleData.previewVideoId, // TODO change initial video id
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         forceHD: true,
@@ -77,8 +78,6 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
               thumbnail: MyCachedImage(
                 imageUrl: widget.course["banner"]!, // TODO Get banner from API
               ),
-              onReady: () {},
-              // thumbnail: ,
             ),
             onEnterFullScreen: () {
               SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -146,6 +145,13 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                       // TODO convert to PageView
                       child: CoursePlaylist(
                         course: widget.course,
+                        onVideoClick: (String videoId, bool isLocked) {
+                          if (!isLocked) {
+                            // _youtubePlayerController.pause();
+                            _youtubePlayerController.load(videoId);
+                          }
+                        },
+                        selectedVideoId: SampleData.previewVideoId,
                       ),
                     ),
                   ],

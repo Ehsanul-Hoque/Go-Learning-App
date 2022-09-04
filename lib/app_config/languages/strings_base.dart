@@ -31,6 +31,8 @@ abstract class StringsBase {
   final String quizzesAllCaps = "";
   final String runtimeAllCaps = "";
   final String instructor = "";
+  final String previewVideo = "";
+  final String courseContents = "";
 
   /// Messages
   final String invalidEmail = "";

@@ -66,4 +66,37 @@ class SampleData {
       "price": "299 Tk.",
     },
   ];
+
+  static String previewVideoId = "iLnmTe5Q2Qw";
+
+  static List<Map<String, String>> videos = <Map<String, String>>[
+    <String, String>{
+      "title":
+          "মানব শারীরতত্ত্ব: মানবদেহের প্রতিরক্ষা (Human Physiology: Immunity)",
+      "instructor": "Jawad Un Nabi Shanto",
+      "video_id": "kfgUGQ817bM",
+      "locked": "false",
+    },
+    <String, String>{
+      "title":
+          "মানবদেহের প্রতিরক্ষা | সমন্বয় ও নিয়ন্ত্রণ | Biology 2nd Paper",
+      "instructor": "Jawad Un Nabi Shanto",
+      "video_id": "gGOkdYxXvgA",
+      "locked": "false",
+    },
+    <String, String>{
+      "title":
+          "রক্ত ও রক্ত সংবহনতন্ত্র (Blood & Circulation) | Biology 2nd Paper",
+      "instructor": "Jawad Un Nabi Shanto",
+      "video_id": "Of8noaoGtJ0",
+      "locked": "true",
+    },
+    <String, String>{
+      "title":
+          "Medico Online Class || পরিমাণগত রসায়ন 2 || Shanto Jawad || মেডিকো অনলাইন ক্লাস || All Request PDF",
+      "instructor": "Jawad Un Nabi Shanto",
+      "video_id": "WeaFjBoY3Q",
+      "locked": "true",
+    },
+  ];
 }

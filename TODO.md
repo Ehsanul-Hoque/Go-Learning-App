@@ -14,3 +14,6 @@
   But if I wrap it inside a container and set maxWidth constraint, then the text gets ellipsized when being animated. FIX THIS.
 - Resize image in cache to load and animate faster
 - Fix YouTube player warnings (may need to fork the original repo is necessary)
+- Show progress bar when loading a new video in course_before_enroll.dart.
+- YouTube video gets cut when in full screen.
+- 
