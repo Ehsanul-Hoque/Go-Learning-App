@@ -21,8 +21,12 @@ class CoursePlaylist extends StatefulWidget {
   State<CoursePlaylist> createState() => _CoursePlaylistState();
 }
 
-class _CoursePlaylistState extends State<CoursePlaylist> {
+class _CoursePlaylistState extends State<CoursePlaylist>
+    with AutomaticKeepAliveClientMixin {
   String? selectedVideoId;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -32,6 +36,8 @@ class _CoursePlaylistState extends State<CoursePlaylist> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: Res.dimen.normalSpacingValue,

@@ -22,9 +22,14 @@ class CourseDetails extends StatefulWidget {
   State<CourseDetails> createState() => _CourseDetailsState();
 }
 
-class _CourseDetailsState extends State<CourseDetails> {
+class _CourseDetailsState extends State<CourseDetails>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     String courseDescriptionHtml = """
         ${lorem().replaceAll("\n", "<br>")}
         <br><br>
