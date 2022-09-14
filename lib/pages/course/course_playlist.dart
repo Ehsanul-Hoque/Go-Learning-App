@@ -6,7 +6,7 @@ import "package:app/utils/typedefs.dart";
 import "package:flutter/widgets.dart";
 
 class CoursePlaylist extends StatefulWidget {
-  final Map<String, String> course; // TODO Get data from calling activity
+  final Map<String, Object> course; // TODO Get data from calling activity
   final String? selectedVideoId;
   final OnVideoItemClickListener onVideoClick;
 
@@ -105,7 +105,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
             ),
           ),
           SliverSizedBox(
-            height: Res.dimen.normalSpacingValue,
+            height: Res.dimen.pageBottomPaddingWithNavBar,
           ),
         ],
       ),

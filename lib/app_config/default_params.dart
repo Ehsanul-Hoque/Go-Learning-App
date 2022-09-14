@@ -49,6 +49,7 @@ class Dimensions {
   final double fontSizeNormal = 14;
   final double fontSizeMedium = 16;
   final double fontSizeLarge = 18;
+  final double fontSizeXl = 20;
   final double fontSizeXXXl = 24;
   final double pageLoadingSize = 200;
   final double appBarAvatarRadius = 30;

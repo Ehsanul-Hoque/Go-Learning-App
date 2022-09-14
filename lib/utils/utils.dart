@@ -3,7 +3,11 @@ import "dart:developer" as devtools show log;
 import "package:app/app_config/resources.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart"
-    show FloatingLabelBehavior, InputDecoration, OutlineInputBorder;
+    show
+        FloatingLabelBehavior,
+        InputBorder,
+        InputDecoration,
+        OutlineInputBorder;
 import "package:flutter/widgets.dart";
 
 class Utils {
@@ -77,45 +81,55 @@ class Utils {
       labelStyle: Res.textStyles.secondary.copyWith(
         color: hintOrLabelColor,
       ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(
-          color: enabledBorderColor,
-          width: borderThickness,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(
-          color: focusedBorderColor,
-          width: focusedBorderThickness,
-        ),
-      ),
+      border: borderThickness == 0
+          ? InputBorder.none
+          : OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide: BorderSide(
+                color: enabledBorderColor,
+                width: borderThickness,
+              ),
+            ),
+      focusedBorder: focusedBorderThickness == 0
+          ? InputBorder.none
+          : OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide: BorderSide(
+                color: focusedBorderColor,
+                width: focusedBorderThickness,
+              ),
+            ),
       errorStyle: Res.textStyles.error.copyWith(
         color: errorColor,
         fontSize: Res.dimen.fontSizeSmall,
       ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(
-          color: errorOutlineColor,
-          width: errorBorderThickness,
-        ),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(
-          color: errorOutlineColor,
-          width: focusedErrorBorderThickness,
-        ),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        borderSide: BorderSide(
-          color: enabledBorderColor,
-          width: borderThickness,
-        ),
-      ),
+      errorBorder: errorBorderThickness == 0
+          ? InputBorder.none
+          : OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide: BorderSide(
+                color: errorOutlineColor,
+                width: errorBorderThickness,
+              ),
+            ),
+      focusedErrorBorder: focusedErrorBorderThickness == 0
+          ? InputBorder.none
+          : OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide: BorderSide(
+                color: errorOutlineColor,
+                width: focusedErrorBorderThickness,
+              ),
+            ),
+      enabledBorder: borderThickness == 0
+          ? InputBorder.none
+          : OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+              borderSide: BorderSide(
+                color: enabledBorderColor,
+                width: borderThickness,
+              ),
+            ),
       fillColor: backgroundColor,
       filled: true,
       contentPadding: contentPadding,

@@ -19,7 +19,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
 
-    Iterable<MapEntry<String, List<Map<String, String>>>> coursesByCategory =
+    Iterable<MapEntry<String, List<Map<String, Object>>>> coursesByCategory =
         getCoursesByCategory().entries;
 
     return FakeLoading(
@@ -29,7 +29,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
           bottom: Res.dimen.pageBottomPaddingWithNavBar,
         ),
         itemBuilder: (BuildContext context, int index) {
-          MapEntry<String, List<Map<String, String>>> courseCategory =
+          MapEntry<String, List<Map<String, Object>>> courseCategory =
               coursesByCategory.elementAt(index);
 
           return CourseCategoryItem(
@@ -42,18 +42,18 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Map<String, List<Map<String, String>>> getCoursesByCategory() {
+  Map<String, List<Map<String, Object>>> getCoursesByCategory() {
     // TODO Get courses from API and delete the sample data
 
-    final List<Map<String, String>> allCourses = SampleData.courses;
-    final Map<String, List<Map<String, String>>> result =
-        <String, List<Map<String, String>>>{};
+    final List<Map<String, Object>> allCourses = SampleData.courses;
+    final Map<String, List<Map<String, Object>>> result =
+        <String, List<Map<String, Object>>>{};
 
-    for (Map<String, String> element in allCourses) {
-      String category = element["category"]!;
+    for (Map<String, Object> element in allCourses) {
+      String category = element["category"]! as String;
 
       if (result[category] == null) {
-        result[category] = <Map<String, String>>[];
+        result[category] = <Map<String, Object>>[];
       }
 
       result[category]!.add(element);

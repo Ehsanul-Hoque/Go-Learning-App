@@ -10,7 +10,7 @@ import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 
 class CourseItem extends StatelessWidget {
-  final Map<String, String> course;
+  final Map<String, Object> course;
   final double? width, height;
   final EdgeInsets margin;
 
@@ -45,7 +45,8 @@ class CourseItem extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   MyCachedImage(
-                    imageUrl: course["banner"]!, // TODO Get banner from API
+                    imageUrl:
+                        course["banner"]! as String, // TODO Get banner from API
                   ),
                   Positioned(
                     bottom: -2,
@@ -60,7 +61,7 @@ class CourseItem extends StatelessWidget {
                           bottom: Res.dimen.xsSpacingValue,
                         ),
                         child: Text(
-                          course["price"]!, // TODO Get price from API
+                          "${course["price"]!} ${Res.str.tkDot}", // TODO Get price from API
                           style: Res.textStyles.general.copyWith(
                             fontWeight: FontWeight.w500,
                             color: Res.color.priceColor,
@@ -80,7 +81,7 @@ class CourseItem extends StatelessWidget {
                 horizontal: Res.dimen.msSpacingValue,
               ),
               child: Text(
-                course["title"]!, // TODO Get title from API
+                course["title"]! as String, // TODO Get title from API
                 style: Res.textStyles.labelSmall,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,

@@ -181,9 +181,11 @@ class _AuthPageState extends State<AuthPage> {
                         height: Res.dimen.normalSpacingValue,
                       ),
                       AppButton(
-                        text: isCurrentPageLogInPage
-                            ? Res.str.logIn
-                            : Res.str.signUp,
+                        text: Text(
+                          isCurrentPageLogInPage
+                              ? Res.str.logIn
+                              : Res.str.signUp,
+                        ),
                         onTap: onSubmitTap,
                         borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
                       ),
@@ -216,7 +218,7 @@ class _AuthPageState extends State<AuthPage> {
                         height: Res.dimen.normalSpacingValue,
                       ),
                       AppButton(
-                        text: Res.str.googleLogIn,
+                        text: Text(Res.str.googleLogIn),
                         onTap: onGoogleLogInTap,
                         icon: SvgPicture.asset(
                           Res.assets.icGoogleSvg,

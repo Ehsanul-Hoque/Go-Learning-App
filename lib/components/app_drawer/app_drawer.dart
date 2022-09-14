@@ -56,7 +56,7 @@ class AppDrawer extends StatelessWidget {
               ),
               ...config.drawerItems.map((AppDrawerItemModel item) {
                 return AppButton(
-                  text: item.text,
+                  text: Text(item.text),
                   onTap: item.onTap,
                   icon: Icon(
                     item.iconData,
@@ -72,7 +72,7 @@ class AppDrawer extends StatelessWidget {
                 height: Res.dimen.hugeSpacingValue,
               ),
               AppButton(
-                text: Res.str.logOut,
+                text: Text(Res.str.logOut),
                 onTap: onLogOutTap,
                 icon: Icon(
                   Icons.logout_rounded,

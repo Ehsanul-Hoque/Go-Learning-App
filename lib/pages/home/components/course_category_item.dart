@@ -4,7 +4,7 @@ import "package:flutter/widgets.dart";
 
 class CourseCategoryItem extends StatelessWidget {
   final String title;
-  final List<Map<String, String>> courses;
+  final List<Map<String, Object>> courses;
 
   const CourseCategoryItem({
     Key? key,

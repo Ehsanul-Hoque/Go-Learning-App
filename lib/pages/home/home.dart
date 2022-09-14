@@ -15,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
-  late final Iterable<Map<String, String>> _sampleCourses;
+  late final Iterable<Map<String, Object>> _sampleCourses;
   late final double _courseGridPadding;
   late final double _courseGridHorizontalGap;
   late final double _courseGridVerticalGap;

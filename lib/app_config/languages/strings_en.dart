@@ -28,6 +28,7 @@ class StringsEn implements StringsBase {
 
   final String courses = "Courses";
   final String by = "by";
+  final String tkDot = "Tk.";
 
   final String courseDetails = "Course Details";
   final String coursePlaylist = "Course Playlist";
@@ -37,12 +38,16 @@ class StringsEn implements StringsBase {
   final String instructor = "Instructor";
   final String previewVideo = "Preview Video";
   final String courseContents = "Course Contents";
+  final String applyPromo = "Apply Promo";
+  final String enterPromoHere = "Enter Promo Code Here...";
+  final String buyCourseAt = "Buy This Course At";
 
   /// Messages
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";
   final String passwordTooSmall = "Should be at least 4 characters long.";
   final String passwordsNotMatched = "Passwords do not match.";
+  final String enterPromo = "Please enter a promo.";
 
   /// Sample texts
   final String page1 = "Page 1";

@@ -11,7 +11,7 @@ import "package:flutter_lorem/flutter_lorem.dart";
 import "package:html/dom.dart" as dom show Element;
 
 class CourseDetails extends StatefulWidget {
-  final Map<String, String> course; // TODO Get data from calling activity
+  final Map<String, Object> course; // TODO Get data from calling activity
 
   const CourseDetails({
     Key? key,
@@ -130,7 +130,8 @@ class _CourseDetailsState extends State<CourseDetails>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    widget.course["instructor"] ?? "", // TODO Get from API
+                    (widget.course["instructor"] as String?) ??
+                        "", // TODO Get from API
                     style: Res.textStyles.labelSmall,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -144,7 +145,7 @@ class _CourseDetailsState extends State<CourseDetails>
             ),
           ),
           SliverSizedBox(
-            height: Res.dimen.xxlSpacingValue,
+            height: Res.dimen.pageBottomPaddingWithNavBar,
           ),
         ],
       ),

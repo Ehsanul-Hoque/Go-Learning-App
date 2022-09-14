@@ -17,6 +17,7 @@ class AppColors {
 
   /// Shades of black and grey
   static const Color blackAlpha60 = Color(0x99000000);
+  static const Color whiteAlpha60 = Color(0x99ffffff);
   static const Color grey900 = Color(0xff212121);
   static const Color grey850 =
       Color(0xff303030); // only for background color in dark theme

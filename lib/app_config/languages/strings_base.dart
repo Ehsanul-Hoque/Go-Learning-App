@@ -24,6 +24,7 @@ abstract class StringsBase {
 
   final String courses = "";
   final String by = "";
+  final String tkDot = "";
 
   final String courseDetails = "";
   final String coursePlaylist = "";
@@ -33,12 +34,16 @@ abstract class StringsBase {
   final String instructor = "";
   final String previewVideo = "";
   final String courseContents = "";
+  final String applyPromo = "";
+  final String enterPromoHere = "";
+  final String buyCourseAt = "";
 
   /// Messages
   final String invalidEmail = "";
   final String enterPassword = "";
   final String passwordTooSmall = "";
   final String passwordsNotMatched = "";
+  final String enterPromo = "";
 
   /// Sample texts
   final String page1 = "";

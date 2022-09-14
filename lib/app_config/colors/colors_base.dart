@@ -29,6 +29,7 @@ abstract class ColorsBase {
   final Color buttonHollowBg = AppColors.transparent;
   final Color buttonHollowBorder = AppColors.transparent;
   final Color buttonHollowContent = AppColors.transparent;
+  final Color buttonHollowContent2 = AppColors.transparent;
   final Color iconButton = AppColors.transparent;
   final Color secondaryIconButton = AppColors.transparent;
 
@@ -88,8 +89,10 @@ abstract class ColorsBase {
   final Color videoItemContentLocked = AppColors.transparent;
 
   /// Miscellaneous
+  final Color transparent = AppColors.transparent;
   final Color divider = AppColors.transparent;
   final Color priceColor = AppColors.transparent;
+  final Color strikethroughPriceColor = AppColors.transparent;
   final Color priceBgColor = AppColors.transparent;
 
   /// Private const constructor

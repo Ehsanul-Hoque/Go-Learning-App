@@ -4,7 +4,7 @@ import "package:flutter/widgets.dart";
 
 class AppButton extends StatelessWidget {
   final Widget? icon;
-  final String text;
+  final Widget text;
   final Color? contentColor, backgroundColor;
   final bool tintIconWithContentColor;
   final bool alignCenter;
@@ -78,13 +78,13 @@ class AppButton extends StatelessWidget {
                 width: spaceBetweenIconAndText,
               ),
             ],
-            Text(
-              text,
+            DefaultTextStyle(
               style: Res.textStyles.button.copyWith(
                 color: contentColor,
                 fontSize: fontSize ?? Res.dimen.fontSizeNormal,
               ),
               textAlign: (icon != null) ? TextAlign.start : TextAlign.center,
+              child: text,
             ),
           ],
         ),

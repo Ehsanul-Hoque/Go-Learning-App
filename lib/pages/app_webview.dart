@@ -1,6 +1,5 @@
 import "dart:async";
 
-import "package:app/app_config/colors/app_colors.dart";
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
@@ -47,7 +46,7 @@ class _AppWebView extends State<AppWebView> {
             ) {
               return MyPlatformAppBar(
                 config: MyAppBarConfig(
-                  backgroundColor: AppColors.transparent,
+                  backgroundColor: Res.color.transparent,
                   shadow: const <BoxShadow>[],
                   avatarConfig: MyAppBarAvatarConfig.noAvatar(),
                   title: controllerSnapshot.hasData

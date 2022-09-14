@@ -6,7 +6,9 @@ typedef OnItemChangeListener = void Function(int newIndex);
 
 typedef OnTabChangeListener = OnItemChangeListener;
 
-typedef OnValueChangeListener<T> = void Function(T value);
+typedef OnValueListener<T> = void Function(T value);
+
+typedef OnValueChangeListener<T> = OnValueListener<T>;
 
 typedef OnVideoItemClickListener = void Function(String videoId, bool isLocked);
 

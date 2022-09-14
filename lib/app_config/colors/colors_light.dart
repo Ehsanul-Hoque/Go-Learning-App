@@ -27,11 +27,12 @@ class ColorsLightMode implements ColorsBase {
   final Color inputFieldBg = AppColors.transparent;
 
   /// Buttons
-  final Color buttonFilledBg = AppColors.themeYellowAlpha80;
+  final Color buttonFilledBg = AppColors.themeYellow;
   final Color buttonFilledContent = AppColors.white;
   final Color buttonHollowBg = AppColors.transparent;
   final Color buttonHollowBorder = AppColors.grey300;
   final Color buttonHollowContent = AppColors.black;
+  final Color buttonHollowContent2 = AppColors.grey600;
   final Color iconButton = AppColors.black;
   final Color secondaryIconButton = AppColors.grey600;
 
@@ -91,8 +92,10 @@ class ColorsLightMode implements ColorsBase {
   final Color videoItemContentLocked = AppColors.grey400;
 
   /// Miscellaneous
+  final Color transparent = AppColors.transparent;
   final Color divider = AppColors.grey300;
   final Color priceColor = AppColors.themeBlue;
+  final Color strikethroughPriceColor = AppColors.whiteAlpha60;
   final Color priceBgColor = AppColors.white;
 
   /// const constructor
