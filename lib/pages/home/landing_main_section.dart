@@ -121,6 +121,7 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                         Orientation.portrait);
 
                     return AppBottomNavigationBar(
+                      key: ValueKey<bool>(isPortrait),
                       items: _pageModels.map((PageModel model) {
                         return AppBottomNavigationBarModel(
                           icon: model.icon,

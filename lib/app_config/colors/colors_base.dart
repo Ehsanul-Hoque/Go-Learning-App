@@ -63,6 +63,12 @@ abstract class ColorsBase {
   final Color carousalIndicator = AppColors.transparent;
   final Color carousalIndicatorActive = AppColors.transparent;
 
+  /// SnackBar
+  final Color snackBarHelp = AppColors.transparent;
+  final Color snackBarFailure = AppColors.transparent;
+  final Color snackBarSuccess = AppColors.transparent;
+  final Color snackBarWarning = AppColors.transparent;
+
   /// Shadows
   final Color shadow = AppColors.transparent;
   final Color shadowLighter = AppColors.transparent;
@@ -91,9 +97,11 @@ abstract class ColorsBase {
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
   final Color divider = AppColors.transparent;
-  final Color priceColor = AppColors.transparent;
-  final Color strikethroughPriceColor = AppColors.transparent;
-  final Color priceBgColor = AppColors.transparent;
+  final Color price = AppColors.transparent;
+  final Color strikethroughPrice = AppColors.transparent;
+  final Color priceBg = AppColors.transparent;
+  final Color widgetCheckBoxSelectedShade = AppColors.transparent;
+  final Color contentOnDark = AppColors.transparent;
 
   /// Private const constructor
   const ColorsBase._();

@@ -20,7 +20,7 @@ class ColorsLightMode implements ColorsBase {
   final Color textPrimary = AppColors.grey900;
   final Color textSecondary = AppColors.grey600;
   final Color textTernary = AppColors.grey400;
-  final Color textLink = AppColors.flatBlue;
+  final Color textLink = AppColors.flatBluePeterRiver;
   final Color textError = AppColors.redAccent;
 
   /// Input fields
@@ -66,6 +66,12 @@ class ColorsLightMode implements ColorsBase {
   final Color carousalIndicator = AppColors.grey300;
   final Color carousalIndicatorActive = AppColors.themeYellow;
 
+  /// SnackBar
+  final Color snackBarHelp = AppColors.flatBluePeterRiver;
+  final Color snackBarFailure = AppColors.flatRedAlizarin;
+  final Color snackBarSuccess = AppColors.flatGreenEmerald;
+  final Color snackBarWarning = AppColors.flatOrangeQuinceJelly;
+
   /// Shadows
   final Color shadow = AppColors.shadowGrey;
   final Color shadowLighter = AppColors.shadowLightGrey;
@@ -82,7 +88,7 @@ class ColorsLightMode implements ColorsBase {
   final Color videoBg = AppColors.themeBlue;
   final Color videoProgressIndicator = AppColors.themeYellow;
   final Color videoProgressPlayed = AppColors.themeYellow;
-  final Color videoProgressHandle = AppColors.flatSunflower;
+  final Color videoProgressHandle = AppColors.flatYellowSunflower;
   final Color videoItemBg = AppColors.white;
   final Color videoItemSelectedBg = AppColors.themeYellow;
   final Color videoItemIcon = AppColors.themeYellow;
@@ -94,9 +100,11 @@ class ColorsLightMode implements ColorsBase {
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
   final Color divider = AppColors.grey300;
-  final Color priceColor = AppColors.themeBlue;
-  final Color strikethroughPriceColor = AppColors.whiteAlpha60;
-  final Color priceBgColor = AppColors.white;
+  final Color price = AppColors.themeBlue;
+  final Color strikethroughPrice = AppColors.whiteAlpha60;
+  final Color priceBg = AppColors.white;
+  final Color widgetCheckBoxSelectedShade = AppColors.flatGreenEmeraldAlpha90;
+  final Color contentOnDark = AppColors.white;
 
   /// const constructor
   const ColorsLightMode();

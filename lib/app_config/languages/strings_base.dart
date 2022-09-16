@@ -38,12 +38,23 @@ abstract class StringsBase {
   final String enterPromoHere = "";
   final String buyCourseAt = "";
 
+  final String checkout = "";
+  final String selectPaymentMethod = "";
+  final String bkash = "";
+  final String nagad = "";
+  final String rocket = "";
+  final String pleaseCompleteYour = "";
+  final String paymentTo = "";
+  final String thenFillFormBelow = "";
+
   /// Messages
   final String invalidEmail = "";
   final String enterPassword = "";
   final String passwordTooSmall = "";
   final String passwordsNotMatched = "";
   final String enterPromo = "";
+  final String copied = "";
+  final String numberCopied = "";
 
   /// Sample texts
   final String page1 = "";

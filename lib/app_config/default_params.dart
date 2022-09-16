@@ -45,6 +45,7 @@ class Dimensions {
   final double iconSizeXxs = 12;
   final double iconSizeSmall = 20;
   final double iconSizeNormal = 24;
+  final double iconSizeHuge = 48;
   final double fontSizeSmall = 12;
   final double fontSizeNormal = 14;
   final double fontSizeMedium = 16;
@@ -68,8 +69,18 @@ class Dimensions {
   final double bannerAspectRatioAfterPadding = 16 / 7.5;
   final double videoAspectRatio = 16 / 9;
 
+  /// SnackBar
+  final double snackBarMaxWidth = 480;
+  final double snackBarContentLeftPadding = 64;
+  final double snackBarBubbleImageSize = 42;
+  final double snackBarTopBubbleTop = -20;
+  final double snackBarTopBubbleSize = 48;
+  final double snackBarTopBubbleIconTop = 12;
+  final double snackBarTopBubbleIconHeight = 20;
+
   /// Miscellaneous
   final double homeBannerViewportFraction = 0.8;
+  final double checkoutPaymentMethodsMaxWidth = 348;
 }
 
 class TextStyles {
@@ -163,7 +174,21 @@ class Shadows {
 class Assets {
   const Assets();
 
+  /// Icons
   final String icGoogleSvg = "assets/icons/ic_google.svg";
+  final String icHelpSvg = "assets/icons/ic_help.svg";
+  final String icFailureSvg = "assets/icons/ic_failure.svg";
+  final String icSuccessSvg = "assets/icons/ic_success.svg";
+  final String icWarningSvg = "assets/icons/ic_warning.svg";
+
+  /// Illustrations
   final String loadingSvg = "assets/illustrations/loading.svg";
+  final String talkBubbleSvg = "assets/illustrations/talk_bubble.svg";
+  final String cornerBubblesSvg = "assets/illustrations/corner_bubbles.svg";
+
+  /// Logos
   final String logoSvg = "assets/logo/logo.svg";
+  final String logoBkashPng = "assets/logo/logo_bkash.png";
+  final String logoNagadPng = "assets/logo/logo_nagad.png";
+  final String logoRocketPng = "assets/logo/logo_rocket.png";
 }

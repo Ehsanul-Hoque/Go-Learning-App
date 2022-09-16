@@ -42,12 +42,23 @@ class StringsEn implements StringsBase {
   final String enterPromoHere = "Enter Promo Code Here...";
   final String buyCourseAt = "Buy This Course At";
 
+  final String checkout = "Checkout";
+  final String selectPaymentMethod = "Select Your Payment Method";
+  final String bkash = "Bkash";
+  final String nagad = "Nagad";
+  final String rocket = "Rocket";
+  final String pleaseCompleteYour = "Please complete your";
+  final String paymentTo = "payment to";
+  final String thenFillFormBelow = "then fill up the form below.";
+
   /// Messages
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";
   final String passwordTooSmall = "Should be at least 4 characters long.";
   final String passwordsNotMatched = "Passwords do not match.";
   final String enterPromo = "Please enter a promo.";
+  final String copied = "Copied!";
+  final String numberCopied = "The number has been copied to the clipboard.";
 
   /// Sample texts
   final String page1 = "Page 1";

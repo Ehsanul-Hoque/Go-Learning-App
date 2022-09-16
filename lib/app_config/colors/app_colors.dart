@@ -33,8 +33,12 @@ class AppColors {
   static const Color blueAccent100Alpha50 = Color(0x8082B1FF);
   static const Color green100Alpha50 = Color(0x80C8E6C9);
   static const Color purple100Alpha50 = Color(0x80E1BEE7);
+  static const Color flatGreenEmeraldAlpha90 = Color(0xe62ECC71);
 
   /// Flat colors
-  static const Color flatBlue = Color(0xff74B9FF);
-  static const Color flatSunflower = Color(0xffF1C40F);
+  static const Color flatRedAlizarin = Color(0xffE74C3C);
+  static const Color flatGreenEmerald = Color(0xff2ECC71);
+  static const Color flatBluePeterRiver = Color(0xff3498DB);
+  static const Color flatYellowSunflower = Color(0xffF1C40F);
+  static const Color flatOrangeQuinceJelly = Color(0xffF0932B);
 }

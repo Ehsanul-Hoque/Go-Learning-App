@@ -16,4 +16,10 @@
 - Fix YouTube player warnings (may need to fork the original repo is necessary)
 - Show progress bar when loading a new video in course_before_enroll.dart.
 - YouTube video gets cut when in full screen.
+- YoutubePlayerBuilder WidgetsBinding in course_before_enroll.dart continues to listen
+  even if the app goes to next screens, because the widget is not disposed.
+  So what happens is when user goes to the checkout page and goes to landscape mode,
+  the screen goes in immersive mode because the YoutubePlayerBuilder in the previous screen
+  also goes to landscape mode and the WidgetsBinding listener gets fired. Fix this piece of shit.
+  (Temporary fix is to close the course_before_enroll.dart page when going to the next screen.)
 - 

@@ -11,6 +11,15 @@ class PageNav {
     );
   }
 
+  static void replace<T>(BuildContext context, Widget page) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => page,
+      ),
+    );
+  }
+
   static void back<T>(BuildContext context, {T? result}) {
     Navigator.of(context).pop(result);
   }

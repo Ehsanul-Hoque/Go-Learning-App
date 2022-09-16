@@ -1,10 +1,16 @@
 import "package:app/app_config/resources.dart";
 import "package:app/pages/welcome/auth.dart";
+import "package:flutter/services.dart"
+    show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: SystemUiOverlay.values,
+  );
   runApp(const MyApp());
 }
 

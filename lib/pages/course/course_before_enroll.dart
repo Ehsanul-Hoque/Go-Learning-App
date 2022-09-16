@@ -6,6 +6,7 @@ import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/models/page_model.dart";
+import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
 import "package:app/utils/app_page_nav.dart";
@@ -230,6 +231,14 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   }
 
   void onBuyCourseTap(double finalPrice) {
-    // TODO Go to checkout page
+    _youtubePlayerController.pause();
+
+    PageNav.replace(
+      context,
+      CourseCheckout(
+        course: widget.course,
+        finalPrice: finalPrice,
+      ),
+    );
   }
 }
