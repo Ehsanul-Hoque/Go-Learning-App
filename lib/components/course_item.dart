@@ -64,7 +64,7 @@ class CourseItem extends StatelessWidget {
                           "${course["price"]!} ${Res.str.tkDot}", // TODO Get price from API
                           style: Res.textStyles.general.copyWith(
                             fontWeight: FontWeight.w500,
-                            color: Res.color.priceColor,
+                            color: Res.color.price,
                           ),
                         ),
                       ),

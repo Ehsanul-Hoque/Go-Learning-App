@@ -13,7 +13,7 @@ class PriceBgPainter extends CustomPainter {
     Paint paint = Paint()
       ..style = PaintingStyle.fill
       ..isAntiAlias = true
-      ..color = color ?? Res.color.priceBgColor;
+      ..color = color ?? Res.color.priceBg;
 
     Offset topLeft = Offset(size.height / 1.5, 0);
     Offset bottomLeft = Offset(0, size.height);

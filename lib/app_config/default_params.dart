@@ -132,6 +132,11 @@ class TextStyles {
 
   TextStyle get tabSelectedLabel => button;
 
+  TextStyle get focusing => general.copyWith(
+        color: Res.color.textFocusing,
+        fontWeight: FontWeight.w500,
+      );
+
   TextStyle get small => secondary.copyWith(
         fontSize: Res.dimen.fontSizeSmall,
       );

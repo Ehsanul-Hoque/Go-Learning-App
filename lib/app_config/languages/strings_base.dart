@@ -43,9 +43,15 @@ abstract class StringsBase {
   final String bkash = "";
   final String nagad = "";
   final String rocket = "";
+  final String youHaveToPay = "";
   final String pleaseCompleteYour = "";
   final String paymentTo = "";
   final String thenFillFormBelow = "";
+  final String yourNumberForContact = "";
+  final String transactionId = "";
+  final String numberTheMoneySentFrom = "";
+  final String bdCountryCode = "";
+  final String submit = "";
 
   /// Messages
   final String invalidEmail = "";
@@ -55,6 +61,9 @@ abstract class StringsBase {
   final String enterPromo = "";
   final String copied = "";
   final String numberCopied = "";
+  final String enterPhoneNumber = "";
+  final String enterTransactionId = "";
+  final String enterMfsNumber = "";
 
   /// Sample texts
   final String page1 = "";

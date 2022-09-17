@@ -47,9 +47,16 @@ class StringsEn implements StringsBase {
   final String bkash = "Bkash";
   final String nagad = "Nagad";
   final String rocket = "Rocket";
+  final String youHaveToPay = "You have to pay";
   final String pleaseCompleteYour = "Please complete your";
   final String paymentTo = "payment to";
   final String thenFillFormBelow = "then fill up the form below.";
+  final String yourNumberForContact =
+      "Your Personal Number (For Contact Purpose)";
+  final String transactionId = "transaction ID";
+  final String numberTheMoneySentFrom = "number the money is sent from";
+  final String bdCountryCode = "+880";
+  final String submit = "Submit";
 
   /// Messages
   final String invalidEmail = "The email is invalid.";
@@ -59,6 +66,10 @@ class StringsEn implements StringsBase {
   final String enterPromo = "Please enter a promo.";
   final String copied = "Copied!";
   final String numberCopied = "The number has been copied to the clipboard.";
+  final String enterPhoneNumber = "Please enter your phone number.";
+  final String enterTransactionId = "Please enter the transaction ID.";
+  final String enterMfsNumber =
+      "Please enter the phone number the money is sent from.";
 
   /// Sample texts
   final String page1 = "Page 1";

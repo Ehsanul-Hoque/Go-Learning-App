@@ -66,9 +66,7 @@ class _PromoBuyContainerState extends State<PromoBuyContainer> {
                       style: TextStyle(
                         fontSize: discounted ? null : Res.dimen.fontSizeXl,
                         fontWeight: discounted ? null : FontWeight.w700,
-                        color: discounted
-                            ? Res.color.strikethroughPriceColor
-                            : null,
+                        color: discounted ? Res.color.strikethroughPrice : null,
                         decoration:
                             discounted ? TextDecoration.lineThrough : null,
                       ),

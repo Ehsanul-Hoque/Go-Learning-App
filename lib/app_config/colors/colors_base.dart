@@ -19,6 +19,7 @@ abstract class ColorsBase {
   final Color textTernary = AppColors.transparent;
   final Color textLink = AppColors.transparent;
   final Color textError = AppColors.transparent;
+  final Color textFocusing = AppColors.transparent;
 
   /// Input fields
   final Color inputFieldBg = AppColors.transparent;
