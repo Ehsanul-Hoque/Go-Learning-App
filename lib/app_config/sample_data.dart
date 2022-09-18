@@ -99,4 +99,50 @@ class SampleData {
       "locked": "true",
     },
   ];
+
+  static List<Map<String, Object>> quizzes = <Map<String, Object>>[
+    <String, Object>{
+      "title": "Quiz 1",
+      "time_millis": 11 * 60 * 1000,
+      "min_percent": 80,
+      "positive_mark": 1,
+      "negative_mark": 0.25,
+      "locked": false,
+    },
+    <String, Object>{
+      "title": "Quiz 2",
+      "time_millis": 15 * 60 * 1000,
+      "min_percent": 80,
+      "positive_mark": 1,
+      "negative_mark": 0.25,
+      "locked": true,
+    },
+  ];
+
+  static List<Map<String, Object>> questions = <Map<String, Object>>[
+    <String, Object>{
+      "question": "Who are you?",
+      "op_0": "Amoeba",
+      "op_1": "Human",
+      "op_2": "Fish",
+      "op_3": "Chicken",
+      "correct_index": 1,
+    },
+    <String, Object>{
+      "question": "Where are you from?",
+      "op_0": "Earth",
+      "op_1": "Mars",
+      "op_2": "Jupiter",
+      "correct_index": 0,
+    },
+    <String, Object>{
+      "question": "What is the latest version of iPhone?",
+      "op_0": "10",
+      "op_1": "11",
+      "op_2": "12",
+      "op_3": "13",
+      "op_4": "14",
+      "correct_index": 4,
+    },
+  ];
 }

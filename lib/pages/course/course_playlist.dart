@@ -2,13 +2,13 @@ import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/components/video_item.dart";
-import "package:app/utils/typedefs.dart";
+import "package:app/utils/typedefs.dart" show OnContentItemClickListener;
 import "package:flutter/widgets.dart";
 
 class CoursePlaylist extends StatefulWidget {
   final Map<String, Object> course; // TODO Get data from calling activity
   final String? selectedVideoId;
-  final OnVideoItemClickListener onVideoClick;
+  final OnContentItemClickListener onVideoClick;
 
   const CoursePlaylist({
     Key? key,

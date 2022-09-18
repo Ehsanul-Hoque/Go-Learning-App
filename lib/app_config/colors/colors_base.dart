@@ -82,18 +82,26 @@ abstract class ColorsBase {
   /// Splash
   final Color splash = AppColors.transparent;
 
+  /// Content
+  final Color contentItemBg = AppColors.transparent;
+  final Color contentItemSelectedBg = AppColors.transparent;
+  final Color contentItemText = AppColors.transparent;
+  final Color contentItemLock = AppColors.transparent;
+  final Color contentItemContentSelected = AppColors.transparent;
+  final Color contentItemContentLocked = AppColors.transparent;
+
   /// Video
   final Color videoBg = AppColors.transparent;
   final Color videoProgressIndicator = AppColors.transparent;
   final Color videoProgressPlayed = AppColors.transparent;
   final Color videoProgressHandle = AppColors.transparent;
-  final Color videoItemBg = AppColors.transparent;
-  final Color videoItemSelectedBg = AppColors.transparent;
   final Color videoItemIcon = AppColors.transparent;
-  final Color videoItemText = AppColors.transparent;
-  final Color videoItemLock = AppColors.transparent;
-  final Color videoItemContentSelected = AppColors.transparent;
-  final Color videoItemContentLocked = AppColors.transparent;
+
+  /// Quiz
+  final Color quizItemIcon = AppColors.transparent;
+
+  /// Resource
+  final Color resourceItemIcon = AppColors.transparent;
 
   /// Miscellaneous
   final Color transparent = AppColors.transparent;

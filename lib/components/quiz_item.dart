@@ -5,18 +5,17 @@ import "package:app/utils/typedefs.dart" show OnContentItemClickListener;
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 
-class VideoItem extends StatelessWidget {
-  final String title, videoId;
-  final bool isLocked, isSelected;
-  final OnContentItemClickListener onVideoClick;
+class QuizItem extends StatelessWidget {
+  final String title, quizId;
+  final bool isLocked;
+  final OnContentItemClickListener onQuizClick;
 
-  const VideoItem({
+  const QuizItem({
     Key? key,
     required this.title,
-    required this.videoId,
+    required this.quizId,
     required this.isLocked,
-    required this.isSelected,
-    required this.onVideoClick,
+    required this.onQuizClick,
   }) : super(key: key);
 
   @override
@@ -26,22 +25,18 @@ class VideoItem extends StatelessWidget {
       margin: EdgeInsets.only(
         bottom: Res.dimen.normalSpacingValue,
       ),
-      backgroundColor: isSelected
-          ? Res.color.contentItemSelectedBg
-          : Res.color.contentItemBg,
+      backgroundColor: Res.color.contentItemBg,
       child: SplashEffect(
-        onTap: () => onVideoClick(videoId, isLocked),
+        onTap: () => onQuizClick(quizId, isLocked),
         child: Padding(
           padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
           child: Row(
             children: <Widget>[
               Icon(
-                CupertinoIcons.play_arrow_solid,
+                CupertinoIcons.pencil_circle,
                 color: isLocked
                     ? Res.color.contentItemContentLocked
-                    : isSelected
-                        ? Res.color.contentItemContentSelected
-                        : Res.color.videoItemIcon,
+                    : Res.color.quizItemIcon,
               ),
               SizedBox(
                 width: Res.dimen.normalSpacingValue,
@@ -52,9 +47,7 @@ class VideoItem extends StatelessWidget {
                   style: Res.textStyles.labelSmall.copyWith(
                     color: isLocked
                         ? Res.color.contentItemContentLocked
-                        : isSelected
-                            ? Res.color.contentItemContentSelected
-                            : Res.color.contentItemText,
+                        : Res.color.contentItemText,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -66,9 +59,7 @@ class VideoItem extends StatelessWidget {
                 ),
                 Icon(
                   CupertinoIcons.lock_circle,
-                  color: isSelected
-                      ? Res.color.contentItemContentSelected
-                      : Res.color.contentItemLock,
+                  color: Res.color.contentItemLock,
                 ),
               ],
             ],

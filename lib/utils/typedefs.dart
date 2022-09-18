@@ -10,7 +10,7 @@ typedef OnValueListener<T> = void Function(T value);
 
 typedef OnValueChangeListener<T> = OnValueListener<T>;
 
-typedef OnVideoItemClickListener = void Function(String videoId, bool isLocked);
+typedef OnContentItemClickListener = void Function(String contentId, bool isLocked);
 
 typedef OnAnimationListener = void Function();
 

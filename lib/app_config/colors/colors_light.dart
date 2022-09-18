@@ -85,18 +85,26 @@ class ColorsLightMode implements ColorsBase {
   /// Splash
   final Color splash = AppColors.themeBlueAlpha10;
 
+  /// Content
+  final Color contentItemBg = AppColors.white;
+  final Color contentItemSelectedBg = AppColors.themeYellow;
+  final Color contentItemText = AppColors.grey900;
+  final Color contentItemLock = AppColors.grey600;
+  final Color contentItemContentSelected = AppColors.white;
+  final Color contentItemContentLocked = AppColors.grey400;
+
   /// Video
   final Color videoBg = AppColors.themeBlue;
   final Color videoProgressIndicator = AppColors.themeYellow;
   final Color videoProgressPlayed = AppColors.themeYellow;
   final Color videoProgressHandle = AppColors.flatYellowSunflower;
-  final Color videoItemBg = AppColors.white;
-  final Color videoItemSelectedBg = AppColors.themeYellow;
   final Color videoItemIcon = AppColors.themeYellow;
-  final Color videoItemText = AppColors.grey900;
-  final Color videoItemLock = AppColors.grey600;
-  final Color videoItemContentSelected = AppColors.white;
-  final Color videoItemContentLocked = AppColors.grey400;
+
+  /// Quiz
+  final Color quizItemIcon = AppColors.flatBluePeterRiver;
+
+  /// Resource
+  final Color resourceItemIcon = AppColors.flatPurpleAmethyst;
 
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
