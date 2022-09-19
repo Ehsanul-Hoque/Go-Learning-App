@@ -13,8 +13,11 @@ class ColorsLightMode implements ColorsBase {
   /// Containers
   final Color containerBg = AppColors.white;
   final Color infoContainerBg1 = AppColors.blueAccent100Alpha50;
-  final Color infoContainerBg2 = AppColors.green100Alpha50;
+  final Color infoContainerBg2 = AppColors.flatGreenEmeraldAlpha50;
   final Color infoContainerBg3 = AppColors.purple100Alpha50;
+  final Color infoContainerBg4 = AppColors.redAccent100Alpha50;
+  final Color infoContainerBg5 = AppColors.grey600Alpha50;
+  final Color infoContainerBg6 = AppColors.blueGrey300Alpha50;
 
   /// Texts
   final Color textPrimary = AppColors.grey900;

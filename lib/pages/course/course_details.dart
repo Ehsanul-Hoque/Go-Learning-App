@@ -46,33 +46,35 @@ class _CourseDetailsState extends State<CourseDetails>
             height: Res.dimen.normalSpacingValue,
           ),
           SliverToBoxAdapter(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: TwoLineInfo(
-                    // TODO Get data from API
-                    topText: "18",
-                    bottomText: Res.str.videosAllCaps,
-                    backgroundColor: Res.color.infoContainerBg1,
+            child: IntrinsicHeight(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TwoLineInfo(
+                      // TODO Get data from API
+                      topText: "18",
+                      bottomText: Res.str.videosAllCaps,
+                      backgroundColor: Res.color.infoContainerBg1,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: TwoLineInfo(
-                    // TODO Get data from API
-                    topText: "20",
-                    bottomText: Res.str.quizzesAllCaps,
-                    backgroundColor: Res.color.infoContainerBg2,
+                  Expanded(
+                    child: TwoLineInfo(
+                      // TODO Get data from API
+                      topText: "20",
+                      bottomText: Res.str.quizzesAllCaps,
+                      backgroundColor: Res.color.infoContainerBg2,
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: TwoLineInfo(
-                    // TODO Get data from API
-                    topText: "3.25h",
-                    bottomText: Res.str.runtimeAllCaps,
-                    backgroundColor: Res.color.infoContainerBg3,
+                  Expanded(
+                    child: TwoLineInfo(
+                      // TODO Get data from API
+                      topText: "3.25h",
+                      bottomText: Res.str.runtimeAllCaps,
+                      backgroundColor: Res.color.infoContainerBg3,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           SliverToBoxAdapter(

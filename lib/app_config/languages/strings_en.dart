@@ -58,6 +58,17 @@ class StringsEn implements StringsBase {
   final String bdCountryCode = "+880";
   final String submit = "Submit";
 
+  final String questions = "Questions";
+  final String minutes = "Minutes";
+  final String positiveMarksPerCorrectAns =
+      "Positive Marks\nper Correct Answer";
+  final String negativeMarksPerWrongAns = "Negative Marks\nper Wrong Answer";
+  final String marksPerBlankAns = "Marks\nper Blank Answer";
+  final String minMarksToPass = "Minimum Marks\nNeeded to Pass";
+  final String instructions = "Instructions";
+  final String bestOfLuck = "Best of Luck!";
+  final String letsStart = "Let's Start";
+
   /// Messages
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";

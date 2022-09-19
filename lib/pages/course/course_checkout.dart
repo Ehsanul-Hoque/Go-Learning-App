@@ -119,154 +119,171 @@ class _CourseCheckoutState extends State<CourseCheckout> {
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      " ${Res.str.selectPaymentMethod}",
-                      style: Res.textStyles.label,
+                child: Center(
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: Res.dimen.maxWidthNormal,
                     ),
-                    SizedBox(
-                      height: Res.dimen.normalSpacingValue,
-                    ),
-                    Center(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          maxWidth: Res.dimen.checkoutPaymentMethodsMaxWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          " ${Res.str.selectPaymentMethod}",
+                          style: Res.textStyles.label,
                         ),
-                        child: Row(
-                          children: _mfsModels
-                              .asMap()
-                              .map((int index, PageModel value) {
-                                return MapEntry<int, Widget>(
-                                  index,
-                                  Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: Res.dimen.smallSpacingValue,
+                        SizedBox(
+                          height: Res.dimen.normalSpacingValue,
+                        ),
+                        Center(
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth:
+                                  Res.dimen.checkoutPaymentMethodsMaxWidth,
+                            ),
+                            child: Row(
+                              children: _mfsModels
+                                  .asMap()
+                                  .map((int index, PageModel value) {
+                                    return MapEntry<int, Widget>(
+                                      index,
+                                      Expanded(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                Res.dimen.smallSpacingValue,
+                                          ),
+                                          child: WidgetCheckbox(
+                                            selected: selectedMfsIndex == index,
+                                            image: value.icon,
+                                            onTap: () =>
+                                                updateSelectedMblIndex(index),
+                                          ),
+                                        ),
                                       ),
-                                      child: WidgetCheckbox(
-                                        selected: selectedMfsIndex == index,
-                                        image: value.icon,
-                                        onTap: () =>
-                                            updateSelectedMblIndex(index),
-                                      ),
-                                    ),
+                                    );
+                                  })
+                                  .values
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: Res.dimen.xxlSpacingValue,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Res.dimen.xsSpacingValue,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(text: "${Res.str.youHaveToPay} "),
+                                TextSpan(
+                                  text: widget.finalPrice.toStringAsFixed(2),
+                                  style:
+                                      TextStyle(color: Res.color.textFocusing),
+                                ),
+                                TextSpan(text: " ${Res.str.tkDot}"),
+                              ],
+                            ),
+                            style: Res.textStyles.label,
+                          ),
+                        ),
+                        SizedBox(
+                          height: Res.dimen.xxlSpacingValue,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Res.dimen.xsSpacingValue,
+                          ),
+                          child: Text.rich(
+                            TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "${Res.str.pleaseCompleteYour} ",
+                                ),
+                                TextSpan(
+                                  text: selectedMfsName.toUpperCase(),
+                                  style: TextStyle(color: Res.color.textLink),
+                                ),
+                                TextSpan(text: " ${Res.str.paymentTo} "),
+                                TextSpan(
+                                  text: selectedMfsNumber,
+                                  style: TextStyle(color: Res.color.textLink),
+                                  recognizer: onMerchantNumberTapGesture(
+                                    selectedMfsNumber,
                                   ),
-                                );
-                              })
-                              .values
-                              .toList(),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: Res.dimen.xxlSpacingValue,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: Res.dimen.xsSpacingValue,
-                      ),
-                      child: Text.rich(
-                        TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(text: "${Res.str.youHaveToPay} "),
-                            TextSpan(
-                              text: widget.finalPrice.toStringAsFixed(2),
-                              style: TextStyle(color: Res.color.textFocusing),
+                                ),
+                                TextSpan(text: " ${Res.str.thenFillFormBelow}"),
+                              ],
                             ),
-                            TextSpan(text: " ${Res.str.tkDot}"),
-                          ],
-                        ),
-                        style: Res.textStyles.label,
-                      ),
-                    ),
-                    SizedBox(
-                      height: Res.dimen.xxlSpacingValue,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: Res.dimen.xsSpacingValue,
-                      ),
-                      child: Text.rich(
-                        TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(text: "${Res.str.pleaseCompleteYour} "),
-                            TextSpan(
-                              text: selectedMfsName.toUpperCase(),
-                              style: TextStyle(color: Res.color.textLink),
-                            ),
-                            TextSpan(text: " ${Res.str.paymentTo} "),
-                            TextSpan(
-                              text: selectedMfsNumber,
-                              style: TextStyle(color: Res.color.textLink),
-                              recognizer:
-                                  onMerchantNumberTapGesture(selectedMfsNumber),
-                            ),
-                            TextSpan(text: " ${Res.str.thenFillFormBelow}"),
-                          ],
-                        ),
-                        style: Res.textStyles.label,
-                      ),
-                    ),
-                    SizedBox(
-                      height: Res.dimen.xxlSpacingValue,
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          AppFormField(
-                            appInputField: AppInputField(
-                              textEditingController:
-                                  _personalNumberTextController,
-                              label: Res.str.yourNumberForContact,
-                              prefixText: "${Res.str.bdCountryCode} ",
-                              textInputType: TextInputType.phone,
-                              goNextOnComplete: true,
-                              borderRadius: Res.dimen.defaultBorderRadiusValue,
-                              maxLength: 15,
-                              validator: onPersonalNumberValidation,
-                            ),
+                            style: Res.textStyles.label,
                           ),
-                          AppFormField(
-                            appInputField: AppInputField(
-                              textEditingController:
-                                  _transactionIdTextController,
-                              label: "${selectedMfsName.toUpperCase()}"
-                                  " ${Res.str.transactionId}",
-                              textInputType: TextInputType.text,
-                              goNextOnComplete: true,
-                              borderRadius: Res.dimen.defaultBorderRadiusValue,
-                              maxLength: 100,
-                              validator: onTransactionIdValidation,
-                            ),
+                        ),
+                        SizedBox(
+                          height: Res.dimen.xxlSpacingValue,
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              AppFormField(
+                                appInputField: AppInputField(
+                                  textEditingController:
+                                      _personalNumberTextController,
+                                  label: Res.str.yourNumberForContact,
+                                  prefixText: "${Res.str.bdCountryCode} ",
+                                  textInputType: TextInputType.phone,
+                                  goNextOnComplete: true,
+                                  borderRadius:
+                                      Res.dimen.defaultBorderRadiusValue,
+                                  maxLength: 15,
+                                  validator: onPersonalNumberValidation,
+                                ),
+                              ),
+                              AppFormField(
+                                appInputField: AppInputField(
+                                  textEditingController:
+                                      _transactionIdTextController,
+                                  label: "${selectedMfsName.toUpperCase()}"
+                                      " ${Res.str.transactionId}",
+                                  textInputType: TextInputType.text,
+                                  goNextOnComplete: true,
+                                  borderRadius:
+                                      Res.dimen.defaultBorderRadiusValue,
+                                  maxLength: 100,
+                                  validator: onTransactionIdValidation,
+                                ),
+                              ),
+                              AppFormField(
+                                appInputField: AppInputField(
+                                  textEditingController:
+                                      _mfsNumberTextController,
+                                  label: "${selectedMfsName.toUpperCase()}"
+                                      " ${Res.str.numberTheMoneySentFrom}",
+                                  prefixText: "${Res.str.bdCountryCode} ",
+                                  textInputType: TextInputType.phone,
+                                  goNextOnComplete: false,
+                                  borderRadius:
+                                      Res.dimen.defaultBorderRadiusValue,
+                                  maxLength: 15,
+                                  validator: onMfsNumberValidation,
+                                ),
+                              ),
+                            ],
                           ),
-                          AppFormField(
-                            appInputField: AppInputField(
-                              textEditingController: _mfsNumberTextController,
-                              label: "${selectedMfsName.toUpperCase()}"
-                                  " ${Res.str.numberTheMoneySentFrom}",
-                              prefixText: "${Res.str.bdCountryCode} ",
-                              textInputType: TextInputType.phone,
-                              goNextOnComplete: false,
-                              borderRadius: Res.dimen.defaultBorderRadiusValue,
-                              maxLength: 15,
-                              validator: onMfsNumberValidation,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: Res.dimen.normalSpacingValue,
+                        ),
+                        AppButton(
+                          text: Text(Res.str.submit),
+                          onTap: onSubmitTap,
+                          borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: Res.dimen.normalSpacingValue,
-                    ),
-                    AppButton(
-                      text: Text(Res.str.submit),
-                      onTap: onSubmitTap,
-                      borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

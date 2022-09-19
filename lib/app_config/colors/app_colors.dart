@@ -31,8 +31,11 @@ class AppColors {
 
   /// Shades of other colors
   static const Color blueAccent100Alpha50 = Color(0x8082B1FF);
-  static const Color green100Alpha50 = Color(0x80C8E6C9);
   static const Color purple100Alpha50 = Color(0x80E1BEE7);
+  static const Color redAccent100Alpha50 = Color(0x80FF8A80);
+  static const Color grey600Alpha50 = Color(0x80BDBDBD);
+  static const Color flatGreenEmeraldAlpha50 = Color(0x802ECC71);
+  static const Color blueGrey300Alpha50 = Color(0x8090A4AE);
   static const Color flatGreenEmeraldAlpha90 = Color(0xe62ECC71);
 
   /// Flat colors

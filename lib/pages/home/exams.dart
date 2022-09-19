@@ -4,6 +4,8 @@ import "package:app/components/app_snack_bar_content/app_snack_bar_content.dart"
 import "package:app/components/app_snack_bar_content/enums/app_snack_bar_content_type.dart";
 import "package:app/components/fake_loading.dart";
 import "package:app/components/quiz_item.dart";
+import "package:app/pages/quiz/quiz_intro.dart";
+import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/widgets.dart";
 
@@ -34,7 +36,7 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
           // TODO Get quizzes from API
           return QuizItem(
             title: item["title"]! as String, // TODO Get from API
-            quizId: "abcd1234", // TODO Get from API
+            quizId: item["id"]! as String, // TODO Get from API
             isLocked: item["locked"]! as bool, // TODO Get from API
             onQuizClick: onQuizClick,
           );
@@ -53,7 +55,14 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
         ),
       );
     } else {
-      // TODO Go to quiz page
+      PageNav.to(
+        context,
+        QuizIntro(
+          quiz: SampleData.quizzes.firstWhere((Map<String, Object> element) {
+            return element["id"] == quizId;
+          }),
+        ),
+      );
     }
   }
 }

@@ -79,6 +79,8 @@ class Dimensions {
   final double snackBarTopBubbleIconHeight = 20;
 
   /// Miscellaneous
+  final double maxWidthSmall = 348;
+  final double maxWidthNormal = 512;
   final double homeBannerViewportFraction = 0.8;
   final double checkoutPaymentMethodsMaxWidth = 348;
 }
@@ -137,7 +139,7 @@ class TextStyles {
         fontWeight: FontWeight.w500,
       );
 
-  TextStyle get small => secondary.copyWith(
+  TextStyle get small => general.copyWith(
         fontSize: Res.dimen.fontSizeSmall,
       );
 

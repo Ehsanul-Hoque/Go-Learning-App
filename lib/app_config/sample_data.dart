@@ -102,14 +102,16 @@ class SampleData {
 
   static List<Map<String, Object>> quizzes = <Map<String, Object>>[
     <String, Object>{
+      "id": "1",
       "title": "Quiz 1",
-      "time_millis": 11 * 60 * 1000,
+      "time_millis": (11 * 60 * 1000) + (20 * 1000),
       "min_percent": 80,
       "positive_mark": 1,
       "negative_mark": 0.25,
       "locked": false,
     },
     <String, Object>{
+      "id": "2",
       "title": "Quiz 2",
       "time_millis": 15 * 60 * 1000,
       "min_percent": 80,

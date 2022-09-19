@@ -53,6 +53,16 @@ abstract class StringsBase {
   final String bdCountryCode = "";
   final String submit = "";
 
+  final String questions = "";
+  final String minutes = "";
+  final String positiveMarksPerCorrectAns = "";
+  final String negativeMarksPerWrongAns = "";
+  final String marksPerBlankAns = "";
+  final String minMarksToPass = "";
+  final String instructions = "";
+  final String bestOfLuck = "";
+  final String letsStart = "";
+
   /// Messages
   final String invalidEmail = "";
   final String enterPassword = "";

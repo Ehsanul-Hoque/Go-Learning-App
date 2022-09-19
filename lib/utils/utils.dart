@@ -27,6 +27,21 @@ class Utils {
     }
   }
 
+  static String _twoDigits(int n) => n.toString().padLeft(2, "0");
+
+  static String getMmSsFormat(Duration duration) {
+    String twoDigitMinutes = _twoDigits(duration.inMinutes);
+    String twoDigitSeconds = _twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  static String getHhMmSsFormat(Duration duration) {
+    String twoDigitHours = _twoDigits(duration.inHours);
+    String twoDigitMinutes = _twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = _twoDigits(duration.inSeconds.remainder(60));
+    return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
   static InputDecoration getAppInputDecoration({
     String? hint,
     String? label,
