@@ -24,6 +24,7 @@ class AppColors {
   static const Color grey600 = Color(0xff757575);
   static const Color grey400 = Color(0xffBDBDBD);
   static const Color grey300 = Color(0xffE0E0E0);
+  static const Color grey200 = Color(0xffEEEEEE);
   static const Color grey100 = Color(0xffF5F5F5);
   static const Color veryLightGrey = Color(0xffF5F5F5);
   static const Color shadowGrey = Color(0x4d757575);
@@ -37,6 +38,7 @@ class AppColors {
   static const Color flatGreenEmeraldAlpha50 = Color(0x802ECC71);
   static const Color blueGrey300Alpha50 = Color(0x8090A4AE);
   static const Color flatGreenEmeraldAlpha90 = Color(0xe62ECC71);
+  static const Color flatRedAlizarinAlpha05 = Color(0x0dE74C3C);
 
   /// Flat colors
   static const Color flatRedAlizarin = Color(0xffE74C3C);

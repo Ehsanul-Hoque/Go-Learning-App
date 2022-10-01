@@ -102,6 +102,14 @@ abstract class ColorsBase {
 
   /// Quiz
   final Color quizItemIcon = AppColors.transparent;
+  final Color quizCurrentQuesNumBorder = AppColors.transparent;
+  final Color quizUnansweredQuesNumBg = AppColors.transparent;
+  final Color quizAnsweredQuesNumBg = AppColors.transparent;
+  final Color quizAnsweredQuesNum = AppColors.transparent;
+  final Color quizUnansweredQuesBg = AppColors.transparent;
+  final Color quizAnsweredQuesBg = AppColors.transparent;
+  final Color quizAnsweredQues = AppColors.transparent;
+  final Color quizQuesAnsBottomBorder = AppColors.transparent;
 
   /// Resource
   final Color resourceItemIcon = AppColors.transparent;
@@ -114,6 +122,7 @@ abstract class ColorsBase {
   final Color priceBg = AppColors.transparent;
   final Color widgetCheckBoxSelectedShade = AppColors.transparent;
   final Color contentOnDark = AppColors.transparent;
+  final Color acsvAutoScrollHighlight = AppColors.transparent;
 
   /// Private const constructor
   const ColorsBase._();

@@ -1,14 +1,11 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
+import "package:app/components/html_text.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/components/two_line_info.dart";
-import "package:app/pages/app_webview.dart";
-import "package:app/utils/app_page_nav.dart";
 import "package:flutter/material.dart" show Colors;
 import "package:flutter/widgets.dart";
-import "package:flutter_html/flutter_html.dart";
 import "package:flutter_lorem/flutter_lorem.dart";
-import "package:html/dom.dart" as dom show Element;
 
 class CourseDetails extends StatefulWidget {
   final Map<String, Object> course; // TODO Get data from calling activity
@@ -33,6 +30,12 @@ class _CourseDetailsState extends State<CourseDetails>
     String courseDescriptionHtml = """
         ${lorem().replaceAll("\n", "<br>")}
         <br><br>
+        <h1>H1 Label</h1>
+        <h2>H2 Label</h2>
+        <h3>H3 Label</h3>
+        <h4>H4 Label</h4>
+        <h5>H5 Label</h5>
+        <h6>H6 Label</h6>
         <a href='https://github.com'>websites</a>
       """;
 
@@ -78,33 +81,8 @@ class _CourseDetailsState extends State<CourseDetails>
             ),
           ),
           SliverToBoxAdapter(
-            child: DefaultTextStyle(
-              style: Res.textStyles.general,
-              child: Html(
-                // TODO Extract to component
-                data: courseDescriptionHtml,
-                style: <String, Style>{
-                  "body": Style.fromTextStyle(Res.textStyles.general),
-                  "h3": Style.fromTextStyle(Res.textStyles.label),
-                  "h4": Style.fromTextStyle(Res.textStyles.labelSmall),
-                  "h6": Style.fromTextStyle(Res.textStyles.subLabel),
-                  "a": Style.fromTextStyle(Res.textStyles.link),
-                },
-                onLinkTap: (
-                  String? url,
-                  RenderContext renderContext,
-                  Map<String, String> attributes,
-                  dom.Element? element,
-                ) {
-                  PageNav.to(
-                    context,
-                    AppWebView(
-                      url: url ??
-                          "https://www.golearningbd.com", // TODO Extract the constant
-                    ),
-                  );
-                },
-              ),
+            child: HtmlText(
+              htmlText: courseDescriptionHtml,
             ),
           ),
           SliverSizedBox(

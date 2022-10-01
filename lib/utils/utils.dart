@@ -42,6 +42,8 @@ class Utils {
     return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
   }
 
+  static Color getTransparent(Color color) => color.withOpacity(0);
+
   static InputDecoration getAppInputDecoration({
     String? hint,
     String? label,
@@ -58,7 +60,7 @@ class Utils {
     TextStyle? counterTextStyle,
     Color? hintOrLabelColor,
     Color? errorColor,
-    Color? errorOutlineColor,
+    Color? errorBorderColor,
     Color? enabledBorderColor,
     Color? focusedBorderColor,
     Color? backgroundColor,
@@ -73,7 +75,7 @@ class Utils {
     borderRadius ??= Res.dimen.defaultBorderRadiusValue;
     hintOrLabelColor ??= Res.color.textSecondary;
     errorColor ??= Res.color.textError;
-    errorOutlineColor ??= Res.color.outlineError;
+    errorBorderColor ??= Res.color.outlineError;
     enabledBorderColor ??= Res.color.outline;
     focusedBorderColor ??= Res.color.outlineFocused;
     backgroundColor ??= Res.color.inputFieldBg;
@@ -96,55 +98,35 @@ class Utils {
       labelStyle: Res.textStyles.secondary.copyWith(
         color: hintOrLabelColor,
       ),
-      border: borderThickness == 0
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: enabledBorderColor,
-                width: borderThickness,
-              ),
-            ),
-      focusedBorder: focusedBorderThickness == 0
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: focusedBorderColor,
-                width: focusedBorderThickness,
-              ),
-            ),
+      border: getOutlineInputBorder(
+        enabledBorderColor,
+        borderRadius,
+        borderThickness,
+      ),
+      focusedBorder: getOutlineInputBorder(
+        focusedBorderColor,
+        borderRadius,
+        focusedBorderThickness,
+      ),
       errorStyle: Res.textStyles.error.copyWith(
         color: errorColor,
         fontSize: Res.dimen.fontSizeSmall,
       ),
-      errorBorder: errorBorderThickness == 0
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: errorOutlineColor,
-                width: errorBorderThickness,
-              ),
-            ),
-      focusedErrorBorder: focusedErrorBorderThickness == 0
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: errorOutlineColor,
-                width: focusedErrorBorderThickness,
-              ),
-            ),
-      enabledBorder: borderThickness == 0
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-              borderSide: BorderSide(
-                color: enabledBorderColor,
-                width: borderThickness,
-              ),
-            ),
+      errorBorder: getOutlineInputBorder(
+        errorBorderColor,
+        borderRadius,
+        errorBorderThickness,
+      ),
+      focusedErrorBorder: getOutlineInputBorder(
+        errorBorderColor,
+        borderRadius,
+        focusedErrorBorderThickness,
+      ),
+      enabledBorder: getOutlineInputBorder(
+        enabledBorderColor,
+        borderRadius,
+        borderThickness,
+      ),
       fillColor: backgroundColor,
       filled: true,
       contentPadding: contentPadding,
@@ -160,6 +142,24 @@ class Utils {
       suffixIconConstraints: suffixIconConstraints,
       counterText: showCounterText ? null : "",
       counterStyle: counterTextStyle,
+    );
+  }
+
+  static InputBorder getOutlineInputBorder(
+    Color borderColor,
+    double borderRadius,
+    double borderThickness,
+  ) {
+    if (borderThickness == 0) {
+      return InputBorder.none;
+    }
+
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(borderRadius),
+      borderSide: BorderSide(
+        color: borderColor,
+        width: borderThickness,
+      ),
     );
   }
 }

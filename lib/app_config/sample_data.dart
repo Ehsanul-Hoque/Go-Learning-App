@@ -123,27 +123,42 @@ class SampleData {
 
   static List<Map<String, Object>> questions = <Map<String, Object>>[
     <String, Object>{
+      "question": "What is (H<sub>2</sub>O)<sup>3</sup>?",
+      "options": <String>[
+        "Water",
+        "Ice",
+        "Nothing",
+      ],
+      "correct_index": 1,
+    },
+    <String, Object>{
       "question": "Who are you?",
-      "op_0": "Amoeba",
-      "op_1": "Human",
-      "op_2": "Fish",
-      "op_3": "Chicken",
+      "options": <String>[
+        "Amoeba",
+        "Human",
+        "Fish",
+        "Chicken",
+      ],
       "correct_index": 1,
     },
     <String, Object>{
       "question": "Where are you from?",
-      "op_0": "Earth",
-      "op_1": "Mars",
-      "op_2": "Jupiter",
+      "options": <String>[
+        "Earth",
+        "Mars",
+        "Jupiter",
+      ],
       "correct_index": 0,
     },
     <String, Object>{
       "question": "What is the latest version of iPhone?",
-      "op_0": "10",
-      "op_1": "11",
-      "op_2": "12",
-      "op_3": "13",
-      "op_4": "14",
+      "options": <String>[
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+      ],
       "correct_index": 4,
     },
   ];

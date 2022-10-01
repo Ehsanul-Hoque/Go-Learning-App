@@ -11,7 +11,7 @@ class AppBottomNavigationItem extends StatefulWidget {
   final OnTapListener onTap;
   final Widget icon;
   final String text;
-  final double? iconSize, textSize;
+  final double? textSize;
   final bool showOnlyIconForInactiveItem;
   final Axis axis;
   final bool isSelected;
@@ -30,7 +30,6 @@ class AppBottomNavigationItem extends StatefulWidget {
     this.width,
     this.height,
     this.padding = EdgeInsets.zero,
-    this.iconSize,
     this.textSize,
     this.showOnlyIconForInactiveItem = true,
     this.axis = Axis.horizontal,
@@ -69,7 +68,6 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
         widget.animationDuration ?? Res.durations.defaultDuration;
     animationCurve = widget.animationCurve ?? Res.curves.defaultCurve;
 
-    iconSize = widget.iconSize ?? Res.dimen.iconSizeNormal;
     textSize = widget.textSize ?? Res.dimen.fontSizeNormal;
     spaceBetweenIconAndText =
         widget.spaceBetweenIconAndText ?? Res.dimen.xsSpacingValue;
@@ -151,11 +149,7 @@ class _AppBottomNavigationItemState extends State<AppBottomNavigationItem>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SizedBox(
-                width: iconSize,
-                height: iconSize,
-                child: widget.icon,
-              ),
+              widget.icon,
               widget.showOnlyIconForInactiveItem
                   ? AnimatedSizeContainer(
                       animateForward: widget.isSelected,

@@ -105,6 +105,14 @@ class ColorsLightMode implements ColorsBase {
 
   /// Quiz
   final Color quizItemIcon = AppColors.flatBluePeterRiver;
+  final Color quizCurrentQuesNumBorder = AppColors.themeYellow;
+  final Color quizUnansweredQuesNumBg = AppColors.grey300;
+  final Color quizAnsweredQuesNumBg = AppColors.themeYellow;
+  final Color quizAnsweredQuesNum = AppColors.white;
+  final Color quizUnansweredQuesBg = AppColors.grey300;
+  final Color quizAnsweredQuesBg = AppColors.themeYellow;
+  final Color quizAnsweredQues = AppColors.white;
+  final Color quizQuesAnsBottomBorder = AppColors.grey400;
 
   /// Resource
   final Color resourceItemIcon = AppColors.flatPurpleAmethyst;
@@ -117,6 +125,7 @@ class ColorsLightMode implements ColorsBase {
   final Color priceBg = AppColors.white;
   final Color widgetCheckBoxSelectedShade = AppColors.flatGreenEmeraldAlpha90;
   final Color contentOnDark = AppColors.white;
+  final Color acsvAutoScrollHighlight = AppColors.flatRedAlizarinAlpha05;
 
   /// const constructor
   const ColorsLightMode();

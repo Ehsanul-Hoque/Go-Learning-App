@@ -28,7 +28,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
       cursorColor,
       hintOrLabelColor,
       errorColor,
-      errorOutlineColor,
+      errorBorderColor,
       enabledBorderColor,
       focusedBorderColor;
   final Color? backgroundColor;
@@ -68,7 +68,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
     this.cursorColor,
     this.hintOrLabelColor,
     this.errorColor,
-    this.errorOutlineColor,
+    this.errorBorderColor,
     this.enabledBorderColor,
     this.focusedBorderColor,
     this.backgroundColor,
@@ -126,7 +126,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
         suffixIconConstraints: suffixIconConstraints,
         hintOrLabelColor: hintOrLabelColor,
         errorColor: errorColor,
-        errorOutlineColor: errorOutlineColor,
+        errorBorderColor: errorBorderColor,
         enabledBorderColor: enabledBorderColor,
         focusedBorderColor: focusedBorderColor,
         backgroundColor: backgroundColor,

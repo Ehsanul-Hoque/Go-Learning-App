@@ -22,4 +22,6 @@
   the screen goes in immersive mode because the YoutubePlayerBuilder in the previous screen
   also goes to landscape mode and the WidgetsBinding listener gets fired. Fix this piece of shit.
   (Temporary fix is to close the course_before_enroll.dart page when going to the next screen.)
+- Show large image on image tap in html_text.dart
+- Change page navigation to named routes
 - 

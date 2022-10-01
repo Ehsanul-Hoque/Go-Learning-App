@@ -1,4 +1,5 @@
 import "package:flutter/widgets.dart" show BuildContext, Widget;
+import "package:scroll_to_index/scroll_to_index.dart" show AutoScrollController;
 
 typedef OnTapListener = void Function();
 
@@ -26,4 +27,14 @@ typedef ErrorBuilder = Widget Function(
   BuildContext context,
   String url,
   dynamic error,
+);
+
+typedef AcsvSliversBuilder = List<Widget> Function(
+  AutoScrollController autoScrollController,
+);
+
+typedef AppInViewNotifierWidgetBuilder = Widget Function(
+  BuildContext context,
+  bool isInView,
+  Widget child,
 );

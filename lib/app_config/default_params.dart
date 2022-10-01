@@ -51,6 +51,7 @@ class Dimensions {
   final double fontSizeMedium = 16;
   final double fontSizeLarge = 18;
   final double fontSizeXl = 20;
+  final double fontSizeXXl = 22;
   final double fontSizeXXXl = 24;
   final double pageLoadingSize = 200;
   final double appBarAvatarRadius = 30;
@@ -83,6 +84,10 @@ class Dimensions {
   final double maxWidthNormal = 512;
   final double homeBannerViewportFraction = 0.8;
   final double checkoutPaymentMethodsMaxWidth = 348;
+  final double quizCurrentQuesNumBorderThickness = 2;
+  final double inViewTopLimitFraction = 0.4;
+  final double inViewBottomLimitFraction = 1.1;
+  final double quizQuesBottomBorderToMaxWidthRatio = 1.5;
 }
 
 class TextStyles {
@@ -95,13 +100,9 @@ class TextStyles {
         height: 1.2,
       );
 
-  TextStyle get secondary => general.copyWith(
-        color: Res.color.textSecondary,
-      );
+  TextStyle get secondary => general.copyWith(color: Res.color.textSecondary);
 
-  TextStyle get ternary => general.copyWith(
-        color: Res.color.textTernary,
-      );
+  TextStyle get ternary => general.copyWith(color: Res.color.textTernary);
 
   TextStyle get header => general.copyWith(
         fontSize: Res.dimen.fontSizeXXXl,
@@ -113,9 +114,8 @@ class TextStyles {
         fontWeight: FontWeight.w500,
       );
 
-  TextStyle get labelSmall => general.copyWith(
-        fontSize: Res.dimen.fontSizeMedium,
-      );
+  TextStyle get labelSmall =>
+      general.copyWith(fontSize: Res.dimen.fontSizeMedium);
 
   TextStyle get subLabel => general;
 
@@ -124,14 +124,10 @@ class TextStyles {
         fontWeight: FontWeight.w500,
       );
 
-  TextStyle get error => general.copyWith(
-        color: Res.color.textError,
-      );
+  TextStyle get error => general.copyWith(color: Res.color.textError);
 
-  TextStyle get button => general.copyWith(
-        fontWeight: FontWeight.w500,
-      );
-
+  TextStyle get button => general.copyWith(fontWeight: FontWeight.w500);
+  TextStyle get buttonBold => general.copyWith(fontWeight: FontWeight.bold);
   TextStyle get tabSelectedLabel => button;
 
   TextStyle get focusing => general.copyWith(
@@ -139,13 +135,15 @@ class TextStyles {
         fontWeight: FontWeight.w500,
       );
 
-  TextStyle get small => general.copyWith(
-        fontSize: Res.dimen.fontSizeSmall,
-      );
+  TextStyle get small => general.copyWith(fontSize: Res.dimen.fontSizeSmall);
+  TextStyle get smallThick => small.copyWith(fontWeight: FontWeight.w500);
 
-  TextStyle get smallThick => small.copyWith(
-        fontWeight: FontWeight.w500,
-      );
+  TextStyle get h1 => general.copyWith(fontSize: Res.dimen.fontSizeXXXl);
+  TextStyle get h2 => general.copyWith(fontSize: Res.dimen.fontSizeXXl);
+  TextStyle get h3 => general.copyWith(fontSize: Res.dimen.fontSizeXl);
+  TextStyle get h4 => general.copyWith(fontSize: Res.dimen.fontSizeLarge);
+  TextStyle get h5 => general.copyWith(fontSize: Res.dimen.fontSizeMedium);
+  TextStyle get h6 => general.copyWith(fontSize: Res.dimen.fontSizeNormal);
 }
 
 class Durations {

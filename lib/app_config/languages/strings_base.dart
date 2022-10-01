@@ -63,6 +63,8 @@ abstract class StringsBase {
   final String bestOfLuck = "";
   final String letsStart = "";
 
+  final String firstAlphabet = "";
+
   /// Messages
   final String invalidEmail = "";
   final String enterPassword = "";

@@ -7,6 +7,7 @@ class AppContainer extends StatelessWidget {
   final BoxConstraints? constraints;
   final Clip? clip;
   final Color? backgroundColor;
+  final BoxShape shape;
   final BoxBorder? border;
   final BorderRadius? borderRadius;
   final List<BoxShadow>? shadow;
@@ -23,6 +24,7 @@ class AppContainer extends StatelessWidget {
     this.constraints,
     this.clip,
     this.backgroundColor,
+    this.shape = BoxShape.rectangle,
     this.border,
     this.borderRadius,
     this.shadow,
@@ -47,9 +49,12 @@ class AppContainer extends StatelessWidget {
         clipBehavior: clip ?? Clip.antiAlias,
         decoration: BoxDecoration(
           color: backgroundColor ?? Res.color.containerBg,
+          shape: shape,
           border: border,
-          borderRadius: borderRadius ??
-              BorderRadius.circular(Res.dimen.defaultBorderRadiusValue),
+          borderRadius: (shape != BoxShape.circle)
+              ? (borderRadius ??
+                  BorderRadius.circular(Res.dimen.defaultBorderRadiusValue))
+              : null,
           boxShadow: shadow ??
               <BoxShadow>[
                 Res.shadows.normal,
@@ -67,9 +72,12 @@ class AppContainer extends StatelessWidget {
         clipBehavior: clip ?? Clip.antiAlias,
         decoration: BoxDecoration(
           color: backgroundColor ?? Res.color.containerBg,
+          shape: shape,
           border: border,
-          borderRadius: borderRadius ??
-              BorderRadius.circular(Res.dimen.defaultBorderRadiusValue),
+          borderRadius: (shape != BoxShape.circle)
+              ? (borderRadius ??
+                  BorderRadius.circular(Res.dimen.defaultBorderRadiusValue))
+              : null,
           boxShadow: shadow ??
               <BoxShadow>[
                 Res.shadows.normal,

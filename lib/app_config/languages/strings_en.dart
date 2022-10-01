@@ -69,6 +69,8 @@ class StringsEn implements StringsBase {
   final String bestOfLuck = "Best of Luck!";
   final String letsStart = "Let's Start";
 
+  final String firstAlphabet = "a";
+
   /// Messages
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";

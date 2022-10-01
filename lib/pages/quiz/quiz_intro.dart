@@ -5,11 +5,17 @@ import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
 import "package:app/components/two_line_info.dart";
 import "package:app/models/two_line_info_model.dart";
+import "package:app/pages/quiz/models/quiz_result_model.dart";
+import "package:app/components/advanced_custom_scroll_view/models/acsv_scroll_model.dart";
+import "package:app/pages/quiz/quiz.dart";
 import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/material.dart" show IconButton, Icons;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
+import "package:provider/provider.dart"
+    show ChangeNotifierProvider, MultiProvider;
+import "package:provider/single_child_widget.dart";
 
 class QuizIntro extends StatefulWidget {
   final Map<String, Object> quiz;
@@ -181,6 +187,25 @@ class _QuizIntroState extends State<QuizIntro> {
   }
 
   void onStartTap() {
-    // TODO Go to quiz page
+    PageNav.to(
+      context,
+      MultiProvider(
+        providers: <SingleChildWidget>[
+          ChangeNotifierProvider<AcsvScrollModel>(
+            create: (BuildContext context) => AcsvScrollModel(),
+          ),
+          ChangeNotifierProvider<QuizResultModel>(
+            create: (BuildContext context) => QuizResultModel(
+              totalQuestions: SampleData.questions.length,
+              // TODO Get questions from API
+            ),
+          ),
+        ],
+        child: Quiz(
+          quiz: widget.quiz,
+          questions: SampleData.questions, // TODO Get questions from API
+        ),
+      ),
+    );
   }
 }
