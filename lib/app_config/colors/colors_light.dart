@@ -112,7 +112,6 @@ class ColorsLightMode implements ColorsBase {
   final Color quizUnansweredQuesBg = AppColors.grey300;
   final Color quizAnsweredQuesBg = AppColors.themeYellow;
   final Color quizAnsweredQues = AppColors.white;
-  final Color quizQuesAnsBottomBorder = AppColors.grey400;
 
   /// Resource
   final Color resourceItemIcon = AppColors.flatPurpleAmethyst;

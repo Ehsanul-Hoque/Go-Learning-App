@@ -89,7 +89,6 @@ class _QuizIntroState extends State<QuizIntro> {
               config: MyAppBarConfig(
                 backgroundColor: Res.color.appBarBgTransparent,
                 shadow: const <BoxShadow>[],
-                avatarConfig: MyAppBarAvatarConfig.noAvatar(),
                 title: Text(
                   widget.quiz["title"]! as String,
                 ), // TODO Get title from API

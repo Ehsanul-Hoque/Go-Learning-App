@@ -1,15 +1,15 @@
 import "dart:math" show sqrt, pow;
 
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:flutter/widgets.dart";
 
 class AppBarWithAvatarPainter extends CustomPainter {
+  final MyAppBarConfig config;
   final double? avatarCenterX, avatarRadius;
 
-  final Color? color;
-
   const AppBarWithAvatarPainter({
-    this.color,
+    required this.config,
     this.avatarCenterX,
     this.avatarRadius,
   }) : super();
@@ -17,14 +17,18 @@ class AppBarWithAvatarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Validate input values
-    double avatarCenterX = this.avatarCenterX ?? Res.dimen.appBarAvatarCenterX;
-    double avatarRadius = this.avatarRadius ?? Res.dimen.appBarAvatarRadius;
+    double avatarCenterX = this.avatarCenterX ??
+        config.avatarConfig?.avatarCenterX ??
+        Res.dimen.appBarAvatarCenterX;
+    double avatarRadius = this.avatarRadius ??
+        config.avatarConfig?.avatarRadius ??
+        Res.dimen.appBarAvatarRadius;
 
     // Create paint and path objects and set some properties
     Paint paint = Paint()
       ..style = PaintingStyle.fill
       ..isAntiAlias = true
-      ..color = color ?? Res.color.appBarBg;
+      ..color = config.backgroundColor;
     Path path;
 
     // Calculate points

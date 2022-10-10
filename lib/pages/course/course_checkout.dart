@@ -96,7 +96,6 @@ class _CourseCheckoutState extends State<CourseCheckout> {
               config: MyAppBarConfig(
                 backgroundColor: Res.color.appBarBgTransparent,
                 shadow: const <BoxShadow>[],
-                avatarConfig: MyAppBarAvatarConfig.noAvatar(),
                 title: Text(Res.str.checkout),
                 subtitle: widget.course["title"]!
                     as String, // TODO Get title from API

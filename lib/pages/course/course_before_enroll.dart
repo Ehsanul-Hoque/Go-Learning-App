@@ -138,7 +138,6 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                             config: MyAppBarConfig(
                               backgroundColor: Res.color.appBarBgTransparent,
                               shadow: const <BoxShadow>[],
-                              avatarConfig: MyAppBarAvatarConfig.noAvatar(),
                               title: Text(
                                 widget.course["title"]!
                                     as String, // TODO Get title from API

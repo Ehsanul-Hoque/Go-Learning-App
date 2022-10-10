@@ -109,7 +109,6 @@ abstract class ColorsBase {
   final Color quizUnansweredQuesBg = AppColors.transparent;
   final Color quizAnsweredQuesBg = AppColors.transparent;
   final Color quizAnsweredQues = AppColors.transparent;
-  final Color quizQuesAnsBottomBorder = AppColors.transparent;
 
   /// Resource
   final Color resourceItemIcon = AppColors.transparent;

@@ -32,7 +32,6 @@ class Quiz extends StatelessWidget {
               config: MyAppBarConfig(
                 backgroundColor: Res.color.appBarBgTransparent,
                 shadow: const <BoxShadow>[],
-                avatarConfig: MyAppBarAvatarConfig.noAvatar(),
                 title: Text(
                   quiz["title"]! as String,
                 ), // TODO Get title from API

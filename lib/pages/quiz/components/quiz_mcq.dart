@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_divider.dart";
 import "package:app/pages/quiz/components/quiz_mcq_options.dart";
 import "package:app/pages/quiz/components/quiz_question.dart";
 import "package:app/utils/typedefs.dart" show OnValueListener;
@@ -61,11 +62,9 @@ class QuizMcq extends StatelessWidget {
         ),
         LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return Container(
-              width: constraints.maxWidth /
+            return AppDivider(
+              mainAxisSize: constraints.maxWidth /
                   Res.dimen.quizQuesBottomBorderToMaxWidthRatio,
-              height: Res.dimen.defaultBorderThickness,
-              color: Res.color.quizQuesAnsBottomBorder,
             );
           },
         ),

@@ -11,6 +11,8 @@ class MyAppBarConfig {
   final TextStyle titleStyle, subtitleStyle;
   final bool centerTitle;
   final List<Widget> startActions, endActions;
+  final PreferredSizeWidget? bottom;
+  final Widget? bottomBorder;
   final Duration animationDuration;
   final Curve animationCurve;
 
@@ -18,7 +20,7 @@ class MyAppBarConfig {
     double? toolbarHeight,
     Color? backgroundColor,
     this.shadow,
-    MyAppBarAvatarConfig? avatarConfig,
+    this.avatarConfig,
     this.title,
     this.subtitle,
     TextStyle? titleStyle,
@@ -26,11 +28,12 @@ class MyAppBarConfig {
     this.centerTitle = false,
     List<Widget>? startActions,
     List<Widget>? endActions,
+    this.bottom,
+    this.bottomBorder,
     Duration? animationDuration,
     Curve? animationCurve,
   })  : toolbarHeight = toolbarHeight ?? Res.dimen.toolbarHeight,
         backgroundColor = backgroundColor ?? Res.color.appBarBg,
-        avatarConfig = avatarConfig ?? MyAppBarAvatarConfig(),
         titleStyle = titleStyle ?? Res.textStyles.label,
         subtitleStyle = titleStyle ?? Res.textStyles.subLabel,
         startActions = startActions ?? <Widget>[],
@@ -58,6 +61,4 @@ class MyAppBarAvatarConfig {
         avatarRadius = avatarRadius ?? Res.dimen.appBarAvatarRadius,
         animationDuration = animationDuration ?? Res.durations.defaultDuration,
         animationCurve = animationCurve ?? Res.curves.defaultCurve;
-
-  MyAppBarAvatarConfig.noAvatar() : this(avatarRadius: 0);
 }

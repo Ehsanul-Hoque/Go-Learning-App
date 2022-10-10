@@ -48,7 +48,6 @@ class _AppWebView extends State<AppWebView> {
                 config: MyAppBarConfig(
                   backgroundColor: Res.color.transparent,
                   shadow: const <BoxShadow>[],
-                  avatarConfig: MyAppBarAvatarConfig.noAvatar(),
                   title: controllerSnapshot.hasData
                       ? FutureBuilder<String?>(
                           future: controllerSnapshot.data!.currentUrl(),
