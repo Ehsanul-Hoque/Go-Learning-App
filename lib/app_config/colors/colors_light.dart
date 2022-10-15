@@ -70,11 +70,11 @@ class ColorsLightMode implements ColorsBase {
   final Color carousalIndicator = AppColors.grey300;
   final Color carousalIndicatorActive = AppColors.themeYellow;
 
-  /// SnackBar
-  final Color snackBarHelp = AppColors.flatBluePeterRiver;
-  final Color snackBarFailure = AppColors.flatRedAlizarin;
-  final Color snackBarSuccess = AppColors.flatGreenEmerald;
-  final Color snackBarWarning = AppColors.flatOrangeQuinceJelly;
+  /// Floating Message (SnackBar or Dialog)
+  final Color floatingMessagesHelp = AppColors.flatBluePeterRiver;
+  final Color floatingMessagesFailure = AppColors.flatRedAlizarin;
+  final Color floatingMessagesSuccess = AppColors.flatGreenEmerald;
+  final Color floatingMessagesWarning = AppColors.flatOrangeQuinceJelly;
 
   /// Shadows
   final Color shadow = AppColors.shadowGrey;
@@ -105,6 +105,8 @@ class ColorsLightMode implements ColorsBase {
 
   /// Quiz
   final Color quizItemIcon = AppColors.flatBluePeterRiver;
+  final Color quizTimerBg = AppColors.grey300;
+  final Color quizTimerProgress = AppColors.flatPurpleShyMoment;
   final Color quizCurrentQuesNumBorder = AppColors.themeYellow;
   final Color quizUnansweredQuesNumBg = AppColors.grey300;
   final Color quizAnsweredQuesNumBg = AppColors.themeYellow;

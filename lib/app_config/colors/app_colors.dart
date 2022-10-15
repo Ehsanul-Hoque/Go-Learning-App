@@ -47,4 +47,5 @@ class AppColors {
   static const Color flatYellowSunflower = Color(0xffF1C40F);
   static const Color flatOrangeQuinceJelly = Color(0xffF0932B);
   static const Color flatPurpleAmethyst = Color(0xff9B59B6);
+  static const Color flatPurpleShyMoment = Color(0xffA29BFE);
 }

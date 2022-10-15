@@ -2,10 +2,10 @@ import "dart:collection" show UnmodifiableListView;
 
 import "package:flutter/foundation.dart" show ChangeNotifier;
 
-class QuizResultModel extends ChangeNotifier {
+class QuizResultNotifier extends ChangeNotifier {
   late final List<int> _selectedAnswers;
 
-  QuizResultModel({required int totalQuestions})
+  QuizResultNotifier({required int totalQuestions})
       : _selectedAnswers = List<int>.filled(totalQuestions, -1);
 
   UnmodifiableListView<int> get selectedAnswers =>

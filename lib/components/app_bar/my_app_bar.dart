@@ -57,7 +57,6 @@ class _MyAppBarState extends State<MyAppBar> {
       config: widget.config,
       toolbarContents: MyAppBarToolbar(config: widget.config),
       preferredAppBarHeight: widget.preferredSize.height,
-      appBarBgPainter: AppBarWithAvatarPainter(config: widget.config),
     );
   }
 }

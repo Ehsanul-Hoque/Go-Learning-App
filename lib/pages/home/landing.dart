@@ -72,7 +72,7 @@ class _LandingPageState extends State<LandingPage> {
         drawerController: _drawerController,
       ),
       controller: _drawerController,
-      borderRadius: Res.dimen.mediumBorderRadiusValue,
+      borderRadius: Res.dimen.largeBorderRadiusValue,
       menuBackgroundColor: Res.color.drawerBg,
       showShadow: true,
       slideWidth: MediaQuery.of(context).size.width * 0.85,

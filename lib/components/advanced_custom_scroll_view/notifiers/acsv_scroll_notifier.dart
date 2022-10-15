@@ -1,6 +1,6 @@
 import "package:flutter/foundation.dart" show ChangeNotifier;
 
-class AcsvScrollModel extends ChangeNotifier {
+class AcsvScrollNotifier extends ChangeNotifier {
   String? _notifierId;
   int _currentVisibleIndex = 0;
   bool _updateScrollView = false;

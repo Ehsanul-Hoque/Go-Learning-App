@@ -70,6 +70,10 @@ class StringsEn implements StringsBase {
   final String letsStart = "Let's Start";
 
   final String firstAlphabet = "a";
+  final String no = "No";
+  final String yes = "Yes";
+  final String finishQuiz = "Finish Quiz";
+  final String quizFinished = "Quiz Finished";
 
   /// Messages
   final String invalidEmail = "The email is invalid.";
@@ -83,6 +87,11 @@ class StringsEn implements StringsBase {
   final String enterTransactionId = "Please enter the transaction ID.";
   final String enterMfsNumber =
       "Please enter the phone number the money is sent from.";
+
+  final String areYouSure = "Are you sure?";
+  final String areYouSureToCloseQuiz =
+      "Are you sure that you want to close the quiz?"
+      " Quiz progress of the quiz will be lost.";
 
   /// Sample texts
   final String page1 = "Page 1";

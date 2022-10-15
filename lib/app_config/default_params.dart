@@ -6,7 +6,8 @@ class Dimensions {
 
   /// Border
   final double defaultBorderRadiusValue = 8;
-  final double mediumBorderRadiusValue = 16;
+  final double mediumBorderRadiusValue = 12;
+  final double largeBorderRadiusValue = 16;
   final double fullRoundedBorderRadiusValue = 9999;
   final double defaultBorderThickness = 1;
 
@@ -44,7 +45,7 @@ class Dimensions {
   final double buttonHeight = 56;
   final double iconSizeXxs = 12;
   final double iconSizeSmall = 20;
-  final double iconSizeNormal = 24;
+  final double iconSizeNormal = 20;
   final double iconSizeHuge = 48;
   final double fontSizeSmall = 12;
   final double fontSizeNormal = 14;
@@ -70,14 +71,15 @@ class Dimensions {
   final double bannerAspectRatioAfterPadding = 16 / 7.5;
   final double videoAspectRatio = 16 / 9;
 
-  /// SnackBar
+  /// Floating Message (SnackBar or Dialog)
   final double snackBarMaxWidth = 480;
   final double snackBarContentLeftPadding = 64;
-  final double snackBarBubbleImageSize = 42;
-  final double snackBarTopBubbleTop = -20;
-  final double snackBarTopBubbleSize = 48;
-  final double snackBarTopBubbleIconTop = 12;
-  final double snackBarTopBubbleIconHeight = 20;
+  final double floatingMessagesBubbleImageSize = 42;
+  final double floatingMessagesTopBubbleTop = -20;
+  final double appDialogTopBubbleRight = -20;
+  final double floatingMessagesTopBubbleSize = 48;
+  final double floatingMessagesTopBubbleIconTop = 12;
+  final double floatingMessagesTopBubbleIconHeight = 20;
 
   /// Miscellaneous
   final double maxWidthSmall = 348;
@@ -95,7 +97,7 @@ class TextStyles {
 
   TextStyle get general => TextStyle(
         fontSize: Res.dimen.fontSizeNormal,
-        fontFamily: "HindSiliguri",
+        fontFamily: GoogleFonts.ubuntu().fontFamily,
         color: Res.color.textPrimary,
         height: 1.2,
       );
@@ -185,9 +187,21 @@ class Assets {
   final String icFailureSvg = "assets/icons/ic_failure.svg";
   final String icSuccessSvg = "assets/icons/ic_success.svg";
   final String icWarningSvg = "assets/icons/ic_warning.svg";
+  final String icHomeSvg = "assets/icons/ic_home.svg";
+  final String icExploreSvg = "assets/icons/ic_explore.svg";
+  final String icBookmarkSvg = "assets/icons/ic_bookmark.svg";
+  final String icExamSvg = "assets/icons/ic_exam.svg";
+  final String icEditProfileSvg = "assets/icons/ic_edit_profile.svg";
+  final String icTermsOfUseSvg = "assets/icons/ic_terms.svg";
+  final String icLogOutSvg = "assets/icons/ic_logout.svg";
+  final String icPlaySvg = "assets/icons/ic_play.svg";
+  final String icQuizSvg = "assets/icons/ic_quiz.svg";
+  final String icResourceSvg = "assets/icons/ic_resource.svg";
+  final String icTipsSvg = "assets/icons/ic_tips.svg";
 
   /// Illustrations
   final String loadingSvg = "assets/illustrations/loading.svg";
+  final String defaultAvatarSvg = "assets/illustrations/default_avatar.svg";
   final String talkBubbleSvg = "assets/illustrations/talk_bubble.svg";
   final String cornerBubblesSvg = "assets/illustrations/corner_bubbles.svg";
 

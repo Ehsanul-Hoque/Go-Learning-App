@@ -54,7 +54,7 @@ class MyAppBarToolbar extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     textAlign:
                         config.centerTitle ? TextAlign.center : TextAlign.start,
-                    child: Text(config.subtitle!),
+                    child: config.subtitle!,
                   ),
               ],
             ),

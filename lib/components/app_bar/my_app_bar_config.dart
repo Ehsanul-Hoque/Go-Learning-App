@@ -6,8 +6,7 @@ class MyAppBarConfig {
   final Color backgroundColor;
   final List<BoxShadow>? shadow;
   final MyAppBarAvatarConfig? avatarConfig;
-  final Widget? title;
-  final String? subtitle;
+  final Widget? title, subtitle;
   final TextStyle titleStyle, subtitleStyle;
   final bool centerTitle;
   final List<Widget> startActions, endActions;

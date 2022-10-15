@@ -1,5 +1,5 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/advanced_custom_scroll_view/models/acsv_scroll_model.dart";
+import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/utils/typedefs.dart" show AcsvSliversBuilder;
 import "package:flutter/widgets.dart";
 import "package:inview_notifier_list/inview_notifier_list.dart";
@@ -59,10 +59,10 @@ class _AdvancedCustomScrollViewState extends State<AdvancedCustomScrollView> {
     );
 
     if (widget.scrollNotifierId != null) {
-      return Consumer<AcsvScrollModel?>(
+      return Consumer<AcsvScrollNotifier?>(
         builder: (
           BuildContext context,
-          AcsvScrollModel? scroll,
+          AcsvScrollNotifier? scroll,
           Widget? child,
         ) {
           if (scroll == null) {

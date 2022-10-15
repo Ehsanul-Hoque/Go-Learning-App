@@ -1,6 +1,7 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_snack_bar_content/enums/app_snack_bar_content_type.dart";
-import "package:flutter/material.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
+import "package:flutter/material.dart" show ScaffoldMessenger;
+import "package:flutter/widgets.dart";
 import "package:flutter_svg/flutter_svg.dart";
 
 class AppSnackBarContent extends StatelessWidget {
@@ -69,7 +70,7 @@ class AppSnackBarContent extends StatelessWidget {
             decoration: BoxDecoration(
               color: hsl.toColor(),
               borderRadius:
-                  BorderRadius.circular(Res.dimen.mediumBorderRadiusValue),
+                  BorderRadius.circular(Res.dimen.largeBorderRadiusValue),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -113,32 +114,32 @@ class AppSnackBarContent extends StatelessWidget {
             left: 0,
             child: ClipRRect(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(Res.dimen.mediumBorderRadiusValue),
+                bottomLeft: Radius.circular(Res.dimen.largeBorderRadiusValue),
               ),
               child: SvgPicture.asset(
                 Res.assets.cornerBubblesSvg,
-                height: Res.dimen.snackBarBubbleImageSize,
-                width: Res.dimen.snackBarBubbleImageSize,
+                height: Res.dimen.floatingMessagesBubbleImageSize,
+                width: Res.dimen.floatingMessagesBubbleImageSize,
                 color: hslDark.toColor(),
               ),
             ),
           ),
           Positioned(
-            top: Res.dimen.snackBarTopBubbleTop,
-            left: Res.dimen.mediumBorderRadiusValue,
+            top: Res.dimen.floatingMessagesTopBubbleTop,
+            left: Res.dimen.largeBorderRadiusValue,
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
                 SvgPicture.asset(
                   Res.assets.talkBubbleSvg,
-                  height: Res.dimen.snackBarTopBubbleSize,
+                  height: Res.dimen.floatingMessagesTopBubbleSize,
                   color: hslDark.toColor(),
                 ),
                 Positioned(
-                  top: Res.dimen.snackBarTopBubbleIconTop,
+                  top: Res.dimen.floatingMessagesTopBubbleIconTop,
                   child: SvgPicture.asset(
-                    getContentIcon(contentType),
-                    height: Res.dimen.snackBarTopBubbleIconHeight,
+                    contentType.iconAsset,
+                    height: Res.dimen.floatingMessagesTopBubbleIconHeight,
                   ),
                 )
               ],
@@ -147,19 +148,5 @@ class AppSnackBarContent extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String getContentIcon(ContentType contentType) {
-    if (contentType == ContentType.help) {
-      return Res.assets.icHelpSvg;
-    } else if (contentType == ContentType.failure) {
-      return Res.assets.icFailureSvg;
-    } else if (contentType == ContentType.success) {
-      return Res.assets.icSuccessSvg;
-    } else if (contentType == ContentType.warning) {
-      return Res.assets.icWarningSvg;
-    } else {
-      return Res.assets.icFailureSvg;
-    }
   }
 }

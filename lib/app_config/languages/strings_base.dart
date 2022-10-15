@@ -64,6 +64,10 @@ abstract class StringsBase {
   final String letsStart = "";
 
   final String firstAlphabet = "";
+  final String no = "";
+  final String yes = "";
+  final String finishQuiz = "";
+  final String quizFinished = "";
 
   /// Messages
   final String invalidEmail = "";
@@ -76,6 +80,9 @@ abstract class StringsBase {
   final String enterPhoneNumber = "";
   final String enterTransactionId = "";
   final String enterMfsNumber = "";
+
+  final String areYouSure = "";
+  final String areYouSureToCloseQuiz = "";
 
   /// Sample texts
   final String page1 = "";

@@ -17,12 +17,10 @@ class AppBarWithAvatarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // Validate input values
-    double avatarCenterX = this.avatarCenterX ??
-        config.avatarConfig?.avatarCenterX ??
-        Res.dimen.appBarAvatarCenterX;
-    double avatarRadius = this.avatarRadius ??
-        config.avatarConfig?.avatarRadius ??
-        Res.dimen.appBarAvatarRadius;
+    double avatarCenterX =
+        this.avatarCenterX ?? config.avatarConfig?.avatarCenterX ?? 0;
+    double avatarRadius =
+        this.avatarRadius ?? config.avatarConfig?.avatarRadius ?? 0;
 
     // Create paint and path objects and set some properties
     Paint paint = Paint()

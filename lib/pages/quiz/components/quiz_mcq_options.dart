@@ -36,7 +36,7 @@ class QuizMcqOptions extends StatelessWidget {
                     : EdgeInsets.only(bottom: Res.dimen.normalSpacingValue),
                 padding: EdgeInsets.zero,
                 borderRadius:
-                    BorderRadius.circular(Res.dimen.mediumBorderRadiusValue),
+                    BorderRadius.circular(Res.dimen.largeBorderRadiusValue),
                 backgroundColor: isSelected
                     ? Res.color.quizAnsweredQuesBg
                     : Res.color.quizUnansweredQuesBg,

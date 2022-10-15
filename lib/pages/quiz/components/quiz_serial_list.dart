@@ -1,7 +1,7 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/components/app_container.dart";
-import "package:app/pages/quiz/models/quiz_result_model.dart";
-import "package:app/components/advanced_custom_scroll_view/models/acsv_scroll_model.dart";
+import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show Consumer2, ReadContext;
 
@@ -19,11 +19,11 @@ class QuizSerialList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 72,
-      child: Consumer2<AcsvScrollModel, QuizResultModel>(
+      child: Consumer2<AcsvScrollNotifier, QuizResultNotifier>(
         builder: (
           BuildContext context,
-          AcsvScrollModel scroll,
-          QuizResultModel result,
+          AcsvScrollNotifier scroll,
+          QuizResultNotifier result,
           Widget? child,
         ) {
           return ListView.builder(
@@ -110,11 +110,11 @@ class QuizSerialList extends StatelessWidget {
 
   void setCurrentQuestionIndex(
     BuildContext context,
-    AcsvScrollModel scroll,
+    AcsvScrollNotifier scroll,
     int index,
   ) {
     if (scroll.currentVisibleIndex != index) {
-      context.read<AcsvScrollModel?>()?.updateCurrentVisibleIndex(
+      context.read<AcsvScrollNotifier?>()?.updateCurrentVisibleIndex(
             notifierId: scrollNotifierId,
             currentVisibleIndex: index,
             updateScrollView: true,

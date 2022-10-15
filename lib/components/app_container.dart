@@ -2,7 +2,7 @@ import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
 class AppContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final double? width, height;
   final BoxConstraints? constraints;
   final Clip? clip;
@@ -18,7 +18,7 @@ class AppContainer extends StatelessWidget {
 
   const AppContainer({
     Key? key,
-    required this.child,
+    this.child,
     this.width,
     this.height,
     this.constraints,

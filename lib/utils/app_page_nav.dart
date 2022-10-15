@@ -21,6 +21,6 @@ class PageNav {
   }
 
   static void back<T>(BuildContext context, {T? result}) {
-    Navigator.of(context).pop(result);
+    Navigator.of(context).maybePop(result);
   }
 }

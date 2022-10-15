@@ -2,6 +2,7 @@ import "package:app/app_config/app_state.dart";
 import "package:app/app_config/colors/colors_base.dart";
 import "package:app/app_config/languages/strings_base.dart";
 import "package:flutter/widgets.dart";
+import "package:google_fonts/google_fonts.dart";
 
 part "package:app/app_config/default_params.dart";
 

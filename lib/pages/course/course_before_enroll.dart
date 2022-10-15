@@ -142,8 +142,9 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                                 widget.course["title"]!
                                     as String, // TODO Get title from API
                               ),
-                              subtitle:
-                                  "${Res.str.by} ${widget.course["instructor"]!}", // TODO change if necessary
+                              subtitle: Text(
+                                "${Res.str.by} ${widget.course["instructor"]!}", // TODO change if necessary
+                              ),
                               startActions: <Widget>[
                                 IconButton(
                                   // TODO extract this back button as a component

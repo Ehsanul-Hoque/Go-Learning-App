@@ -2,9 +2,9 @@ import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
 import "package:app/components/advanced_custom_scroll_view/acsv_sliver_to_box_adapter.dart";
 import "package:app/components/advanced_custom_scroll_view/advanced_custom_scroll_view.dart";
-import "package:app/components/advanced_custom_scroll_view/models/acsv_scroll_model.dart";
+import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/pages/quiz/components/quiz_mcq.dart";
-import "package:app/pages/quiz/models/quiz_result_model.dart";
+import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show Consumer, ReadContext;
 import "package:scroll_to_index/scroll_to_index.dart";
@@ -36,10 +36,10 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
             ? Axis.vertical
             : Axis.horizontal;
 
-        return Consumer<QuizResultModel>(
+        return Consumer<QuizResultNotifier>(
           builder: (
             BuildContext context,
-            QuizResultModel result,
+            QuizResultNotifier result,
             Widget? child,
           ) {
             return AdvancedCustomScrollView(
@@ -98,7 +98,7 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
     int selectedAnswerIndex,
   ) {
     context
-        .read<QuizResultModel?>()
+        .read<QuizResultNotifier?>()
         ?.setSelectedAnswer(questionIndex, selectedAnswerIndex);
 
     // TODO Show next unanswered question
@@ -111,7 +111,7 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
         // Execute callback if page is mounted
         if (!mounted) return;
 
-        context.read<AcsvScrollModel?>()?.updateCurrentVisibleIndex(
+        context.read<AcsvScrollNotifier?>()?.updateCurrentVisibleIndex(
               notifierId: widget.scrollNotifierId,
               currentVisibleIndex: index,
             );

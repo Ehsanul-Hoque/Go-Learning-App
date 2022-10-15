@@ -24,4 +24,5 @@
   (Temporary fix is to close the course_before_enroll.dart page when going to the next screen.)
 - Show large image on image tap in html_text.dart
 - Change page navigation to named routes
+- Quiz timer progress is animating smoothly by text color is not animating.
 - 

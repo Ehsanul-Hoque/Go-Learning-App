@@ -1,12 +1,13 @@
 import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
+import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
+import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
 import "package:app/components/two_line_info.dart";
 import "package:app/models/two_line_info_model.dart";
-import "package:app/pages/quiz/models/quiz_result_model.dart";
-import "package:app/components/advanced_custom_scroll_view/models/acsv_scroll_model.dart";
+import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
 import "package:app/pages/quiz/quiz.dart";
 import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/utils.dart";
@@ -92,8 +93,12 @@ class _QuizIntroState extends State<QuizIntro> {
                 title: Text(
                   widget.quiz["title"]! as String,
                 ), // TODO Get title from API
-                subtitle: widget.quiz["course_title"]
-                    as String?, // TODO Get course title from API
+                subtitle: widget.quiz.containsKey("course_title")
+                    ? Text(
+                        (widget.quiz["course_title"] as String?) ??
+                            "", // TODO Get course title from API
+                      )
+                    : null,
                 startActions: <Widget>[
                   IconButton(
                     // TODO extract this back button as a component
@@ -190,11 +195,19 @@ class _QuizIntroState extends State<QuizIntro> {
       context,
       MultiProvider(
         providers: <SingleChildWidget>[
-          ChangeNotifierProvider<AcsvScrollModel>(
-            create: (BuildContext context) => AcsvScrollModel(),
+          ChangeNotifierProvider<CountdownTimerNotifier>(
+            create: (BuildContext context) => CountdownTimerNotifier(
+              totalDuration: Duration(
+                milliseconds: widget.quiz["time_millis"]! as int,
+              ),
+              // tickDuration: Res.durations.defaultDuration,
+            ),
           ),
-          ChangeNotifierProvider<QuizResultModel>(
-            create: (BuildContext context) => QuizResultModel(
+          ChangeNotifierProvider<AcsvScrollNotifier>(
+            create: (BuildContext context) => AcsvScrollNotifier(),
+          ),
+          ChangeNotifierProvider<QuizResultNotifier>(
+            create: (BuildContext context) => QuizResultNotifier(
               totalQuestions: SampleData.questions.length,
               // TODO Get questions from API
             ),

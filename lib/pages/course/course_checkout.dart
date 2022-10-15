@@ -2,10 +2,10 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
-import "package:app/components/app_snack_bar_content/app_snack_bar_content.dart";
-import "package:app/components/app_snack_bar_content/enums/app_snack_bar_content_type.dart";
 import "package:app/components/fields/app_form_field.dart";
 import "package:app/components/fields/app_input_field.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/widget_checkbox.dart";
 import "package:app/models/page_model.dart";
 import "package:app/utils/app_page_nav.dart";
@@ -97,8 +97,10 @@ class _CourseCheckoutState extends State<CourseCheckout> {
                 backgroundColor: Res.color.appBarBgTransparent,
                 shadow: const <BoxShadow>[],
                 title: Text(Res.str.checkout),
-                subtitle: widget.course["title"]!
-                    as String, // TODO Get title from API
+                subtitle: Text(
+                  widget.course["title"]!
+                      as String, // TODO Get subtitle from API
+                ),
                 startActions: <Widget>[
                   IconButton(
                     // TODO extract this back button as a component

@@ -1,8 +1,8 @@
 import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
-import "package:app/components/app_snack_bar_content/app_snack_bar_content.dart";
-import "package:app/components/app_snack_bar_content/enums/app_snack_bar_content_type.dart";
 import "package:app/components/fake_loading.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/quiz_item.dart";
 import "package:app/pages/quiz/quiz_intro.dart";
 import "package:app/utils/app_page_nav.dart";

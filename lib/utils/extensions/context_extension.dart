@@ -1,4 +1,4 @@
-import "package:app/components/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:flutter/material.dart"
     show
         BuildContext,

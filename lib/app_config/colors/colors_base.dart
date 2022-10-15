@@ -67,11 +67,11 @@ abstract class ColorsBase {
   final Color carousalIndicator = AppColors.transparent;
   final Color carousalIndicatorActive = AppColors.transparent;
 
-  /// SnackBar
-  final Color snackBarHelp = AppColors.transparent;
-  final Color snackBarFailure = AppColors.transparent;
-  final Color snackBarSuccess = AppColors.transparent;
-  final Color snackBarWarning = AppColors.transparent;
+  /// Floating Message (SnackBar or Dialog)
+  final Color floatingMessagesHelp = AppColors.transparent;
+  final Color floatingMessagesFailure = AppColors.transparent;
+  final Color floatingMessagesSuccess = AppColors.transparent;
+  final Color floatingMessagesWarning = AppColors.transparent;
 
   /// Shadows
   final Color shadow = AppColors.transparent;
@@ -102,6 +102,8 @@ abstract class ColorsBase {
 
   /// Quiz
   final Color quizItemIcon = AppColors.transparent;
+  final Color quizTimerBg = AppColors.transparent;
+  final Color quizTimerProgress = AppColors.transparent;
   final Color quizCurrentQuesNumBorder = AppColors.transparent;
   final Color quizUnansweredQuesNumBg = AppColors.transparent;
   final Color quizAnsweredQuesNumBg = AppColors.transparent;

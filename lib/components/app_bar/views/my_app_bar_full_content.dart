@@ -45,7 +45,7 @@ class MyAppBarFullContent extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               toolbarContents,
-              if (config.bottom != null) config.bottom!,
+              config.bottom ?? const SizedBox.shrink(),
             ],
           ),
           if (config.bottomBorder != null)
@@ -70,12 +70,10 @@ class MyAppBarFullContent extends StatelessWidget {
       ),
     );
 
-    if (appBarBgPainter != null) {
-      fullContent = CustomPaint(
-        painter: appBarBgPainter,
-        child: fullContent,
-      );
-    }
+    fullContent = CustomPaint(
+      painter: appBarBgPainter ?? AppBarWithAvatarPainter(config: config),
+      child: fullContent,
+    );
 
     return Container(
       height: preferredAppBarHeight + statusBarHeight,
@@ -84,6 +82,7 @@ class MyAppBarFullContent extends StatelessWidget {
             <BoxShadow>[
               Res.shadows.normal,
             ],
+        // color: (appBarBgPainter == null) ? config.backgroundColor : null,
       ),
       child: fullContent,
     );
