@@ -10,8 +10,9 @@ import "package:app/components/countdown_timer/notifiers/countdown_timer_notifie
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/pages/quiz/components/quiz_mcq.dart";
 import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
+import "package:app/utils/utils.dart";
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart" show Consumer2, ReadContext;
+import "package:provider/provider.dart" show ReadContext, SelectContext;
 import "package:scroll_to_index/scroll_to_index.dart";
 
 class QuizQuestionsList extends StatefulWidget {
@@ -41,47 +42,60 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
             ? Axis.vertical
             : Axis.horizontal;
 
-        return Consumer2<CountdownTimerNotifier, QuizResultNotifier>(
-          builder: (
-            BuildContext context,
-            CountdownTimerNotifier timer,
-            QuizResultNotifier result,
-            Widget? child,
-          ) {
-            return AdvancedCustomScrollView(
-              scrollNotifierId: widget.scrollNotifierId,
-              acsvSliversBuilder: (AutoScrollController autoScrollController) {
-                bool hasQuizFinished =
-                    (timer.state == CountdownTimerState.finished);
+        return AdvancedCustomScrollView(
+          scrollNotifierId: widget.scrollNotifierId,
+          acsvSliversBuilder: (AutoScrollController autoScrollController) {
+            List<Widget> questionWidgets = SampleData.questions
+                .asMap()
+                .map((int index, Map<String, Object> item) {
+                  return MapEntry<int, Widget>(
+                    index,
+                    AcsvSliverToBoxAdapter(
+                      key: ValueKey<int>(index),
+                      autoScrollTagKey: ValueKey<int>(index),
+                      autoScrollController: autoScrollController,
+                      autoScrollTagIndex: index,
+                      inViewNotifierId: index.toString(),
+                      appInViewNotifierWidgetBuilder: (
+                        BuildContext context,
+                        bool isInView,
+                        Widget child,
+                      ) {
+                        if (isInView) {
+                          setCurrentQuestionIndex(context, index);
+                        }
 
-                List<Widget> questionWidgets = SampleData.questions
-                    .asMap()
-                    .map((int index, Map<String, Object> item) {
-                      int selectedIndex = result.selectedAnswers[index];
-                      int correctIndex = result.correctAnswers[index];
-                      bool hasAnswered = (selectedIndex >= 0);
-                      bool isCorrect = (selectedIndex == correctIndex);
+                        return child;
+                      },
+                      borderRadius: Res.dimen.xlBorderRadiusValue,
+                      child: Builder(
+                        builder: (BuildContext context) {
+                          CountdownTimerState timerState = context.select(
+                            (CountdownTimerNotifier timer) => timer.state,
+                          );
 
-                      return MapEntry<int, Widget>(
-                        index,
-                        AcsvSliverToBoxAdapter(
-                          autoScrollTagKey: ValueKey<int>(index),
-                          autoScrollController: autoScrollController,
-                          autoScrollTagIndex: index,
-                          inViewNotifierId: index.toString(),
-                          appInViewNotifierWidgetBuilder: (
-                            BuildContext context,
-                            bool isInView,
-                            Widget child,
-                          ) {
-                            if (isInView) {
-                              setCurrentQuestionIndex(context, index);
-                            }
+                          int selectedIndex = context.select(
+                            (QuizResultNotifier result) =>
+                                result.selectedAnswers[index],
+                          );
 
-                            return child;
-                          },
-                          borderRadius: Res.dimen.xlBorderRadiusValue,
-                          child: AppContainer(
+                          int correctIndex = context.select(
+                            (QuizResultNotifier result) =>
+                                result.correctAnswers[index],
+                          );
+
+                          bool hasQuizFinished =
+                              (timerState == CountdownTimerState.finished);
+                          bool hasAnswered = (selectedIndex >= 0);
+                          bool isCorrect = (selectedIndex == correctIndex);
+
+                          Color correctIncorrectColor = hasAnswered
+                              ? (isCorrect
+                                  ? Res.color.quizCorrectBgLight
+                                  : Res.color.quizIncorrectBgLight)
+                              : Res.color.quizUnansweredBg;
+
+                          return AppContainer(
                             animated: true,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.all(Res.dimen.msSpacingValue),
@@ -89,12 +103,8 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
                               Res.dimen.xlBorderRadiusValue,
                             ),
                             backgroundColor: hasQuizFinished
-                                ? hasAnswered
-                                    ? (isCorrect
-                                        ? Res.color.quizCorrectBgLight
-                                        : Res.color.quizIncorrectBgLight)
-                                    : Res.color.quizUnansweredBg
-                                : Res.color.transparent,
+                                ? correctIncorrectColor
+                                : Utils.getTransparent(correctIncorrectColor),
                             shadow: const <BoxShadow>[],
                             child: QuizMcq(
                               quesAns: item,
@@ -114,43 +124,43 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
                                   hasQuizFinished ? correctIndex : null,
                               axis: axis,
                             ),
-                          ),
-                        ),
-                      );
-                    })
-                    .values
-                    .toList();
-
-                Widget separator = SliverToBoxAdapter(
-                  child: AppDivider(
-                    mainAxisSize: constraints.maxWidth /
-                        Res.dimen.quizQuesBottomBorderToMaxWidthRatio,
-                    margin: EdgeInsets.symmetric(
-                      vertical: Res.dimen.normalSpacingValue,
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
+                  );
+                })
+                .values
+                .toList();
 
-                int totalWidgets = questionWidgets.length * 2 + 1;
+            Widget separator = SliverToBoxAdapter(
+              child: AppDivider(
+                mainAxisSize: constraints.maxWidth /
+                    Res.dimen.quizQuesBottomBorderToMaxWidthRatio,
+                margin: EdgeInsets.symmetric(
+                  vertical: Res.dimen.normalSpacingValue,
+                ),
+              ),
+            );
 
-                List<Widget> allWidgets = List<Widget>.generate(
-                  totalWidgets,
-                  (int index) {
-                    if (index == 0 || index == totalWidgets - 1) {
-                      return SliverSizedBox(
-                        height: Res.dimen.xxlSpacingValue,
-                      );
-                    } else if ((index - 1) % 2 == 0) {
-                      return questionWidgets[(index - 1) ~/ 2];
-                    } else {
-                      return separator;
-                    }
-                  },
-                );
+            int totalWidgets = questionWidgets.length * 2 + 1;
 
-                return allWidgets;
+            List<Widget> allWidgets = List<Widget>.generate(
+              totalWidgets,
+              (int index) {
+                if (index == 0 || index == totalWidgets - 1) {
+                  return SliverSizedBox(
+                    height: Res.dimen.xxlSpacingValue,
+                  );
+                } else if ((index - 1) % 2 == 0) {
+                  return questionWidgets[(index - 1) ~/ 2];
+                } else {
+                  return separator;
+                }
               },
             );
+
+            return allWidgets;
           },
         );
       },

@@ -5,7 +5,7 @@ import "package:app/components/countdown_timer/enums/countdown_timer_state.dart"
 import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
 import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart" show Consumer3, ReadContext;
+import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class QuizSerialList extends StatelessWidget {
   final int totalQuestions;
@@ -29,27 +29,30 @@ class QuizSerialList extends StatelessWidget {
 
     return SizedBox(
       width: totalSize,
-      child: Consumer3<CountdownTimerNotifier, AcsvScrollNotifier,
-          QuizResultNotifier>(
-        builder: (
-          BuildContext context,
-          CountdownTimerNotifier timer,
-          AcsvScrollNotifier scroll,
-          QuizResultNotifier result,
-          Widget? child,
-        ) {
-          return ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              int selectedAnswerIndex = result.selectedAnswers[index];
+      child: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Builder(
+            builder: (BuildContext context) {
+              int selectedAnswerIndex = context.select(
+                (QuizResultNotifier result) => result.selectedAnswers[index],
+              );
+              int correctAnswerIndex = context.select(
+                (QuizResultNotifier result) => result.correctAnswers[index],
+              );
+              int currentVisibleIndex = context.select(
+                (AcsvScrollNotifier scroll) => scroll.currentVisibleIndex,
+              );
+              CountdownTimerState timerState = context.select(
+                (CountdownTimerNotifier timer) => timer.state,
+              );
+
               bool hasAnswered = (selectedAnswerIndex >= 0);
               bool isFirstItem = (index == 0);
               bool isLastItem = (index == (totalQuestions - 1));
-              bool isQuestionCurrentlyVisible =
-                  (index == scroll.currentVisibleIndex);
+              bool isQuestionCurrentlyVisible = (index == currentVisibleIndex);
 
               bool hasQuizFinished =
-                  (timer.state == CountdownTimerState.finished);
-              int correctAnswerIndex = result.correctAnswers[index];
+                  (timerState == CountdownTimerState.finished);
               bool isCorrect = (selectedAnswerIndex == correctAnswerIndex);
 
               String selectedAnswerAsChar = "";
@@ -62,7 +65,9 @@ class QuizSerialList extends StatelessWidget {
               }
 
               return GestureDetector(
-                onTap: () => setCurrentQuestionIndex(context, scroll, index),
+                onTap: () {
+                  setCurrentQuestionIndex(context, currentVisibleIndex, index);
+                },
                 child: AppContainer(
                   animated: true,
                   width: totalSize,
@@ -101,7 +106,9 @@ class QuizSerialList extends StatelessWidget {
                                   ? Res.color.quizCorrectBg
                                   : Res.color.quizIncorrectBg)
                               : Res.color.quizUnansweredBg)
-                          : Res.color.quizUnansweredBg,
+                          : (hasAnswered
+                              ? Res.color.quizAnsweredBg
+                              : Res.color.quizUnansweredBg),
                       padding: EdgeInsets.symmetric(
                         horizontal: Res.dimen.xsSpacingValue,
                       ),
@@ -124,12 +131,18 @@ class QuizSerialList extends StatelessWidget {
                             duration: Res.durations.defaultDuration,
                             curve: Res.curves.defaultCurve,
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              selectedAnswerAsChar,
-                              style: Res.textStyles.buttonBold.copyWith(
-                                color: hasAnswered
-                                    ? Res.color.quizAnsweredContent
-                                    : null,
+                            child: AnimatedSwitcher(
+                              duration: Res.durations.defaultDuration,
+                              switchInCurve: Res.curves.defaultCurve,
+                              switchOutCurve: Res.curves.defaultCurve,
+                              child: Text(
+                                selectedAnswerAsChar,
+                                key: ValueKey<String>(selectedAnswerAsChar),
+                                style: Res.textStyles.buttonBold.copyWith(
+                                  color: hasAnswered
+                                      ? Res.color.quizAnsweredContent
+                                      : null,
+                                ),
                               ),
                             ),
                           ),
@@ -140,20 +153,20 @@ class QuizSerialList extends StatelessWidget {
                 ),
               );
             },
-            itemCount: totalQuestions,
-            shrinkWrap: true,
           );
         },
+        itemCount: totalQuestions,
+        shrinkWrap: true,
       ),
     );
   }
 
   void setCurrentQuestionIndex(
     BuildContext context,
-    AcsvScrollNotifier scroll,
+    int currentVisibleIndex,
     int index,
   ) {
-    if (scroll.currentVisibleIndex != index) {
+    if (currentVisibleIndex != index) {
       context.read<AcsvScrollNotifier?>()?.updateCurrentVisibleIndex(
             notifierId: scrollNotifierId,
             currentVisibleIndex: index,
