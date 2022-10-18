@@ -103,7 +103,7 @@ class AppDialog extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: Res.dimen.smallSpacingValue,
+              horizontal: Res.dimen.normalSpacingValue,
             ),
             child: Text(
               message,

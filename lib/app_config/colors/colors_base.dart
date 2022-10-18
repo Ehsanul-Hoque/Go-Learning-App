@@ -104,13 +104,18 @@ abstract class ColorsBase {
   final Color quizItemIcon = AppColors.transparent;
   final Color quizTimerBg = AppColors.transparent;
   final Color quizTimerProgress = AppColors.transparent;
-  final Color quizCurrentQuesNumBorder = AppColors.transparent;
-  final Color quizUnansweredQuesNumBg = AppColors.transparent;
-  final Color quizAnsweredQuesNumBg = AppColors.transparent;
-  final Color quizAnsweredQuesNum = AppColors.transparent;
-  final Color quizUnansweredQuesBg = AppColors.transparent;
-  final Color quizAnsweredQuesBg = AppColors.transparent;
-  final Color quizAnsweredQues = AppColors.transparent;
+  final Color quizCurrentBorder = AppColors.transparent;
+  final Color quizUnansweredBg = AppColors.transparent;
+  final Color quizUnansweredBg2 = AppColors.transparent;
+  final Color quizUnansweredBorder = AppColors.transparent;
+  final Color quizAnsweredBg = AppColors.transparent;
+  final Color quizAnsweredContent = AppColors.transparent;
+  final Color quizCorrectBg = AppColors.transparent;
+  final Color quizCorrectBgLight = AppColors.transparent;
+  final Color quizCorrectBorder = AppColors.transparent;
+  final Color quizIncorrectBg = AppColors.transparent;
+  final Color quizIncorrectBgLight = AppColors.transparent;
+  final Color quizIncorrectBorder = AppColors.transparent;
 
   /// Resource
   final Color resourceItemIcon = AppColors.transparent;

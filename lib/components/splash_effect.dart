@@ -4,7 +4,7 @@ import "package:flutter/material.dart" show InkWell, Material;
 import "package:flutter/widgets.dart";
 
 class SplashEffect extends StatelessWidget {
-  final OnTapListener onTap;
+  final OnTapListener? onTap;
   final Widget child;
 
   const SplashEffect({
@@ -15,6 +15,8 @@ class SplashEffect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (onTap == null) return child;
+
     return Stack(
       children: <Widget>[
         child,

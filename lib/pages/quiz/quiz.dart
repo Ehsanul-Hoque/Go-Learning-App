@@ -61,34 +61,40 @@ class _QuizState extends State<Quiz> {
         CountdownTimerNotifier? timer = context.read<CountdownTimerNotifier?>();
         bool closeQuiz = false;
 
-        timer?.pause();
+        if (timer?.state != CountdownTimerState.finished) {
+          timer?.pause();
 
-        await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AppDialog(
-              title: Res.str.areYouSure,
-              message: Res.str.areYouSureToCloseQuiz,
-              contentType: ContentType.warning,
-              actionButtons: <AppDialogButtonModel>[
-                AppDialogButtonModel(
-                  text: Res.str.no,
-                  onTap: () {
-                    closeQuiz = false;
-                  },
-                ),
-                AppDialogButtonModel(
-                  text: Res.str.yes,
-                  bgColor: Res.color.buttonHollowBg,
-                  contentColor: Res.color.buttonHollowContent2,
-                  onTap: () {
-                    closeQuiz = true;
-                  },
-                ),
-              ],
-            );
-          },
-        );
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AppDialog(
+                title: Res.str.areYouSure,
+                message: Res.str.areYouSureToCloseQuiz,
+                contentType: ContentType.warning,
+                actionButtons: <AppDialogButtonModel>[
+                  AppDialogButtonModel(
+                    text: Res.str.no,
+                    onTap: () {
+                      PageNav.back(context);
+                      closeQuiz = false;
+                    },
+                  ),
+                  AppDialogButtonModel(
+                    text: Res.str.yes,
+                    bgColor: Res.color.buttonHollowBg,
+                    contentColor: Res.color.buttonHollowContent2,
+                    onTap: () {
+                      PageNav.back(context);
+                      closeQuiz = true;
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          closeQuiz = true;
+        }
 
         if (closeQuiz) {
           timer?.stop();
@@ -196,20 +202,28 @@ class _QuizState extends State<Quiz> {
                 ),
               ),
               Expanded(
-                child: Row(
-                  children: <Widget>[
-                    QuizSerialList(
-                      totalQuestions: widget.questions.length,
-                      scrollNotifierId: widget.scrollNotifierId,
-                    ),
-                    Expanded(
-                      child: QuizQuestionsList(
-                        quiz: widget.quiz,
-                        questions: widget.questions,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Res.dimen.normalSpacingValue,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      QuizSerialList(
+                        totalQuestions: widget.questions.length,
                         scrollNotifierId: widget.scrollNotifierId,
                       ),
-                    ),
-                  ],
+                      SizedBox.square(
+                        dimension: Res.dimen.msSpacingValue,
+                      ),
+                      Expanded(
+                        child: QuizQuestionsList(
+                          quiz: widget.quiz,
+                          questions: widget.questions,
+                          scrollNotifierId: widget.scrollNotifierId,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

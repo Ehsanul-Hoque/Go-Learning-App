@@ -47,6 +47,7 @@ dependencies:
   scroll_to_index: ^3.0.1
   inview_notifier_list: ^3.0.0
   provider: ^6.0.3
+  tuple: ^2.0.1
 
   flutter_lorem: ^2.0.0 # TODO Delete in production
 

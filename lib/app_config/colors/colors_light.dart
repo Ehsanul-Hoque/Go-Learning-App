@@ -107,13 +107,18 @@ class ColorsLightMode implements ColorsBase {
   final Color quizItemIcon = AppColors.flatBluePeterRiver;
   final Color quizTimerBg = AppColors.grey300;
   final Color quizTimerProgress = AppColors.flatPurpleShyMoment;
-  final Color quizCurrentQuesNumBorder = AppColors.themeYellow;
-  final Color quizUnansweredQuesNumBg = AppColors.grey300;
-  final Color quizAnsweredQuesNumBg = AppColors.themeYellow;
-  final Color quizAnsweredQuesNum = AppColors.white;
-  final Color quizUnansweredQuesBg = AppColors.grey300;
-  final Color quizAnsweredQuesBg = AppColors.themeYellow;
-  final Color quizAnsweredQues = AppColors.white;
+  final Color quizCurrentBorder = AppColors.themeYellow;
+  final Color quizUnansweredBg = AppColors.grey300;
+  final Color quizUnansweredBg2 = AppColors.veryLightGrey;
+  final Color quizUnansweredBorder = AppColors.grey300;
+  final Color quizAnsweredBg = AppColors.themeYellow;
+  final Color quizAnsweredContent = AppColors.white;
+  final Color quizCorrectBg = AppColors.flatGreenEmerald;
+  final Color quizCorrectBgLight = AppColors.flatGreenEmeraldAlpha20;
+  final Color quizCorrectBorder = AppColors.flatGreenEmerald;
+  final Color quizIncorrectBg = AppColors.flatRedAlizarin;
+  final Color quizIncorrectBgLight = AppColors.flatRedAlizarinAlpha20;
+  final Color quizIncorrectBorder = AppColors.flatRedAlizarin;
 
   /// Resource
   final Color resourceItemIcon = AppColors.flatPurpleAmethyst;
@@ -126,7 +131,7 @@ class ColorsLightMode implements ColorsBase {
   final Color priceBg = AppColors.white;
   final Color widgetCheckBoxSelectedShade = AppColors.flatGreenEmeraldAlpha90;
   final Color contentOnDark = AppColors.white;
-  final Color acsvAutoScrollHighlight = AppColors.flatRedAlizarinAlpha05;
+  final Color acsvAutoScrollHighlight = AppColors.themeYellowAlpha05;
 
   /// const constructor
   const ColorsLightMode();

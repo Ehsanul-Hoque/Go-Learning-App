@@ -191,7 +191,7 @@ class _QuizIntroState extends State<QuizIntro> {
   }
 
   void onStartTap() {
-    PageNav.to(
+    PageNav.replace(
       context,
       MultiProvider(
         providers: <SingleChildWidget>[
@@ -200,7 +200,7 @@ class _QuizIntroState extends State<QuizIntro> {
               totalDuration: Duration(
                 milliseconds: widget.quiz["time_millis"]! as int,
               ),
-              // tickDuration: Res.durations.defaultDuration,
+              tickDuration: Res.durations.defaultDuration,
             ),
           ),
           ChangeNotifierProvider<AcsvScrollNotifier>(
@@ -208,7 +208,10 @@ class _QuizIntroState extends State<QuizIntro> {
           ),
           ChangeNotifierProvider<QuizResultNotifier>(
             create: (BuildContext context) => QuizResultNotifier(
-              totalQuestions: SampleData.questions.length,
+              correctAnswers:
+                  SampleData.questions.map((Map<String, Object> question) {
+                return question["correct_index"] as int;
+              }).toList(),
               // TODO Get questions from API
             ),
           ),

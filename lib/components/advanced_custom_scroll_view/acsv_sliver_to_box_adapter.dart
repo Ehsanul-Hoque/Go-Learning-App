@@ -17,6 +17,8 @@ class AcsvSliverToBoxAdapter extends StatelessWidget {
   final int? autoScrollTagIndex;
   final Color? autoScrollTagHighlightColor;
 
+  final double borderRadius;
+
   const AcsvSliverToBoxAdapter({
     Key? key,
     required this.child,
@@ -26,6 +28,7 @@ class AcsvSliverToBoxAdapter extends StatelessWidget {
     this.autoScrollController,
     this.autoScrollTagIndex,
     this.autoScrollTagHighlightColor,
+    this.borderRadius = 0,
   }) : super(key: key);
 
   @override
@@ -59,6 +62,13 @@ class AcsvSliverToBoxAdapter extends StatelessWidget {
                   child!,
                 );
               },
+              child: resultWidget,
+            );
+          }
+
+          if (borderRadius > 0) {
+            resultWidget = ClipRRect(
+              borderRadius: BorderRadius.circular(borderRadius),
               child: resultWidget,
             );
           }

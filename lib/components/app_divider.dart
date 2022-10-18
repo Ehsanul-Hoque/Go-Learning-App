@@ -21,11 +21,13 @@ class AppDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     double thickness = this.thickness ?? Res.dimen.defaultBorderThickness;
 
-    return Container(
-      width: axis == Axis.horizontal ? mainAxisSize : thickness,
-      height: axis == Axis.horizontal ? thickness : mainAxisSize,
-      margin: margin,
-      color: color ?? Res.color.divider,
+    return Center(
+      child: Container(
+        width: axis == Axis.horizontal ? mainAxisSize : thickness,
+        height: axis == Axis.horizontal ? thickness : mainAxisSize,
+        margin: margin,
+        color: color ?? Res.color.divider,
+      ),
     );
   }
 }

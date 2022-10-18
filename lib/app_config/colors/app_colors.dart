@@ -13,6 +13,7 @@ class AppColors {
   static const Color themeBlueAlpha10 = Color(0x1a28295B);
   static const Color themeBlueAlpha60 = Color(0x9928295B);
   static const Color themeBlueAlpha90 = Color(0xe628295B);
+  static const Color themeYellowAlpha05 = Color(0x0dF8AF3E);
   static const Color themeYellowAlpha80 = Color(0xccF8AF3E);
 
   /// Shades of black and grey
@@ -38,7 +39,8 @@ class AppColors {
   static const Color flatGreenEmeraldAlpha50 = Color(0x802ECC71);
   static const Color blueGrey300Alpha50 = Color(0x8090A4AE);
   static const Color flatGreenEmeraldAlpha90 = Color(0xe62ECC71);
-  static const Color flatRedAlizarinAlpha05 = Color(0x0dE74C3C);
+  static const Color flatGreenEmeraldAlpha20 = Color(0x332ECC71);
+  static const Color flatRedAlizarinAlpha20 = Color(0x33E74C3C);
 
   /// Flat colors
   static const Color flatRedAlizarin = Color(0xffE74C3C);

@@ -1,5 +1,4 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_divider.dart";
 import "package:app/pages/quiz/components/quiz_mcq_options.dart";
 import "package:app/pages/quiz/components/quiz_question.dart";
 import "package:app/utils/typedefs.dart" show OnValueListener;
@@ -7,9 +6,10 @@ import "package:flutter/widgets.dart";
 
 class QuizMcq extends StatelessWidget {
   final Map<String, Object> quesAns; // TODO Get from API
-  final OnValueListener<int> onOptionTap;
+  final OnValueListener<int>? onOptionTap;
   final Axis axis;
   final int selectedIndex;
+  final int? correctIndex;
 
   const QuizMcq({
     Key? key,
@@ -17,6 +17,7 @@ class QuizMcq extends StatelessWidget {
     required this.onOptionTap,
     required this.axis,
     this.selectedIndex = -1,
+    this.correctIndex,
   }) : super(key: key);
 
   @override
@@ -46,27 +47,18 @@ class QuizMcq extends StatelessWidget {
                       options: quesAns["options"]! as List<String>,
                       onOptionTap: onOptionTap,
                       selectedIndex: selectedIndex,
+                      correctIndex: correctIndex,
                     )
                   : Expanded(
                       child: QuizMcqOptions(
                         options: quesAns["options"]! as List<String>,
                         onOptionTap: onOptionTap,
                         selectedIndex: selectedIndex,
+                        correctIndex: correctIndex,
                       ),
                     ),
             ],
           ),
-        ),
-        SizedBox(
-          height: Res.dimen.xxlSpacingValue,
-        ),
-        LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return AppDivider(
-              mainAxisSize: constraints.maxWidth /
-                  Res.dimen.quizQuesBottomBorderToMaxWidthRatio,
-            );
-          },
         ),
       ],
     );

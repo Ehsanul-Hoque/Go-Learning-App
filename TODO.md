@@ -25,4 +25,6 @@
 - Show large image on image tap in html_text.dart
 - Change page navigation to named routes
 - Quiz timer progress is animating smoothly by text color is not animating.
+- Quiz page animation is not smooth
+- Use selectors instead of consumers to optimize the page
 - 

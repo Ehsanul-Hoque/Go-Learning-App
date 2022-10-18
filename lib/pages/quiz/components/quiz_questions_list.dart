@@ -3,10 +3,15 @@ import "package:app/app_config/sample_data.dart";
 import "package:app/components/advanced_custom_scroll_view/acsv_sliver_to_box_adapter.dart";
 import "package:app/components/advanced_custom_scroll_view/advanced_custom_scroll_view.dart";
 import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
+import "package:app/components/app_container.dart";
+import "package:app/components/app_divider.dart";
+import "package:app/components/countdown_timer/enums/countdown_timer_state.dart";
+import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
+import "package:app/components/sliver_sized_box.dart";
 import "package:app/pages/quiz/components/quiz_mcq.dart";
 import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart" show Consumer, ReadContext;
+import "package:provider/provider.dart" show Consumer2, ReadContext;
 import "package:scroll_to_index/scroll_to_index.dart";
 
 class QuizQuestionsList extends StatefulWidget {
@@ -36,18 +41,27 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
             ? Axis.vertical
             : Axis.horizontal;
 
-        return Consumer<QuizResultNotifier>(
+        return Consumer2<CountdownTimerNotifier, QuizResultNotifier>(
           builder: (
             BuildContext context,
+            CountdownTimerNotifier timer,
             QuizResultNotifier result,
             Widget? child,
           ) {
             return AdvancedCustomScrollView(
               scrollNotifierId: widget.scrollNotifierId,
               acsvSliversBuilder: (AutoScrollController autoScrollController) {
-                return SampleData.questions
+                bool hasQuizFinished =
+                    (timer.state == CountdownTimerState.finished);
+
+                List<Widget> questionWidgets = SampleData.questions
                     .asMap()
                     .map((int index, Map<String, Object> item) {
+                      int selectedIndex = result.selectedAnswers[index];
+                      int correctIndex = result.correctAnswers[index];
+                      bool hasAnswered = (selectedIndex >= 0);
+                      bool isCorrect = (selectedIndex == correctIndex);
+
                       return MapEntry<int, Widget>(
                         index,
                         AcsvSliverToBoxAdapter(
@@ -66,16 +80,38 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
 
                             return child;
                           },
-                          child: Padding(
-                            padding: EdgeInsets.all(
-                              Res.dimen.normalSpacingValue,
+                          borderRadius: Res.dimen.xlBorderRadiusValue,
+                          child: AppContainer(
+                            animated: true,
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.all(Res.dimen.msSpacingValue),
+                            borderRadius: BorderRadius.circular(
+                              Res.dimen.xlBorderRadiusValue,
                             ),
+                            backgroundColor: hasQuizFinished
+                                ? hasAnswered
+                                    ? (isCorrect
+                                        ? Res.color.quizCorrectBgLight
+                                        : Res.color.quizIncorrectBgLight)
+                                    : Res.color.quizUnansweredBg
+                                : Res.color.transparent,
+                            shadow: const <BoxShadow>[],
                             child: QuizMcq(
                               quesAns: item,
-                              onOptionTap: (int selectedIndex) {
-                                onOptionTap(context, index, selectedIndex);
-                              },
-                              selectedIndex: result.selectedAnswers[index],
+                              onOptionTap: hasQuizFinished
+                                  ? null
+                                  : (int selectedIndex) {
+                                      if (!hasQuizFinished) {
+                                        onOptionTap(
+                                          context,
+                                          index,
+                                          selectedIndex,
+                                        );
+                                      }
+                                    },
+                              selectedIndex: selectedIndex,
+                              correctIndex:
+                                  hasQuizFinished ? correctIndex : null,
                               axis: axis,
                             ),
                           ),
@@ -84,6 +120,35 @@ class _QuizQuestionsListState extends State<QuizQuestionsList> {
                     })
                     .values
                     .toList();
+
+                Widget separator = SliverToBoxAdapter(
+                  child: AppDivider(
+                    mainAxisSize: constraints.maxWidth /
+                        Res.dimen.quizQuesBottomBorderToMaxWidthRatio,
+                    margin: EdgeInsets.symmetric(
+                      vertical: Res.dimen.normalSpacingValue,
+                    ),
+                  ),
+                );
+
+                int totalWidgets = questionWidgets.length * 2 + 1;
+
+                List<Widget> allWidgets = List<Widget>.generate(
+                  totalWidgets,
+                  (int index) {
+                    if (index == 0 || index == totalWidgets - 1) {
+                      return SliverSizedBox(
+                        height: Res.dimen.xxlSpacingValue,
+                      );
+                    } else if ((index - 1) % 2 == 0) {
+                      return questionWidgets[(index - 1) ~/ 2];
+                    } else {
+                      return separator;
+                    }
+                  },
+                );
+
+                return allWidgets;
               },
             );
           },

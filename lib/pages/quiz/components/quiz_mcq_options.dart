@@ -8,13 +8,15 @@ import "package:flutter/widgets.dart";
 class QuizMcqOptions extends StatelessWidget {
   final List<String> options;
   final int selectedIndex;
-  final OnValueListener<int> onOptionTap;
+  final int? correctIndex;
+  final OnValueListener<int>? onOptionTap;
 
   const QuizMcqOptions({
     Key? key,
     required this.options,
     required this.onOptionTap,
     this.selectedIndex = -1,
+    this.correctIndex,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,8 @@ class QuizMcqOptions extends StatelessWidget {
           .map((int index, String item) {
             bool lastItem = (index == options.length - 1);
             bool isSelected = (index == selectedIndex);
+            bool isCorrect = (index == correctIndex);
+            bool hasQuizFinished = (correctIndex != null);
 
             MapEntry<int, Widget> mapEntry = MapEntry<int, Widget>(
               index,
@@ -37,12 +41,19 @@ class QuizMcqOptions extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 borderRadius:
                     BorderRadius.circular(Res.dimen.largeBorderRadiusValue),
-                backgroundColor: isSelected
-                    ? Res.color.quizAnsweredQuesBg
-                    : Res.color.quizUnansweredQuesBg,
+                backgroundColor: hasQuizFinished
+                    ? (isCorrect
+                        ? Res.color.quizCorrectBg
+                        : (isSelected
+                            ? Res.color.quizIncorrectBg
+                            : Res.color.quizUnansweredBg2))
+                    : (isSelected
+                        ? Res.color.quizAnsweredBg
+                        : Res.color.quizUnansweredBg),
                 shadow: const <BoxShadow>[],
                 child: SplashEffect(
-                  onTap: () => onOptionTap(index),
+                  onTap:
+                      (onOptionTap != null) ? () => onOptionTap!(index) : null,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       vertical: Res.dimen.smallSpacingValue,
@@ -54,7 +65,9 @@ class QuizMcqOptions extends StatelessWidget {
                           Res.dimen.fontSizeMedium / Res.dimen.fontSizeNormal,
                       textAlign: TextAlign.center,
                       defaultTextStyle: Res.textStyles.general.copyWith(
-                        color: isSelected ? Res.color.quizAnsweredQues : null,
+                        color: (isSelected || (hasQuizFinished && isCorrect))
+                            ? Res.color.quizAnsweredContent
+                            : null,
                       ),
                     ),
                   ),

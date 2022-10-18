@@ -8,6 +8,7 @@ class Dimensions {
   final double defaultBorderRadiusValue = 8;
   final double mediumBorderRadiusValue = 12;
   final double largeBorderRadiusValue = 16;
+  final double xlBorderRadiusValue = 24;
   final double fullRoundedBorderRadiusValue = 9999;
   final double defaultBorderThickness = 1;
 
@@ -63,6 +64,7 @@ class Dimensions {
   double getCourseItemHeight(double width) =>
       // (width * bannerAspectRatio^-1) + courseItemDescriptionHeight
       (width * (1 / bannerAspectRatio)) + 76;
+  final double quizSerialNumberCircleDiameter = 42;
 
   /// Ratio
   // final double bannerAspectRatioWidth = 16;
@@ -160,6 +162,7 @@ class MyCurves {
   const MyCurves();
 
   final Curve defaultCurve = Curves.easeInOut;
+  final Curve linearCurve = Curves.linear;
 }
 
 class Shadows {

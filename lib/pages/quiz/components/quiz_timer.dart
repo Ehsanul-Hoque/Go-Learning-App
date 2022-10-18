@@ -48,6 +48,7 @@ class QuizTimer extends StatelessWidget {
                 children: <Widget>[
                   AnimatedPositioned(
                     duration: Res.durations.defaultDuration,
+                    curve: Res.curves.linearCurve,
                     left: 0,
                     top: topOrBottom,
                     right: totalWidth - progressWidth,
