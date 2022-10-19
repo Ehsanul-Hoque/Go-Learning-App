@@ -82,6 +82,12 @@ class CountdownTimerNotifier extends ChangeNotifier {
     start();
   }
 
+  void finishNow() {
+    pause();
+    _state = CountdownTimerState.finished;
+    notifyListeners();
+  }
+
   double getCurrentProgress() {
     double progress =
         (tickDuration.inMilliseconds * tick) / totalDuration.inMilliseconds;
