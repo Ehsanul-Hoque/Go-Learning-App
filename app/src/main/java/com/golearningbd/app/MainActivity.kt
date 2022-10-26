@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.golearningbd.app.commons.data.Constants
@@ -38,8 +37,7 @@ class MainActivity : AppCompatActivity() {
             if (resultCode != RESULT_OK) {
                 MyLogger.e("Update flow failed! Result code: $resultCode")
 
-                progressWheel?.visibility = View.GONE
-                textViewError?.text = getString(R.string.error_update_app);
+                showError(R.string.error_update_app)
             }
         }
     }
