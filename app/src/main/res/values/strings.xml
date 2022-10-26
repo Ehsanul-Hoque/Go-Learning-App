@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">GO Learning</string>
+    <string name="url_golearningbd">www.golearningbd.com</string>
+    <string name="error_could_not_download">Couldn\'t download. Please try again later.</string>
+    <string name="title_download">Download confirmation</string>
+    <string name="message_download">Are you sure you want to download?</string>
+    <string name="yes_download">Yes, download</string>
+    <string name="no_cancel">No, cancel</string>
+    <string name="download_starting">Download starting</string>
+    <string name="error_could_not_open_any_app">Couldn\'t open any app</string>
+</resources>
