@@ -8,4 +8,6 @@
     <string name="no_cancel">No, cancel</string>
     <string name="download_starting">Download starting</string>
     <string name="error_could_not_open_any_app">Couldn\'t open any app</string>
+    <string name="error_update_app">Please update the app from Play Store.</string>
+    <string name="error_general">Oops! Some kind of problem occurred. Please try again later.</string>
 </resources>

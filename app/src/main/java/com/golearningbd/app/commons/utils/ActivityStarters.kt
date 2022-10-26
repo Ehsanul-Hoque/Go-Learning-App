@@ -1,15 +1,32 @@
 package com.golearningbd.app.commons.utils
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.annotation.StringRes
+import com.golearningbd.app.web_module.views.WebViewActivity
 
 
 object ActivityStarters
 {
+
+    fun startWebViewActivity(context: Context, finishGivenActivity: Boolean, clearTask: Boolean) {
+        val intent = Intent(context, WebViewActivity::class.java)
+
+        if (clearTask) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+
+        context.startActivity(intent)
+
+        if (finishGivenActivity && context is Activity)
+            context.finish()
+    }
 
     fun openDialingApp(context: Context, contactNo: String, @StringRes errorStringRes: Int)
     {
