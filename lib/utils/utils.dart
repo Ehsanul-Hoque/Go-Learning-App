@@ -1,3 +1,4 @@
+import "dart:convert";
 import "dart:developer" as devtools show log;
 
 import "package:app/app_config/resources.dart";
@@ -25,6 +26,21 @@ class Utils {
         stackTrace: stackTrace,
       );
     }
+  }
+
+  static String getModelString(
+    String modelName,
+    Map<String, dynamic> jsonRepresentation,
+  ) {
+    JsonEncoder jsonEncoder = const JsonEncoder.withIndent("  ");
+    String formattedJson = jsonEncoder.convert(jsonRepresentation);
+
+    return "\n-------------------------------------------------- [START]"
+        "\n$modelName"
+        "\n--------------------------------------------------"
+        "\n$formattedJson"
+        "\n-------------------------------------------------- [END]"
+        "\n";
   }
 
   static String _twoDigits(int n) => n.toString().padLeft(2, "0");

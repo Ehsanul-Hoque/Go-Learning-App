@@ -27,4 +27,6 @@
 - Quiz timer progress is animating smoothly by text color is not animating.
 - Quiz page animation is not smooth
 - Use selectors instead of consumers to optimize the page
+- Improve logger
+- Create network cache manager, network logger etc.
 - 

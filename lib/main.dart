@@ -1,9 +1,12 @@
 import "package:app/app_config/resources.dart";
+import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:flutter/services.dart"
     show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
+import "package:provider/provider.dart";
+import "package:provider/single_child_widget.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +22,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformApp(
-      debugShowCheckedModeBanner: false,
-      title: Res.str.appName,
-      home: const AuthPage(),
+    return MultiProvider(
+      providers: <SingleChildWidget>[
+        ChangeNotifierProvider<CourseApiNotifier>(
+          create: (BuildContext context) => CourseApiNotifier(),
+        ),
+      ],
+      child: PlatformApp(
+        debugShowCheckedModeBanner: false,
+        title: Res.str.appName,
+        home: const AuthPage(),
+      ),
     );
   }
 }

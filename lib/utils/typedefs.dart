@@ -19,6 +19,8 @@ typedef OnContentItemClickListener = void Function(
 
 typedef OnAnimationListener = void Function();
 
+typedef OnErrorListener<T> = OnValueListener<T>;
+
 typedef PlaceholderBuilder = Widget Function(
   BuildContext context,
   String url,

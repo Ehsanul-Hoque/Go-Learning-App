@@ -1,4 +1,7 @@
 class SampleData {
+  static String accessToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MmMwNGE3NjQ1OGY1YzNjZmVlZGI0MTEiLCJ0eXBlIjoic3R1ZGVudCIsInRva2VuIjoic3RyaW5nIiwiaWF0IjoxNjY2MTY5NDc5LCJleHAiOjE2Njg3NjE0Nzl9.vy9n67s-a3sPkg00P---rL3RmMqyTaoeSPJxoC7dano";
+
   static String avatar =
       "https://preview.redd.it/gwqupsh46yn51.png?width=301&format=png&auto=webp&s=60efa3b8c4375c7589c929945a840c60c713c949";
 
@@ -104,7 +107,7 @@ class SampleData {
     <String, Object>{
       "id": "1",
       "title": "Quiz 1",
-      "time_millis": (11 * 60 * 1000) + (20 * 1000),
+      "time_millis": 20 * 1000,
       "min_percent": 80,
       "positive_mark": 1,
       "negative_mark": 0.25,
