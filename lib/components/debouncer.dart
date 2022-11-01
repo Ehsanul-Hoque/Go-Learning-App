@@ -2,29 +2,29 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_loading_anim.dart";
 import "package:flutter/widgets.dart";
 
-class FakeLoading extends StatelessWidget {
+class Debouncer extends StatelessWidget {
   final Widget child;
   final Widget? loading;
-  final Duration? loadingDuration;
-  final Duration? animationDuration;
-  final Curve? animationCurve;
+  final Duration? debounceDuration;
+  final Duration? transitionDuration;
+  final Curve? transitionCurve;
 
-  const FakeLoading({
+  const Debouncer({
     Key? key,
     required this.child,
     this.loading,
-    this.loadingDuration,
-    this.animationDuration,
-    this.animationCurve,
+    this.debounceDuration,
+    this.transitionDuration,
+    this.transitionCurve,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Duration loadingDuration =
-        this.loadingDuration ?? Res.durations.fakeLoadingDuration;
+    Duration debounceDuration =
+        this.debounceDuration ?? Res.durations.debounceDuration;
 
     return FutureBuilder<void>(
-      future: Future<void>.delayed(loadingDuration),
+      future: Future<void>.delayed(debounceDuration),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         Widget widget;
 
@@ -36,9 +36,9 @@ class FakeLoading extends StatelessWidget {
         }
 
         return AnimatedSwitcher(
-          duration: animationDuration ?? Res.durations.defaultDuration,
-          switchInCurve: animationCurve ?? Res.curves.defaultCurve,
-          switchOutCurve: animationCurve ?? Res.curves.defaultCurve,
+          duration: transitionDuration ?? Res.durations.defaultDuration,
+          switchInCurve: transitionCurve ?? Res.curves.defaultCurve,
+          switchOutCurve: transitionCurve ?? Res.curves.defaultCurve,
           child: widget,
         );
       },

@@ -156,7 +156,7 @@ class Durations {
   final Duration defaultDuration = const Duration(milliseconds: 200);
   final Duration longDuration = const Duration(milliseconds: 500);
   // final Duration animatedSwitcherDuration = const Duration(milliseconds: 500);
-  final Duration fakeLoadingDuration = const Duration(milliseconds: 200);
+  final Duration debounceDuration = const Duration(milliseconds: 200);
 }
 
 class MyCurves {

@@ -1,6 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
-import "package:app/components/fake_loading.dart";
+import "package:app/components/debouncer.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/quiz_item.dart";
@@ -24,7 +24,7 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return FakeLoading(
+    return Debouncer(
       child: ListView(
         padding: EdgeInsets.only(
           left: Res.dimen.normalSpacingValue,

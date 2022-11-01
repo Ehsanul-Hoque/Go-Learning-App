@@ -2,7 +2,7 @@ import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
 import "package:app/components/carousal/widget_carousal.dart";
 import "package:app/components/course_item.dart";
-import "package:app/components/fake_loading.dart";
+import "package:app/components/debouncer.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
@@ -19,7 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
-  // late final Iterable<Map<String, Object>> _sampleCourses;
   late final double _courseGridPadding;
   late final double _courseGridHorizontalGap;
   late final double _courseGridVerticalGap;
@@ -29,7 +28,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    // _sampleCourses = SampleData.courses.getRandoms(100);
     _courseGridPadding = Res.dimen.normalSpacingValue;
     _courseGridHorizontalGap = Res.dimen.normalSpacingValue;
     _courseGridVerticalGap = Res.dimen.normalSpacingValue;
@@ -48,7 +46,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
 
-    return FakeLoading(
+    return Debouncer(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           int courseGridCrossAxisCount = 1;

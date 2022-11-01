@@ -1,6 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
-import "package:app/components/fake_loading.dart";
+import "package:app/components/debouncer.dart";
 import "package:app/pages/home/components/course_category_item.dart";
 import "package:flutter/widgets.dart";
 
@@ -22,7 +22,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
     Iterable<MapEntry<String, List<Map<String, Object>>>> coursesByCategory =
         getCoursesByCategory().entries;
 
-    return FakeLoading(
+    return Debouncer(
       child: ListView.builder(
         padding: EdgeInsets.only(
           top: Res.dimen.getPageTopPaddingWithAppBar(context),
