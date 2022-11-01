@@ -1,6 +1,6 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_loading_anim.dart";
 import "package:flutter/widgets.dart";
-import "package:flutter_svg/flutter_svg.dart";
 
 class FakeLoading extends StatelessWidget {
   final Widget child;
@@ -29,14 +29,8 @@ class FakeLoading extends StatelessWidget {
         Widget widget;
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          widget = loading ??
-              Center(
-                child: SizedBox(
-                  width: Res.dimen.pageLoadingSize,
-                  height: Res.dimen.pageLoadingSize,
-                  child: SvgPicture.asset(Res.assets.loadingSvg),
-                ),
-              );
+          widget = loading ?? const AppLoadingAnim();
+          // widget = loading ?? const SizedBox.shrink();
         } else {
           widget = child;
         }

@@ -5,11 +5,12 @@ import "package:flutter/widgets.dart";
 import "package:flutter_svg/flutter_svg.dart";
 
 class MyCachedImage extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
   final PlaceholderBuilder? placeholder;
   final ErrorBuilder? errorWidget;
   final Duration? animationDuration;
   final Curve? animationCurve;
+  final BoxFit? fit;
 
   const MyCachedImage({
     Key? key,
@@ -18,6 +19,7 @@ class MyCachedImage extends StatelessWidget {
     this.errorWidget,
     this.animationDuration,
     this.animationCurve,
+    this.fit,
   }) : super(key: key);
 
   @override
@@ -26,8 +28,12 @@ class MyCachedImage extends StatelessWidget {
         this.animationDuration ?? Res.durations.defaultDuration;
     Curve animationCurve = this.animationCurve ?? Res.curves.defaultCurve;
 
+    if (imageUrl == null || imageUrl!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return CachedNetworkImage(
-      imageUrl: imageUrl,
+      imageUrl: imageUrl!,
       fadeInDuration: animationDuration,
       fadeOutDuration: animationDuration,
       fadeInCurve: animationCurve,
@@ -42,7 +48,7 @@ class MyCachedImage extends StatelessWidget {
       errorWidget: errorWidget ??
           (BuildContext context, String url, dynamic error) =>
               const SizedBox.shrink(),
-      fit: BoxFit.cover,
+      fit: fit ?? BoxFit.cover,
     );
   }
 }

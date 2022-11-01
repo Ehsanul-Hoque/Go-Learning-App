@@ -93,6 +93,13 @@ class StringsEn implements StringsBase {
       "Are you sure that you want to close the quiz?"
       " Quiz progress of the quiz will be lost.";
 
+  final String generalError = "Sorry! Some type of problem occurred.";
+  final String startNetworkCall = "Please start the network call.";
+  final String noInternet = "Sorry! Internet is not available."
+      " Please check your network connection.";
+  final String noContents = "Sorry! There are no contents available.";
+  final String noCourses = "Sorry! There are no courses available.";
+
   /// Sample texts
   final String page1 = "Page 1";
   final String page2 = "Page 2";

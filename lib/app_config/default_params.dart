@@ -99,7 +99,7 @@ class TextStyles {
 
   TextStyle get general => TextStyle(
         fontSize: Res.dimen.fontSizeNormal,
-        fontFamily: GoogleFonts.ubuntu().fontFamily,
+        fontFamily: GoogleFonts.hindSiliguri().fontFamily,
         color: Res.color.textPrimary,
         height: 1.2,
       );
@@ -154,6 +154,7 @@ class Durations {
   const Durations();
 
   final Duration defaultDuration = const Duration(milliseconds: 200);
+  final Duration longDuration = const Duration(milliseconds: 500);
   // final Duration animatedSwitcherDuration = const Duration(milliseconds: 500);
   final Duration fakeLoadingDuration = const Duration(milliseconds: 200);
 }
@@ -207,6 +208,7 @@ class Assets {
   final String defaultAvatarSvg = "assets/illustrations/default_avatar.svg";
   final String talkBubbleSvg = "assets/illustrations/talk_bubble.svg";
   final String cornerBubblesSvg = "assets/illustrations/corner_bubbles.svg";
+  final String loadingLottieJson = "assets/illustrations/lottie_loading.json";
 
   /// Logos
   final String logoSvg = "assets/logo/logo.svg";

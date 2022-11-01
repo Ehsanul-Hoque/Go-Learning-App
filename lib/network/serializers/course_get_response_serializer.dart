@@ -33,7 +33,7 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
       title: json["title"],
       aliasName: json["alias_name"],
       description: json["description"],
-      instructorName: json["instructorName"],
+      instructorName: json["instructor_name"],
       originalPrice: json["original_price"],
       price: json["price"],
       duration: json["duration"],
@@ -74,7 +74,7 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
     data["title"] = serializable.title;
     data["alias_name"] = serializable.aliasName;
     data["description"] = serializable.description;
-    data["instructorName"] = serializable.instructorName;
+    data["instructor_name"] = serializable.instructorName;
     data["original_price"] = serializable.originalPrice;
     data["price"] = serializable.price;
     data["duration"] = serializable.duration;

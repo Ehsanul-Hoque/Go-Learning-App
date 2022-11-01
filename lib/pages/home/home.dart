@@ -4,8 +4,12 @@ import "package:app/components/carousal/widget_carousal.dart";
 import "package:app/components/course_item.dart";
 import "package:app/components/fake_loading.dart";
 import "package:app/components/sliver_sized_box.dart";
-import "package:app/utils/extensions/iterable_extension.dart";
+import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/network/views/network_widget.dart";
 import "package:flutter/widgets.dart";
+import "package:provider/provider.dart";
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,7 +19,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
-  late final Iterable<Map<String, Object>> _sampleCourses;
+  // late final Iterable<Map<String, Object>> _sampleCourses;
   late final double _courseGridPadding;
   late final double _courseGridHorizontalGap;
   late final double _courseGridVerticalGap;
@@ -25,12 +29,19 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    _sampleCourses = SampleData.courses.getRandoms(100);
+    // _sampleCourses = SampleData.courses.getRandoms(100);
     _courseGridPadding = Res.dimen.normalSpacingValue;
     _courseGridHorizontalGap = Res.dimen.normalSpacingValue;
     _courseGridVerticalGap = Res.dimen.normalSpacingValue;
 
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.read<CourseApiNotifier?>()?.getAllCourses();
+    });
   }
 
   @override
@@ -74,25 +85,48 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
               ),
               SliverPadding(
                 padding: EdgeInsets.all(_courseGridPadding),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: courseGridCrossAxisCount,
-                    mainAxisSpacing: _courseGridVerticalGap,
-                    crossAxisSpacing: _courseGridHorizontalGap,
-                    mainAxisExtent: calculateCourseGridItemHeight(
-                      courseGridCrossAxisCount,
-                      constraints.maxWidth,
-                    ),
+                sliver: NetworkWidget(
+                  shouldOutputBeSliver: true,
+                  callStatusSelector: () => context.select(
+                    (CourseApiNotifier? apiNotifier) =>
+                        apiNotifier?.allCoursesGetInfo.callStatus ??
+                        NetworkCallStatus.none,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      // TODO Show courses from API
-                      return CourseItem(
-                        course: _sampleCourses.elementAt(index),
-                      );
-                    },
-                    childCount: _sampleCourses.length,
-                  ),
+                  noContentChecker: () =>
+                      context
+                          .read<CourseApiNotifier?>()
+                          ?.allCoursesGetInfo
+                          .result
+                          ?.isEmpty !=
+                      false,
+                  noContentText: Res.str.noCourses,
+                  childBuilder: (BuildContext context) {
+                    List<CourseGetResponseModel> allCourses = context
+                            .read<CourseApiNotifier?>()
+                            ?.allCoursesGetInfo
+                            .result ??
+                        <CourseGetResponseModel>[];
+
+                    return SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: courseGridCrossAxisCount,
+                        mainAxisSpacing: _courseGridVerticalGap,
+                        crossAxisSpacing: _courseGridHorizontalGap,
+                        mainAxisExtent: calculateCourseGridItemHeight(
+                          courseGridCrossAxisCount,
+                          constraints.maxWidth,
+                        ),
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return CourseItem(
+                            course: allCourses[index],
+                          );
+                        },
+                        childCount: allCourses.length,
+                      ),
+                    );
+                  },
                 ),
               ),
               SliverSizedBox(

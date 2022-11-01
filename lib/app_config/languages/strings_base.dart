@@ -84,6 +84,12 @@ abstract class StringsBase {
   final String areYouSure = "";
   final String areYouSureToCloseQuiz = "";
 
+  final String generalError = "";
+  final String startNetworkCall = "";
+  final String noInternet = "";
+  final String noContents = "";
+  final String noCourses = "";
+
   /// Sample texts
   final String page1 = "";
   final String page2 = "";

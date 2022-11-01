@@ -128,6 +128,7 @@ class ColorsLightMode implements ColorsBase {
   final Color divider = AppColors.grey300;
   final Color price = AppColors.themeBlue;
   final Color strikethroughPrice = AppColors.whiteAlpha60;
+  final Color strikethroughPrice2 = AppColors.themeBlueAlpha60;
   final Color priceBg = AppColors.white;
   final Color widgetCheckBoxSelectedShade = AppColors.flatGreenEmeraldAlpha90;
   final Color contentOnDark = AppColors.white;

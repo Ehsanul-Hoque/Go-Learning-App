@@ -1,5 +1,4 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/course_item.dart";
 import "package:flutter/widgets.dart";
 
 class CourseCategoryItem extends StatelessWidget {
@@ -43,7 +42,8 @@ class CourseCategoryItem extends StatelessWidget {
               clipBehavior: Clip.none,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                return CourseItem(
+                return Container();
+                /*return CourseItem(
                   course: courses.elementAt(index),
                   width: Res.dimen.courseItemWidth,
                   margin: EdgeInsets.only(
@@ -54,7 +54,7 @@ class CourseCategoryItem extends StatelessWidget {
                         ? listHorizontalPadding
                         : (itemSpacing / 2),
                   ),
-                );
+                );*/
               },
               itemCount: totalCourses,
             ),

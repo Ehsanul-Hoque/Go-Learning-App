@@ -3,14 +3,14 @@ import "package:app/components/app_container.dart";
 import "package:app/components/icon_and_text.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
-import "package:app/pages/course/course_before_enroll.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
+import "package:app/utils/utils.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 
 class CourseItem extends StatelessWidget {
-  final Map<String, Object> course;
+  final CourseGetResponseModel course;
   final double? width, height;
   final EdgeInsets margin;
 
@@ -44,27 +44,49 @@ class CourseItem extends StatelessWidget {
               aspectRatio: Res.dimen.bannerAspectRatio,
               child: Stack(
                 children: <Widget>[
-                  MyCachedImage(
-                    imageUrl:
-                        course["banner"]! as String, // TODO Get banner from API
+                  Positioned.fill(
+                    child: MyCachedImage(
+                      imageUrl: course.thumbnail,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   Positioned(
                     bottom: -2,
                     right: 0,
-                    child: CustomPaint(
-                      painter: PriceBgPainter(),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: Res.dimen.largeSpacingValue,
-                          top: Res.dimen.xsSpacingValue,
-                          right: Res.dimen.smallSpacingValue,
-                          bottom: Res.dimen.xsSpacingValue,
-                        ),
-                        child: Text(
-                          "${course["price"]!} ${Res.str.tkDot}", // TODO Get price from API
-                          style: Res.textStyles.general.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: Res.color.price,
+                    child: DefaultTextStyle(
+                      style: Res.textStyles.general.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Res.color.price,
+                      ),
+                      child: CustomPaint(
+                        painter: PriceBgPainter(),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: Res.dimen.largeSpacingValue,
+                            top: Res.dimen.xsSpacingValue,
+                            right: Res.dimen.smallSpacingValue,
+                            bottom: Res.dimen.xsSpacingValue,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                "${course.price?.toStringAsFixed(0) ?? "-"}"
+                                " ${Res.str.tkDot}",
+                              ),
+                              if (course.price !=
+                                  course.originalPrice) ...<Widget>[
+                                const Text(" "),
+                                Text(
+                                  "${course.originalPrice?.toStringAsFixed(0) ?? "-"}"
+                                  " ${Res.str.tkDot}",
+                                  style: TextStyle(
+                                    fontSize: Res.dimen.fontSizeSmall,
+                                    color: Res.color.strikethroughPrice2,
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
                       ),
@@ -81,7 +103,7 @@ class CourseItem extends StatelessWidget {
                 horizontal: Res.dimen.msSpacingValue,
               ),
               child: Text(
-                course["title"]! as String, // TODO Get title from API
+                course.title ?? "",
                 style: Res.textStyles.labelSmall,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -95,7 +117,7 @@ class CourseItem extends StatelessWidget {
                 horizontal: Res.dimen.msSpacingValue,
               ),
               child: Text(
-                "${Res.str.by} ${course["instructor"]!}", // TODO Get instructor from API
+                course.instructorName ?? "",
                 style: Res.textStyles.secondary,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -108,21 +130,21 @@ class CourseItem extends StatelessWidget {
                 ),
                 child: Row(
                   children: <Widget>[
-                    const IconAndText(
+                    IconAndText(
                       iconData: CupertinoIcons.videocam_circle,
-                      text: "18", // TODO Get video count from API
+                      text: course.totalLecture?.toString() ?? 0.toString(),
                     ),
                     SizedBox(
                       width: Res.dimen.xxsSpacingValue,
                     ),
-                    const IconAndText(
+                    IconAndText(
                       iconData: CupertinoIcons.pencil_outline,
-                      text: "20", // TODO Get quiz count from API
+                      text: course.totalQuiz?.toString() ?? 0.toString(),
                     ),
                     const Spacer(),
-                    const IconAndText(
+                    IconAndText(
                       iconData: CupertinoIcons.time,
-                      text: "3.25h", // TODO Get course time length from API
+                      text: Utils.formatDurationText(course.duration ?? ""),
                     ),
                   ],
                 ),
@@ -135,11 +157,11 @@ class CourseItem extends StatelessWidget {
   }
 
   void onItemTap(BuildContext context) {
-    PageNav.to(
+    /*PageNav.to(
       context,
       CourseBeforeEnroll(
         course: course,
       ),
-    );
+    );*/
   }
 }

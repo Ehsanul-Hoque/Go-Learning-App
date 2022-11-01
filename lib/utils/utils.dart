@@ -43,7 +43,7 @@ class Utils {
         "\n";
   }
 
-  static String _twoDigits(int n) => n.toString().padLeft(2, "0");
+  static String _twoDigits(int n) => n.toString().padLeft(2, 0.toString());
 
   static String getMmSsFormat(Duration duration) {
     String twoDigitMinutes = _twoDigits(duration.inMinutes);
@@ -56,6 +56,19 @@ class Utils {
     String twoDigitMinutes = _twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = _twoDigits(duration.inSeconds.remainder(60));
     return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  static String formatDurationText(String durationText) {
+    return durationText
+        .trim()
+        .toLowerCase()
+        .replaceAll(" hours", "h")
+        .replaceAll(" hour", "h")
+        .replaceAll(" hr", "h")
+        .replaceAll(" h", "h")
+        .replaceAll(" minutes", "m")
+        .replaceAll(" minute", "m")
+        .replaceAll(" m", "m");
   }
 
   static Color getTransparent(Color color) => color.withOpacity(0);

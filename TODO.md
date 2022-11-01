@@ -29,4 +29,5 @@
 - Use selectors instead of consumers to optimize the page
 - Improve logger
 - Create network cache manager, network logger etc.
+- Make all provider methods (read, watch, select) consume null notifiers too.
 - 
