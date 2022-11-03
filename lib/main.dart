@@ -1,5 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/pages/app_error_screen.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:flutter/services.dart"
     show SystemChrome, SystemUiMode, SystemUiOverlay;
@@ -14,6 +15,10 @@ void main() {
     SystemUiMode.manual,
     overlays: SystemUiOverlay.values,
   );
+
+  ErrorWidget.builder =
+      (FlutterErrorDetails details) => AppErrorScreen(error: details.exception);
+
   runApp(const MyApp());
 }
 
