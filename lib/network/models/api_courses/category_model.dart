@@ -1,5 +1,5 @@
 import "package:app/network/models/base_api_model.dart";
-import "package:app/network/serializers/category_serializer.dart";
+import "package:app/network/serializers/api_courses/category_serializer.dart";
 
 class CategoryModel extends BaseApiModel {
   final String? sId;

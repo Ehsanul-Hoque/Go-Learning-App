@@ -8,8 +8,8 @@ import "package:app/network/network_call.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
-import "package:app/network/serializers/category_all_get_response_serializer.dart";
-import "package:app/network/serializers/course_get_response_serializer.dart";
+import "package:app/network/serializers/api_courses/category_all_get_response_serializer.dart";
+import "package:app/network/serializers/api_courses/course_get_response_serializer.dart";
 
 class CourseApiNotifier extends ApiNotifier {
   /// API network responses

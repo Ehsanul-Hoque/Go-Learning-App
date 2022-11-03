@@ -1,6 +1,6 @@
 import "package:app/network/models/api_courses/category_all_get_response_model.dart";
 import "package:app/network/models/api_courses/category_model.dart";
-import "package:app/network/serializers/category_serializer.dart";
+import "package:app/network/serializers/api_courses/category_serializer.dart";
 import "package:app/serializers/serializer.dart";
 
 class CategoryAllGetResponseSerializer

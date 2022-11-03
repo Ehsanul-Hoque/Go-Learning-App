@@ -1,5 +1,5 @@
 import "package:app/network/models/base_api_model.dart";
-import "package:app/network/serializers/static_info_get_response_serializer.dart";
+import "package:app/network/serializers/api_static_info/static_info_get_response_serializer.dart";
 
 class StaticInfoGetResponseModel extends BaseApiModel {
   final String? sId;

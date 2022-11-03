@@ -1,5 +1,5 @@
 import "package:app/network/models/base_api_model.dart";
-import "package:app/network/serializers/sign_in_response_serializer.dart";
+import "package:app/network/serializers/api_auth/sign_in_response_serializer.dart";
 
 class SignInResponseModel extends BaseApiModel {
   final String? xAccessToken;
