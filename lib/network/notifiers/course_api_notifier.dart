@@ -10,6 +10,9 @@ import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
 import "package:app/network/serializers/api_courses/category_all_get_response_serializer.dart";
 import "package:app/network/serializers/api_courses/course_get_response_serializer.dart";
+import "package:flutter/widgets.dart" show BuildContext;
+import "package:provider/provider.dart" show ChangeNotifierProvider;
+import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
 class CourseApiNotifier extends ApiNotifier {
   /// API network responses
@@ -21,6 +24,12 @@ class CourseApiNotifier extends ApiNotifier {
 
   /// Constructor
   CourseApiNotifier();
+
+  /// Static method to create simple provider
+  static SingleChildWidget createProvider() =>
+      ChangeNotifierProvider<CourseApiNotifier>(
+        create: (BuildContext context) => CourseApiNotifier(),
+      );
 
   /// Method to get all courses list
   Future<NetworkResponse<CategoryAllGetResponseModel>>
