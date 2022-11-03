@@ -1,7 +1,7 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/debouncer.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_courses/category_all_get_response_model.dart";
+import "package:app/network/models/api_courses/category_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
@@ -66,7 +66,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
         },
         noContentText: Res.str.noCourses,
         childBuilder: (BuildContext context) {
-          Iterable<Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>>
+          Iterable<Tuple2<CategoryModel, List<CourseGetResponseModel>>>
               coursesByCategory = getCoursesByCategory();
 
           return ListView.builder(
@@ -75,7 +75,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
               bottom: Res.dimen.pageBottomPaddingWithNavBar,
             ),
             itemBuilder: (BuildContext context, int index) {
-              Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>
+              Tuple2<CategoryModel, List<CourseGetResponseModel>>
                   categoryAndCourse = coursesByCategory.elementAt(index);
 
               return CourseCategoryItem(
@@ -90,15 +90,15 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Iterable<Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>>
+  Iterable<Tuple2<CategoryModel, List<CourseGetResponseModel>>>
       getCoursesByCategory() {
     // Get the categories
-    List<CagrCategoryModel?> categories = context
+    List<CategoryModel?> categories = context
             .read<CourseApiNotifier?>()
             ?.allCategoriesGetInfo
             .result
             ?.categories ??
-        <CagrCategoryModel>[];
+        <CategoryModel>[];
 
     // Get the courses
     List<CourseGetResponseModel?> courses =
@@ -106,18 +106,18 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
             <CourseGetResponseModel?>[];
 
     // Create a map to store the final result
-    final Map<String, Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>>
+    final Map<String, Tuple2<CategoryModel, List<CourseGetResponseModel>>>
         // ignore: always_specify_types
         categoriesByIdMap = {};
 
     // Fill up the result map with initial data
-    for (CagrCategoryModel? category in categories) {
+    for (CategoryModel? category in categories) {
       if (category == null) {
         continue;
       }
 
       categoriesByIdMap[category.sId ?? ""] =
-          Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>(
+          Tuple2<CategoryModel, List<CourseGetResponseModel>>(
         category,
         <CourseGetResponseModel>[],
       );
@@ -129,13 +129,13 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
         continue;
       }
 
-      List<CgrCategoryModel?>? allParentCategories = course.categoryId;
+      List<CategoryModel?>? allParentCategories = course.categoryId;
       if (allParentCategories == null) {
         continue;
       }
 
-      CgrCategoryModel? rootCategory;
-      for (CgrCategoryModel? category in allParentCategories) {
+      CategoryModel? rootCategory;
+      for (CategoryModel? category in allParentCategories) {
         if (category == null) {
           continue;
         }
@@ -150,8 +150,8 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
       }
 
       String rootCategoryId = rootCategory.sId ?? "";
-      Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>?
-          categoryAndCourse = categoriesByIdMap[rootCategoryId];
+      Tuple2<CategoryModel, List<CourseGetResponseModel>>? categoryAndCourse =
+          categoriesByIdMap[rootCategoryId];
 
       if (categoryAndCourse == null) {
         continue;

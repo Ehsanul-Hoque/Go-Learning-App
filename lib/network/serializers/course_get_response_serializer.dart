@@ -1,4 +1,6 @@
+import "package:app/network/models/api_courses/category_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/serializers/category_serializer.dart";
 import "package:app/serializers/serializer.dart";
 
 class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
@@ -21,7 +23,7 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
           .map(
             (Map<String, dynamic>? category) => (category == null)
                 ? null
-                : const CgrCategorySerializer().fromJson(category),
+                : const CategorySerializer().fromJson(category),
           )
           .toList(),
       certificate: json["certificate"],
@@ -60,9 +62,9 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
     data["filter"] = serializable.filter;
     data["category_id"] = serializable.categoryId
         ?.map(
-          (CgrCategoryModel? category) => (category == null)
+          (CategoryModel? category) => (category == null)
               ? null
-              : const CgrCategorySerializer().toJson(category),
+              : const CategorySerializer().toJson(category),
         )
         .toList();
     data["certificate"] = serializable.certificate;
@@ -111,40 +113,6 @@ class CgrRatingSerializer extends Serializer<CgrRatingModel> {
 
     data["total_rating_count"] = serializable.totalRatingCount;
     data["average"] = serializable.average;
-
-    return data;
-  }
-}
-
-class CgrCategorySerializer extends Serializer<CgrCategoryModel> {
-  const CgrCategorySerializer();
-
-  @override
-  CgrCategoryModel fromJson(Map<String, dynamic>? json) {
-    if (json == null) return const CgrCategoryModel();
-
-    return CgrCategoryModel(
-      sId: json["_id"],
-      name: json["name"],
-      parentId: json["parent_id"],
-      createdAt: json["createdAt"],
-      updatedAt: json["updatedAt"],
-      iV: json["__v"],
-      banner: json["banner"],
-    );
-  }
-
-  @override
-  Map<String, dynamic> toJson(CgrCategoryModel serializable) {
-    final Map<String, dynamic> data = <String, dynamic>{};
-
-    data["_id"] = serializable.sId;
-    data["name"] = serializable.name;
-    data["parent_id"] = serializable.parentId;
-    data["createdAt"] = serializable.createdAt;
-    data["updatedAt"] = serializable.updatedAt;
-    data["__v"] = serializable.iV;
-    data["banner"] = serializable.banner;
 
     return data;
   }

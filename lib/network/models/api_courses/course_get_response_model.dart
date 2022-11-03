@@ -1,3 +1,4 @@
+import "package:app/network/models/api_courses/category_model.dart";
 import "package:app/network/models/base_api_model.dart";
 import "package:app/network/serializers/course_get_response_serializer.dart";
 
@@ -5,7 +6,7 @@ class CourseGetResponseModel extends BaseApiModel {
   final String? sId;
   final CgrRatingModel? rating;
   final List<String?>? filter;
-  final List<CgrCategoryModel?>? categoryId;
+  final List<CategoryModel?>? categoryId;
   final bool? certificate;
   final String? language;
   final String? metaKeyword;
@@ -65,29 +66,6 @@ class CgrRatingModel extends BaseApiModel {
 
   @override
   String get className => "CgrRatingModel";
-}
-
-class CgrCategoryModel extends BaseApiModel {
-  final String? sId;
-  final String? name;
-  final String? parentId;
-  final String? createdAt;
-  final String? updatedAt;
-  final int? iV;
-  final String? banner;
-
-  const CgrCategoryModel({
-    this.sId,
-    this.name,
-    this.parentId,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-    this.banner,
-  }) : super(serializer: const CgrCategorySerializer());
-
-  @override
-  String get className => "CgrCategoryModel";
 }
 
 class CgrImmediateCategoryModel extends BaseApiModel {
