@@ -9,7 +9,7 @@ import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart";
+import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -85,10 +85,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 padding: EdgeInsets.all(_courseGridPadding),
                 sliver: NetworkWidget(
                   shouldOutputBeSliver: true,
-                  callStatusSelector: () => context.select(
-                    (CourseApiNotifier? apiNotifier) =>
-                        apiNotifier?.allCoursesGetInfo.callStatus ??
-                        NetworkCallStatus.none,
+                  callStatusSelector: (BuildContext context) => context.select(
+                    (CourseApiNotifier? apiNotifier) => <NetworkCallStatus?>[
+                      apiNotifier?.allCoursesGetInfo.callStatus,
+                    ],
                   ),
                   noContentChecker: () =>
                       context
@@ -99,11 +99,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       false,
                   noContentText: Res.str.noCourses,
                   childBuilder: (BuildContext context) {
-                    List<CourseGetResponseModel> allCourses = context
+                    List<CourseGetResponseModel?> allCourses = context
                             .read<CourseApiNotifier?>()
                             ?.allCoursesGetInfo
                             .result ??
-                        <CourseGetResponseModel>[];
+                        <CourseGetResponseModel?>[];
 
                     return SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -117,9 +117,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       ),
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
-                          return CourseItem(
-                            course: allCourses[index],
-                          );
+                          CourseGetResponseModel? course = allCourses[index];
+
+                          if (course == null) {
+                            return const SizedBox.shrink();
+                          }
+
+                          return CourseItem(course: course);
                         },
                         childCount: allCourses.length,
                       ),

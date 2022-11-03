@@ -1,9 +1,12 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/course_item.dart";
+import "package:app/components/status_text.dart";
+import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:flutter/widgets.dart";
 
 class CourseCategoryItem extends StatelessWidget {
   final String title;
-  final List<Map<String, Object>> courses;
+  final List<CourseGetResponseModel> courses;
 
   const CourseCategoryItem({
     Key? key,
@@ -14,6 +17,7 @@ class CourseCategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int totalCourses = courses.length;
+    bool noCoursesAvailable = (totalCourses == 0);
     double itemSpacing = Res.dimen.normalSpacingValue;
     double listHorizontalPadding = itemSpacing;
 
@@ -31,35 +35,43 @@ class CourseCategoryItem extends StatelessWidget {
             style: Res.textStyles.label,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(
-            top: Res.dimen.normalSpacingValue,
-            bottom: Res.dimen.xxlSpacingValue,
-          ),
-          child: SizedBox(
-            height: Res.dimen.getCourseItemHeight(Res.dimen.courseItemWidth),
-            child: ListView.builder(
-              clipBehavior: Clip.none,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (BuildContext context, int index) {
-                return Container();
-                /*return CourseItem(
-                  course: courses.elementAt(index),
-                  width: Res.dimen.courseItemWidth,
-                  margin: EdgeInsets.only(
-                    left: (index == 0)
-                        ? listHorizontalPadding
-                        : (itemSpacing / 2),
-                    right: (index == totalCourses - 1)
-                        ? listHorizontalPadding
-                        : (itemSpacing / 2),
+        noCoursesAvailable
+            ? Padding(
+                padding: EdgeInsets.only(
+                  bottom: Res.dimen.normalSpacingValue,
+                ),
+                child: StatusText(Res.str.noCourses),
+              )
+            : Padding(
+                padding: EdgeInsets.only(
+                  top: Res.dimen.normalSpacingValue,
+                  bottom: Res.dimen.xxlSpacingValue,
+                ),
+                child: SizedBox(
+                  height:
+                      Res.dimen.getCourseItemHeight(Res.dimen.courseItemWidth),
+                  child: ListView.builder(
+                    clipBehavior: Clip.none,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      // return Container();
+                      return CourseItem(
+                        course: courses.elementAt(index),
+                        width: Res.dimen.courseItemWidth,
+                        margin: EdgeInsets.only(
+                          left: (index == 0)
+                              ? listHorizontalPadding
+                              : (itemSpacing / 2),
+                          right: (index == totalCourses - 1)
+                              ? listHorizontalPadding
+                              : (itemSpacing / 2),
+                        ),
+                      );
+                    },
+                    itemCount: totalCourses,
                   ),
-                );*/
-              },
-              itemCount: totalCourses,
-            ),
-          ),
-        ),
+                ),
+              ),
       ],
     );
   }

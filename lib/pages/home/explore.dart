@@ -1,8 +1,14 @@
 import "package:app/app_config/resources.dart";
-import "package:app/app_config/sample_data.dart";
 import "package:app/components/debouncer.dart";
+import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/models/api_courses/category_all_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/network/views/network_widget.dart";
 import "package:app/pages/home/components/course_category_item.dart";
 import "package:flutter/widgets.dart";
+import "package:provider/provider.dart" show ReadContext, SelectContext;
+import "package:tuple/tuple.dart";
 
 class Courses extends StatefulWidget {
   const Courses({Key? key}) : super(key: key);
@@ -16,49 +22,145 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.read<CourseApiNotifier?>()?.getAllCategories();
+      context.read<CourseApiNotifier?>()?.getAllCourses();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    Iterable<MapEntry<String, List<Map<String, Object>>>> coursesByCategory =
-        getCoursesByCategory().entries;
-
     return Debouncer(
-      child: ListView.builder(
-        padding: EdgeInsets.only(
-          top: Res.dimen.getPageTopPaddingWithAppBar(context),
-          bottom: Res.dimen.pageBottomPaddingWithNavBar,
+      child: NetworkWidget(
+        callStatusSelector: (BuildContext context) => context.select(
+          (CourseApiNotifier? apiNotifier) => <NetworkCallStatus?>[
+            apiNotifier?.allCategoriesGetInfo.callStatus,
+            apiNotifier?.allCoursesGetInfo.callStatus,
+          ],
         ),
-        itemBuilder: (BuildContext context, int index) {
-          MapEntry<String, List<Map<String, Object>>> courseCategory =
-              coursesByCategory.elementAt(index);
+        noContentChecker: () {
+          bool noCategories = context
+                  .read<CourseApiNotifier?>()
+                  ?.allCategoriesGetInfo
+                  .result
+                  ?.categories
+                  ?.isEmpty !=
+              false;
 
-          return CourseCategoryItem(
-            title: courseCategory.key,
-            courses: courseCategory.value,
+          bool noCourses = context
+                  .read<CourseApiNotifier?>()
+                  ?.allCoursesGetInfo
+                  .result
+                  ?.isEmpty !=
+              false;
+
+          return noCategories || noCourses;
+        },
+        noContentText: Res.str.noCourses,
+        childBuilder: (BuildContext context) {
+          Iterable<Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>>
+              coursesByCategory = getCoursesByCategory();
+
+          return ListView.builder(
+            padding: EdgeInsets.only(
+              top: Res.dimen.getPageTopPaddingWithAppBar(context),
+              bottom: Res.dimen.pageBottomPaddingWithNavBar,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>
+                  categoryAndCourse = coursesByCategory.elementAt(index);
+
+              return CourseCategoryItem(
+                title: categoryAndCourse.item1.name ?? "Uncategorized",
+                courses: categoryAndCourse.item2,
+              );
+            },
+            itemCount: coursesByCategory.length,
           );
         },
-        itemCount: coursesByCategory.length,
       ),
     );
   }
 
-  Map<String, List<Map<String, Object>>> getCoursesByCategory() {
-    // TODO Get courses from API and delete the sample data
+  Iterable<Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>>
+      getCoursesByCategory() {
+    // Get the categories
+    List<CagrCategoryModel?> categories = context
+            .read<CourseApiNotifier?>()
+            ?.allCategoriesGetInfo
+            .result
+            ?.categories ??
+        <CagrCategoryModel>[];
 
-    final List<Map<String, Object>> allCourses = SampleData.courses;
-    final Map<String, List<Map<String, Object>>> result =
-        <String, List<Map<String, Object>>>{};
+    // Get the courses
+    List<CourseGetResponseModel?> courses =
+        context.read<CourseApiNotifier?>()?.allCoursesGetInfo.result ??
+            <CourseGetResponseModel?>[];
 
-    for (Map<String, Object> element in allCourses) {
-      String category = element["category"]! as String;
+    // Create a map to store the final result
+    final Map<String, Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>>
+        // ignore: always_specify_types
+        categoriesByIdMap = {};
 
-      if (result[category] == null) {
-        result[category] = <Map<String, Object>>[];
+    // Fill up the result map with initial data
+    for (CagrCategoryModel? category in categories) {
+      if (category == null) {
+        continue;
       }
 
-      result[category]!.add(element);
+      categoriesByIdMap[category.sId ?? ""] =
+          Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>(
+        category,
+        <CourseGetResponseModel>[],
+      );
     }
 
-    return result;
+    // Put the courses in the result map according to their root categories
+    for (CourseGetResponseModel? course in courses) {
+      if (course == null) {
+        continue;
+      }
+
+      List<CgrCategoryModel?>? allParentCategories = course.categoryId;
+      if (allParentCategories == null) {
+        continue;
+      }
+
+      CgrCategoryModel? rootCategory;
+      for (CgrCategoryModel? category in allParentCategories) {
+        if (category == null) {
+          continue;
+        }
+
+        if (category.parentId == null || category.parentId!.trim().isEmpty) {
+          rootCategory = category;
+        }
+      }
+
+      if (rootCategory == null) {
+        continue;
+      }
+
+      String rootCategoryId = rootCategory.sId ?? "";
+      Tuple2<CagrCategoryModel, List<CourseGetResponseModel>>?
+          categoryAndCourse = categoriesByIdMap[rootCategoryId];
+
+      if (categoryAndCourse == null) {
+        continue;
+      }
+
+      categoryAndCourse.item2.add(course);
+      categoriesByIdMap[rootCategoryId] = categoryAndCourse;
+    }
+
+    return categoriesByIdMap.values;
   }
 }
