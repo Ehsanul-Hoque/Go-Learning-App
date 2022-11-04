@@ -26,15 +26,15 @@ class StaticInfoApiNotifier extends ApiNotifier {
       );
 
   /// Method to get the static info
-  Future<NetworkResponse<StaticInfoGetResponseModel>>
-      getAllCategories() async => await NetworkCall(
-            client: defaultClient,
-            request: const NetworkRequest.get(
-              apiEndPoint: "/static/get",
-              serializer: StaticInfoGetResponseSerializer(),
-              converter: JsonObjectConverter<StaticInfoGetResponseModel>(),
-            ),
-            response: staticInfoGetResponse,
-            updateListener: () => notifyListeners(),
-          ).execute();
+  Future<NetworkResponse<StaticInfoGetResponseModel>> getStaticInfo() async =>
+      await NetworkCall(
+        client: defaultClient,
+        request: const NetworkRequest.get(
+          apiEndPoint: "/static/get",
+          serializer: StaticInfoGetResponseSerializer(),
+          converter: JsonObjectConverter<StaticInfoGetResponseModel>(),
+        ),
+        response: staticInfoGetResponse,
+        updateListener: () => notifyListeners(),
+      ).execute();
 }

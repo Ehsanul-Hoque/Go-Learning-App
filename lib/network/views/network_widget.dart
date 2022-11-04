@@ -5,9 +5,7 @@ import "package:app/network/enums/network_call_status.dart";
 import "package:flutter/widgets.dart";
 import "package:sliver_tools/sliver_tools.dart";
 
-typedef SelectFunction = List<NetworkCallStatus?> Function(
-  BuildContext context,
-);
+typedef SelectFunction = NetworkCallStatus Function(BuildContext context);
 typedef NoContentFunction = bool Function();
 typedef SuccessChildBuilder = Widget Function(BuildContext context);
 
@@ -47,8 +45,7 @@ class NetworkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(
       builder: (BuildContext context) {
-        NetworkCallStatus callStatus =
-            NetworkCallStatus.combine(callStatusSelector(context));
+        NetworkCallStatus callStatus = callStatusSelector(context);
         Widget? widget;
 
         switch (callStatus) {

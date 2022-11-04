@@ -8,6 +8,7 @@ import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
 import "package:app/models/page_model.dart";
+import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/pages/home/exams.dart";
 import "package:app/pages/home/explore.dart";
 import "package:app/pages/home/favourites.dart";
@@ -17,6 +18,7 @@ import "package:flutter/material.dart" show IconButton, Icons, Scaffold;
 import "package:flutter/widgets.dart";
 import "package:flutter_zoom_drawer/config.dart";
 import "package:flutter_zoom_drawer/flutter_zoom_drawer.dart";
+import "package:provider/provider.dart" show ReadContext;
 
 part "package:app/pages/home/landing_main_section.dart";
 
@@ -58,6 +60,13 @@ class _LandingPageState extends State<LandingPage> {
 
     _drawerController = ZoomDrawerController();
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.read<StaticInfoApiNotifier?>()?.getStaticInfo();
+    });
   }
 
   @override

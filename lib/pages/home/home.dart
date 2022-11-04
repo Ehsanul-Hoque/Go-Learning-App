@@ -7,7 +7,9 @@ import "package:app/components/sliver_sized_box.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
 
@@ -38,6 +40,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       // Execute callback if page is mounted
       if (!mounted) return;
 
+      context.read<StaticInfoApiNotifier?>()?.getStaticInfo();
       context.read<CourseApiNotifier?>()?.getAllCourses();
     });
   }
@@ -62,13 +65,44 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
               SliverSizedBox(
                 height: Res.dimen.getPageTopPaddingWithAppBar(context),
               ),
-              SliverToBoxAdapter(
-                child: WidgetCarousal(
-                  images: SampleData.images, // TODO Show banners from API
+              NetworkWidget(
+                shouldOutputBeSliver: true,
+                callStatusSelector: (BuildContext context) => context.select(
+                  (StaticInfoApiNotifier? apiNotifier) =>
+                      apiNotifier?.staticInfoGetResponse.callStatus ??
+                      NetworkCallStatus.none,
                 ),
-              ),
-              SliverSizedBox(
-                height: Res.dimen.largeSpacingValue,
+                noContentChecker: () =>
+                    context
+                        .read<StaticInfoApiNotifier?>()
+                        ?.staticInfoGetResponse
+                        .result
+                        ?.banner
+                        ?.getNonNulls()
+                        .isEmpty !=
+                    false,
+                noContentWidget: const SizedBox.shrink(),
+                childBuilder: (BuildContext context) {
+                  List<String> allBanners = context
+                          .read<StaticInfoApiNotifier?>()
+                          ?.staticInfoGetResponse
+                          .result
+                          ?.banner
+                          ?.getNonNulls()
+                          .toList() ??
+                      <String>[];
+
+                  return SliverPadding(
+                    padding: EdgeInsets.only(
+                      bottom: Res.dimen.largeSpacingValue,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: WidgetCarousal(
+                        images: allBanners,
+                      ),
+                    ),
+                  );
+                },
               ),
               SliverPadding(
                 padding: EdgeInsets.symmetric(
@@ -86,9 +120,9 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 sliver: NetworkWidget(
                   shouldOutputBeSliver: true,
                   callStatusSelector: (BuildContext context) => context.select(
-                    (CourseApiNotifier? apiNotifier) => <NetworkCallStatus?>[
-                      apiNotifier?.allCoursesGetInfo.callStatus,
-                    ],
+                    (CourseApiNotifier? apiNotifier) =>
+                        apiNotifier?.allCoursesGetInfo.callStatus ??
+                        NetworkCallStatus.none,
                   ),
                   noContentChecker: () =>
                       context
@@ -99,11 +133,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       false,
                   noContentText: Res.str.noCourses,
                   childBuilder: (BuildContext context) {
-                    List<CourseGetResponseModel?> allCourses = context
+                    List<CourseGetResponseModel> allCourses = context
                             .read<CourseApiNotifier?>()
                             ?.allCoursesGetInfo
-                            .result ??
-                        <CourseGetResponseModel?>[];
+                            .result
+                            ?.getNonNulls()
+                            .toList() ??
+                        <CourseGetResponseModel>[];
 
                     return SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
