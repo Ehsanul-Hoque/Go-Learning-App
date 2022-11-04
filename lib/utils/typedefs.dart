@@ -21,6 +21,8 @@ typedef OnAnimationListener = void Function();
 
 typedef OnErrorListener<T> = OnValueListener<T>;
 
+typedef IndexedItemBuilder = Widget Function(BuildContext context, int index);
+
 typedef PlaceholderBuilder = Widget Function(
   BuildContext context,
   String url,

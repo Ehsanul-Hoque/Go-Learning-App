@@ -79,13 +79,19 @@ class NetworkWidget extends StatelessWidget {
           }
         }
 
-        if ((widget != null) && shouldOutputBeSliver) {
+        widget ??= childBuilder(context);
+        widget = AnimatedSize(
+          duration: Res.durations.defaultDuration,
+          curve: Res.curves.defaultCurve,
+          alignment: Alignment.topCenter,
+          child: widget,
+        );
+
+        if (shouldOutputBeSliver) {
           widget = SliverToBoxAdapter(
             child: widget,
           );
         }
-
-        widget ??= childBuilder(context);
 
         return AnimatedSwitcher(
           duration: Res.durations.longDuration,

@@ -1,6 +1,6 @@
 import "package:app/app_config/resources.dart";
-import "package:app/app_config/sample_data.dart";
 import "package:app/components/carousal/widget_carousal.dart";
+import "package:app/components/column_row_grid.dart";
 import "package:app/components/course_item.dart";
 import "package:app/components/debouncer.dart";
 import "package:app/components/sliver_sized_box.dart";
@@ -60,6 +60,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
             courseGridCrossAxisCount = i;
           }
 
+          double courseGridItemWidth = calculateCourseGridItemWidth(
+            courseGridCrossAxisCount,
+            constraints.maxWidth,
+          );
+          double courseGridItemHeight = calculateCourseGridItemHeight(
+            courseGridCrossAxisCount,
+            constraints.maxWidth,
+          );
+
           return CustomScrollView(
             slivers: <Widget>[
               SliverSizedBox(
@@ -72,16 +81,6 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       apiNotifier?.staticInfoGetResponse.callStatus ??
                       NetworkCallStatus.none,
                 ),
-                noContentChecker: () =>
-                    context
-                        .read<StaticInfoApiNotifier?>()
-                        ?.staticInfoGetResponse
-                        .result
-                        ?.banner
-                        ?.getNonNulls()
-                        .isEmpty !=
-                    false,
-                noContentWidget: const SizedBox.shrink(),
                 childBuilder: (BuildContext context) {
                   List<String> allBanners = context
                           .read<StaticInfoApiNotifier?>()
@@ -92,14 +91,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                           .toList() ??
                       <String>[];
 
-                  return SliverPadding(
+                  return Padding(
                     padding: EdgeInsets.only(
                       bottom: Res.dimen.largeSpacingValue,
                     ),
-                    sliver: SliverToBoxAdapter(
-                      child: WidgetCarousal(
-                        images: allBanners,
-                      ),
+                    child: WidgetCarousal(
+                      images: allBanners,
                     ),
                   );
                 },
@@ -141,7 +138,18 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                             .toList() ??
                         <CourseGetResponseModel>[];
 
-                    return SliverGrid(
+                    return ColumnRowGrid(
+                      itemCount: allCourses.length,
+                      crossAxisCount: courseGridCrossAxisCount,
+                      itemWidth: courseGridItemWidth,
+                      itemHeight: courseGridItemHeight,
+                      mainAxisSpacing: _courseGridVerticalGap,
+                      crossAxisSpacing: _courseGridHorizontalGap,
+                      itemBuilder: (BuildContext context, int index) =>
+                          CourseItem(course: allCourses[index]),
+                    );
+
+                    /*return SliverGrid(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: courseGridCrossAxisCount,
                         mainAxisSpacing: _courseGridVerticalGap,
@@ -153,17 +161,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       ),
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
-                          CourseGetResponseModel? course = allCourses[index];
-
-                          if (course == null) {
-                            return const SizedBox.shrink();
-                          }
-
-                          return CourseItem(course: course);
+                          return CourseItem(course: allCourses[index]);
                         },
                         childCount: allCourses.length,
                       ),
-                    );
+                    );*/
                   },
                 ),
               ),
