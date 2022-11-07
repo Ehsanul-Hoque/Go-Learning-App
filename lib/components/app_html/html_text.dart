@@ -1,8 +1,11 @@
 import "package:app/app_config/resources.dart";
 import "package:app/pages/app_webview.dart";
 import "package:app/utils/app_page_nav.dart";
+import "package:app/components/app_html/app_html_table.dart";
 import "package:flutter/widgets.dart";
 import "package:flutter_html/flutter_html.dart";
+import "package:flutter_html_math/flutter_html_math.dart";
+import "package:flutter_html_svg/flutter_html_svg.dart";
 import "package:html/dom.dart" as dom show Element;
 
 class HtmlText extends StatelessWidget {
@@ -23,11 +26,16 @@ class HtmlText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle defaultTextStyle =
-        this.defaultTextStyle ?? Res.textStyles.general;
+    TextStyle defaultTextStyle = this.defaultTextStyle ??
+        Res.textStyles.general.copyWith(
+          height: 1.5,
+        );
     Map<String, Style> tagsStyle = this.tagsStyle ?? <String, Style>{};
 
-    tagsStyle["body"] ??= Style.fromTextStyle(defaultTextStyle);
+    tagsStyle["body"] ??= Style.fromTextStyle(defaultTextStyle).copyWith(
+      padding: EdgeInsets.zero,
+      margin: Margins.zero,
+    );
     tagsStyle["h1"] ??= Style.fromTextStyle(Res.textStyles.h1);
     tagsStyle["h2"] ??= Style.fromTextStyle(Res.textStyles.h2);
     tagsStyle["h3"] ??= Style.fromTextStyle(Res.textStyles.h3);
@@ -38,7 +46,7 @@ class HtmlText extends StatelessWidget {
 
     for (MapEntry<String, Style> element in tagsStyle.entries) {
       element.value.fontSize = FontSize(
-        (element.value.fontSize?.size ?? Res.dimen.fontSizeNormal) *
+        (element.value.fontSize?.value ?? Res.dimen.fontSizeNormal) *
             fontSizeMultiplier,
       );
 
@@ -51,6 +59,14 @@ class HtmlText extends StatelessWidget {
       child: Html(
         data: htmlText,
         style: tagsStyle,
+        customRenders: <CustomRenderMatcher, CustomRender>{
+          svgTagMatcher(): svgTagRender(),
+          svgDataUriMatcher(): svgDataImageRender(),
+          svgAssetUriMatcher(): svgAssetImageRender(),
+          svgNetworkSourceMatcher(): svgNetworkImageRender(),
+          appHtmlTableMatcher(): appHtmlTableRender(),
+          mathMatcher(): mathRender(),
+        },
         onLinkTap: (
           String? url,
           RenderContext renderContext,

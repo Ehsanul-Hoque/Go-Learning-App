@@ -4,6 +4,8 @@ import "package:app/components/icon_and_text.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/pages/course/course_before_enroll.dart";
+import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
@@ -73,8 +75,9 @@ class CourseItem extends StatelessWidget {
                                 "${course.price?.toStringAsFixed(0) ?? "-"}"
                                 " ${Res.str.tkDot}",
                               ),
-                              if (course.price !=
-                                  course.originalPrice) ...<Widget>[
+                              if ((course.originalPrice != null) &&
+                                  (course.price !=
+                                      course.originalPrice)) ...<Widget>[
                                 const Text(" "),
                                 Text(
                                   "${course.originalPrice?.toStringAsFixed(0) ?? "-"}"
@@ -157,11 +160,11 @@ class CourseItem extends StatelessWidget {
   }
 
   void onItemTap(BuildContext context) {
-    /*PageNav.to(
+    PageNav.to(
       context,
       CourseBeforeEnroll(
         course: course,
       ),
-    );*/
+    );
   }
 }

@@ -250,7 +250,21 @@ packages:
       name: flutter_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0-alpha.5"
+    version: "3.0.0-alpha.6"
+  flutter_html_math:
+    dependency: "direct main"
+    description:
+      name: flutter_html_math
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0-alpha.4"
+  flutter_html_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_html_svg
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0-alpha.4"
   flutter_inappwebview:
     dependency: transitive
     description:
@@ -267,6 +281,13 @@ packages:
       url: "https://github.com/Davenchy/flutter_launcher_icons.git"
     source: git
     version: "0.9.2"
+  flutter_layout_grid:
+    dependency: "direct main"
+    description:
+      name: flutter_layout_grid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -281,6 +302,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  flutter_math_fork:
+    dependency: transitive
+    description:
+      name: flutter_math_fork
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.3+1"
   flutter_platform_widgets:
     dependency: "direct main"
     description:
@@ -474,7 +502,7 @@ packages:
       name: numerus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "2.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -622,6 +650,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   rxdart:
     dependency: transitive
     description:

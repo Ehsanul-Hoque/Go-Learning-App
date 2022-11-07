@@ -7,6 +7,7 @@ import "package:flutter/widgets.dart";
 
 class PromoBuyPanel extends StatefulWidget {
   final double initialPrice;
+  final double discountedPrice;
   final OnValueListener<double> onBuyCourseTap;
   final double? width, height;
   final Color? backgroundColor;
@@ -19,6 +20,7 @@ class PromoBuyPanel extends StatefulWidget {
     Key? key,
     required this.initialPrice,
     required this.onBuyCourseTap,
+    double? discountedPrice,
     this.width,
     this.height,
     this.backgroundColor,
@@ -26,7 +28,8 @@ class PromoBuyPanel extends StatefulWidget {
     this.spaceBetweenItems,
     this.animationDuration,
     this.animationCurve,
-  }) : super(key: key);
+  })  : discountedPrice = discountedPrice ?? initialPrice,
+        super(key: key);
 
   @override
   State<PromoBuyPanel> createState() => _PromoBuyPanelState();
@@ -44,7 +47,7 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
   late bool showApplyPromoField;
   late double discountAmount;
 
-  double get finalPrice => widget.initialPrice - discountAmount;
+  double get finalPrice => widget.discountedPrice - discountAmount;
 
   @override
   void initState() {
@@ -90,7 +93,11 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
               )
             : PromoBuyContainer(
                 initialPrice: widget.initialPrice,
-                finalPrice: discountAmount > 0 ? finalPrice : null,
+                finalPrice: discountAmount > 0
+                    ? finalPrice
+                    : ((widget.discountedPrice != widget.initialPrice)
+                        ? widget.discountedPrice
+                        : null),
                 onApplyPromoTap: onApplyPromoTap,
                 onBuyCourseTap: onBuyCourseTap,
                 spaceBetweenItems: widget.spaceBetweenItems,

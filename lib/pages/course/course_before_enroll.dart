@@ -6,7 +6,7 @@ import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/models/page_model.dart";
-import "package:app/pages/course/course_checkout.dart";
+import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
 import "package:app/utils/app_page_nav.dart";
@@ -18,7 +18,7 @@ import "package:flutter/widgets.dart";
 import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class CourseBeforeEnroll extends StatefulWidget {
-  final Map<String, Object> course;
+  final CourseGetResponseModel course;
 
   const CourseBeforeEnroll({
     Key? key,
@@ -85,6 +85,7 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
       color: Res.color.pageRootBg,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: Res.color.pageBg,
           body: YoutubePlayerBuilder(
             player: YoutubePlayer(
               controller: _youtubePlayerController,
@@ -95,8 +96,8 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                 handleColor: Res.color.videoProgressHandle,
               ),
               thumbnail: MyCachedImage(
-                imageUrl: widget.course["banner"]!
-                    as String, // TODO Get banner from API
+                imageUrl: widget.course.thumbnail,
+                fit: BoxFit.fill,
               ),
             ),
             onEnterFullScreen: () {
@@ -139,11 +140,10 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                               backgroundColor: Res.color.appBarBgTransparent,
                               shadow: const <BoxShadow>[],
                               title: Text(
-                                widget.course["title"]!
-                                    as String, // TODO Get title from API
+                                widget.course.title ?? "",
                               ),
                               subtitle: Text(
-                                "${Res.str.by} ${widget.course["instructor"]!}", // TODO change if necessary
+                                "${Res.str.by} ${widget.course.instructorName ?? ""}",
                               ),
                               startActions: <Widget>[
                                 IconButton(
@@ -202,7 +202,9 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                     left: 0,
                     right: 0,
                     child: PromoBuyPanel(
-                      initialPrice: (widget.course["price"]! as num).toDouble(),
+                      initialPrice:
+                          widget.course.originalPrice?.toDouble() ?? 0,
+                      discountedPrice: widget.course.price?.toDouble(),
                       onBuyCourseTap: onBuyCourseTap,
                     ),
                   ),
@@ -233,12 +235,12 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   void onBuyCourseTap(double finalPrice) {
     _youtubePlayerController.pause();
 
-    PageNav.replace(
+    /*PageNav.replace(
       context,
       CourseCheckout(
         course: widget.course,
         finalPrice: finalPrice,
       ),
-    );
+    );*/
   }
 }

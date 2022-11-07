@@ -1,6 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
-import "package:app/components/html_text.dart";
+import "package:app/components/app_html/html_text.dart";
 import "package:flutter/widgets.dart";
 
 class QuizQuestion extends StatelessWidget {

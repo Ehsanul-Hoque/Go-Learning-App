@@ -1,14 +1,11 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_container.dart";
-import "package:app/components/html_text.dart";
+import "package:app/components/app_html/html_text.dart";
 import "package:app/components/sliver_sized_box.dart";
-import "package:app/components/two_line_info.dart";
-import "package:flutter/material.dart" show Colors;
+import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:flutter/widgets.dart";
-import "package:flutter_lorem/flutter_lorem.dart";
 
 class CourseDetails extends StatefulWidget {
-  final Map<String, Object> course; // TODO Get data from calling activity
+  final CourseGetResponseModel course;
 
   const CourseDetails({
     Key? key,
@@ -27,17 +24,9 @@ class _CourseDetailsState extends State<CourseDetails>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    String courseDescriptionHtml = """
-        ${lorem().replaceAll("\n", "<br>")}
-        <br><br>
-        <h1>H1 Label</h1>
-        <h2>H2 Label</h2>
-        <h3>H3 Label</h3>
-        <h4>H4 Label</h4>
-        <h5>H5 Label</h5>
-        <h6>H6 Label</h6>
-        <a href='https://github.com'>websites</a>
-      """;
+    String courseDescriptionHtml =
+        widget.course.description?.replaceAll(RegExp(r"</?figure.*?>"), "") ??
+            "";
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -48,7 +37,7 @@ class _CourseDetailsState extends State<CourseDetails>
           SliverSizedBox(
             height: Res.dimen.normalSpacingValue,
           ),
-          SliverToBoxAdapter(
+          /*SliverToBoxAdapter(
             child: IntrinsicHeight(
               child: Row(
                 children: <Widget>[
@@ -79,13 +68,13 @@ class _CourseDetailsState extends State<CourseDetails>
                 ],
               ),
             ),
-          ),
+          ),*/
           SliverToBoxAdapter(
             child: HtmlText(
               htmlText: courseDescriptionHtml,
             ),
           ),
-          SliverSizedBox(
+          /*SliverSizedBox(
             height: Res.dimen.xxlSpacingValue,
           ),
           SliverToBoxAdapter(
@@ -123,7 +112,7 @@ class _CourseDetailsState extends State<CourseDetails>
                 ],
               ),
             ),
-          ),
+          ),*/
           SliverSizedBox(
             height: Res.dimen.pageBottomPaddingWithNavBar,
           ),
