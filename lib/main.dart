@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/network/notifiers/coupon_api_notifier.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/pages/welcome/auth.dart";
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       providers: <SingleChildWidget>[
         StaticInfoApiNotifier.createProvider(),
         CourseApiNotifier.createProvider(),
+        CouponApiNotifier.createProvider(),
       ],
       child: PlatformApp(
         debugShowCheckedModeBanner: false,
