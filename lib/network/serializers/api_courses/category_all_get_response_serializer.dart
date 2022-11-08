@@ -1,6 +1,6 @@
 import "package:app/network/models/api_courses/category_all_get_response_model.dart";
-import "package:app/network/models/api_courses/category_model.dart";
-import "package:app/network/serializers/api_courses/category_serializer.dart";
+import "package:app/network/models/api_courses/category_response_model.dart";
+import "package:app/network/serializers/api_courses/category_response_serializer.dart";
 import "package:app/serializers/serializer.dart";
 
 class CategoryAllGetResponseSerializer
@@ -18,7 +18,7 @@ class CategoryAllGetResponseSerializer
           .map(
             (Map<String, dynamic>? category) => (category == null)
                 ? null
-                : const CategorySerializer().fromJson(category),
+                : const CategoryResponseSerializer().fromJson(category),
           )
           .toList(),
     );
@@ -31,9 +31,9 @@ class CategoryAllGetResponseSerializer
     data["success"] = serializable.success;
     data["data"] = serializable.categories
         ?.map(
-          (CategoryModel? category) => (category == null)
+          (CategoryResponseModel? category) => (category == null)
               ? null
-              : const CategorySerializer().toJson(category),
+              : const CategoryResponseSerializer().toJson(category),
         )
         .toList();
 

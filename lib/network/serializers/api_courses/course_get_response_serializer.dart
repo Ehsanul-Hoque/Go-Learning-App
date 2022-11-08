@@ -1,6 +1,6 @@
-import "package:app/network/models/api_courses/category_model.dart";
+import "package:app/network/models/api_courses/category_response_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
-import "package:app/network/serializers/api_courses/category_serializer.dart";
+import "package:app/network/serializers/api_courses/category_response_serializer.dart";
 import "package:app/serializers/serializer.dart";
 
 class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
@@ -23,7 +23,7 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
           .map(
             (Map<String, dynamic>? category) => (category == null)
                 ? null
-                : const CategorySerializer().fromJson(category),
+                : const CategoryResponseSerializer().fromJson(category),
           )
           .toList(),
       certificate: json["certificate"],
@@ -62,9 +62,9 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
     data["filter"] = serializable.filter;
     data["category_id"] = serializable.categoryId
         ?.map(
-          (CategoryModel? category) => (category == null)
+          (CategoryResponseModel? category) => (category == null)
               ? null
-              : const CategorySerializer().toJson(category),
+              : const CategoryResponseSerializer().toJson(category),
         )
         .toList();
     data["certificate"] = serializable.certificate;

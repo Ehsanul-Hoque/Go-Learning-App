@@ -1,14 +1,14 @@
-import "package:app/network/models/api_courses/category_model.dart";
+import "package:app/network/models/api_courses/category_response_model.dart";
 import "package:app/serializers/serializer.dart";
 
-class CategorySerializer extends Serializer<CategoryModel> {
-  const CategorySerializer();
+class CategoryResponseSerializer extends Serializer<CategoryResponseModel> {
+  const CategoryResponseSerializer();
 
   @override
-  CategoryModel fromJson(Map<String, dynamic>? json) {
-    if (json == null) return const CategoryModel();
+  CategoryResponseModel fromJson(Map<String, dynamic>? json) {
+    if (json == null) return const CategoryResponseModel();
 
-    return CategoryModel(
+    return CategoryResponseModel(
       sId: json["_id"],
       banner: json["banner"],
       name: json["name"],
@@ -21,14 +21,14 @@ class CategorySerializer extends Serializer<CategoryModel> {
           .map(
             (Map<String, dynamic>? category) => (category == null)
                 ? null
-                : const CategorySerializer().fromJson(category),
+                : const CategoryResponseSerializer().fromJson(category),
           )
           .toList(),
     );
   }
 
   @override
-  Map<String, dynamic> toJson(CategoryModel serializable) {
+  Map<String, dynamic> toJson(CategoryResponseModel serializable) {
     final Map<String, dynamic> data = <String, dynamic>{};
 
     data["_id"] = serializable.sId;
@@ -40,9 +40,9 @@ class CategorySerializer extends Serializer<CategoryModel> {
     data["__v"] = serializable.iV;
     data["subs"] = serializable.subcategories
         ?.map(
-          (CategoryModel? category) => (category == null)
+          (CategoryResponseModel? category) => (category == null)
               ? null
-              : const CategorySerializer().toJson(category),
+              : const CategoryResponseSerializer().toJson(category),
         )
         .toList();
 
