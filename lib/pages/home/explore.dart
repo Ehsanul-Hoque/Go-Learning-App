@@ -56,7 +56,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
                   .read<CourseApiNotifier?>()
                   ?.allCategoriesGetInfo
                   .result
-                  ?.categories
+                  ?.data
                   ?.getNonNulls()
                   .isEmpty !=
               false;
@@ -104,7 +104,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
             .read<CourseApiNotifier?>()
             ?.allCategoriesGetInfo
             .result
-            ?.categories
+            ?.data
             ?.getNonNulls()
             .toList() ??
         <CategoryResponseModel>[];

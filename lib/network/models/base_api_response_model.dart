@@ -7,9 +7,9 @@ class BaseApiResponseModel<T> extends BaseApiModel {
   final List<T?>? data;
 
   BaseApiResponseModel({
+    required Serializer<T> datumObjectSerializer,
     this.success,
     this.data,
-    required Serializer<T> datumObjectSerializer,
   }) : super(serializer: BaseApiResponseSerializer<T>(datumObjectSerializer));
 
   @override
