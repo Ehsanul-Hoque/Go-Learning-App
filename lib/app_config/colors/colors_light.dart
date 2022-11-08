@@ -8,7 +8,7 @@ import "package:app/app_config/colors/app_colors.dart";
 class ColorsLightMode implements ColorsBase {
   /// Page
   final Color pageRootBg = AppColors.black;
-  final Color pageBg = AppColors.veryLightGrey;
+  final Color pageBg = AppColors.veryLightGreyOne;
 
   /// Containers
   final Color containerBg = AppColors.white;
@@ -47,7 +47,7 @@ class ColorsLightMode implements ColorsBase {
   final Color tabSelectedLabel = AppColors.themeBlue;
 
   /// App Bar
-  final Color appBarBg = AppColors.white;
+  final Color appBarBg = AppColors.veryLightGreyTwo;
   final Color appBarBgTransparent = AppColors.transparent;
   final Color appBarAvatarIcon = AppColors.white;
   final Color appBarAvatarBg = AppColors.themeYellow;
@@ -109,7 +109,7 @@ class ColorsLightMode implements ColorsBase {
   final Color quizTimerProgress = AppColors.flatPurpleShyMoment;
   final Color quizCurrentBorder = AppColors.themeYellow;
   final Color quizUnansweredBg = AppColors.grey300;
-  final Color quizUnansweredBg2 = AppColors.veryLightGrey;
+  final Color quizUnansweredBg2 = AppColors.veryLightGreyOne;
   final Color quizUnansweredBorder = AppColors.grey300;
   final Color quizAnsweredBg = AppColors.themeYellow;
   final Color quizAnsweredContent = AppColors.white;
