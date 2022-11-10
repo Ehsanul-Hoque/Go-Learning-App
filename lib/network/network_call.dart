@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types
+
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/enums/network_call_type.dart";
 import "package:app/network/network_client.dart";
@@ -19,19 +21,6 @@ typedef OnUpdateListener = void Function();
 /// DI => Dart object (input) (for serializer)
 /// DO => Dart object (output) (for the final output)
 class NetworkCall<DI, DO> {
-  // NetworkCallType callType;
-  final NetworkClient _client;
-  NetworkClient get client => _client;
-
-  final NetworkRequest<DI, DO> _request;
-  NetworkRequest<DI, DO> get request => _request;
-
-  final NetworkResponse<DO> _response;
-  NetworkResponse<DO> get response => _response;
-
-  final OnUpdateListener _updateListener;
-  OnUpdateListener get updateListener => _updateListener;
-
   NetworkCall({
     required NetworkClient client,
     required NetworkRequest<DI, DO> request,
@@ -42,41 +31,56 @@ class NetworkCall<DI, DO> {
         _response = response,
         _updateListener = updateListener;
 
+  /// The client
+  final NetworkClient _client;
+  NetworkClient get client => _client;
+
+  /// The request
+  final NetworkRequest<DI, DO> _request;
+  NetworkRequest<DI, DO> get request => _request;
+
+  /// The response
+  final NetworkResponse<DO> _response;
+  NetworkResponse<DO> get response => _response;
+
+  /// Update listener
+  final OnUpdateListener _updateListener;
+  OnUpdateListener get updateListener => _updateListener;
+
+  // Some getters
+  String get apiFullUrl =>
+      (request.baseUrl ?? client.baseUrl) + request.apiEndPoint;
+  String get logTag => "[HTTP ${request.callType.name}] [$apiFullUrl]";
+
+  /// Method to start a network call
   Future<NetworkResponse<DO>> execute() async {
     return await _httpCall();
   }
 
   /// Method to make an HTTP call and process that response
   Future<NetworkResponse<DO>> _httpCall({
-    bool cacheTemporarily = true,
     bool logSteps = true,
     bool logResponse = true,
     bool logResultModel = true,
   }) async {
-    String apiFullUrl =
-        (request.baseUrl ?? client.baseUrl) + request.apiEndPoint;
-    String tag = "[HTTP ${request.callType.name}] [$apiFullUrl]";
+    NetLog().d("$logTag Call requested", showLog: logSteps);
 
-    NetLog().d("$tag Call requested", showLog: logSteps);
-
-    if (_isLoadingOrHasAlreadyCompletedRequest(
-      tag,
-      cacheTemporarily: cacheTemporarily,
-      logSteps: logSteps,
-      logResponse: logResponse,
-      logResultModel: logResultModel,
-    )) {
+    if (response.callStatus == NetworkCallStatus.loading) {
+      NetLog().d(
+        "$logTag Already another call ongoing, so no new call has started",
+        showLog: logSteps,
+      );
       updateListener();
       return response;
     }
 
     try {
-      NetLog().d("$tag Call started", showLog: logSteps);
+      NetLog().d("$logTag Call started", showLog: logSteps);
       response.callStatus = NetworkCallStatus.loading;
       updateListener();
 
       if (!(await NetworkUtils.hasInternetConnection())) {
-        NetLog().e("$tag Call failed due to no internet", showLog: logSteps);
+        NetLog().e("$logTag Call failed due to no internet", showLog: logSteps);
         response.callStatus = NetworkCallStatus.noInternet;
         updateListener();
         return response;
@@ -86,7 +90,7 @@ class NetworkCall<DI, DO> {
         apiFullUrl,
         (NetworkCallType callType) {
           NetLog().e(
-            "$tag Call failed. Call of type ${callType.name}"
+            "$logTag Call failed. Call of type ${callType.name}"
             " is not supported yet",
             showLog: logSteps,
           );
@@ -103,10 +107,10 @@ class NetworkCall<DI, DO> {
       _processHttpResponse();
 
       if (response.callStatus == NetworkCallStatus.success) {
-        NetLog().d("$tag Call succeeded", showLog: logSteps);
+        NetLog().d("$logTag Call succeeded", showLog: logSteps);
       } else {
         NetLog().e(
-          "$tag Call failed."
+          "$logTag Call failed."
           " HTTP ${httpResponse.statusCode}: ${httpResponse.reasonPhrase}",
           showLog: logSteps,
         );
@@ -114,51 +118,20 @@ class NetworkCall<DI, DO> {
     } catch (e, s) {
       response.callStatus = NetworkCallStatus.failed;
       NetLog()
-          .e("$tag Call failed", error: e, stackTrace: s, showLog: logSteps);
+          .e("$logTag Call failed", error: e, stackTrace: s, showLog: logSteps);
     }
 
     NetLog().d(
-      "$tag Response body:\n${response.httpResponse?.body}",
+      "$logTag Response body:\n${response.httpResponse?.body}",
       showLog: logResponse,
     );
     NetLog().d(
-      "$tag Result Model:\n${response.result?.toString()}",
+      "$logTag Result Model:\n${response.result?.toString()}",
       showLog: logResultModel,
     );
 
     updateListener();
     return response;
-  }
-
-  /// Private method to check if a request is loading or has already completed
-  bool _isLoadingOrHasAlreadyCompletedRequest(
-    String tag, {
-    bool cacheTemporarily = true,
-    bool logSteps = true,
-    bool logResponse = false,
-    bool logResultModel = false,
-  }) {
-    if (response.callStatus == NetworkCallStatus.loading) {
-      NetLog().d(
-        "$tag Already another call ongoing, so no new call has started",
-        showLog: logSteps,
-      );
-      return true;
-    } else if (cacheTemporarily &&
-        (response.callStatus == NetworkCallStatus.success)) {
-      NetLog().d("$tag Call already completed successfully", showLog: logSteps);
-      NetLog().d(
-        "$tag Response body:\n${response.httpResponse?.body}",
-        showLog: logResponse,
-      );
-      NetLog().d(
-        "$tag Result Model:\n${response.result?.toString()}",
-        showLog: logResultModel,
-      );
-      return true;
-    }
-
-    return false;
   }
 
   /// Private method to get an HTTP response

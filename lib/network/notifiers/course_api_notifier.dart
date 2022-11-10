@@ -5,7 +5,7 @@ import "package:app/network/converters/default_converters/json_object_converter.
 import "package:app/network/models/api_courses/category_response_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/models/base_api_response_model.dart";
-import "package:app/network/network_call.dart";
+import "package:app/network/network.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
@@ -17,12 +17,10 @@ import "package:provider/provider.dart" show ChangeNotifierProvider;
 import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
 class CourseApiNotifier extends ApiNotifier {
-  /// API network responses
-  late NetworkResponse<BaseApiResponseModel<CategoryResponseModel>>
-      allCategoriesGetInfo = NetworkResponse();
-
-  late NetworkResponse<List<CourseGetResponseModel?>> allCoursesGetInfo =
-      NetworkResponse<List<CourseGetResponseModel?>>();
+  /// API endpoints
+  static const String allCategoriesGetApiEndpoint =
+      "/category/category_tree_view";
+  static const String allCoursesGetApiEndpoint = "/course/get";
 
   /// Constructor
   CourseApiNotifier();
@@ -33,31 +31,39 @@ class CourseApiNotifier extends ApiNotifier {
         create: (BuildContext context) => CourseApiNotifier(),
       );
 
-  /// Method to get all courses list
+  /// Methods to get all courses list
   Future<NetworkResponse<BaseApiResponseModel<CategoryResponseModel>>>
-      getAllCategories() async => await NetworkCall(
+      getAllCategories() => Network.createExecuteCall(
             client: defaultClient,
             request: const NetworkRequest.get(
-              apiEndPoint: "/category/category_tree_view",
+              apiEndPoint: allCategoriesGetApiEndpoint,
               serializer:
                   BaseApiResponseSerializer(CategoryResponseSerializer()),
               converter: JsonObjectConverter<
                   BaseApiResponseModel<CategoryResponseModel>>(),
             ),
-            response: allCategoriesGetInfo,
             updateListener: () => notifyListeners(),
-          ).execute();
+          );
 
-  /// Method to get all courses list
-  Future<NetworkResponse<List<CourseGetResponseModel?>>>
-      getAllCourses() async => await NetworkCall(
-            client: defaultClient,
-            request: const NetworkRequest.get(
-              apiEndPoint: "/course/get",
-              serializer: CourseGetResponseSerializer(),
-              converter: JsonArrayConverter<CourseGetResponseModel>(),
-            ),
-            response: allCoursesGetInfo,
-            updateListener: () => notifyListeners(),
-          ).execute();
+  NetworkResponse<BaseApiResponseModel<CategoryResponseModel>>
+      get allCategoriesGetResponse => Network.getOrCreateResponse(
+            defaultClient.baseUrl + allCategoriesGetApiEndpoint,
+          );
+
+  /// Methods to get all courses list
+  Future<NetworkResponse<List<CourseGetResponseModel>>> getAllCourses() =>
+      Network.createExecuteCall(
+        client: defaultClient,
+        request: const NetworkRequest.get(
+          apiEndPoint: allCoursesGetApiEndpoint,
+          serializer: CourseGetResponseSerializer(),
+          converter: JsonArrayConverter<CourseGetResponseModel>(),
+        ),
+        updateListener: () => notifyListeners(),
+      );
+
+  NetworkResponse<List<CourseGetResponseModel>> get allCoursesGetResponse =>
+      Network.getOrCreateResponse(
+        defaultClient.baseUrl + allCoursesGetApiEndpoint,
+      );
 }

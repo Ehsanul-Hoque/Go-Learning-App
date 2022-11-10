@@ -45,8 +45,8 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
           return context.select((CourseApiNotifier? apiNotifier) {
             return NetworkCallStatus.combine(
               <NetworkCallStatus?>[
-                apiNotifier?.allCategoriesGetInfo.callStatus,
-                apiNotifier?.allCoursesGetInfo.callStatus,
+                apiNotifier?.allCategoriesGetResponse.callStatus,
+                apiNotifier?.allCoursesGetResponse.callStatus,
               ],
             );
           });
@@ -54,7 +54,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
         noContentChecker: () {
           bool noCategories = context
                   .read<CourseApiNotifier?>()
-                  ?.allCategoriesGetInfo
+                  ?.allCategoriesGetResponse
                   .result
                   ?.data
                   ?.getNonNulls()
@@ -63,7 +63,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
 
           bool noCourses = context
                   .read<CourseApiNotifier?>()
-                  ?.allCoursesGetInfo
+                  ?.allCoursesGetResponse
                   .result
                   ?.getNonNulls()
                   .isEmpty !=
@@ -102,7 +102,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
     // Get the categories
     List<CategoryResponseModel> categories = context
             .read<CourseApiNotifier?>()
-            ?.allCategoriesGetInfo
+            ?.allCategoriesGetResponse
             .result
             ?.data
             ?.getNonNulls()
@@ -112,7 +112,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
     // Get the courses
     List<CourseGetResponseModel> courses = context
             .read<CourseApiNotifier?>()
-            ?.allCoursesGetInfo
+            ?.allCoursesGetResponse
             .result
             ?.getNonNulls()
             .toList() ??

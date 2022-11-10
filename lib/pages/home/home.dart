@@ -118,13 +118,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   shouldOutputBeSliver: true,
                   callStatusSelector: (BuildContext context) => context.select(
                     (CourseApiNotifier? apiNotifier) =>
-                        apiNotifier?.allCoursesGetInfo.callStatus ??
+                        apiNotifier?.allCoursesGetResponse.callStatus ??
                         NetworkCallStatus.none,
                   ),
                   noContentChecker: () =>
                       context
                           .read<CourseApiNotifier?>()
-                          ?.allCoursesGetInfo
+                          ?.allCoursesGetResponse
                           .result
                           ?.isEmpty !=
                       false,
@@ -132,7 +132,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   childBuilder: (BuildContext context) {
                     List<CourseGetResponseModel> allCourses = context
                             .read<CourseApiNotifier?>()
-                            ?.allCoursesGetInfo
+                            ?.allCoursesGetResponse
                             .result
                             ?.getNonNulls()
                             .toList() ??
