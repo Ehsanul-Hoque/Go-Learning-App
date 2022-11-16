@@ -20,7 +20,7 @@ class CouponApiNotifier extends ApiNotifier {
         ? "/coupon/get"
         : (coupon.trim().isEmpty
             ? "/coupon/get"
-            : "/coupon/get?coupon=${coupon.toLowerCase().trim()}");
+            : "/coupon/get?coupon=${coupon.trim().toLowerCase()}");
   }
 
   /// Constructor
@@ -36,7 +36,7 @@ class CouponApiNotifier extends ApiNotifier {
   Future<NetworkResponse<BaseApiResponseModel<CouponResponseModel>>> getCoupon(
     String? coupon,
   ) {
-    return Network.createExecuteCall(
+    return Network(updateListener: () => notifyListeners()).createExecuteCall(
       client: defaultClient,
       request: NetworkRequest.get(
         apiEndPoint: couponGetApiEndpoint(coupon),
@@ -46,12 +46,14 @@ class CouponApiNotifier extends ApiNotifier {
         converter: const JsonObjectConverter<
             BaseApiResponseModel<CouponResponseModel>>(),
       ),
-      updateListener: () => notifyListeners(),
     );
   }
 
-  NetworkResponse<BaseApiResponseModel<CouponResponseModel>>
-      allCategoriesGetResponse(String? coupon) => Network.getOrCreateResponse(
-            defaultClient.baseUrl + couponGetApiEndpoint(coupon),
-          );
+  NetworkResponse<BaseApiResponseModel<CouponResponseModel>> couponGetResponse(
+    String? coupon,
+  ) {
+    return Network.getOrCreateResponse(
+      defaultClient.baseUrl + couponGetApiEndpoint(coupon),
+    );
+  }
 }

@@ -123,6 +123,10 @@ class ColorsLightMode implements ColorsBase {
   /// Resource
   final Color resourceItemIcon = AppColors.flatPurpleAmethyst;
 
+  /// Progress
+  final Color progressBg = AppColors.themeBlueAlpha10;
+  final Color progress = AppColors.themeBlue;
+
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
   final Color divider = AppColors.grey300;

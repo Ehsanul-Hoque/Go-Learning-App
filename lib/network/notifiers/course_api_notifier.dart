@@ -33,7 +33,8 @@ class CourseApiNotifier extends ApiNotifier {
 
   /// Methods to get all courses list
   Future<NetworkResponse<BaseApiResponseModel<CategoryResponseModel>>>
-      getAllCategories() => Network.createExecuteCall(
+      getAllCategories() =>
+          Network(updateListener: () => notifyListeners()).createExecuteCall(
             client: defaultClient,
             request: const NetworkRequest.get(
               apiEndPoint: allCategoriesGetApiEndpoint,
@@ -42,7 +43,6 @@ class CourseApiNotifier extends ApiNotifier {
               converter: JsonObjectConverter<
                   BaseApiResponseModel<CategoryResponseModel>>(),
             ),
-            updateListener: () => notifyListeners(),
           );
 
   NetworkResponse<BaseApiResponseModel<CategoryResponseModel>>
@@ -52,14 +52,13 @@ class CourseApiNotifier extends ApiNotifier {
 
   /// Methods to get all courses list
   Future<NetworkResponse<List<CourseGetResponseModel>>> getAllCourses() =>
-      Network.createExecuteCall(
+      Network(updateListener: () => notifyListeners()).createExecuteCall(
         client: defaultClient,
         request: const NetworkRequest.get(
           apiEndPoint: allCoursesGetApiEndpoint,
           serializer: CourseGetResponseSerializer(),
           converter: JsonArrayConverter<CourseGetResponseModel>(),
         ),
-        updateListener: () => notifyListeners(),
       );
 
   NetworkResponse<List<CourseGetResponseModel>> get allCoursesGetResponse =>

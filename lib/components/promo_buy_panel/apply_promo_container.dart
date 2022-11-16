@@ -1,5 +1,8 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/fields/app_input_field.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
+import "package:app/utils/extensions/context_extension.dart";
 import "package:app/utils/typedefs.dart" show OnTapListener, OnValueListener;
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/material.dart" show IconButton;
@@ -8,13 +11,13 @@ import "package:flutter/widgets.dart";
 class ApplyPromoContainer extends StatefulWidget {
   final OnValueListener<String> onCheckPromoTap;
   final OnTapListener onCancelTap;
-  final double? spaceBetweenItems;
+  final String promo;
 
   const ApplyPromoContainer({
     Key? key,
     required this.onCheckPromoTap,
     required this.onCancelTap,
-    this.spaceBetweenItems,
+    this.promo = "",
   }) : super(key: key);
 
   @override
@@ -26,7 +29,7 @@ class _ApplyPromoContainerState extends State<ApplyPromoContainer> {
 
   @override
   void initState() {
-    _promoCodeTextController = TextEditingController();
+    _promoCodeTextController = TextEditingController(text: widget.promo);
     super.initState();
   }
 
@@ -49,7 +52,6 @@ class _ApplyPromoContainerState extends State<ApplyPromoContainer> {
             hint: Res.str.enterPromoHere,
             textInputType: TextInputType.text,
             goNextOnComplete: false,
-            validator: onPromoValidation,
             showCounterText: false,
             maxLength: 50,
             borderThickness: 0,
@@ -59,7 +61,7 @@ class _ApplyPromoContainerState extends State<ApplyPromoContainer> {
           ),
         ),
         SizedBox(
-          width: widget.spaceBetweenItems,
+          width: Res.dimen.xsSpacingValue,
         ),
         IconButton(
           onPressed: widget.onCancelTap,
@@ -69,12 +71,8 @@ class _ApplyPromoContainerState extends State<ApplyPromoContainer> {
             size: Res.dimen.iconSizeNormal,
           ),
         ),
-        SizedBox(
-          width: widget.spaceBetweenItems,
-        ),
         IconButton(
-          onPressed: () =>
-              widget.onCheckPromoTap(_promoCodeTextController.text),
+          onPressed: () => onCheckPromoTap(_promoCodeTextController.text),
           icon: Icon(
             CupertinoIcons.checkmark_alt_circle,
             color: Res.color.iconButton,
@@ -88,13 +86,19 @@ class _ApplyPromoContainerState extends State<ApplyPromoContainer> {
     );
   }
 
-  String? onPromoValidation(String? value) {
-    String promo = value ?? "";
-
-    if (promo.isEmpty) {
-      return Res.str.enterPromo;
+  void onCheckPromoTap(String promo) {
+    if (promo.trim().isEmpty) {
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.invalidPromoTitle,
+          message: Res.str.emptyPromoNotValid,
+          contentType: ContentType.help,
+        ),
+        marginBottom: Res.dimen.snackBarBottomMarginLarge,
+      );
+      return;
     }
 
-    return null;
+    widget.onCheckPromoTap(promo);
   }
 }

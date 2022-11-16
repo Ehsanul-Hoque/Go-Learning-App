@@ -35,11 +35,15 @@ class Utils {
     JsonEncoder jsonEncoder = const JsonEncoder.withIndent("  ");
     String formattedJson = jsonEncoder.convert(jsonRepresentation);
 
-    return "\n-------------------------------------------------- [START]"
+    /*return "\n-------------------------------------------------- [START]"
         "\n$modelName"
         "\n--------------------------------------------------"
         "\n$formattedJson"
         "\n-------------------------------------------------- [END]"
+        "\n";*/
+
+    return "\n\n------------------------- $modelName -------------------------"
+        "\n\n$formattedJson"
         "\n";
   }
 

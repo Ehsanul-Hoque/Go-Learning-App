@@ -8,7 +8,7 @@ class PromoBuyContainer extends StatefulWidget {
   final double? finalPrice;
   final OnTapListener onApplyPromoTap;
   final OnTapListener onBuyCourseTap;
-  final double? spaceBetweenItems;
+  final bool promoApplied;
 
   const PromoBuyContainer({
     Key? key,
@@ -16,7 +16,7 @@ class PromoBuyContainer extends StatefulWidget {
     required this.onApplyPromoTap,
     required this.onBuyCourseTap,
     this.finalPrice,
-    this.spaceBetweenItems,
+    this.promoApplied = false,
   }) : super(key: key);
 
   @override
@@ -34,65 +34,76 @@ class _PromoBuyContainerState extends State<PromoBuyContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 2,
-          child: AppButton(
-            text: Text(Res.str.applyPromo),
-            onTap: widget.onApplyPromoTap,
-            backgroundColor: Res.color.buttonHollowBg,
-            contentColor: Res.color.buttonHollowContent2,
-            tintIconWithContentColor: false,
-            padding: EdgeInsets.zero,
-            borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
-          ),
-        ),
-        SizedBox(
-          width: widget.spaceBetweenItems,
-        ),
-        Expanded(
-          flex: 3,
-          child: AppButton(
-            text: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(Res.str.buyCourseAt),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "${widget.initialPrice.toStringAsFixed(0)} ${Res.str.tkDot}",
-                      style: TextStyle(
-                        fontSize: discounted ? null : Res.dimen.fontSizeXl,
-                        fontWeight: discounted ? null : FontWeight.w700,
-                        color: discounted ? Res.color.strikethroughPrice : null,
-                        decoration:
-                            discounted ? TextDecoration.lineThrough : null,
-                      ),
+    return Padding(
+      padding: EdgeInsets.all(Res.dimen.xsSpacingValue),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: widget.promoApplied
+                ? Text(
+                    Res.str.promoApplied,
+                    style: Res.textStyles.general.copyWith(
+                      color: Res.color.buttonHollowContent2,
                     ),
-                    if (discounted) ...<Widget>[
-                      SizedBox(
-                        width: Res.dimen.smallSpacingValue,
-                      ),
+                  )
+                : AppButton(
+                    text: Text(Res.str.applyPromo),
+                    onTap: widget.onApplyPromoTap,
+                    backgroundColor: Res.color.buttonHollowBg,
+                    contentColor: Res.color.buttonHollowContent,
+                    tintIconWithContentColor: false,
+                    padding: EdgeInsets.zero,
+                    borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
+                  ),
+          ),
+          SizedBox(
+            width: Res.dimen.xsSpacingValue,
+          ),
+          Expanded(
+            flex: 3,
+            child: AppButton(
+              text: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(Res.str.buyCourseAt),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
                       Text(
-                        "${widget.finalPrice!.toStringAsFixed(0)} ${Res.str.tkDot}",
+                        "${widget.initialPrice.toStringAsFixed(0)} ${Res.str.tkDot}",
                         style: TextStyle(
-                          fontSize: Res.dimen.fontSizeXl,
-                          fontWeight: FontWeight.w700,
+                          fontSize: discounted ? null : Res.dimen.fontSizeXl,
+                          fontWeight: discounted ? null : FontWeight.w700,
+                          color:
+                              discounted ? Res.color.strikethroughPrice : null,
+                          decoration:
+                              discounted ? TextDecoration.lineThrough : null,
                         ),
                       ),
+                      if (discounted) ...<Widget>[
+                        SizedBox(
+                          width: Res.dimen.smallSpacingValue,
+                        ),
+                        Text(
+                          "${widget.finalPrice!.toStringAsFixed(0)} ${Res.str.tkDot}",
+                          style: TextStyle(
+                            fontSize: Res.dimen.fontSizeXl,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
+              onTap: widget.onBuyCourseTap,
+              padding: EdgeInsets.zero,
+              borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
             ),
-            onTap: widget.onBuyCourseTap,
-            padding: EdgeInsets.zero,
-            borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

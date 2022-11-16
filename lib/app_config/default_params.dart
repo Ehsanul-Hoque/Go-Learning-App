@@ -76,6 +76,8 @@ class Dimensions {
   /// Floating Message (SnackBar or Dialog)
   final double snackBarMaxWidth = 480;
   final double snackBarContentLeftPadding = 64;
+  final double snackBarBottomMargin = 24;
+  final double snackBarBottomMarginLarge = 72;
   final double floatingMessagesBubbleImageSize = 42;
   final double floatingMessagesTopBubbleTop = -20;
   final double appDialogTopBubbleRight = -20;

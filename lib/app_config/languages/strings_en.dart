@@ -40,6 +40,7 @@ class StringsEn implements StringsBase {
   final String courseContents = "Course Contents";
   final String applyPromo = "Apply Promo";
   final String enterPromoHere = "Enter Promo Code Here...";
+  final String promoApplied = "Promo applied";
   final String buyCourseAt = "Buy This Course At";
 
   final String checkout = "Checkout";
@@ -92,6 +93,19 @@ class StringsEn implements StringsBase {
   final String areYouSureToCloseQuiz =
       "Are you sure that you want to close the quiz?"
       " Quiz progress of the quiz will be lost.";
+  final String noInternetTitle = "No Internet!";
+  final String noInternetDescription =
+      "Please check your internet connection and try again.";
+  final String errorTitle = "Error!";
+  final String errorCheckingPromo = "Sorry!"
+      " Could not check if this promo is valid. Please try again later.";
+  final String yesTitle = "Yes!";
+  final String promoValidAndDiscountApplied = "This promo is valid."
+      " Discount applied to the previous price.";
+  final String sorryTitle = "Sorry!";
+  final String promoDoesNotExist = "This promo does not exist.";
+  final String invalidPromoTitle = "Invalid Promo!";
+  final String emptyPromoNotValid = "Empty promo is not a valid promo.";
 
   final String generalError = "Sorry! Some type of problem occurred.";
   final String startNetworkCall = "Please start the network call.";

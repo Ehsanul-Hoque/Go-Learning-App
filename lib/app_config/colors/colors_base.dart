@@ -120,6 +120,10 @@ abstract class ColorsBase {
   /// Resource
   final Color resourceItemIcon = AppColors.transparent;
 
+  /// Progress
+  final Color progressBg = AppColors.transparent;
+  final Color progress = AppColors.transparent;
+
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
   final Color divider = AppColors.transparent;

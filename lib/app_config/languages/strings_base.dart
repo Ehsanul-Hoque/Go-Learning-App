@@ -36,6 +36,7 @@ abstract class StringsBase {
   final String courseContents = "";
   final String applyPromo = "";
   final String enterPromoHere = "";
+  final String promoApplied = "";
   final String buyCourseAt = "";
 
   final String checkout = "";
@@ -83,6 +84,16 @@ abstract class StringsBase {
 
   final String areYouSure = "";
   final String areYouSureToCloseQuiz = "";
+  final String noInternetTitle = "";
+  final String noInternetDescription = "";
+  final String errorTitle = "";
+  final String errorCheckingPromo = "";
+  final String yesTitle = "";
+  final String promoValidAndDiscountApplied = "";
+  final String sorryTitle = "";
+  final String promoDoesNotExist = "";
+  final String invalidPromoTitle = "";
+  final String emptyPromoNotValid = "";
 
   final String generalError = "";
   final String startNetworkCall = "";

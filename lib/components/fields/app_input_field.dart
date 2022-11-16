@@ -40,6 +40,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
   final FocusNode? focusNode;
   final TextStyle? counterTextStyle;
   final EdgeInsets? contentPadding;
+  final bool enabled;
 
   const AppInputField({
     Key? key,
@@ -83,6 +84,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
     this.contentPadding,
     this.isCollapsed,
     this.isDense,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -92,6 +94,8 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
     Color cursorColor = this.cursorColor ?? Res.color.textPrimary;
 
     return TextFormField(
+      enabled: enabled,
+      readOnly: !enabled,
       expands: expands,
       style: Res.textStyles.general.copyWith(
         color: textColor,
