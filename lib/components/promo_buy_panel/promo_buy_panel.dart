@@ -57,44 +57,6 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
     double width =
         MediaQuery.of(context).size.width - (Res.dimen.navBarMargin * 2);
 
-    Widget resultWidget;
-
-    switch (promoState) {
-      case PromoState.promoOrBuy:
-      case PromoState.promoAppliedAndBuy:
-        resultWidget = PromoBuyContainer(
-          initialPrice: widget.initialPrice,
-          finalPrice: promoDiscountAmount > 0
-              ? finalPrice
-              : ((widget.discountedPrice != widget.initialPrice)
-                  ? widget.discountedPrice
-                  : null),
-          onApplyPromoTap: onApplyPromoTap,
-          onBuyCourseTap: onBuyCourseTap,
-          promoApplied: promoState == PromoState.promoAppliedAndBuy,
-        );
-        break;
-
-      case PromoState.applyPromo:
-        resultWidget = ApplyPromoContainer(
-          onCheckPromoTap: onCheckPromoTap,
-          onCancelTap: onCancelPromoFieldTap,
-          promo: promoCode,
-        );
-        break;
-
-      case PromoState.loading:
-        resultWidget = const AppCircularProgress();
-        break;
-    }
-
-    resultWidget = AnimatedSwitcher(
-      duration: Res.durations.defaultDuration,
-      switchInCurve: Res.curves.defaultCurve,
-      switchOutCurve: Res.curves.defaultCurve,
-      child: resultWidget,
-    );
-
     return AppContainer(
       width: width,
       height: Res.dimen.bottomNavBarHeight,
@@ -119,8 +81,47 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
         onStatusLoading: onStatusLoading,
         onStatusFailed: onStatusFailed,
         onStatusSuccess: onStatusSuccess,
-        childBuilder: (BuildContext context, NetworkCallStatus callStatus) =>
-            resultWidget,
+        childBuilder: (BuildContext context, NetworkCallStatus callStatus) {
+          Widget resultWidget;
+
+          switch (promoState) {
+            case PromoState.promoOrBuy:
+            case PromoState.promoAppliedAndBuy:
+              resultWidget = PromoBuyContainer(
+                initialPrice: widget.initialPrice,
+                finalPrice: promoDiscountAmount > 0
+                    ? finalPrice
+                    : ((widget.discountedPrice != widget.initialPrice)
+                        ? widget.discountedPrice
+                        : null),
+                onApplyPromoTap: onApplyPromoTap,
+                onBuyCourseTap: onBuyCourseTap,
+                promoApplied: promoState == PromoState.promoAppliedAndBuy,
+              );
+              break;
+
+            case PromoState.applyPromo:
+              resultWidget = ApplyPromoContainer(
+                onCheckPromoTap: onCheckPromoTap,
+                onCancelTap: onCancelPromoFieldTap,
+                promo: promoCode,
+              );
+              break;
+
+            case PromoState.loading:
+              resultWidget = const AppCircularProgress();
+              break;
+          }
+
+          resultWidget = AnimatedSwitcher(
+            duration: Res.durations.defaultDuration,
+            switchInCurve: Res.curves.defaultCurve,
+            switchOutCurve: Res.curves.defaultCurve,
+            child: resultWidget,
+          );
+
+          return resultWidget;
+        },
       ),
     );
   }

@@ -137,6 +137,7 @@ class ColorsLightMode implements ColorsBase {
   final Color widgetCheckBoxSelectedShade = AppColors.flatGreenEmeraldAlpha90;
   final Color contentOnDark = AppColors.white;
   final Color acsvAutoScrollHighlight = AppColors.themeYellowAlpha05;
+  final Color textSuccess = AppColors.flatGreenEmerald;
 
   /// const constructor
   const ColorsLightMode();

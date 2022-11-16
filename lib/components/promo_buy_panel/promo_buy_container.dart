@@ -1,6 +1,7 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_button.dart";
 import "package:app/utils/typedefs.dart" show OnTapListener;
+import "package:flutter/material.dart" show Icons;
 import "package:flutter/widgets.dart";
 
 class PromoBuyContainer extends StatefulWidget {
@@ -41,11 +42,25 @@ class _PromoBuyContainerState extends State<PromoBuyContainer> {
           Expanded(
             flex: 2,
             child: widget.promoApplied
-                ? Text(
-                    Res.str.promoApplied,
-                    style: Res.textStyles.general.copyWith(
-                      color: Res.color.buttonHollowContent2,
-                    ),
+                ? Wrap(
+                    alignment: WrapAlignment.center,
+                    runAlignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: Res.dimen.xsSpacingValue,
+                    children: <Widget>[
+                      Icon(
+                        Icons.check_circle,
+                        color: Res.color.textSuccess,
+                      ),
+                      Text(
+                        Res.str.promoApplied,
+                        style: Res.textStyles.general.copyWith(
+                          color: Res.color.textSuccess,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                    ],
                   )
                 : AppButton(
                     text: Text(Res.str.applyPromo),
