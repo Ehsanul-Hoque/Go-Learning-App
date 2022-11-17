@@ -96,17 +96,20 @@ class _CourseCheckoutState extends State<CourseCheckout> {
 
                   String bkashNumber = response?.bkashNumber ?? "-";
 
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
-                    child: Center(
-                      child: Container(
-                        constraints: BoxConstraints(
-                          maxWidth: Res.dimen.maxWidthNormal,
-                        ),
-                        child: CourseCheckoutForm(
-                          finalPrice: widget.finalPrice,
-                          bkashNumber: bkashNumber,
-                          onSubmitTap: onSubmitTap,
+                  return Align(
+                    alignment: Alignment.topCenter,
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
+                      child: Center(
+                        child: Container(
+                          constraints: BoxConstraints(
+                            maxWidth: Res.dimen.maxWidthNormal,
+                          ),
+                          child: CourseCheckoutForm(
+                            finalPrice: widget.finalPrice,
+                            bkashNumber: bkashNumber,
+                            onSubmitTap: onSubmitTap,
+                          ),
                         ),
                       ),
                     ),

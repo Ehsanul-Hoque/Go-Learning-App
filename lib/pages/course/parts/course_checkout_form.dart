@@ -228,15 +228,14 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
   }
 
   void onSubmitTap() {
-    // TODO Uncomment validation when submission is properly implemented
-    // if (_formKey.currentState?.validate() ?? false) {
-    //   _formKey.currentState?.save();
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState?.save();
 
-    widget.onSubmitTap(
-      _personalNumberTextController.text,
-      _transactionIdTextController.text,
-      _mfsNumberTextController.text,
-    );
-    // }
+      widget.onSubmitTap(
+        _personalNumberTextController.text,
+        _transactionIdTextController.text,
+        _mfsNumberTextController.text,
+      );
+    }
   }
 }
