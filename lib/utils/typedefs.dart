@@ -4,6 +4,8 @@ import "package:scroll_to_index/scroll_to_index.dart" show AutoScrollController;
 
 typedef OnTapListener = void Function();
 
+typedef OnTapListener3<T1, T2, T3> = void Function(T1, T2, T3);
+
 typedef OnItemChangeListener = void Function(int newIndex);
 
 typedef OnTabChangeListener = OnItemChangeListener;

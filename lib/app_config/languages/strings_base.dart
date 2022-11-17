@@ -48,6 +48,7 @@ abstract class StringsBase {
   final String pleaseCompleteYour = "";
   final String paymentTo = "";
   final String thenFillFormBelow = "";
+  final String canTapOnNumberToCopy = "";
   final String yourNumberForContact = "";
   final String transactionId = "";
   final String numberTheMoneySentFrom = "";

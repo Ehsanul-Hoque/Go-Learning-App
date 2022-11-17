@@ -52,6 +52,8 @@ class StringsEn implements StringsBase {
   final String pleaseCompleteYour = "Please complete your";
   final String paymentTo = "payment to";
   final String thenFillFormBelow = "then fill up the form below.";
+  final String canTapOnNumberToCopy = "You can tap on the number above"
+      " to copy it!\nLet's give it a try!";
   final String yourNumberForContact =
       "Your Personal Number (For Contact Purpose)";
   final String transactionId = "transaction ID";
