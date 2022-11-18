@@ -1,3 +1,4 @@
+import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/network/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
@@ -90,7 +91,8 @@ class CtgrContentsSerializer extends Serializer<CtgrContentsModel> {
 
     return CtgrContentsModel(
       sId: json["_id"],
-      contentType: json["content_type"],
+      contentType:
+          CourseContentType.valueOf((json["content_type"] as String?) ?? ""),
       publicToAccess: json["public_to_access"],
       locked: json["locked"],
       title: json["title"],
@@ -110,7 +112,8 @@ class CtgrContentsSerializer extends Serializer<CtgrContentsModel> {
     final Map<String, dynamic> data = <String, dynamic>{};
 
     data["_id"] = serializable.sId;
-    data["content_type"] = serializable.contentType;
+    data["content_type"] =
+        (serializable.contentType ?? CourseContentType.unknown).name;
     data["public_to_access"] = serializable.publicToAccess;
     data["locked"] = serializable.locked;
     data["title"] = serializable.title;

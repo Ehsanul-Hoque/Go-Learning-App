@@ -1,3 +1,4 @@
+import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/models/base_api_model.dart";
 import "package:app/network/serializers/api_contents/content_tree_get_response_serializer.dart";
 
@@ -41,7 +42,7 @@ class CtgrModuleModel extends BaseApiModel {
 
 class CtgrContentsModel extends BaseApiModel {
   final String? sId;
-  final String? contentType;
+  final CourseContentType? contentType;
   final bool? publicToAccess;
   final bool? locked;
   final String? title;
