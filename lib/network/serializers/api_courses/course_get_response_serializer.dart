@@ -1,6 +1,7 @@
 import "package:app/network/models/api_courses/category_response_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/serializers/api_courses/category_response_serializer.dart";
+import "package:app/network/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
 
 class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
@@ -12,20 +13,15 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
 
     return CourseGetResponseModel(
       sId: json["_id"],
-      rating: json["rating"] != null
-          ? const CgrRatingSerializer().fromJson(json["rating"])
-          : null,
-      filter: (json["filter"] as List<dynamic>?)
-          ?.map((dynamic item) => item as String?)
-          .toList(),
-      categoryId: (json["category_id"] as List<dynamic>?)
-          ?.map((dynamic category) => category as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? category) => (category == null)
-                ? null
-                : const CategoryResponseSerializer().fromJson(category),
-          )
-          .toList(),
+      rating: SerializerHelper.jsonToModelObject<CgrRatingModel>(
+        json["rating"],
+        const CgrRatingSerializer(),
+      ),
+      filter: SerializerHelper.jsonToTypedList<String>(json["filter"]),
+      categoryId: SerializerHelper.jsonToModelList<CategoryResponseModel>(
+        json["category_id"],
+        const CategoryResponseSerializer(),
+      ),
       certificate: json["certificate"],
       language: json["language"],
       metaKeyword: json["meta_keyword"],
@@ -43,10 +39,11 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
       banner: json["banner"],
       preview: json["preview"],
       thumbnail: json["thumbnail"],
-      immediateCategory: json["immediate_category"] != null
-          ? const CgrImmediateCategorySerializer()
-              .fromJson(json["immediate_category"])
-          : null,
+      immediateCategory:
+          SerializerHelper.jsonToModelObject<CgrImmediateCategoryModel>(
+        json["immediate_category"],
+        const CgrImmediateCategorySerializer(),
+      ),
       iV: json["__v"],
     );
   }
@@ -56,17 +53,16 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
     final Map<String, dynamic> data = <String, dynamic>{};
 
     data["_id"] = serializable.sId;
-    data["rating"] = (serializable.rating == null)
-        ? null
-        : const CgrRatingSerializer().toJson(serializable.rating!);
+    data["rating"] = SerializerHelper.modelToJsonObject<CgrRatingModel>(
+      serializable.rating,
+      const CgrRatingSerializer(),
+    );
     data["filter"] = serializable.filter;
-    data["category_id"] = serializable.categoryId
-        ?.map(
-          (CategoryResponseModel? category) => (category == null)
-              ? null
-              : const CategoryResponseSerializer().toJson(category),
-        )
-        .toList();
+    data["category_id"] =
+        SerializerHelper.modelToJsonList<CategoryResponseModel>(
+      serializable.categoryId,
+      const CategoryResponseSerializer(),
+    );
     data["certificate"] = serializable.certificate;
     data["language"] = serializable.language;
     data["meta_keyword"] = serializable.metaKeyword;
@@ -84,10 +80,11 @@ class CourseGetResponseSerializer extends Serializer<CourseGetResponseModel> {
     data["banner"] = serializable.banner;
     data["preview"] = serializable.preview;
     data["thumbnail"] = serializable.thumbnail;
-    if (serializable.immediateCategory != null) {
-      data["immediate_category"] = const CgrImmediateCategorySerializer()
-          .toJson(serializable.immediateCategory!);
-    }
+    data["immediate_category"] =
+        SerializerHelper.modelToJsonObject<CgrImmediateCategoryModel>(
+      serializable.immediateCategory,
+      const CgrImmediateCategorySerializer(),
+    );
     data["__v"] = serializable.iV;
 
     return data;

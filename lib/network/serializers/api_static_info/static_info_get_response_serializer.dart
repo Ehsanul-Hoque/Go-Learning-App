@@ -1,4 +1,5 @@
 import "package:app/network/models/api_static_info/static_info_get_response_model.dart";
+import "package:app/network/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
 
 class StaticInfoGetResponseSerializer
@@ -14,26 +15,20 @@ class StaticInfoGetResponseSerializer
       rocketNumber: json["rocket_number"],
       bkashNumber: json["bkash_number"],
       nagadNumber: json["nagad_number"],
-      banner: json["banner"].cast<String>(),
-      youtubeVideo: (json["youtube_video"] as List<dynamic>?)
-          ?.map((dynamic item) => item as String?)
-          .toList(),
-      testimonial: (json["testimonial"] as List<dynamic>?)
-          ?.map((dynamic category) => category as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? item) => (item == null)
-                ? null
-                : const SigrTestimonialSerializer().fromJson(item),
-          )
-          .toList(),
-      announcement: (json["announcement"] as List<dynamic>?)
-          ?.map((dynamic category) => category as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? item) => (item == null)
-                ? null
-                : const SigrAnnouncementSerializer().fromJson(item),
-          )
-          .toList(),
+      banner: SerializerHelper.jsonToTypedList<String>(
+        json["banner"],
+      ),
+      youtubeVideo: SerializerHelper.jsonToTypedList<String>(
+        json["youtube_video"],
+      ),
+      testimonial: SerializerHelper.jsonToModelList<SigrTestimonialModel>(
+        json["testimonial"],
+        const SigrTestimonialSerializer(),
+      ),
+      announcement: SerializerHelper.jsonToModelList<SigrAnnouncementModel>(
+        json["announcement"],
+        const SigrAnnouncementSerializer(),
+      ),
       iV: json["__v"],
     );
   }
@@ -48,20 +43,16 @@ class StaticInfoGetResponseSerializer
     data["nagad_number"] = serializable.nagadNumber;
     data["banner"] = serializable.banner;
     data["youtube_video"] = serializable.youtubeVideo;
-    data["testimonial"] = serializable.testimonial
-        ?.map(
-          (SigrTestimonialModel? testimonial) => (testimonial == null)
-              ? null
-              : const SigrTestimonialSerializer().toJson(testimonial),
-        )
-        .toList();
-    data["announcement"] = serializable.announcement
-        ?.map(
-          (SigrAnnouncementModel? announcement) => (announcement == null)
-              ? null
-              : const SigrAnnouncementSerializer().toJson(announcement),
-        )
-        .toList();
+    data["testimonial"] =
+        SerializerHelper.modelToJsonList<SigrTestimonialModel>(
+      serializable.testimonial,
+      const SigrTestimonialSerializer(),
+    );
+    data["announcement"] =
+        SerializerHelper.modelToJsonList<SigrAnnouncementModel>(
+      serializable.announcement,
+      const SigrAnnouncementSerializer(),
+    );
     data["__v"] = serializable.iV;
 
     return data;

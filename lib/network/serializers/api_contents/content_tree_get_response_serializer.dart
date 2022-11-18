@@ -1,4 +1,5 @@
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
 
 class ContentTreeGetResponseSerializer
@@ -11,14 +12,10 @@ class ContentTreeGetResponseSerializer
 
     return ContentTreeGetResponseModel(
       haveFullAccess: json["have_full_access"],
-      module: (json["module"] as List<dynamic>?)
-          ?.map((dynamic module) => module as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? module) => (module == null)
-                ? null
-                : const CtgrModuleSerializer().fromJson(module),
-          )
-          .toList(),
+      module: SerializerHelper.jsonToModelList<CtgrModuleModel>(
+        json["module"],
+        const CtgrModuleSerializer(),
+      ),
     );
   }
 
@@ -27,13 +24,10 @@ class ContentTreeGetResponseSerializer
     final Map<String, dynamic> data = <String, dynamic>{};
 
     data["have_full_access"] = serializable.haveFullAccess;
-    data["module"] = serializable.module
-        ?.map(
-          (CtgrModuleModel? module) => (module == null)
-              ? null
-              : const CtgrModuleSerializer().toJson(module),
-        )
-        .toList();
+    data["module"] = SerializerHelper.modelToJsonList<CtgrModuleModel>(
+      serializable.module,
+      const CtgrModuleSerializer(),
+    );
 
     return data;
   }
@@ -53,22 +47,14 @@ class CtgrModuleSerializer extends Serializer<CtgrModuleModel> {
       serial: json["serial"],
       courseId: json["course_id"],
       iV: json["__v"],
-      contents: (json["contents"] as List<dynamic>?)
-          ?.map((dynamic content) => content as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? content) => (content == null)
-                ? null
-                : const CtgrContentsSerializer().fromJson(content),
-          )
-          .toList(),
-      subs: (json["subs"] as List<dynamic>?)
-          ?.map((dynamic module) => module as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? module) => (module == null)
-                ? null
-                : const CtgrModuleSerializer().fromJson(module),
-          )
-          .toList(),
+      contents: SerializerHelper.jsonToModelList<CtgrContentsModel>(
+        json["contents"],
+        const CtgrContentsSerializer(),
+      ),
+      subs: SerializerHelper.jsonToModelList<CtgrModuleModel>(
+        json["subs"],
+        const CtgrModuleSerializer(),
+      ),
     );
   }
 
@@ -82,20 +68,14 @@ class CtgrModuleSerializer extends Serializer<CtgrModuleModel> {
     data["serial"] = serializable.serial;
     data["course_id"] = serializable.courseId;
     data["__v"] = serializable.iV;
-    data["contents"] = serializable.contents
-        ?.map(
-          (CtgrContentsModel? content) => (content == null)
-              ? null
-              : const CtgrContentsSerializer().toJson(content),
-        )
-        .toList();
-    data["subs"] = serializable.subs
-        ?.map(
-          (CtgrModuleModel? module) => (module == null)
-              ? null
-              : const CtgrModuleSerializer().toJson(module),
-        )
-        .toList();
+    data["contents"] = SerializerHelper.modelToJsonList<CtgrContentsModel>(
+      serializable.contents,
+      const CtgrContentsSerializer(),
+    );
+    data["subs"] = SerializerHelper.modelToJsonList<CtgrModuleModel>(
+      serializable.subs,
+      const CtgrModuleSerializer(),
+    );
 
     return data;
   }
@@ -116,14 +96,10 @@ class CtgrContentsSerializer extends Serializer<CtgrContentsModel> {
       title: json["title"],
       moduleId: json["module_id"],
       serial: json["serial"],
-      timeStamp: (json["time_stamp"] as List<dynamic>?)
-          ?.map((dynamic timeStamp) => timeStamp as Map<String, dynamic>?)
-          .map(
-            (Map<String, dynamic>? timeStamp) => (timeStamp == null)
-                ? null
-                : const CtgrVideoTimeStampSerializer().fromJson(timeStamp),
-          )
-          .toList(),
+      timeStamp: SerializerHelper.jsonToModelList<CtgrVideoTimeStampModel>(
+        json["time_stamp"],
+        const CtgrVideoTimeStampSerializer(),
+      ),
       courseId: json["course_id"],
       iV: json["__v"],
     );
@@ -140,13 +116,11 @@ class CtgrContentsSerializer extends Serializer<CtgrContentsModel> {
     data["title"] = serializable.title;
     data["module_id"] = serializable.moduleId;
     data["serial"] = serializable.serial;
-    data["time_stamp"] = serializable.timeStamp
-        ?.map(
-          (CtgrVideoTimeStampModel? timeStamp) => (timeStamp == null)
-              ? null
-              : const CtgrVideoTimeStampSerializer().toJson(timeStamp),
-        )
-        .toList();
+    data["time_stamp"] =
+        SerializerHelper.modelToJsonList<CtgrVideoTimeStampModel>(
+      serializable.timeStamp,
+      const CtgrVideoTimeStampSerializer(),
+    );
     data["course_id"] = serializable.courseId;
     data["__v"] = serializable.iV;
 
