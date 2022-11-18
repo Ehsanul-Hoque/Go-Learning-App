@@ -1,4 +1,5 @@
 import "package:app/network/enums/api_contents/course_content_type.dart";
+import "package:app/network/models/api_contents/lecture_timestamp_response_model.dart";
 import "package:app/network/models/base_api_model.dart";
 import "package:app/network/serializers/api_contents/content_tree_get_response_serializer.dart";
 
@@ -48,7 +49,7 @@ class CtgrContentsModel extends BaseApiModel {
   final String? title;
   final String? moduleId;
   final int? serial;
-  final List<CtgrVideoTimeStampModel?>? timeStamp;
+  final List<LectureTimeStampResponseModel?>? timeStamp;
   final String? courseId;
   final int? iV;
 
@@ -67,19 +68,4 @@ class CtgrContentsModel extends BaseApiModel {
 
   @override
   String get className => "CtgrContentsModel";
-}
-
-class CtgrVideoTimeStampModel extends BaseApiModel {
-  final String? sId;
-  final String? title;
-  final String? time;
-
-  const CtgrVideoTimeStampModel({
-    this.sId,
-    this.title,
-    this.time,
-  }) : super(serializer: const CtgrVideoTimeStampSerializer());
-
-  @override
-  String get className => "CtgrVideoTimeStampModel";
 }

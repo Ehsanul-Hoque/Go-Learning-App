@@ -1,5 +1,7 @@
 import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/models/api_contents/lecture_timestamp_response_model.dart";
+import "package:app/network/serializers/api_contents/lecture_timestamp_response_serializer.dart";
 import "package:app/network/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
 
@@ -98,9 +100,10 @@ class CtgrContentsSerializer extends Serializer<CtgrContentsModel> {
       title: json["title"],
       moduleId: json["module_id"],
       serial: json["serial"],
-      timeStamp: SerializerHelper.jsonToModelList<CtgrVideoTimeStampModel>(
+      timeStamp:
+          SerializerHelper.jsonToModelList<LectureTimeStampResponseModel>(
         json["time_stamp"],
-        const CtgrVideoTimeStampSerializer(),
+        const LectureTimeStampResponseSerializer(),
       ),
       courseId: json["course_id"],
       iV: json["__v"],
@@ -120,38 +123,12 @@ class CtgrContentsSerializer extends Serializer<CtgrContentsModel> {
     data["module_id"] = serializable.moduleId;
     data["serial"] = serializable.serial;
     data["time_stamp"] =
-        SerializerHelper.modelToJsonList<CtgrVideoTimeStampModel>(
+        SerializerHelper.modelToJsonList<LectureTimeStampResponseModel>(
       serializable.timeStamp,
-      const CtgrVideoTimeStampSerializer(),
+      const LectureTimeStampResponseSerializer(),
     );
     data["course_id"] = serializable.courseId;
     data["__v"] = serializable.iV;
-
-    return data;
-  }
-}
-
-class CtgrVideoTimeStampSerializer extends Serializer<CtgrVideoTimeStampModel> {
-  const CtgrVideoTimeStampSerializer();
-
-  @override
-  CtgrVideoTimeStampModel fromJson(Map<String, dynamic>? json) {
-    if (json == null) return const CtgrVideoTimeStampModel();
-
-    return CtgrVideoTimeStampModel(
-      sId: json["_id"],
-      title: json["title"],
-      time: json["time"],
-    );
-  }
-
-  @override
-  Map<String, dynamic> toJson(CtgrVideoTimeStampModel serializable) {
-    final Map<String, dynamic> data = <String, dynamic>{};
-
-    data["_id"] = serializable.sId;
-    data["title"] = serializable.title;
-    data["time"] = serializable.time;
 
     return data;
   }
