@@ -48,10 +48,7 @@ class ContentApiNotifier extends ApiNotifier {
       client: defaultClient,
       request: NetworkRequest.get(
         apiEndPoint: contentsTreeGetApiEndpoint(courseId),
-        serializer:
-            const BaseApiResponseSerializer<ContentTreeGetResponseModel>(
-          ContentTreeGetResponseSerializer(),
-        ),
+        serializer: const ContentTreeGetResponseSerializer(),
         converter: const JsonObjectConverter<ContentTreeGetResponseModel>(),
       ),
     );

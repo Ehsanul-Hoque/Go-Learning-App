@@ -7,8 +7,9 @@ import "package:flutter/widgets.dart";
 
 class VideoItem extends StatelessWidget {
   final String title, videoId;
-  final bool isLocked, isSelected;
+  final bool isFirst, isLocked, isSelected;
   final OnContentItemClickListener onVideoClick;
+  final double? leftMargin;
 
   const VideoItem({
     Key? key,
@@ -17,18 +18,23 @@ class VideoItem extends StatelessWidget {
     required this.isLocked,
     required this.isSelected,
     required this.onVideoClick,
+    this.isFirst = false,
+    this.leftMargin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppContainer(
+      animated: true,
       padding: EdgeInsets.zero,
       margin: EdgeInsets.only(
-        bottom: Res.dimen.normalSpacingValue,
+        top: isFirst ? Res.dimen.smallSpacingValue : Res.dimen.xsSpacingValue,
+        left: leftMargin ?? Res.dimen.normalSpacingValue,
       ),
       backgroundColor: isSelected
           ? Res.color.contentItemSelectedBg
           : Res.color.contentItemBg,
+      shadow: const <BoxShadow>[],
       child: SplashEffect(
         onTap: () => onVideoClick(videoId, isLocked),
         child: Padding(

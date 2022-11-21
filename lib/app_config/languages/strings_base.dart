@@ -101,6 +101,9 @@ abstract class StringsBase {
   final String noInternet = "";
   final String noContents = "";
   final String noCourses = "";
+  final String invalidCourse = "";
+  final String lockedTitle = "";
+  final String lockedDescription = "";
 
   /// Sample texts
   final String page1 = "";

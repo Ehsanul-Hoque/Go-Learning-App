@@ -11,6 +11,7 @@ import "package:flutter/material.dart"
 
 extension ContextExtension on BuildContext {
   void showSnackBar(AppSnackBarContent content, {double? marginBottom}) {
+    ScaffoldMessenger.of(this).hideCurrentSnackBar();
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         margin: EdgeInsets.fromLTRB(

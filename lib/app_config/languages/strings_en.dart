@@ -115,6 +115,9 @@ class StringsEn implements StringsBase {
       " Please check your network connection.";
   final String noContents = "Sorry! There are no contents available.";
   final String noCourses = "Sorry! There are no courses available.";
+  final String invalidCourse = "Sorry! This course may not be valid right now.";
+  final String lockedTitle = "Locked!";
+  final String lockedDescription = "This item is locked right now.";
 
   /// Sample texts
   final String page1 = "Page 1";
