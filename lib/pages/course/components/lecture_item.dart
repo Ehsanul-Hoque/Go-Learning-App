@@ -1,29 +1,30 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/utils/typedefs.dart" show OnContentItemClickListener;
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 
-class VideoItem extends StatelessWidget {
-  final String title, videoId;
-  final bool isFirst, isLocked, isSelected;
-  final OnContentItemClickListener onVideoClick;
+class LectureItem extends StatelessWidget {
+  final CtgrContentsModel lecture;
+  final bool isFirst, isSelected;
+  final OnContentItemClickListener onLectureClick;
   final double? leftMargin;
 
-  const VideoItem({
+  const LectureItem({
     Key? key,
-    required this.title,
-    required this.videoId,
-    required this.isLocked,
+    required this.lecture,
     required this.isSelected,
-    required this.onVideoClick,
+    required this.onLectureClick,
     this.isFirst = false,
     this.leftMargin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isLocked = lecture.locked ?? true;
+
     return AppContainer(
       animated: true,
       padding: EdgeInsets.zero,
@@ -36,7 +37,7 @@ class VideoItem extends StatelessWidget {
           : Res.color.contentItemBg,
       shadow: const <BoxShadow>[],
       child: SplashEffect(
-        onTap: () => onVideoClick(videoId, isLocked),
+        onTap: () => onLectureClick(lecture),
         child: Padding(
           padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
           child: Row(
@@ -54,7 +55,7 @@ class VideoItem extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  title,
+                  lecture.title ?? "",
                   style: Res.textStyles.labelSmall.copyWith(
                     color: isLocked
                         ? Res.color.contentItemContentLocked

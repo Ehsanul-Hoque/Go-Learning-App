@@ -27,7 +27,9 @@ class QuizItem extends StatelessWidget {
       ),
       backgroundColor: Res.color.contentItemBg,
       child: SplashEffect(
-        onTap: () => onQuizClick(quizId, isLocked),
+        onTap: () {
+          // onQuizClick(quizId, isLocked);
+        },
         child: Padding(
           padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
           child: Row(

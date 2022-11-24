@@ -4,6 +4,7 @@ import "package:app/components/debouncer.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/quiz_item.dart";
+import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/pages/quiz/quiz_intro.dart";
 import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/extensions/context_extension.dart";
@@ -45,8 +46,8 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  void onQuizClick(String quizId, bool isLocked) {
-    if (isLocked) {
+  void onQuizClick(CtgrContentsModel content) {
+    if (content.locked ?? false) {
       context.showSnackBar(
         AppSnackBarContent(
           title: "Locked!",
@@ -59,7 +60,7 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
         context,
         QuizIntro(
           quiz: SampleData.quizzes.firstWhere((Map<String, Object> element) {
-            return element["id"] == quizId;
+            return element["id"] == content.sId;
           }),
         ),
       );

@@ -4,23 +4,20 @@ import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
-import "package:app/pages/course/components/video_item.dart";
+import "package:app/pages/course/components/lecture_item.dart";
+import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
-import "package:app/utils/typedefs.dart" show OnContentItemClickListener;
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
+import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class ChapterItem extends StatefulWidget {
   final CtgrModuleModel chapter;
-  final OnContentItemClickListener onContentClick;
-  final String? selectedContentId;
   final bool expanded;
 
   const ChapterItem({
     Key? key,
     required this.chapter,
-    required this.onContentClick,
-    this.selectedContentId,
     this.expanded = false,
   }) : super(key: key);
 
@@ -30,30 +27,15 @@ class ChapterItem extends StatefulWidget {
 
 class _ChapterItemState extends State<ChapterItem> {
   late List<CtgrContentsModel> _contents;
-  late String? _selectedContentId;
   late bool _expanded;
 
   @override
   void initState() {
     _contents = widget.chapter.contents?.getNonNulls().toList() ??
         <CtgrContentsModel>[];
-    _selectedContentId = widget.selectedContentId;
     _expanded = widget.expanded;
 
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant ChapterItem oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // if (widget.selectedContentId != oldWidget.selectedContentId) {
-    //   _selectedContentId = widget.selectedContentId;
-    // }
-
-    // if (widget.expanded != oldWidget.expanded) {
-    //   _expanded = widget.expanded;
-    // }
   }
 
   @override
@@ -118,29 +100,30 @@ class _ChapterItemState extends State<ChapterItem> {
             children: _contents
                 .asMap()
                 .map((int index, CtgrContentsModel item) {
-                  bool isLocked = item.locked ?? true;
-                  bool isSelected = (_selectedContentId == item.sId);
+                  Widget result = Builder(
+                    builder: (BuildContext context) {
+                      bool isSelected = context
+                          .select((CourseContentNotifier contentNotifier) {
+                        String id1 =
+                            contentNotifier.selectedContentItem?.sId ?? "x";
+                        String id2 = item.sId ?? "y";
+                        return id1 == id2;
+                      });
 
-                  Widget videoItem = VideoItem(
-                    title: item.title ?? "",
-                    videoId: "Of8noaoGtJ0", // TODO Get from API
-                    isLocked: isLocked,
-                    isSelected: isSelected,
-                    isFirst: index == 0,
-                    onVideoClick: (String videoId, bool isLocked) {
-                      widget.onContentClick(
-                        "Of8noaoGtJ0", // TODO Get from API
-                        isLocked,
+                      return LectureItem(
+                        lecture: item,
+                        isSelected: isSelected,
+                        isFirst: index == 0,
+                        onLectureClick: (CtgrContentsModel lecture) {
+                          context
+                              .read<CourseContentNotifier>()
+                              .selectContent(context, item);
+                        },
                       );
-                      if (!isLocked) {
-                        setState(() {
-                          _selectedContentId = item.sId;
-                        });
-                      }
                     },
                   );
 
-                  return MapEntry<int, Widget>(index, videoItem);
+                  return MapEntry<int, Widget>(index, result);
                 })
                 .values
                 .toList(),

@@ -1,7 +1,5 @@
 import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
-import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
-import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
@@ -12,13 +10,14 @@ import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
+import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/app_page_nav.dart";
-import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
 import "package:flutter/services.dart"
     show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
+import "package:provider/provider.dart";
 import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class CourseBeforeEnroll extends StatefulWidget {
@@ -55,39 +54,30 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
     _pageModels = <PageModel>[
       PageModel(
         title: Res.str.courseDetails,
-        page: CourseDetails(
-          course: widget.course,
-        ),
+        page: CourseDetails(course: widget.course),
       ),
       PageModel(
         title: Res.str.coursePlaylist,
-        page: CoursePlaylist(
-          course: widget.course,
-          onContentClick: (String videoId, bool isLocked) {
-            if (!isLocked) {
-              _youtubePlayerController.load(videoId);
-            } else {
-              context.showSnackBar(
-                AppSnackBarContent(
-                  title: Res.str.lockedTitle,
-                  message: Res.str.lockedDescription,
-                  contentType: ContentType.help,
-                ),
-                marginBottom: Res.dimen.snackBarBottomMarginLarge,
-              );
-            }
-          },
-          selectedContentId: initialVideoId,
-        ),
+        page: CoursePlaylist(course: widget.course),
       ),
     ];
 
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.read<CourseContentNotifier?>()?.youtubePlayerController =
+          _youtubePlayerController;
+    });
   }
 
   @override
   void dispose() {
     _youtubePlayerController.dispose();
+    context.read<CourseContentNotifier?>()?.youtubePlayerController?.dispose();
+    context.read<CourseContentNotifier?>()?.youtubePlayerController = null;
     _pageController.dispose();
     super.dispose();
   }

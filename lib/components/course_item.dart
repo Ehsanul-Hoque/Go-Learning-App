@@ -5,11 +5,15 @@ import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/pages/course/course_before_enroll.dart";
+import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
+import "package:provider/provider.dart"
+    show ChangeNotifierProvider, MultiProvider;
+import "package:provider/single_child_widget.dart";
 
 class CourseItem extends StatelessWidget {
   final CourseGetResponseModel course;
@@ -162,8 +166,14 @@ class CourseItem extends StatelessWidget {
   void onItemTap(BuildContext context) {
     PageNav.to(
       context,
-      CourseBeforeEnroll(
-        course: course,
+      MultiProvider(
+        providers: <SingleChildWidget>[
+          ChangeNotifierProvider<CourseContentNotifier>(
+            create: (BuildContext context) =>
+                CourseContentNotifier(previewVideoLink: course.preview ?? ""),
+          ),
+        ],
+        child: CourseBeforeEnroll(course: course),
       ),
     );
   }

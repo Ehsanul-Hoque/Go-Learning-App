@@ -1,28 +1,23 @@
 import "package:app/app_config/resources.dart";
-import "package:app/app_config/sample_data.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/pages/course/components/chapter_item.dart";
-import "package:app/pages/course/components/video_item.dart";
+import "package:app/pages/course/components/lecture_item.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
+import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
-import "package:app/utils/typedefs.dart" show OnContentItemClickListener;
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class CoursePlaylist extends StatefulWidget {
   final CourseGetResponseModel course;
-  final String? selectedContentId;
-  final OnContentItemClickListener onContentClick;
 
   const CoursePlaylist({
     Key? key,
     required this.course,
-    required this.onContentClick,
-    this.selectedContentId,
   }) : super(key: key);
 
   @override
@@ -31,7 +26,6 @@ class CoursePlaylist extends StatefulWidget {
 
 class _CoursePlaylistState extends State<CoursePlaylist>
     with AutomaticKeepAliveClientMixin {
-  String? selectedContentId;
   String? courseId;
 
   @override
@@ -40,7 +34,6 @@ class _CoursePlaylistState extends State<CoursePlaylist>
   @override
   void initState() {
     super.initState();
-    selectedContentId = widget.selectedContentId;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Execute callback if page is mounted
@@ -97,17 +90,26 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                 height: Res.dimen.xxlSpacingValue,
               ),
               SliverToBoxAdapter(
-                child: VideoItem(
-                  title: Res.str.previewVideo,
-                  videoId: SampleData.previewVideoId,
-                  isLocked: false,
-                  isSelected: (selectedContentId == SampleData.previewVideoId),
-                  leftMargin: 0,
-                  onVideoClick: (String videoId, bool isLocked) {
-                    widget.onContentClick(SampleData.previewVideoId, isLocked);
-                    setState(() {
-                      selectedContentId = SampleData.previewVideoId;
-                    });
+                child: Builder(
+                  builder: (BuildContext context) {
+                    bool isSelected = context.select(
+                      (CourseContentNotifier contentNotifier) =>
+                          contentNotifier.isPreviewVideoSelected(),
+                    );
+
+                    return LectureItem(
+                      lecture: CtgrContentsModel(
+                        title: Res.str.previewVideo,
+                        locked: false,
+                      ),
+                      isSelected: isSelected,
+                      leftMargin: 0,
+                      onLectureClick: (CtgrContentsModel lecture) {
+                        context
+                            .read<CourseContentNotifier>()
+                            .selectPreviewVideo(context);
+                      },
+                    );
                   },
                 ),
               ),
@@ -133,15 +135,6 @@ class _CoursePlaylistState extends State<CoursePlaylist>
 
                       return ChapterItem(
                         chapter: item,
-                        onContentClick: (String videoId, bool isLocked) {
-                          widget.onContentClick(videoId, isLocked);
-                          if (!isLocked) {
-                            setState(() {
-                              selectedContentId = videoId;
-                            });
-                          }
-                        },
-                        selectedContentId: selectedContentId,
                         expanded: index == 0,
                       );
                     },
