@@ -33,4 +33,7 @@
 - Make ColumnRowGrid to take parent width as input, or use LayoutBuilder to get the parent width
   and then calculate the item width.
 - Open FB links in FB app
+- Configure fullscreen properly for AppVideoPlayerBuilder and other video player builders
+- Configure play/pause properly for video players when screen changes
+- Play videos (maybe with providers if better) when lecture items click
 - 

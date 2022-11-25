@@ -49,3 +49,8 @@ typedef AppInViewNotifierWidgetBuilder = Widget Function(
   bool isInView,
   Widget child,
 );
+
+typedef VideoPlayerChildBuilder = Widget Function(
+  BuildContext context,
+  Widget player,
+);

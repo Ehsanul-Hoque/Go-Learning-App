@@ -1,6 +1,6 @@
 import "package:app/app_config/resources.dart";
-import "package:app/app_config/sample_data.dart";
-import "package:app/components/my_cached_image.dart";
+import "package:app/components/app_video_player/app_video_player_builder.dart";
+import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
@@ -10,15 +10,10 @@ import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
-import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/app_page_nav.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
-import "package:flutter/services.dart"
-    show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart";
-import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class CourseBeforeEnroll extends StatefulWidget {
   final CourseGetResponseModel course;
@@ -33,7 +28,6 @@ class CourseBeforeEnroll extends StatefulWidget {
 }
 
 class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
-  late final YoutubePlayerController _youtubePlayerController;
   late final List<PageModel> _pageModels;
   late final PageController _pageController;
   int _selectedTabBarIndex = 0;
@@ -41,14 +35,6 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
 
   @override
   void initState() {
-    String initialVideoId = SampleData.previewVideoId;
-    _youtubePlayerController = YoutubePlayerController(
-      initialVideoId: initialVideoId, // TODO change initial video id
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        forceHD: true,
-      ),
-    );
     _pageController = PageController(initialPage: 0);
 
     _pageModels = <PageModel>[
@@ -63,21 +49,10 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
     ];
 
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Execute callback if page is mounted
-      if (!mounted) return;
-
-      context.read<CourseContentNotifier?>()?.youtubePlayerController =
-          _youtubePlayerController;
-    });
   }
 
   @override
   void dispose() {
-    _youtubePlayerController.dispose();
-    context.read<CourseContentNotifier?>()?.youtubePlayerController?.dispose();
-    context.read<CourseContentNotifier?>()?.youtubePlayerController = null;
     _pageController.dispose();
     super.dispose();
   }
@@ -89,29 +64,11 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Res.color.pageBg,
-          body: YoutubePlayerBuilder(
-            player: YoutubePlayer(
-              controller: _youtubePlayerController,
-              showVideoProgressIndicator: true,
-              progressIndicatorColor: Res.color.videoProgressIndicator,
-              progressColors: ProgressBarColors(
-                playedColor: Res.color.videoProgressPlayed,
-                handleColor: Res.color.videoProgressHandle,
-              ),
-              thumbnail: MyCachedImage(
-                imageUrl: widget.course.thumbnail,
-                fit: BoxFit.fill,
-              ),
+          body: AppVideoPlayerBuilder(
+            config: const AppVideoPlayerConfig(
+              videoUrl: "https://player.vimeo.com/video/763095383?h=910b42dfd7",
+              // videoUrl: "https://www.youtube.com/watch?v=La0IJPt0t4Q",
             ),
-            onEnterFullScreen: () {
-              SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-            },
-            onExitFullScreen: () {
-              SystemChrome.setEnabledSystemUIMode(
-                SystemUiMode.manual,
-                overlays: SystemUiOverlay.values,
-              );
-            },
             builder: (BuildContext context, Widget player) {
               return Stack(
                 children: <Widget>[
@@ -236,8 +193,6 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   }
 
   void onBuyCourseTap(double finalPrice) {
-    _youtubePlayerController.pause();
-
     PageNav.replace(
       context,
       CourseCheckout(

@@ -21,9 +21,10 @@ class NetworkUtils {
       if (!isYouTubeUrl(url)) return null;
 
       Uri uri = Uri.parse(url);
-      return uri.queryParameters["v"] ??
+      String videoId = uri.queryParameters["v"] ??
           uri.queryParameters["vi"] ??
           uri.pathSegments[uri.pathSegments.length - 1];
+      return videoId.isNotEmpty ? videoId : null;
     } catch (e, s) {
       Utils.log("", error: e, stackTrace: s);
       return null;
@@ -45,7 +46,8 @@ class NetworkUtils {
       if (!isVimeoUrl(url)) return null;
 
       Uri uri = Uri.parse(url);
-      return uri.pathSegments[uri.pathSegments.length - 1];
+      String videoId = uri.pathSegments[uri.pathSegments.length - 1];
+      return videoId.isNotEmpty ? videoId : null;
     } catch (e, s) {
       Utils.log("", error: e, stackTrace: s);
       return null;
