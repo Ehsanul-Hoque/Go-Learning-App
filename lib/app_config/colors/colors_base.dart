@@ -9,6 +9,7 @@ abstract class ColorsBase {
 
   /// Containers
   final Color containerBg = AppColors.transparent;
+  final Color containerDarkBg = AppColors.transparent;
   final Color infoContainerBg1 = AppColors.transparent;
   final Color infoContainerBg2 = AppColors.transparent;
   final Color infoContainerBg3 = AppColors.transparent;

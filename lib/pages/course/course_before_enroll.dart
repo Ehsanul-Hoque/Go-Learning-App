@@ -11,6 +11,7 @@ import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
 import "package:app/utils/app_page_nav.dart";
+import "package:app/utils/utils.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
 import "package:flutter/widgets.dart";
@@ -116,6 +117,21 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                                   color: Res.color.iconButton,
                                   onPressed: () {
                                     PageNav.back(context);
+                                  },
+                                ),
+                              ],
+                              endActions: <Widget>[
+                                IconButton(
+                                  // TODO extract this fullscreen button as a component
+                                  // (button for app bar - something like that)
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(
+                                    Icons.fullscreen_rounded,
+                                  ),
+                                  iconSize: Res.dimen.iconSizeNormal,
+                                  color: Res.color.iconButton,
+                                  onPressed: () {
+                                    Utils.toggleFullScreenMode(true);
                                   },
                                 ),
                               ],

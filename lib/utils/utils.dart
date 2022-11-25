@@ -9,6 +9,7 @@ import "package:flutter/material.dart"
         InputBorder,
         InputDecoration,
         OutlineInputBorder;
+import "package:flutter/services.dart" show DeviceOrientation, SystemChrome;
 import "package:flutter/widgets.dart";
 
 class Utils {
@@ -25,6 +26,19 @@ class Utils {
         error: error,
         stackTrace: stackTrace,
       );
+    }
+  }
+
+  static void toggleFullScreenMode(bool makeFullScreen) {
+    if (makeFullScreen) {
+      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+        DeviceOrientation.portraitUp,
+      ]);
     }
   }
 
