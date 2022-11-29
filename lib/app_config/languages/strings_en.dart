@@ -102,8 +102,8 @@ class StringsEn implements StringsBase {
   final String errorTitle = "Error!";
   final String errorCheckingPromo = "Sorry!"
       " Could not check if this promo is valid. Please try again later.";
-  final String errorLoadingVideo =
-      "Sorry! Could not load the video. Please try again later.";
+  final String errorLoadingContent =
+      "Sorry! Could not load the content. Please try again later.";
   final String yesTitle = "Yes!";
   final String promoValidAndDiscountApplied = "This promo is valid."
       " Discount applied to the previous price.";
@@ -121,6 +121,10 @@ class StringsEn implements StringsBase {
   final String invalidCourse = "Sorry! This course may not be valid right now.";
   final String lockedTitle = "Locked!";
   final String lockedDescription = "This item is locked right now.";
+  final String contentNotAccessibleTitle = "Content Not Accessible!";
+  final String contentNotAccessibleDescription = "This type of content"
+      " is not accessible right now."
+      " Please update the app or contact the developers.";
 
   /// Sample texts
   final String page1 = "Page 1";

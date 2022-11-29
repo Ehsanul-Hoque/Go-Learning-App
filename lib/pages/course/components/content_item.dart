@@ -4,6 +4,7 @@ import "package:app/components/app_container.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
@@ -14,24 +15,24 @@ import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart";
 
-class LectureItem extends StatelessWidget {
-  final CtgrContentsModel lecture;
+class ContentItem extends StatelessWidget {
+  final CtgrContentsModel content;
   final bool isFirst, isSelected;
-  final OnContentItemClickListener onLectureClick;
+  final OnContentItemClickListener onContentClick;
   final double? leftMargin;
 
-  const LectureItem({
+  const ContentItem({
     Key? key,
-    required this.lecture,
+    required this.content,
     required this.isSelected,
-    required this.onLectureClick,
+    required this.onContentClick,
     this.isFirst = false,
     this.leftMargin,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isLocked = lecture.locked ?? true;
+    bool isLocked = content.locked ?? true;
 
     return AppContainer(
       animated: true,
@@ -45,7 +46,7 @@ class LectureItem extends StatelessWidget {
           : Res.color.contentItemBg,
       shadow: const <BoxShadow>[],
       child: SplashEffect(
-        onTap: () => onLectureClick(lecture),
+        onTap: () => onContentClick(content),
         child: Padding(
           padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
           child: Row(
@@ -53,12 +54,23 @@ class LectureItem extends StatelessWidget {
               NetworkWidgetLight(
                 callStatusSelector: (BuildContext context) {
                   return context.select((ContentApiNotifier? apiNotifier) {
-                    String lectureId = lecture.sId ?? "";
-                    if (lectureId.isNotEmpty) {
-                      return apiNotifier
-                              ?.lectureGetResponse(lectureId)
-                              .callStatus ??
-                          NetworkCallStatus.none;
+                    String contentId = content.sId ?? "";
+                    CourseContentType contentType =
+                        content.contentType ?? CourseContentType.unknown;
+
+                    if (contentId.isNotEmpty) {
+                      switch (contentType) {
+                        case CourseContentType.lecture:
+                          return apiNotifier
+                                  ?.lectureGetResponse(contentId)
+                                  .callStatus ??
+                              NetworkCallStatus.none;
+
+                        // TODO handle other types of contents if available
+
+                        case CourseContentType.unknown:
+                          return NetworkCallStatus.none;
+                      }
                     } else {
                       return NetworkCallStatus.none;
                     }
@@ -104,7 +116,7 @@ class LectureItem extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  lecture.title ?? "",
+                  content.title ?? "",
                   style: Res.textStyles.labelSmall.copyWith(
                     color: isLocked
                         ? Res.color.contentItemContentLocked
@@ -155,7 +167,7 @@ class LectureItem extends StatelessWidget {
       context.showSnackBar(
         AppSnackBarContent(
           title: Res.str.errorTitle,
-          message: Res.str.errorLoadingVideo,
+          message: Res.str.errorLoadingContent,
           contentType: ContentType.failure,
         ),
       );

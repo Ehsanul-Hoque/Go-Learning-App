@@ -90,7 +90,7 @@ abstract class StringsBase {
   final String noInternetDescription = "";
   final String errorTitle = "";
   final String errorCheckingPromo = "";
-  final String errorLoadingVideo = "";
+  final String errorLoadingContent = "";
   final String yesTitle = "";
   final String promoValidAndDiscountApplied = "";
   final String sorryTitle = "";
@@ -106,6 +106,8 @@ abstract class StringsBase {
   final String invalidCourse = "";
   final String lockedTitle = "";
   final String lockedDescription = "";
+  final String contentNotAccessibleTitle = "";
+  final String contentNotAccessibleDescription = "";
 
   /// Sample texts
   final String page1 = "";

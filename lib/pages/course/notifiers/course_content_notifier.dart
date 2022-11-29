@@ -1,6 +1,7 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
+import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/foundation.dart" show ChangeNotifier;
@@ -23,6 +24,21 @@ class CourseContentNotifier extends ChangeNotifier {
         AppSnackBarContent(
           title: Res.str.lockedTitle,
           message: Res.str.lockedDescription,
+          contentType: ContentType.help,
+        ),
+        marginBottom: Res.dimen.snackBarBottomMarginLarge,
+      );
+
+      return false;
+    }
+
+    // TODO remove/modify this if clause
+    //  to make more type of contents accessible
+    if (contentItem?.contentType != CourseContentType.lecture) {
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.contentNotAccessibleTitle,
+          message: Res.str.contentNotAccessibleDescription,
           contentType: ContentType.help,
         ),
         marginBottom: Res.dimen.snackBarBottomMarginLarge,

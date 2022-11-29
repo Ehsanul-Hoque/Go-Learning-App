@@ -1,8 +1,9 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/sliver_sized_box.dart";
+import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/pages/course/components/chapter_item.dart";
-import "package:app/pages/course/components/lecture_item.dart";
+import "package:app/pages/course/components/content_item.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
@@ -98,25 +99,24 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                           contentNotifier.isPreviewVideoSelected(),
                     );
 
-                    return LectureItem(
-                      lecture: CtgrContentsModel(
-                        title: Res.str.previewVideo,
+                    return ContentItem(
+                      content: CtgrContentsModel(
+                        contentType: CourseContentType.lecture,
+                        publicToAccess: true,
                         locked: false,
+                        title: Res.str.previewVideo,
+                        courseId: courseId,
                       ),
                       isSelected: isSelected,
                       leftMargin: 0,
-                      onLectureClick: (CtgrContentsModel lecture) {
-                        bool hasSelected = context
+                      onContentClick: (CtgrContentsModel lecture) {
+                        context
                             .read<CourseContentNotifier>()
                             .selectPreviewVideo(context);
 
-                        if (!hasSelected) {
-                          return;
-                        }
-
-                        context.read<VideoNotifier>().setVideo(
-                              widget.course.preview ?? "",
-                            );
+                        context
+                            .read<VideoNotifier>()
+                            .setVideo(widget.course.preview ?? "");
                       },
                     );
                   },

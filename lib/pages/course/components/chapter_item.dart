@@ -4,13 +4,14 @@ import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/network/models/api_contents/lecture_get_response_model.dart";
 import "package:app/network/models/base_api_response_model.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
-import "package:app/pages/course/components/lecture_item.dart";
+import "package:app/pages/course/components/content_item.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
@@ -116,23 +117,35 @@ class _ChapterItemState extends State<ChapterItem> {
                         return id1 == id2;
                       });
 
-                      return LectureItem(
-                        lecture: item,
+                      return ContentItem(
+                        content: item,
                         isSelected: isSelected,
                         isFirst: index == 0,
-                        onLectureClick: (CtgrContentsModel lecture) {
+                        onContentClick: (CtgrContentsModel content) {
                           bool hasSelected = context
                               .read<CourseContentNotifier>()
-                              .selectContent(context, lecture);
+                              .selectContent(context, content);
 
                           if (!hasSelected) {
                             return;
                           }
 
-                          context
-                              .read<ContentApiNotifier?>()
-                              ?.getLecture(lecture.sId)
-                              .then(onLectureGetComplete);
+                          CourseContentType contentType =
+                              content.contentType ?? CourseContentType.unknown;
+
+                          switch (contentType) {
+                            case CourseContentType.lecture:
+                              context
+                                  .read<ContentApiNotifier?>()
+                                  ?.getLecture(content.sId)
+                                  .then(onLectureGetComplete);
+                              break;
+
+                            // TODO handle other types of contents if available
+
+                            case CourseContentType.unknown:
+                              break;
+                          }
                         },
                       );
                     },
