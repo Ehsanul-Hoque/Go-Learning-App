@@ -66,9 +66,8 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
         child: Scaffold(
           backgroundColor: Res.color.pageBg,
           body: AppVideoPlayerBuilder(
-            config: const AppVideoPlayerConfig(
-              videoUrl: "https://player.vimeo.com/video/763095383?h=910b42dfd7",
-              // videoUrl: "https://www.youtube.com/watch?v=La0IJPt0t4Q",
+            config: AppVideoPlayerConfig(
+              thumbnail: widget.course.thumbnail,
             ),
             builder: (BuildContext context, Widget player) {
               return Stack(

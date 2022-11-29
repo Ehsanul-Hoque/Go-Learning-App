@@ -1,26 +1,23 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
-import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/utils/extensions/context_extension.dart";
-import "package:app/utils/utils.dart";
 import "package:flutter/foundation.dart" show ChangeNotifier;
 import "package:flutter/widgets.dart" show BuildContext;
+import "package:provider/provider.dart" show ChangeNotifierProvider;
+import "package:provider/single_child_widget.dart";
 import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class CourseContentNotifier extends ChangeNotifier {
-  late final String _previewVideoLink;
+  CourseContentNotifier();
+
   CtgrContentsModel? _selectedContentItem;
   YoutubePlayerController? youtubePlayerController;
 
   CtgrContentsModel? get selectedContentItem => _selectedContentItem;
 
-  CourseContentNotifier({
-    required String previewVideoLink,
-  }) : _previewVideoLink = previewVideoLink;
-
-  void selectContent(BuildContext context, CtgrContentsModel? contentItem) {
+  bool selectContent(BuildContext context, CtgrContentsModel? contentItem) {
     if (contentItem?.locked ?? false) {
       context.showSnackBar(
         AppSnackBarContent(
@@ -31,21 +28,21 @@ class CourseContentNotifier extends ChangeNotifier {
         marginBottom: Res.dimen.snackBarBottomMarginLarge,
       );
 
-      return;
+      return false;
     }
 
     _selectedContentItem = contentItem;
-
-    if (contentItem != null &&
-        contentItem.contentType == CourseContentType.lecture) {
-      // _youtubePlayerController.load(videoId);
-      Utils.log("Playing lecture via controller [1] => ${contentItem.sId}");
-    }
-
     notifyListeners();
+    return true;
   }
 
-  void selectPreviewVideo(BuildContext context) => selectContent(context, null);
+  bool selectPreviewVideo(BuildContext context) => selectContent(context, null);
 
   bool isPreviewVideoSelected() => _selectedContentItem == null;
+
+  /// Static method to create simple provider
+  static SingleChildWidget createProvider() =>
+      ChangeNotifierProvider<CourseContentNotifier>(
+        create: (BuildContext context) => CourseContentNotifier(),
+      );
 }

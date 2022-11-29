@@ -1,16 +1,17 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/my_cached_image.dart";
-import "package:app/network/network_utils.dart";
 import "package:flutter/widgets.dart";
 import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class YouTubeVideoPlayer extends StatefulWidget {
   final AppVideoPlayerConfig config;
+  final String videoId;
 
   const YouTubeVideoPlayer({
     Key? key,
     required this.config,
+    required this.videoId,
   }) : super(key: key);
 
   @override
@@ -18,17 +19,17 @@ class YouTubeVideoPlayer extends StatefulWidget {
 }
 
 class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
-  late final String videoId;
   late final YoutubePlayerController _youtubePlayerController;
 
   @override
   void initState() {
-    videoId = NetworkUtils.getYouTubeVideoId(widget.config.videoUrl) ?? "";
     _youtubePlayerController = YoutubePlayerController(
-      initialVideoId: videoId,
+      initialVideoId: widget.videoId,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         forceHD: true,
+        controlsVisibleAtStart: true,
+        showLiveFullscreenButton: false,
       ),
     );
 

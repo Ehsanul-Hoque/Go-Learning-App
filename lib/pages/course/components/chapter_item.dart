@@ -2,6 +2,7 @@ import "package:app/app_config/colors/app_colors.dart";
 import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_container.dart";
+import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
 import "package:app/pages/course/components/lecture_item.dart";
@@ -115,9 +116,18 @@ class _ChapterItemState extends State<ChapterItem> {
                         isSelected: isSelected,
                         isFirst: index == 0,
                         onLectureClick: (CtgrContentsModel lecture) {
-                          context
+                          bool hasSelected = context
                               .read<CourseContentNotifier>()
-                              .selectContent(context, item);
+                              .selectContent(context, lecture);
+
+                          if (!hasSelected) {
+                            return;
+                          }
+
+                          context.read<VideoNotifier>().setVideo(
+                                // "https://player.vimeo.com/video/763095383?h=910b42dfd7",
+                                "https://www.youtube.com/watch?v=La0IJPt0t4Q",
+                              );
                         },
                       );
                     },

@@ -1,5 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
+import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/icon_and_text.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
@@ -11,8 +12,7 @@ import "package:app/utils/painters/price_bg_painter.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart"
-    show ChangeNotifierProvider, MultiProvider;
+import "package:provider/provider.dart" show MultiProvider;
 import "package:provider/single_child_widget.dart";
 
 class CourseItem extends StatelessWidget {
@@ -168,9 +168,9 @@ class CourseItem extends StatelessWidget {
       context,
       MultiProvider(
         providers: <SingleChildWidget>[
-          ChangeNotifierProvider<CourseContentNotifier>(
-            create: (BuildContext context) =>
-                CourseContentNotifier(previewVideoLink: course.preview ?? ""),
+          CourseContentNotifier.createProvider(),
+          VideoNotifier.createProvider(
+            initialVideoUrl: course.preview ?? "",
           ),
         ],
         child: CourseBeforeEnroll(course: course),

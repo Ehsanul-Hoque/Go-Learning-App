@@ -38,6 +38,7 @@ abstract class StringsBase {
   final String enterPromoHere = "";
   final String promoApplied = "";
   final String buyCourseAt = "";
+  final String selectVideoFirst = "";
 
   final String checkout = "";
   final String selectPaymentMethod = "";

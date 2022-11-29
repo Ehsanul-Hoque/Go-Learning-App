@@ -34,10 +34,12 @@
   and then calculate the item width.
 - Open FB links in FB app
 - Configure fullscreen properly for AppVideoPlayerBuilder and other video player builders
+  (Maybe create a separate page for fullscreen videos)
 - Configure play/pause properly for video players when screen changes
 - Play videos (maybe with providers if better) when lecture items click
 - Restore Vimeo player webview state on orientation change
   (Look inside the youtube player library to see how they did it, if they have done it already)
 - Change Vimeo player background color
 - Extract the vertical app bar (when a video gets full-screened) to separate widget
+- Properly style the "Please select a video to play." text in app_video_player_builder.dart
 - 

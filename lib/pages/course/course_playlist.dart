@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/pages/course/components/chapter_item.dart";
 import "package:app/pages/course/components/lecture_item.dart";
@@ -105,9 +106,17 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                       isSelected: isSelected,
                       leftMargin: 0,
                       onLectureClick: (CtgrContentsModel lecture) {
-                        context
+                        bool hasSelected = context
                             .read<CourseContentNotifier>()
                             .selectPreviewVideo(context);
+
+                        if (!hasSelected) {
+                          return;
+                        }
+
+                        context.read<VideoNotifier>().setVideo(
+                              widget.course.preview ?? "",
+                            );
                       },
                     );
                   },

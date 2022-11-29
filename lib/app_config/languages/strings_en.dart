@@ -42,6 +42,7 @@ class StringsEn implements StringsBase {
   final String enterPromoHere = "Enter Promo Code Here...";
   final String promoApplied = "Promo applied";
   final String buyCourseAt = "Buy This Course At";
+  final String selectVideoFirst = "Please select a video to play.";
 
   final String checkout = "Checkout";
   final String selectPaymentMethod = "Select Your Payment Method";
