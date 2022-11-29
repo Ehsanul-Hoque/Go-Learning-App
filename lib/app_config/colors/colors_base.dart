@@ -123,7 +123,9 @@ abstract class ColorsBase {
 
   /// Progress
   final Color progressBg = AppColors.transparent;
+  final Color progressBgOnDark = AppColors.transparent;
   final Color progress = AppColors.transparent;
+  final Color progressOnDark = AppColors.transparent;
 
   /// Miscellaneous
   final Color transparent = AppColors.transparent;

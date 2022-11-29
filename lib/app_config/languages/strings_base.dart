@@ -90,6 +90,7 @@ abstract class StringsBase {
   final String noInternetDescription = "";
   final String errorTitle = "";
   final String errorCheckingPromo = "";
+  final String errorLoadingVideo = "";
   final String yesTitle = "";
   final String promoValidAndDiscountApplied = "";
   final String sorryTitle = "";

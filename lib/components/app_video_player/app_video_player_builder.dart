@@ -70,7 +70,7 @@ class _AppVideoPlayerBuilderState extends State<AppVideoPlayerBuilder>
         switch (videoHost) {
           case VideoHost.vimeo:
             player = VimeoVideoPlayer(
-              key: const ValueKey<String>("vimeo_video_player"),
+              key: ValueKey<String>("vimeo_video_player_$videoId"),
               config: widget.config,
               videoId: videoId,
             );
@@ -78,7 +78,7 @@ class _AppVideoPlayerBuilderState extends State<AppVideoPlayerBuilder>
 
           case VideoHost.youtube:
             player = YouTubeVideoPlayer(
-              key: const ValueKey<String>("youtube_video_player"),
+              key: ValueKey<String>("youtube_video_player_$videoId"),
               config: widget.config,
               videoId: videoId,
             );

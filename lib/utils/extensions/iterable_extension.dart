@@ -3,6 +3,9 @@ import "dart:math";
 extension IterableExt<T> on Iterable<T?> {
   // T? operator [](int index) => length > index ? elementAt(index) : null;
 
+  T? elementAtOrNull(int index) =>
+      ((index >= 0) && (index < length)) ? elementAt(index) : null;
+
   T? getRandom() {
     final Random random = Random();
     return elementAt(random.nextInt(length));

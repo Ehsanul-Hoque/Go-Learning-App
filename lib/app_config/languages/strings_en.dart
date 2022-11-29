@@ -102,6 +102,8 @@ class StringsEn implements StringsBase {
   final String errorTitle = "Error!";
   final String errorCheckingPromo = "Sorry!"
       " Could not check if this promo is valid. Please try again later.";
+  final String errorLoadingVideo =
+      "Sorry! Could not load the video. Please try again later.";
   final String yesTitle = "Yes!";
   final String promoValidAndDiscountApplied = "This promo is valid."
       " Discount applied to the previous price.";

@@ -4,7 +4,12 @@ import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/models/api_contents/lecture_get_response_model.dart";
+import "package:app/network/models/base_api_response_model.dart";
+import "package:app/network/network_response.dart";
+import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/pages/course/components/lecture_item.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
@@ -124,10 +129,10 @@ class _ChapterItemState extends State<ChapterItem> {
                             return;
                           }
 
-                          context.read<VideoNotifier>().setVideo(
-                                // "https://player.vimeo.com/video/763095383?h=910b42dfd7",
-                                "https://www.youtube.com/watch?v=La0IJPt0t4Q",
-                              );
+                          context
+                              .read<ContentApiNotifier?>()
+                              ?.getLecture(lecture.sId)
+                              .then(onLectureGetComplete);
                         },
                       );
                     },
@@ -150,5 +155,19 @@ class _ChapterItemState extends State<ChapterItem> {
     setState(() {
       _expanded = !_expanded;
     });
+  }
+
+  void onLectureGetComplete(
+    NetworkResponse<BaseApiResponseModel<LectureGetResponseModel>> response,
+  ) {
+    if (!mounted) return;
+
+    if (response.callStatus == NetworkCallStatus.success) {
+      context.read<VideoNotifier>().setVideo(
+            // "https://player.vimeo.com/video/763095383?h=910b42dfd7",
+            // "https://www.youtube.com/watch?v=La0IJPt0t4Q",
+            response.result?.data?.elementAtOrNull(0)?.link ?? "",
+          );
+    }
   }
 }

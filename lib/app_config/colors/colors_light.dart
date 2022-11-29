@@ -126,7 +126,9 @@ class ColorsLightMode implements ColorsBase {
 
   /// Progress
   final Color progressBg = AppColors.themeBlueAlpha10;
+  final Color progressBgOnDark = AppColors.transparent;
   final Color progress = AppColors.themeBlue;
+  final Color progressOnDark = AppColors.white;
 
   /// Miscellaneous
   final Color transparent = AppColors.transparent;

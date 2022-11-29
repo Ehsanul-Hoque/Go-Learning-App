@@ -42,4 +42,7 @@
 - Change Vimeo player background color
 - Extract the vertical app bar (when a video gets full-screened) to separate widget
 - Properly style the "Please select a video to play." text in app_video_player_builder.dart
+- Implement "Lock" and "Make It Public" properly
+- Create a video queue to play course videos
+- Play videos from the course_before_enroll.dart page instead of chapter_item.dart widget
 - 

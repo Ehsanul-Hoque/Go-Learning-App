@@ -44,6 +44,7 @@ class Dimensions {
   final double tabBarBottomBorderThickness = 1;
   final double inputFieldHeight = 56;
   final double buttonHeight = 56;
+  final double iconSizeFlutterDefault = 24;
   final double iconSizeXxs = 12;
   final double iconSizeSmall = 20;
   final double iconSizeNormal = 20;
@@ -86,6 +87,8 @@ class Dimensions {
   final double floatingMessagesTopBubbleIconHeight = 20;
 
   /// Miscellaneous
+  final double circularProgressDefaultThickness = 4;
+  final double circularProgressThicknessNarrow = 2;
   final double maxWidthSmall = 348;
   final double maxWidthNormal = 512;
   final double homeBannerViewportFraction = 0.8;
