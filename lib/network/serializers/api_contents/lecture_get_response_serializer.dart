@@ -2,7 +2,7 @@ import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/models/api_contents/lecture_get_response_model.dart";
 import "package:app/network/models/api_contents/lecture_timestamp_response_model.dart";
 import "package:app/network/serializers/api_contents/lecture_timestamp_response_serializer.dart";
-import "package:app/network/serializers/serializer_helper.dart";
+import "package:app/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
 
 class LectureGetResponseSerializer extends Serializer<LectureGetResponseModel> {
