@@ -12,7 +12,7 @@ import "package:app/network/models/api_courses/course_get_response_model.dart";
 import "package:app/network/models/api_static_info/static_info_get_response_model.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:app/utils/typedefs.dart" show OnTapListener3;
 import "package:flutter/gestures.dart";
@@ -74,9 +74,7 @@ class _CourseCheckoutState extends State<CourseCheckout> {
                     ),
                     iconSize: Res.dimen.iconSizeNormal,
                     color: Res.color.iconButton,
-                    onPressed: () {
-                      PageNav.back(context);
-                    },
+                    onPressed: () => Routes.goBack(context),
                   ),
                 ],
               ),
@@ -132,7 +130,7 @@ class _CourseCheckoutState extends State<CourseCheckout> {
     // if (_formKey.currentState?.validate() ?? false) {
     //   _formKey.currentState?.save();
 
-    PageNav.back(context);
+    Routes.goBack(context);
     // }
   }
 }

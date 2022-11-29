@@ -1,6 +1,5 @@
 import "package:app/app_config/resources.dart";
-import "package:app/pages/app_webview.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:app/components/app_html/app_html_table.dart";
 import "package:flutter/widgets.dart";
 import "package:flutter_html/flutter_html.dart";
@@ -72,15 +71,8 @@ class HtmlText extends StatelessWidget {
           RenderContext renderContext,
           Map<String, String> attributes,
           dom.Element? element,
-        ) {
-          PageNav.to(
-            context,
-            AppWebView(
-              url: url ??
-                  "https://www.golearningbd.com", // TODO Extract the constant
-            ),
-          );
-        },
+        ) =>
+            Routes.openWebViewPage(context, url),
       ),
     );
   }

@@ -1,22 +1,15 @@
 import "package:app/app_config/resources.dart";
 import "package:app/app_config/sample_data.dart";
-import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
-import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
 import "package:app/components/two_line_info.dart";
 import "package:app/models/two_line_info_model.dart";
-import "package:app/pages/quiz/notifiers/quiz_result_notifier.dart";
-import "package:app/pages/quiz/quiz.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/material.dart" show IconButton, Icons;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
-import "package:provider/provider.dart"
-    show ChangeNotifierProvider, MultiProvider;
-import "package:provider/single_child_widget.dart";
 
 class QuizIntro extends StatefulWidget {
   final Map<String, Object> quiz;
@@ -108,9 +101,7 @@ class _QuizIntroState extends State<QuizIntro> {
                     ),
                     iconSize: Res.dimen.iconSizeNormal,
                     color: Res.color.iconButton,
-                    onPressed: () {
-                      PageNav.back(context);
-                    },
+                    onPressed: () => Routes.goBack(context),
                   ),
                 ],
               ),
@@ -191,7 +182,8 @@ class _QuizIntroState extends State<QuizIntro> {
   }
 
   void onStartTap() {
-    PageNav.replace(
+    // TODO open quiz page
+    /*PageNav.replace(
       context,
       MultiProvider(
         providers: <SingleChildWidget>[
@@ -221,6 +213,6 @@ class _QuizIntroState extends State<QuizIntro> {
           questions: SampleData.questions, // TODO Get questions from API
         ),
       ),
-    );
+    );*/
   }
 }

@@ -7,10 +7,9 @@ import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/models/page_model.dart";
 import "package:app/network/models/api_courses/course_get_response_model.dart";
-import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
@@ -114,9 +113,7 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                                   ),
                                   iconSize: Res.dimen.iconSizeNormal,
                                   color: Res.color.iconButton,
-                                  onPressed: () {
-                                    PageNav.back(context);
-                                  },
+                                  onPressed: () => Routes.goBack(context),
                                 ),
                               ],
                               endActions: <Widget>[
@@ -207,13 +204,6 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
     });
   }
 
-  void onBuyCourseTap(double finalPrice) {
-    PageNav.replace(
-      context,
-      CourseCheckout(
-        course: widget.course,
-        finalPrice: finalPrice,
-      ),
-    );
-  }
+  void onBuyCourseTap(double finalPrice) =>
+      Routes.openCourseCheckoutPage(context, widget.course, finalPrice);
 }

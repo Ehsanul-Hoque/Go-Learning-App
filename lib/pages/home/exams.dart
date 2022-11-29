@@ -5,8 +5,6 @@ import "package:app/components/floating_messages/app_snack_bar_content/app_snack
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/quiz_item.dart";
 import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
-import "package:app/pages/quiz/quiz_intro.dart";
-import "package:app/utils/app_page_nav.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/widgets.dart";
 
@@ -56,14 +54,15 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
         ),
       );
     } else {
-      PageNav.to(
+      // TODO open quiz intro page
+      /*PageNav.to(
         context,
         QuizIntro(
           quiz: SampleData.quizzes.firstWhere((Map<String, Object> element) {
             return element["id"] == content.sId;
           }),
         ),
-      );
+      );*/
     }
   }
 }

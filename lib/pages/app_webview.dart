@@ -3,7 +3,7 @@ import "dart:async";
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:flutter/material.dart";
 import "package:webview_flutter/webview_flutter.dart";
 
@@ -66,9 +66,7 @@ class _AppWebView extends State<AppWebView> {
                       icon: const Icon(Icons.arrow_back_ios_new_rounded),
                       iconSize: Res.dimen.iconSizeNormal,
                       color: Res.color.iconButton,
-                      onPressed: () {
-                        PageNav.back(context);
-                      },
+                      onPressed: () => Routes.goBack(context),
                     ),
                   ],
                 ),

@@ -6,7 +6,7 @@ import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/app_video_player/sub_players/vimeo_video_player.dart";
 import "package:app/components/app_video_player/sub_players/youtube_video_player.dart";
 import "package:app/components/status_text.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:app/utils/typedefs.dart" show VideoPlayerChildBuilder;
 import "package:app/utils/utils.dart";
 import "package:flutter/material.dart" show IconButton, Icons;
@@ -142,9 +142,7 @@ class _AppVideoPlayerBuilderState extends State<AppVideoPlayerBuilder>
                     ),
                     iconSize: Res.dimen.iconSizeNormal,
                     color: Res.color.contentOnDark,
-                    onPressed: () {
-                      PageNav.back(context);
-                    },
+                    onPressed: () => Routes.goBack(context),
                   ),
                   IconButton(
                     // TODO extract this fullscreen button as a component

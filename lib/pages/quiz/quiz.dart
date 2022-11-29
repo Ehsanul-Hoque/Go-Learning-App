@@ -10,7 +10,7 @@ import "package:app/components/floating_messages/enums/floating_messages_content
 import "package:app/pages/quiz/components/quiz_app_bar_bottom.dart";
 import "package:app/pages/quiz/components/quiz_questions_list.dart";
 import "package:app/pages/quiz/components/quiz_serial_list.dart";
-import "package:app/utils/app_page_nav.dart";
+import "package:app/routes.dart";
 import "package:flutter/material.dart" show IconButton, Icons, showDialog;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
@@ -81,9 +81,7 @@ class _QuizState extends State<Quiz> {
                       ),
                       iconSize: Res.dimen.iconSizeNormal,
                       color: Res.color.iconButton,
-                      onPressed: () {
-                        PageNav.back(context);
-                      },
+                      onPressed: () => Routes.goBack(context),
                     ),
                   ],
                   bottom: QuizAppBarBottom(
@@ -147,7 +145,7 @@ class _QuizState extends State<Quiz> {
               AppDialogButtonModel(
                 text: Res.str.no,
                 onTap: () {
-                  PageNav.back(context);
+                  Routes.goBack(context);
                   closeQuiz = false;
                 },
               ),
@@ -156,7 +154,7 @@ class _QuizState extends State<Quiz> {
                 bgColor: Res.color.buttonHollowBg,
                 contentColor: Res.color.buttonHollowContent2,
                 onTap: () {
-                  PageNav.back(context);
+                  Routes.goBack(context);
                   closeQuiz = true;
                 },
               ),
@@ -195,7 +193,7 @@ class _QuizState extends State<Quiz> {
               AppDialogButtonModel(
                 text: Res.str.no,
                 onTap: () {
-                  PageNav.back(context);
+                  Routes.goBack(context);
                   finishQuiz = false;
                 },
               ),
@@ -204,7 +202,7 @@ class _QuizState extends State<Quiz> {
                 // bgColor: Res.color.buttonHollowBg,
                 // contentColor: Res.color.buttonHollowContent2,
                 onTap: () {
-                  PageNav.back(context);
+                  Routes.goBack(context);
                   finishQuiz = true;
                 },
               ),
