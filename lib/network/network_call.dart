@@ -1,5 +1,4 @@
-// ignore_for_file: always_specify_types
-
+import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/enums/network_call_type.dart";
 import "package:app/network/network_client.dart";
@@ -12,23 +11,19 @@ import "package:http/http.dart" as http;
 
 typedef OnUpdateListener = void Function();
 
-/*void Function<DI, DO>(
-  NetworkClient client,
-  NetworkRequest<DI, DO> request,
-  NetworkResponse<DO> response,
-);*/
-
 /// DI => Dart object (input) (for serializer)
 /// DO => Dart object (output) (for the final output)
 class NetworkCall<DI, DO> {
   NetworkCall({
     required NetworkClient client,
-    required NetworkRequest<DI, DO> request,
+    required NetworkRequest request,
     required NetworkResponse<DO> response,
+    required JsonConverter<DI, DO> responseConverter,
     required OnUpdateListener updateListener,
   })  : _client = client,
         _request = request,
         _response = response,
+        _responseConverter = responseConverter,
         _updateListener = updateListener;
 
   /// The client
@@ -36,12 +31,16 @@ class NetworkCall<DI, DO> {
   NetworkClient get client => _client;
 
   /// The request
-  final NetworkRequest<DI, DO> _request;
-  NetworkRequest<DI, DO> get request => _request;
+  final NetworkRequest _request;
+  NetworkRequest get request => _request;
 
   /// The response
   final NetworkResponse<DO> _response;
   NetworkResponse<DO> get response => _response;
+
+  /// The converter for the response
+  final JsonConverter<DI, DO> _responseConverter;
+  JsonConverter<DI, DO> get responseConverter => _responseConverter;
 
   /// Update listener
   final OnUpdateListener _updateListener;
@@ -147,8 +146,13 @@ class NetworkCall<DI, DO> {
         );
 
       case NetworkCallType.post:
-        onError(NetworkCallType.post);
-        return null;
+        return http.post(
+          Uri.parse(apiFullUrl),
+          headers: request.headers ?? client.headers,
+          body: request.body ?? <String, dynamic>{},
+        );
+      // onError(NetworkCallType.post);
+      // return null;
     }
   }
 
@@ -164,8 +168,7 @@ class NetworkCall<DI, DO> {
       response
         ..callStatus = NetworkCallStatus.success
         ..httpResponse = httpResponse
-        ..result = request.converter
-            .fromJsonToDart(httpResponse.body, request.serializer);
+        ..result = responseConverter.fromJsonToDart(httpResponse.body);
     } else {
       response.callStatus = NetworkCallStatus.failed;
     }

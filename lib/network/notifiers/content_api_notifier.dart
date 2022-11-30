@@ -44,13 +44,15 @@ class ContentApiNotifier extends ApiNotifier {
   Future<NetworkResponse<ContentTreeGetResponseModel>> getContentTree(
     String? courseId,
   ) {
-    return Network(updateListener: () => notifyListeners()).createExecuteCall(
+    return const Network().createExecuteCall(
       client: defaultClient,
       request: NetworkRequest.get(
         apiEndPoint: contentsTreeGetApiEndpoint(courseId),
-        serializer: const ContentTreeGetResponseSerializer(),
-        converter: const JsonObjectConverter<ContentTreeGetResponseModel>(),
       ),
+      responseConverter: const JsonObjectConverter<ContentTreeGetResponseModel>(
+        ContentTreeGetResponseSerializer(),
+      ),
+      updateListener: () => notifyListeners(),
     );
   }
 
@@ -65,16 +67,18 @@ class ContentApiNotifier extends ApiNotifier {
   /// Methods to get a lecture (a type of content) of a course
   Future<NetworkResponse<BaseApiResponseModel<LectureGetResponseModel>>>
       getLecture(String? lectureId) {
-    return Network(updateListener: () => notifyListeners()).createExecuteCall(
+    return const Network().createExecuteCall(
       client: defaultClient,
       request: NetworkRequest.get(
         apiEndPoint: lectureGetApiEndpoint(lectureId),
-        serializer: const BaseApiResponseSerializer<LectureGetResponseModel>(
+      ),
+      responseConverter: const JsonObjectConverter<
+          BaseApiResponseModel<LectureGetResponseModel>>(
+        BaseApiResponseSerializer<LectureGetResponseModel>(
           LectureGetResponseSerializer(),
         ),
-        converter: const JsonObjectConverter<
-            BaseApiResponseModel<LectureGetResponseModel>>(),
       ),
+      updateListener: () => notifyListeners(),
     );
   }
 

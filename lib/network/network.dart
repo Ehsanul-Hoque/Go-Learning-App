@@ -1,3 +1,4 @@
+import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/network_call.dart";
 import "package:app/network/network_client.dart";
@@ -12,18 +13,14 @@ class Network {
   static final Map<String, Object> _responseMap = <String, Object>{};
 
   /// Default constructor
-  const Network({
-    required OnUpdateListener updateListener,
-  }) : _updateListener = updateListener;
-
-  /// Update listener
-  final OnUpdateListener _updateListener;
-  OnUpdateListener get updateListener => _updateListener;
+  const Network();
 
   /// Method to create and execute a network call
   Future<NetworkResponse<DO>> createExecuteCall<DI, DO>({
     required NetworkClient client,
-    required NetworkRequest<DI, DO> request,
+    required NetworkRequest request,
+    required JsonConverter<DI, DO> responseConverter,
+    required OnUpdateListener updateListener,
   }) async {
     // Initialize some fields
     String apiFullUrl =
@@ -62,6 +59,7 @@ class Network {
       client: client,
       request: request,
       response: response,
+      responseConverter: responseConverter,
       updateListener: updateListener,
     ).execute();
   }

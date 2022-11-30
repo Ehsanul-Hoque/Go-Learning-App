@@ -36,16 +36,18 @@ class CouponApiNotifier extends ApiNotifier {
   Future<NetworkResponse<BaseApiResponseModel<CouponResponseModel>>> getCoupon(
     String? coupon,
   ) {
-    return Network(updateListener: () => notifyListeners()).createExecuteCall(
+    return const Network().createExecuteCall(
       client: defaultClient,
       request: NetworkRequest.get(
         apiEndPoint: couponGetApiEndpoint(coupon),
-        serializer: const BaseApiResponseSerializer<CouponResponseModel>(
+      ),
+      responseConverter:
+          const JsonObjectConverter<BaseApiResponseModel<CouponResponseModel>>(
+        BaseApiResponseSerializer<CouponResponseModel>(
           CouponResponseSerializer(),
         ),
-        converter: const JsonObjectConverter<
-            BaseApiResponseModel<CouponResponseModel>>(),
       ),
+      updateListener: () => notifyListeners(),
     );
   }
 

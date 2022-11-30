@@ -1,39 +1,35 @@
-import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_type.dart";
-import "package:app/serializers/serializer.dart";
 
-/// DI => Dart object (input) (for serializer)
-/// DO => Dart object (output) (for the final output)
-class NetworkRequest<DI, DO> {
-  final NetworkCallType callType;
-  final String apiEndPoint;
-  final Serializer<DI> serializer;
-  final JsonConverter<DI, DO> converter;
-  final String? baseUrl;
-  final Map<String, String>? headers;
-
-  const NetworkRequest({
-    required this.callType,
-    required this.apiEndPoint,
-    required this.serializer,
-    required this.converter,
-    this.baseUrl,
-    this.headers,
-  });
-
+class NetworkRequest {
+  /// Named constructor for GET request
   const NetworkRequest.get({
     required this.apiEndPoint,
-    required this.serializer,
-    required this.converter,
     this.baseUrl,
     this.headers,
-  }) : callType = NetworkCallType.get;
+  })  : callType = NetworkCallType.get,
+        body = null;
 
+  /// Named constructor for POST request
   const NetworkRequest.post({
     required this.apiEndPoint,
-    required this.serializer,
-    required this.converter,
+    required this.body,
     this.baseUrl,
     this.headers,
-  }) : callType = NetworkCallType.post;
+  })  : assert(body != null),
+        callType = NetworkCallType.post;
+
+  /// Network call method name (GET, POST etc)
+  final NetworkCallType callType;
+
+  /// API endpoint (without the base url part)
+  final String apiEndPoint;
+
+  /// API base url
+  final String? baseUrl;
+
+  /// Request headers
+  final Map<String, String>? headers;
+
+  /// Request body for POST/PUT requests
+  final Map<String, dynamic>? body;
 }
