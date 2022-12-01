@@ -21,6 +21,7 @@ class Network {
     required NetworkRequest request,
     required JsonConverter<DI, DO> responseConverter,
     required OnUpdateListener updateListener,
+    bool loadFromCacheIfPossible = true,
   }) async {
     // Initialize some fields
     String apiFullUrl =
@@ -38,7 +39,8 @@ class Network {
     // the previous success response, the new success response from the cache
     // won't trigger that selector again. So to trigger that,
     // we have to set the response to loading first.
-    if (response.callStatus == NetworkCallStatus.success) {
+    if (loadFromCacheIfPossible &&
+        (response.callStatus == NetworkCallStatus.success)) {
       NetLog()
           .d("$logTag Call requested, but has already completed successfully");
       NetLog().d("$logTag Response body:\n${response.httpResponse?.body}");

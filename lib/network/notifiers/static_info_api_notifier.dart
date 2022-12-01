@@ -1,5 +1,3 @@
-// ignore_for_file: always_specify_types
-
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_static_info/static_info_get_response_model.dart";
 import "package:app/network/network.dart";
@@ -25,7 +23,8 @@ class StaticInfoApiNotifier extends ApiNotifier {
       );
 
   /// Methods to get the static info
-  Future<NetworkResponse> getStaticInfo() => const Network().createExecuteCall(
+  Future<NetworkResponse<StaticInfoGetResponseModel>> getStaticInfo() =>
+      const Network().createExecuteCall(
         client: defaultClient,
         request: const NetworkRequest.get(
           apiEndPoint: staticInfoGetApiEndpoint,

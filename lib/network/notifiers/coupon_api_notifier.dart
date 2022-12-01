@@ -1,5 +1,3 @@
-// ignore_for_file: always_specify_types
-
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_coupons/coupon_response_model.dart";
 import "package:app/network/models/base_api_response_model.dart";

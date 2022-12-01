@@ -1,5 +1,3 @@
-// ignore_for_file: always_specify_types
-
 import "package:app/network/converters/default_converters/json_array_converter.dart";
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_courses/category_response_model.dart";
@@ -40,7 +38,9 @@ class CourseApiNotifier extends ApiNotifier {
             ),
             responseConverter: const JsonObjectConverter<
                 BaseApiResponseModel<CategoryResponseModel>>(
-              BaseApiResponseSerializer(CategoryResponseSerializer()),
+              BaseApiResponseSerializer<CategoryResponseModel>(
+                CategoryResponseSerializer(),
+              ),
             ),
             updateListener: () => notifyListeners(),
           );
