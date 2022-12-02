@@ -30,5 +30,13 @@ linter:
     annotate_overrides: true
     require_trailing_commas: true
 
+analyzer:
+  exclude:
+    - '**.freezed.dart'
+    - '**.g.dart'
+    - '**.gr.dart'
+    - '**/generated_plugin_registrant.dart'
+# TODO Disable only info and warnings for the files above
+
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

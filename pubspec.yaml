@@ -58,6 +58,8 @@ dependencies:
   logger: ^1.1.0
   lottie: ^1.4.3
   sliver_tools: ^0.2.8
+  json_annotation: ^4.7.0
+  json_serializable: ^6.5.4
 
   flutter_lorem: ^2.0.0 # TODO Delete in production
 
@@ -163,3 +165,23 @@ flutter:
           weight: 600
         - asset: assets/fonts/hind_siliguri/hind_siliguri_700_bold.ttf
           weight: 700
+
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # Options configure how source code is generated for every
+          # `@JsonSerializable`-annotated class in the package.
+          # any_map: false
+          # checked: false
+          # constructor: ""
+          # create_factory: true
+          # create_field_map: false
+          # create_to_json: true
+          # disallow_unrecognized_keys: false
+          explicit_to_json: true
+          # field_rename: none
+          # generic_argument_factories: false
+          # ignore_unannotated: false
+          # include_if_null: true

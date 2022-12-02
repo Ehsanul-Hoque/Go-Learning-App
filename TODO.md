@@ -45,4 +45,7 @@
 - Implement "Lock" and "Make It Public" properly
 - Create a video queue to play course videos
 - Play videos from the course_before_enroll.dart page instead of chapter_item.dart widget
+- *** IMPORT FONTS IN THE ASSETS FOLDER TO USE IN TEXT STYLES. ***
+  *** DO NOT GET FONTS FROM NETWORK IN THE DEFAULT_PARAMS.DART FILE. ***
+- *** DELETE FLUTTER_LOREM PACKAGE FROM PUBSPEC.YAML ***
 - 

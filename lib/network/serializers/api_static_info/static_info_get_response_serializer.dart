@@ -1,4 +1,5 @@
-import "package:app/network/models/api_static_info/static_info_get_response_model.dart";
+/*
+import "package:app/network/models/api_static_info/static_info_get_response.dart";
 import "package:app/serializers/serializer_helper.dart";
 import "package:app/serializers/serializer.dart";
 
@@ -122,3 +123,4 @@ class SigrAnnouncementSerializer extends Serializer<SigrAnnouncementModel> {
     return data;
   }
 }
+*/
