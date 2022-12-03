@@ -6,7 +6,7 @@ import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/models/page_model.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
 import "package:app/routes.dart";
@@ -16,7 +16,7 @@ import "package:flutter/material.dart"
 import "package:flutter/widgets.dart";
 
 class CourseBeforeEnroll extends StatefulWidget {
-  final CourseGetResponseModel course;
+  final CourseGetResponse course;
 
   const CourseBeforeEnroll({
     Key? key,

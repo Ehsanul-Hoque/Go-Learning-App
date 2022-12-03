@@ -4,7 +4,7 @@ import "package:app/components/debouncer.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/quiz_item.dart";
-import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/widgets.dart";
 
@@ -44,7 +44,7 @@ class _ExamsState extends State<Exams> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  void onQuizClick(CtgrContentsModel content) {
+  void onQuizClick(ContentTreeGetResponseContents content) {
     if (content.locked ?? false) {
       context.showSnackBar(
         AppSnackBarContent(

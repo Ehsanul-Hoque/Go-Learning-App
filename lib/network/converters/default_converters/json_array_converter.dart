@@ -1,11 +1,10 @@
 import "dart:convert";
 
 import "package:app/network/converters/json_converter.dart";
-import "package:app/network/models/base_api_model.dart";
+import "package:app/network/models/api_model.dart";
 
-class JsonArrayConverter<D extends BaseApiModel>
-    extends JsonConverter<D, List<D>> {
-  const JsonArrayConverter(super.serializer);
+class JsonArrayConverter<D extends ApiModel> extends JsonConverter<D, List<D>> {
+  const JsonArrayConverter(super.fromJson);
 
   @override
   List<D> fromJsonToDart(String jsonAsString) {
@@ -16,7 +15,7 @@ class JsonArrayConverter<D extends BaseApiModel>
 
     final List<D> result = <D>[];
     for (Map<String, dynamic> element in items) {
-      result.add(serializer.fromJson(element));
+      result.add(fromJson(element));
     }
 
     return result;
@@ -26,7 +25,7 @@ class JsonArrayConverter<D extends BaseApiModel>
   String fromDartToJson(List<D> dartObject) {
     final List<String> result = <String>[];
     for (D element in dartObject) {
-      String jsonAsString = json.encode(serializer.toJson(element));
+      String jsonAsString = json.encode(element.toJson());
       result.add(jsonAsString);
     }
 

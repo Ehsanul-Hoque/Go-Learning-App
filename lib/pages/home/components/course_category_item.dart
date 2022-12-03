@@ -1,12 +1,12 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/course_item.dart";
 import "package:app/components/status_text.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:flutter/widgets.dart";
 
 class CourseCategoryItem extends StatelessWidget {
   final String title;
-  final List<CourseGetResponseModel> courses;
+  final List<CourseGetResponse> courses;
 
   const CourseCategoryItem({
     Key? key,

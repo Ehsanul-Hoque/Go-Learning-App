@@ -6,7 +6,7 @@ import "package:app/components/floating_messages/enums/floating_messages_content
 import "package:app/components/splash_effect.dart";
 import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/views/network_widget_light.dart";
 import "package:app/utils/extensions/context_extension.dart";
@@ -16,7 +16,7 @@ import "package:flutter/widgets.dart";
 import "package:provider/provider.dart";
 
 class ContentItem extends StatelessWidget {
-  final CtgrContentsModel content;
+  final ContentTreeGetResponseContents content;
   final bool isFirst, isSelected;
   final OnContentItemClickListener onContentClick;
   final double? leftMargin;
@@ -56,7 +56,7 @@ class ContentItem extends StatelessWidget {
                   return context.select((ContentApiNotifier? apiNotifier) {
                     String contentId = content.sId ?? "";
                     CourseContentType contentType =
-                        content.contentType ?? CourseContentType.unknown;
+                        CourseContentType.valueOf(content.contentType);
 
                     if (contentId.isNotEmpty) {
                       switch (contentType) {

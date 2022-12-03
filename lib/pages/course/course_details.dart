@@ -1,11 +1,11 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_html/html_text.dart";
 import "package:app/components/sliver_sized_box.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:flutter/widgets.dart";
 
 class CourseDetails extends StatefulWidget {
-  final CourseGetResponseModel course;
+  final CourseGetResponse course;
 
   const CourseDetails({
     Key? key,

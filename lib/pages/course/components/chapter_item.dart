@@ -6,9 +6,8 @@ import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
-import "package:app/network/models/api_contents/lecture_get_response_model.dart";
-import "package:app/network/models/base_api_response_model.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/network/models/api_contents/lecture_get_response.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/pages/course/components/content_item.dart";
@@ -19,7 +18,7 @@ import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class ChapterItem extends StatefulWidget {
-  final CtgrModuleModel chapter;
+  final ContentTreeGetResponseModule chapter;
   final bool expanded;
 
   const ChapterItem({
@@ -33,13 +32,13 @@ class ChapterItem extends StatefulWidget {
 }
 
 class _ChapterItemState extends State<ChapterItem> {
-  late List<CtgrContentsModel> _contents;
+  late List<ContentTreeGetResponseContents> _contents;
   late bool _expanded;
 
   @override
   void initState() {
     _contents = widget.chapter.contents?.getNonNulls().toList() ??
-        <CtgrContentsModel>[];
+        <ContentTreeGetResponseContents>[];
     _expanded = widget.expanded;
 
     super.initState();
@@ -106,7 +105,7 @@ class _ChapterItemState extends State<ChapterItem> {
             mainAxisSize: MainAxisSize.min,
             children: _contents
                 .asMap()
-                .map((int index, CtgrContentsModel item) {
+                .map((int index, ContentTreeGetResponseContents item) {
                   Widget result = Builder(
                     builder: (BuildContext context) {
                       bool isSelected = context
@@ -121,7 +120,8 @@ class _ChapterItemState extends State<ChapterItem> {
                         content: item,
                         isSelected: isSelected,
                         isFirst: index == 0,
-                        onContentClick: (CtgrContentsModel content) {
+                        onContentClick:
+                            (ContentTreeGetResponseContents content) {
                           bool hasSelected = context
                               .read<CourseContentNotifier>()
                               .selectContent(context, content);
@@ -131,7 +131,7 @@ class _ChapterItemState extends State<ChapterItem> {
                           }
 
                           CourseContentType contentType =
-                              content.contentType ?? CourseContentType.unknown;
+                              CourseContentType.valueOf(content.contentType);
 
                           switch (contentType) {
                             case CourseContentType.lecture:
@@ -171,7 +171,7 @@ class _ChapterItemState extends State<ChapterItem> {
   }
 
   void onLectureGetComplete(
-    NetworkResponse<BaseApiResponseModel<LectureGetResponseModel>> response,
+    NetworkResponse<LectureGetResponse> response,
   ) {
     if (!mounted) return;
 

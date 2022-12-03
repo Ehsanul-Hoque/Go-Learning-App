@@ -5,7 +5,7 @@ abstract class ApiModel {
   const ApiModel();
 
   @override
-  String toString() => Utils.getModelString(className, toJson());
+  String toString() => Utils.getModelString(runtimeType.toString(), toJson());
 
   @override
   bool operator ==(Object other) =>
@@ -21,7 +21,7 @@ abstract class ApiModel {
       );
 
   Map<String, dynamic> toJson();
-  String get className;
+  // String get className => runtimeType.toString();
 
   /// Default methods
   bool isValid() {

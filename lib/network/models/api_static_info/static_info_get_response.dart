@@ -1,7 +1,7 @@
 import "package:app/network/models/api_model.dart";
 import "package:json_annotation/json_annotation.dart";
 
-part "static_info_get_response.g.dart";
+part "../../../generated/api_static_info/static_info_get_response.g.dart";
 
 @JsonSerializable()
 class StaticInfoGetResponse extends ApiModel {
@@ -24,10 +24,10 @@ class StaticInfoGetResponse extends ApiModel {
   final List<String?>? youtubeVideo;
 
   @JsonKey(name: "testimonial")
-  final List<SigrTestimonial?>? testimonial;
+  final List<StaticInfoGetResponseTestimonial?>? testimonial;
 
   @JsonKey(name: "announcement")
-  final List<SigrAnnouncement?>? announcement;
+  final List<StaticInfoGetResponseAnnouncement?>? announcement;
 
   @JsonKey(name: "__v")
   final int? iV;
@@ -49,13 +49,10 @@ class StaticInfoGetResponse extends ApiModel {
 
   @override
   Map<String, dynamic> toJson() => _$StaticInfoGetResponseToJson(this);
-
-  @override
-  String get className => "StaticInfoGetResponse";
 }
 
 @JsonSerializable()
-class SigrTestimonial extends ApiModel {
+class StaticInfoGetResponseTestimonial extends ApiModel {
   @JsonKey(name: "_id")
   final String? sId;
 
@@ -74,7 +71,7 @@ class SigrTestimonial extends ApiModel {
   @JsonKey(name: "designation")
   final String? designation;
 
-  const SigrTestimonial({
+  const StaticInfoGetResponseTestimonial({
     this.sId,
     this.text,
     this.photo,
@@ -83,18 +80,18 @@ class SigrTestimonial extends ApiModel {
     this.designation,
   });
 
-  factory SigrTestimonial.fromJson(Map<String, dynamic> json) =>
-      _$SigrTestimonialFromJson(json);
+  factory StaticInfoGetResponseTestimonial.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$StaticInfoGetResponseTestimonialFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$SigrTestimonialToJson(this);
-
-  @override
-  String get className => "SigrTestimonial";
+  Map<String, dynamic> toJson() =>
+      _$StaticInfoGetResponseTestimonialToJson(this);
 }
 
 @JsonSerializable()
-class SigrAnnouncement extends ApiModel {
+class StaticInfoGetResponseAnnouncement extends ApiModel {
   @JsonKey(name: "is_visible")
   final bool? isVisible;
 
@@ -113,7 +110,7 @@ class SigrAnnouncement extends ApiModel {
   @JsonKey(name: "title")
   final String? title;
 
-  const SigrAnnouncement({
+  const StaticInfoGetResponseAnnouncement({
     this.isVisible,
     this.sId,
     this.text,
@@ -122,12 +119,12 @@ class SigrAnnouncement extends ApiModel {
     this.title,
   });
 
-  factory SigrAnnouncement.fromJson(Map<String, dynamic> json) =>
-      _$SigrAnnouncementFromJson(json);
+  factory StaticInfoGetResponseAnnouncement.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$StaticInfoGetResponseAnnouncementFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$SigrAnnouncementToJson(this);
-
-  @override
-  String get className => "SigrAnnouncement";
+  Map<String, dynamic> toJson() =>
+      _$StaticInfoGetResponseAnnouncementToJson(this);
 }

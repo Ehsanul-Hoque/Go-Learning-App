@@ -1,8 +1,8 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/debouncer.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_courses/category_response_model.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/category_get_response.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/pages/home/components/course_category_item.dart";
@@ -73,7 +73,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
         },
         noContentText: Res.str.noCourses,
         childBuilder: (BuildContext context) {
-          Iterable<Tuple2<CategoryResponseModel, List<CourseGetResponseModel>>>
+          Iterable<Tuple2<CategoryGetResponseData, List<CourseGetResponse>>>
               coursesByCategory = getCoursesByCategory();
 
           return ListView.builder(
@@ -82,7 +82,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
               bottom: Res.dimen.pageBottomPaddingWithNavBar,
             ),
             itemBuilder: (BuildContext context, int index) {
-              Tuple2<CategoryResponseModel, List<CourseGetResponseModel>>
+              Tuple2<CategoryGetResponseData, List<CourseGetResponse>>
                   categoryAndCourse = coursesByCategory.elementAt(index);
 
               return CourseCategoryItem(
@@ -97,51 +97,50 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Iterable<Tuple2<CategoryResponseModel, List<CourseGetResponseModel>>>
+  Iterable<Tuple2<CategoryGetResponseData, List<CourseGetResponse>>>
       getCoursesByCategory() {
     // Get the categories
-    List<CategoryResponseModel> categories = context
+    List<CategoryGetResponseData> categories = context
             .read<CourseApiNotifier?>()
             ?.allCategoriesGetResponse
             .result
             ?.data
             ?.getNonNulls()
             .toList() ??
-        <CategoryResponseModel>[];
+        <CategoryGetResponseData>[];
 
     // Get the courses
-    List<CourseGetResponseModel> courses = context
+    List<CourseGetResponse> courses = context
             .read<CourseApiNotifier?>()
             ?.allCoursesGetResponse
             .result
             ?.getNonNulls()
             .toList() ??
-        <CourseGetResponseModel>[];
+        <CourseGetResponse>[];
 
     // Create a map to store the final result
-    final Map<String,
-            Tuple2<CategoryResponseModel, List<CourseGetResponseModel>>>
+    final Map<String, Tuple2<CategoryGetResponseData, List<CourseGetResponse>>>
         // ignore: always_specify_types
         categoriesByIdMap = {};
 
     // Fill up the result map with initial data
-    for (CategoryResponseModel category in categories) {
+    for (CategoryGetResponseData category in categories) {
       categoriesByIdMap[category.sId ?? ""] =
-          Tuple2<CategoryResponseModel, List<CourseGetResponseModel>>(
+          Tuple2<CategoryGetResponseData, List<CourseGetResponse>>(
         category,
-        <CourseGetResponseModel>[],
+        <CourseGetResponse>[],
       );
     }
 
     // Put the courses in the result map according to their root categories
-    for (CourseGetResponseModel course in courses) {
-      List<CategoryResponseModel?>? allParentCategories = course.categoryId;
+    for (CourseGetResponse course in courses) {
+      List<CategoryGetResponseData?>? allParentCategories = course.categoryId;
       if (allParentCategories == null) {
         continue;
       }
 
-      CategoryResponseModel? rootCategory;
-      for (CategoryResponseModel? category in allParentCategories) {
+      CategoryGetResponseData? rootCategory;
+      for (CategoryGetResponseData? category in allParentCategories) {
         if (category == null) {
           continue;
         }
@@ -156,7 +155,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
       }
 
       String rootCategoryId = rootCategory.sId ?? "";
-      Tuple2<CategoryResponseModel, List<CourseGetResponseModel>>?
+      Tuple2<CategoryGetResponseData, List<CourseGetResponse>>?
           categoryAndCourse = categoriesByIdMap[rootCategoryId];
 
       if (categoryAndCourse == null) {

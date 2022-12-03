@@ -7,7 +7,7 @@ import "package:app/components/promo_buy_panel/apply_promo_container.dart";
 import "package:app/components/promo_buy_panel/enums/promo_state.dart";
 import "package:app/components/promo_buy_panel/promo_buy_container.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_coupons/coupon_response_model.dart";
+import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/network_logger.dart";
 import "package:app/network/notifiers/coupon_api_notifier.dart";
 import "package:app/network/views/network_widget_light.dart";
@@ -183,7 +183,7 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
   }
 
   void onStatusSuccess() {
-    CouponResponseModel? coupon = getCouponFromNotifier();
+    CouponGetResponseData? coupon = getCouponFromNotifier();
 
     if (coupon != null) {
       promoState = PromoState.promoAppliedAndBuy;
@@ -220,10 +220,10 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
     }
   }
 
-  CouponResponseModel? getCouponFromNotifier() {
+  CouponGetResponseData? getCouponFromNotifier() {
     if (promoCode.isEmpty) return null;
 
-    List<CouponResponseModel>? resultCoupons = context
+    List<CouponGetResponseData>? resultCoupons = context
         .read<CouponApiNotifier?>()
         ?.couponGetResponse(promoCode)
         .result
@@ -235,7 +235,7 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
       return null;
     }
 
-    return resultCoupons.firstWhereOrNull((CouponResponseModel coupon) {
+    return resultCoupons.firstWhereOrNull((CouponGetResponseData coupon) {
       return coupon.coupon?.trim().toLowerCase() == promoCode;
     });
   }

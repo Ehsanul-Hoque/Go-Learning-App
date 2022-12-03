@@ -1,4 +1,4 @@
-import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:flutter/widgets.dart"
     show AnimationController, BuildContext, Widget;
 import "package:scroll_to_index/scroll_to_index.dart" show AutoScrollController;
@@ -15,7 +15,9 @@ typedef OnValueListener<T> = void Function(T value);
 
 typedef OnValueChangeListener<T> = OnValueListener<T>;
 
-typedef OnContentItemClickListener = void Function(CtgrContentsModel content);
+typedef OnContentItemClickListener = void Function(
+  ContentTreeGetResponseContents content,
+);
 
 typedef OnAnimationListener = void Function();
 

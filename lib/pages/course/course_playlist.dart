@@ -5,8 +5,8 @@ import "package:app/network/enums/api_contents/course_content_type.dart";
 import "package:app/pages/course/components/chapter_item.dart";
 import "package:app/pages/course/components/content_item.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
@@ -15,7 +15,7 @@ import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class CoursePlaylist extends StatefulWidget {
-  final CourseGetResponseModel course;
+  final CourseGetResponse course;
 
   const CoursePlaylist({
     Key? key,
@@ -66,7 +66,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
         ),
         statusNoneText: Res.str.invalidCourse,
         childBuilder: (BuildContext context) {
-          List<CtgrModuleModel>? modules = context
+          List<ContentTreeGetResponseModule>? modules = context
               .read<ContentApiNotifier?>()
               ?.contentTreeGetResponse(courseId)
               .result
@@ -74,11 +74,13 @@ class _CoursePlaylistState extends State<CoursePlaylist>
               ?.getNonNulls()
               .toList();
 
-          List<CtgrModuleModel> chapters = <CtgrModuleModel>[];
+          List<ContentTreeGetResponseModule> chapters =
+              <ContentTreeGetResponseModule>[];
 
           if (modules != null) {
-            for (CtgrModuleModel item in modules) {
-              Iterable<CtgrModuleModel>? submodules = item.subs?.getNonNulls();
+            for (ContentTreeGetResponseModule item in modules) {
+              Iterable<ContentTreeGetResponseModule>? submodules =
+                  item.subs?.getNonNulls();
               if (submodules != null) {
                 chapters.addAll(submodules);
               }
@@ -100,8 +102,8 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                     );
 
                     return ContentItem(
-                      content: CtgrContentsModel(
-                        contentType: CourseContentType.lecture,
+                      content: ContentTreeGetResponseContents(
+                        contentType: CourseContentType.lecture.name,
                         publicToAccess: true,
                         locked: false,
                         title: Res.str.previewVideo,
@@ -109,7 +111,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                       ),
                       isSelected: isSelected,
                       leftMargin: 0,
-                      onContentClick: (CtgrContentsModel lecture) {
+                      onContentClick: (ContentTreeGetResponseContents lecture) {
                         context
                             .read<CourseContentNotifier>()
                             .selectPreviewVideo(context);
@@ -140,7 +142,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                   List<Widget>.generate(
                     chapters.length,
                     (int index) {
-                      CtgrModuleModel item = chapters[index];
+                      ContentTreeGetResponseModule item = chapters[index];
 
                       return ChapterItem(
                         chapter: item,

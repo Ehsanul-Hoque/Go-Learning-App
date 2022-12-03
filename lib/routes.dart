@@ -1,5 +1,5 @@
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/app_webview.dart";
 import "package:app/pages/course/course_before_enroll.dart";
 import "package:app/pages/course/course_checkout.dart";
@@ -33,7 +33,7 @@ class Routes {
   /// Route method to open the course page before enrolling to that course
   static Future<void> openCourseBeforeEnrollPage(
     BuildContext context,
-    CourseGetResponseModel course,
+    CourseGetResponse course,
   ) =>
       RoutesHelper._to<void>(
         context,
@@ -49,7 +49,7 @@ class Routes {
   /// Route method to open the course checkout page
   static Future<void> openCourseCheckoutPage(
     BuildContext context,
-    CourseGetResponseModel course,
+    CourseGetResponse course,
     double finalPrice,
   ) =>
       RoutesHelper._replace<void>(

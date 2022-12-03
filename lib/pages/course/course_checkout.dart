@@ -8,7 +8,7 @@ import "package:app/components/fields/app_input_field.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/models/api_static_info/static_info_get_response.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
@@ -25,7 +25,7 @@ import "package:provider/provider.dart" show ReadContext, SelectContext;
 part "package:app/pages/course/parts/course_checkout_form.dart";
 
 class CourseCheckout extends StatefulWidget {
-  final CourseGetResponseModel course;
+  final CourseGetResponse course;
   final double finalPrice;
 
   const CourseCheckout({

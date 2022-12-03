@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'static_info_get_response.dart';
+part of '../../network/models/api_static_info/static_info_get_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -21,12 +21,14 @@ StaticInfoGetResponse _$StaticInfoGetResponseFromJson(
       testimonial: (json['testimonial'] as List<dynamic>?)
           ?.map((e) => e == null
               ? null
-              : SigrTestimonial.fromJson(e as Map<String, dynamic>))
+              : StaticInfoGetResponseTestimonial.fromJson(
+                  e as Map<String, dynamic>))
           .toList(),
       announcement: (json['announcement'] as List<dynamic>?)
           ?.map((e) => e == null
               ? null
-              : SigrAnnouncement.fromJson(e as Map<String, dynamic>))
+              : StaticInfoGetResponseAnnouncement.fromJson(
+                  e as Map<String, dynamic>))
           .toList(),
       iV: json['__v'] as int?,
     );
@@ -40,13 +42,14 @@ Map<String, dynamic> _$StaticInfoGetResponseToJson(
       'nagad_number': instance.nagadNumber,
       'banner': instance.banner,
       'youtube_video': instance.youtubeVideo,
-      'testimonial': instance.testimonial,
-      'announcement': instance.announcement,
+      'testimonial': instance.testimonial?.map((e) => e?.toJson()).toList(),
+      'announcement': instance.announcement?.map((e) => e?.toJson()).toList(),
       '__v': instance.iV,
     };
 
-SigrTestimonial _$SigrTestimonialFromJson(Map<String, dynamic> json) =>
-    SigrTestimonial(
+StaticInfoGetResponseTestimonial _$StaticInfoGetResponseTestimonialFromJson(
+        Map<String, dynamic> json) =>
+    StaticInfoGetResponseTestimonial(
       sId: json['_id'] as String?,
       text: json['text'] as String?,
       photo: json['photo'] as String?,
@@ -55,7 +58,8 @@ SigrTestimonial _$SigrTestimonialFromJson(Map<String, dynamic> json) =>
       designation: json['designation'] as String?,
     );
 
-Map<String, dynamic> _$SigrTestimonialToJson(SigrTestimonial instance) =>
+Map<String, dynamic> _$StaticInfoGetResponseTestimonialToJson(
+        StaticInfoGetResponseTestimonial instance) =>
     <String, dynamic>{
       '_id': instance.sId,
       'text': instance.text,
@@ -65,8 +69,9 @@ Map<String, dynamic> _$SigrTestimonialToJson(SigrTestimonial instance) =>
       'designation': instance.designation,
     };
 
-SigrAnnouncement _$SigrAnnouncementFromJson(Map<String, dynamic> json) =>
-    SigrAnnouncement(
+StaticInfoGetResponseAnnouncement _$StaticInfoGetResponseAnnouncementFromJson(
+        Map<String, dynamic> json) =>
+    StaticInfoGetResponseAnnouncement(
       isVisible: json['is_visible'] as bool?,
       sId: json['_id'] as String?,
       text: json['text'] as String?,
@@ -75,7 +80,8 @@ SigrAnnouncement _$SigrAnnouncementFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
     );
 
-Map<String, dynamic> _$SigrAnnouncementToJson(SigrAnnouncement instance) =>
+Map<String, dynamic> _$StaticInfoGetResponseAnnouncementToJson(
+        StaticInfoGetResponseAnnouncement instance) =>
     <String, dynamic>{
       'is_visible': instance.isVisible,
       '_id': instance.sId,

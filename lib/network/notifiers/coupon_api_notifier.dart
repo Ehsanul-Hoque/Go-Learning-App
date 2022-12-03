@@ -1,12 +1,9 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
-import "package:app/network/models/api_coupons/coupon_response_model.dart";
-import "package:app/network/models/base_api_response_model.dart";
+import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/network.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
-import "package:app/network/serializers/api_coupons/coupon_response_serializer.dart";
-import "package:app/network/serializers/base_api_response_serializer.dart";
 import "package:flutter/widgets.dart" show BuildContext;
 import "package:provider/provider.dart" show ChangeNotifierProvider;
 import "package:provider/single_child_widget.dart" show SingleChildWidget;
@@ -31,7 +28,7 @@ class CouponApiNotifier extends ApiNotifier {
       );
 
   /// Methods to get coupon
-  Future<NetworkResponse<BaseApiResponseModel<CouponResponseModel>>> getCoupon(
+  Future<NetworkResponse<CouponGetResponse>> getCoupon(
     String? coupon,
   ) {
     return const Network().createExecuteCall(
@@ -39,21 +36,15 @@ class CouponApiNotifier extends ApiNotifier {
       request: NetworkRequest.get(
         apiEndPoint: couponGetApiEndpoint(coupon),
       ),
-      responseConverter:
-          const JsonObjectConverter<BaseApiResponseModel<CouponResponseModel>>(
-        BaseApiResponseSerializer<CouponResponseModel>(
-          CouponResponseSerializer(),
-        ),
+      responseConverter: const JsonObjectConverter<CouponGetResponse>(
+        CouponGetResponse.fromJson,
       ),
       updateListener: () => notifyListeners(),
     );
   }
 
-  NetworkResponse<BaseApiResponseModel<CouponResponseModel>> couponGetResponse(
-    String? coupon,
-  ) {
-    return Network.getOrCreateResponse(
-      defaultClient.baseUrl + couponGetApiEndpoint(coupon),
-    );
-  }
+  NetworkResponse<CouponGetResponse> couponGetResponse(String? coupon) =>
+      Network.getOrCreateResponse(
+        defaultClient.baseUrl + couponGetApiEndpoint(coupon),
+      );
 }

@@ -1,6 +1,5 @@
-import "package:app/network/converters/default_converters/my_json_object_converter.dart";
+import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_static_info/static_info_get_response.dart";
-import "package:app/network/my_network.dart";
 import "package:app/network/network.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
@@ -24,12 +23,12 @@ class StaticInfoApiNotifier extends ApiNotifier {
 
   /// Methods to get the static info
   Future<NetworkResponse<StaticInfoGetResponse>> getStaticInfo() =>
-      const MyNetwork().createExecuteCall(
+      const Network().createExecuteCall(
         client: defaultClient,
         request: const NetworkRequest.get(
           apiEndPoint: staticInfoGetApiEndpoint,
         ),
-        responseConverter: const MyJsonObjectConverter<StaticInfoGetResponse>(
+        responseConverter: const JsonObjectConverter<StaticInfoGetResponse>(
           StaticInfoGetResponse.fromJson,
         ),
         updateListener: () => notifyListeners(),

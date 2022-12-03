@@ -5,7 +5,7 @@ import "package:app/components/course_item.dart";
 import "package:app/components/debouncer.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_courses/course_get_response_model.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
@@ -130,13 +130,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       false,
                   noContentText: Res.str.noCourses,
                   childBuilder: (BuildContext context) {
-                    List<CourseGetResponseModel> allCourses = context
+                    List<CourseGetResponse> allCourses = context
                             .read<CourseApiNotifier?>()
                             ?.allCoursesGetResponse
                             .result
                             ?.getNonNulls()
                             .toList() ??
-                        <CourseGetResponseModel>[];
+                        <CourseGetResponse>[];
 
                     return ColumnRowGrid(
                       itemCount: allCourses.length,

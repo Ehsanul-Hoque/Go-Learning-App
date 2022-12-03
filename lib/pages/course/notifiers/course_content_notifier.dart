@@ -2,7 +2,7 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/network/enums/api_contents/course_content_type.dart";
-import "package:app/network/models/api_contents/content_tree_get_response_model.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/foundation.dart" show ChangeNotifier;
 import "package:flutter/widgets.dart" show BuildContext;
@@ -13,12 +13,16 @@ import "package:youtube_player_flutter/youtube_player_flutter.dart";
 class CourseContentNotifier extends ChangeNotifier {
   CourseContentNotifier();
 
-  CtgrContentsModel? _selectedContentItem;
+  ContentTreeGetResponseContents? _selectedContentItem;
   YoutubePlayerController? youtubePlayerController;
 
-  CtgrContentsModel? get selectedContentItem => _selectedContentItem;
+  ContentTreeGetResponseContents? get selectedContentItem =>
+      _selectedContentItem;
 
-  bool selectContent(BuildContext context, CtgrContentsModel? contentItem) {
+  bool selectContent(
+    BuildContext context,
+    ContentTreeGetResponseContents? contentItem,
+  ) {
     if (contentItem?.locked ?? false) {
       context.showSnackBar(
         AppSnackBarContent(
@@ -34,7 +38,7 @@ class CourseContentNotifier extends ChangeNotifier {
 
     // TODO remove/modify this if clause
     //  to make more type of contents accessible
-    if (contentItem?.contentType != CourseContentType.lecture) {
+    if (contentItem?.contentType != CourseContentType.lecture.name) {
       context.showSnackBar(
         AppSnackBarContent(
           title: Res.str.contentNotAccessibleTitle,
