@@ -1,0 +1,107 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8595984982184601627",
+      "lastPropertyId": "16:4752604653727546594",
+      "name": "ProfileGetResponseData",
+      "properties": [
+        {
+          "id": "1:5470938740194562187",
+          "name": "boxId",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1159551567908372890",
+          "name": "sId",
+          "type": 9
+        },
+        {
+          "id": "3:604099012918486955",
+          "name": "institution",
+          "type": 9
+        },
+        {
+          "id": "4:1270487638486038302",
+          "name": "enrolledCourses",
+          "type": 30
+        },
+        {
+          "id": "5:5958742046827396388",
+          "name": "verified",
+          "type": 1
+        },
+        {
+          "id": "6:6003858945136946266",
+          "name": "fingerprintToken",
+          "type": 30
+        },
+        {
+          "id": "7:3251173688984292558",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "8:4219435670445509021",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "9:5039697377928362216",
+          "name": "createdAt",
+          "type": 9
+        },
+        {
+          "id": "10:7549665548126536326",
+          "name": "updatedAt",
+          "type": 9
+        },
+        {
+          "id": "11:7189063158590713565",
+          "name": "iV",
+          "type": 6
+        },
+        {
+          "id": "12:8550989483723369490",
+          "name": "address",
+          "type": 9
+        },
+        {
+          "id": "13:2378737685396543983",
+          "name": "selectedClass",
+          "type": 9
+        },
+        {
+          "id": "14:791176704537941011",
+          "name": "phone",
+          "type": 9
+        },
+        {
+          "id": "15:6452236359536811469",
+          "name": "photo",
+          "type": 9
+        },
+        {
+          "id": "16:4752604653727546594",
+          "name": "userType",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:8595984982184601627",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

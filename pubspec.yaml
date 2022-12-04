@@ -60,6 +60,8 @@ dependencies:
   sliver_tools: ^0.2.8
   json_annotation: ^4.7.0
   json_serializable: ^6.5.4
+  objectbox: ^1.6.2
+  objectbox_flutter_libs: any
 
   flutter_lorem: ^2.0.0 # TODO Delete in production
 
@@ -78,7 +80,8 @@ dev_dependencies:
       url: https://github.com/Davenchy/flutter_launcher_icons.git
       ref: fixMinSdkParseFlutter2.8
 
-  build_runner:
+  build_runner: ^2.0.0
+  objectbox_generator: any
 
 flutter_icons:
   android: true

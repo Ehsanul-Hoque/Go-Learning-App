@@ -1,5 +1,6 @@
 import "package:app/network/models/api_model.dart";
 import "package:json_annotation/json_annotation.dart";
+import "package:objectbox/objectbox.dart";
 
 part "../../../generated/api_auth/profile_get_response.g.dart";
 
@@ -24,53 +25,59 @@ class ProfileGetResponse extends ApiModel {
 }
 
 @JsonSerializable()
+@Entity()
 class ProfileGetResponseData extends ApiModel {
+  @JsonKey(ignore: true)
+  @Id()
+  int boxId;
+
   @JsonKey(name: "_id")
-  final String? sId;
+  String? sId;
 
   @JsonKey(name: "institution")
-  final String? institution;
+  String? institution;
 
   @JsonKey(name: "enrolled_courses")
-  final List<String?>? enrolledCourses;
+  List<String?>? enrolledCourses;
 
   @JsonKey(name: "verified")
-  final bool? verified;
+  bool? verified;
 
   @JsonKey(name: "fingerprint_token")
-  final List<String?>? fingerprintToken;
+  List<String?>? fingerprintToken;
 
   @JsonKey(name: "email")
-  final String? email;
+  String? email;
 
   @JsonKey(name: "name")
-  final String? name;
+  String? name;
 
   @JsonKey(name: "createdAt")
-  final String? createdAt;
+  String? createdAt;
 
   @JsonKey(name: "updatedAt")
-  final String? updatedAt;
+  String? updatedAt;
 
   @JsonKey(name: "__v")
-  final int? iV;
+  int? iV;
 
   @JsonKey(name: "address")
-  final String? address;
+  String? address;
 
   @JsonKey(name: "class")
-  final String? selectedClass;
+  String? selectedClass;
 
   @JsonKey(name: "phone")
-  final String? phone;
+  String? phone;
 
   @JsonKey(name: "photo")
-  final String? photo;
+  String? photo;
 
   @JsonKey(name: "user_type")
-  final String? userType;
+  String? userType;
 
-  const ProfileGetResponseData({
+  ProfileGetResponseData({
+    this.boxId = 0,
     this.sId,
     this.institution,
     this.enrolledCourses,

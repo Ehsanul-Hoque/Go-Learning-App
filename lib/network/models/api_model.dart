@@ -21,7 +21,6 @@ abstract class ApiModel {
       );
 
   Map<String, dynamic> toJson();
-  // String get className => runtimeType.toString();
 
   /// Default methods
   bool isValid() {
