@@ -1,4 +1,6 @@
 import "package:app/app_config/resources.dart";
+import "package:app/local_storage/app_objectbox.dart";
+import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/notifiers/coupon_api_notifier.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
@@ -12,7 +14,7 @@ import "package:flutter_platform_widgets/flutter_platform_widgets.dart"
 import "package:provider/provider.dart" show MultiProvider;
 import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
@@ -21,6 +23,8 @@ void main() {
 
   /*ErrorWidget.builder =
       (FlutterErrorDetails details) => AppErrorScreen(error: details.exception);*/
+
+  appObjectBox = await AppObjectBox.create();
 
   runApp(const MyApp());
 }
@@ -32,6 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
+        AuthApiNotifier.createProvider(),
         StaticInfoApiNotifier.createProvider(),
         CourseApiNotifier.createProvider(),
         ContentApiNotifier.createProvider(),

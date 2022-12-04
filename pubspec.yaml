@@ -62,6 +62,8 @@ dependencies:
   json_serializable: ^6.5.4
   objectbox: ^1.6.2
   objectbox_flutter_libs: any
+  path: ^1.8.2
+  path_provider: ^2.0.11
 
   flutter_lorem: ^2.0.0 # TODO Delete in production
 

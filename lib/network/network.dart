@@ -21,6 +21,7 @@ class Network {
     required NetworkRequest request,
     required JsonConverter<DI, DO> responseConverter,
     required OnUpdateListener updateListener,
+    OnSuccessListener<DO>? successListener,
     bool loadFromCacheIfPossible = true,
   }) async {
     // Initialize some fields
@@ -63,6 +64,7 @@ class Network {
       response: response,
       responseConverter: responseConverter,
       updateListener: updateListener,
+      successListener: successListener,
     ).execute();
   }
 

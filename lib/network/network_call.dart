@@ -10,6 +10,7 @@ import "package:app/utils/typedefs.dart" show OnErrorListener;
 import "package:http/http.dart" as http;
 
 typedef OnUpdateListener = void Function();
+typedef OnSuccessListener<DO> = void Function(NetworkResponse<DO> response);
 
 /// DI => Dart object (input) (for serializer)
 /// DO => Dart object (output) (for the final output)
@@ -20,11 +21,13 @@ class NetworkCall<DI, DO> {
     required NetworkResponse<DO> response,
     required JsonConverter<DI, DO> responseConverter,
     required OnUpdateListener updateListener,
+    OnSuccessListener<DO>? successListener,
   })  : _client = client,
         _request = request,
         _response = response,
         _responseConverter = responseConverter,
-        _updateListener = updateListener;
+        _updateListener = updateListener,
+        _successListener = successListener;
 
   /// The client
   final NetworkClient _client;
@@ -45,6 +48,10 @@ class NetworkCall<DI, DO> {
   /// Update listener
   final OnUpdateListener _updateListener;
   OnUpdateListener get updateListener => _updateListener;
+
+  /// Success listener
+  final OnSuccessListener<DO>? _successListener;
+  OnSuccessListener<DO>? get successListener => _successListener;
 
   // Some getters
   String get apiFullUrl =>
@@ -169,6 +176,8 @@ class NetworkCall<DI, DO> {
         ..callStatus = NetworkCallStatus.success
         ..httpResponse = httpResponse
         ..result = responseConverter.fromJsonToDart(httpResponse.body);
+
+      successListener?.call(response);
     } else {
       response.callStatus = NetworkCallStatus.failed;
     }
