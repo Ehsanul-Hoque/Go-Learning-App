@@ -1,31 +1,65 @@
 import "package:app/local_storage/app_objectbox.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
+import "package:app/network/models/api_auth/sign_in_post_response.dart";
 import "package:app/objectbox.g.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 
 class UserBox {
-  static void setCurrentUser(ProfileGetResponseData? profileData) {
-    Box<ProfileGetResponseData> userBox =
-        appObjectBox.store.box<ProfileGetResponseData>();
+  static void setAccessToken(SignInPostResponse? signInResponse) {
+    Box<SignInPostResponse> box = appObjectBox.store.box<SignInPostResponse>();
 
-    if (profileData == null) {
-      userBox.removeAll();
+    if (signInResponse == null) {
+      box.removeAll();
       return;
     }
 
-    if (!userBox.isEmpty()) {
-      profileData.boxId = userBox.getAll()[0].boxId;
+    if (!box.isEmpty()) {
+      signInResponse.boxId = box.getAll()[0].boxId;
     }
 
-    userBox.put(profileData);
+    box.put(signInResponse);
   }
 
-  static ProfileGetResponseData? getCurrentUser() {
-    Box<ProfileGetResponseData> userBox =
+  static void setCurrentUser(ProfileGetResponseData? profileData) {
+    Box<ProfileGetResponseData> box =
         appObjectBox.store.box<ProfileGetResponseData>();
 
-    return userBox.getAll().elementAtOrNull(0);
+    if (profileData == null) {
+      box.removeAll();
+      return;
+    }
+
+    if (!box.isEmpty()) {
+      profileData.boxId = box.getAll()[0].boxId;
+    }
+
+    box.put(profileData);
   }
 
-  static void logOut() => setCurrentUser(null);
+  static String? get accessToken => appObjectBox.store
+      .box<SignInPostResponse>()
+      .getAll()
+      .elementAtOrNull(0)
+      ?.xAccessToken;
+
+  static ProfileGetResponseData? get currentUser => appObjectBox.store
+      .box<ProfileGetResponseData>()
+      .getAll()
+      .elementAtOrNull(0);
+
+  /// This method is needed to get profile information right after
+  /// log in or sign up, because at that time, we have the access token,
+  /// but do not have any user info. So at that time,
+  /// [isLoggedIn] getter method can't be applied.
+  static bool get hasAccessToken {
+    String? token = accessToken;
+    return (token != null) && token.isNotEmpty;
+  }
+
+  static bool get isLoggedIn => hasAccessToken && (currentUser != null);
+
+  static void logOut() {
+    setAccessToken(null);
+    setCurrentUser(null);
+  }
 }
