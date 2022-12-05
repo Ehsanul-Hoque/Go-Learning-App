@@ -49,4 +49,6 @@
   *** DO NOT GET FONTS FROM NETWORK IN THE DEFAULT_PARAMS.DART FILE. ***
 - *** DELETE FLUTTER_LOREM PACKAGE FROM PUBSPEC.YAML ***
 - Set up ObjectBox for iOS (using Xcode preferably)
+- Improve SnackBar to integrate WidgetsBinding.instance.addPostFrameCallback when possible
+- Extract common SnackBars, such as "NO INTERNET" SnackBar etc
 - 

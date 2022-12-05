@@ -1,7 +1,10 @@
 import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/interceptors/interceptor_result.dart";
+import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/network_call.dart";
 import "package:app/network/network_client.dart";
+import "package:app/network/network_error.dart";
 import "package:app/network/network_logger.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
@@ -22,7 +25,8 @@ class Network {
     required JsonConverter<DI, DO> responseConverter,
     required OnUpdateListener updateListener,
     OnSuccessListener<DO>? successListener,
-    bool loadFromCacheIfPossible = true,
+    List<NetworkRequestInterceptor>? requestInterceptors,
+    bool checkCacheFirst = true,
   }) async {
     // Initialize some fields
     String apiFullUrl =
@@ -33,6 +37,32 @@ class Network {
     // Get cached/new response object
     NetworkResponse<DO> response = getOrCreateResponse(cacheKey);
 
+    // Run the request interceptors
+    if (requestInterceptors != null) {
+      NetworkRequest? interceptedRequest = request;
+      NetworkError? error;
+
+      for (NetworkRequestInterceptor interceptor in requestInterceptors) {
+        if (interceptedRequest != null) {
+          RequestInterceptorResult interceptorResult =
+              interceptor.intercept(interceptedRequest);
+
+          interceptedRequest = interceptorResult.request;
+          error = interceptorResult.error;
+        } else {
+          break;
+        }
+      }
+
+      if (interceptedRequest == null || error != null) {
+        return response
+          ..callStatus = NetworkCallStatus.failed
+          ..error = error;
+      }
+
+      request = interceptedRequest;
+    }
+
     // If the call has been completed already, then no need to start a new call.
     // But set the response to loading state, delay a bit to notify
     // the listeners properly, and then set the response to success again.
@@ -40,8 +70,7 @@ class Network {
     // the previous success response, the new success response from the cache
     // won't trigger that selector again. So to trigger that,
     // we have to set the response to loading first.
-    if (loadFromCacheIfPossible &&
-        (response.callStatus == NetworkCallStatus.success)) {
+    if (checkCacheFirst && (response.callStatus == NetworkCallStatus.success)) {
       NetLog()
           .d("$logTag Call requested, but has already completed successfully");
       NetLog().d("$logTag Response body:\n${response.httpResponse?.body}");

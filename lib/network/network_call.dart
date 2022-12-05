@@ -1,7 +1,9 @@
 import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/enums/network_call_type.dart";
+import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/network_client.dart";
+import "package:app/network/network_error.dart";
 import "package:app/network/network_logger.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
@@ -22,12 +24,14 @@ class NetworkCall<DI, DO> {
     required JsonConverter<DI, DO> responseConverter,
     required OnUpdateListener updateListener,
     OnSuccessListener<DO>? successListener,
+    List<NetworkRequestInterceptor>? requestInterceptors,
   })  : _client = client,
         _request = request,
         _response = response,
         _responseConverter = responseConverter,
         _updateListener = updateListener,
-        _successListener = successListener;
+        _successListener = successListener,
+        _requestInterceptors = requestInterceptors;
 
   /// The client
   final NetworkClient _client;
@@ -52,6 +56,11 @@ class NetworkCall<DI, DO> {
   /// Success listener
   final OnSuccessListener<DO>? _successListener;
   OnSuccessListener<DO>? get successListener => _successListener;
+
+  /// Request interceptors
+  final List<NetworkRequestInterceptor>? _requestInterceptors;
+  List<NetworkRequestInterceptor>? get requestInterceptors =>
+      _requestInterceptors;
 
   // Some getters
   String get apiFullUrl =>
@@ -179,7 +188,12 @@ class NetworkCall<DI, DO> {
 
       successListener?.call(response);
     } else {
-      response.callStatus = NetworkCallStatus.failed;
+      response
+        ..callStatus = NetworkCallStatus.failed
+        ..error = NetworkError(
+          title: "${httpResponse.statusCode}!",
+          message: httpResponse.reasonPhrase ?? "",
+        );
     }
   }
 }

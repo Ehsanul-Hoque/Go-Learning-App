@@ -1,5 +1,6 @@
 import "package:app/app_config/resources.dart";
 import "package:app/local_storage/app_objectbox.dart";
+import "package:app/local_storage/notifiers/user_notifier.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/notifiers/coupon_api_notifier.dart";
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
+        UserNotifier.createProvider(),
         AuthApiNotifier.createProvider(),
         StaticInfoApiNotifier.createProvider(),
         CourseApiNotifier.createProvider(),
