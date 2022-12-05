@@ -1,4 +1,7 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
+import "package:app/network/interceptors/default_interceptors/access_token_interceptor.dart";
+import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
+import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/sign_in_post_request.dart";
 import "package:app/network/models/api_auth/sign_in_post_response.dart";
@@ -30,6 +33,7 @@ class AuthApiNotifier extends ApiNotifier {
   ) {
     return const Network().createExecuteCall(
       client: defaultClient,
+      requestInterceptors: <NetworkRequestInterceptor>[GuestInterceptor()],
       request: NetworkRequest.post(
         apiEndPoint: signInPostApiEndpoint,
         body: requestBody.toJson(),
@@ -38,11 +42,11 @@ class AuthApiNotifier extends ApiNotifier {
         SignInPostResponse.fromJson,
       ),
       updateListener: () => notifyListeners(),
-      loadFromCacheIfPossible: false,
+      checkCacheFirst: false,
     );
   }
 
-  NetworkResponse<SignInPostResponse> signInWithEmailPasswordResponse() =>
+  NetworkResponse<SignInPostResponse> get signInWithEmailPasswordResponse =>
       Network.getOrCreateResponse(
         defaultClient.baseUrl + signInPostApiEndpoint,
       );
@@ -50,7 +54,10 @@ class AuthApiNotifier extends ApiNotifier {
   /// Methods to get user profile
   Future<NetworkResponse<ProfileGetResponse>> getProfile() {
     return const Network().createExecuteCall(
-      client: defaultClient,
+      client: defaultAuthenticatedClient,
+      requestInterceptors: <NetworkRequestInterceptor>[
+        AccessTokenInterceptor(),
+      ],
       request: const NetworkRequest.get(
         apiEndPoint: profileGetApiEndpoint,
       ),
@@ -58,12 +65,12 @@ class AuthApiNotifier extends ApiNotifier {
         ProfileGetResponse.fromJson,
       ),
       updateListener: () => notifyListeners(),
-      loadFromCacheIfPossible: false,
+      checkCacheFirst: false,
     );
   }
 
-  NetworkResponse<ProfileGetResponse> profileGetResponse() =>
+  NetworkResponse<ProfileGetResponse> get profileGetResponse =>
       Network.getOrCreateResponse(
-        defaultClient.baseUrl + profileGetApiEndpoint,
+        defaultAuthenticatedClient.baseUrl + profileGetApiEndpoint,
       );
 }

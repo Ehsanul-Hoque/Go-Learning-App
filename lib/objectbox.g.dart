@@ -15,6 +15,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'network/models/api_auth/profile_get_response.dart';
+import 'network/models/api_auth/sign_in_post_response.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -107,6 +108,25 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 4194898194019581092),
+      name: 'SignInPostResponse',
+      lastPropertyId: const IdUid(2, 9127116001169444972),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 6324236751786474627),
+            name: 'boxId',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 9127116001169444972),
+            name: 'xAccessToken',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -130,7 +150,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 8595984982184601627),
+      lastEntityId: const IdUid(2, 4194898194019581092),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -240,6 +260,35 @@ ModelDefinition getObjectBoxModel() {
               userType: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 34));
 
           return object;
+        }),
+    SignInPostResponse: EntityDefinition<SignInPostResponse>(
+        model: _entities[1],
+        toOneRelations: (SignInPostResponse object) => [],
+        toManyRelations: (SignInPostResponse object) => {},
+        getId: (SignInPostResponse object) => object.boxId,
+        setId: (SignInPostResponse object, int id) {
+          object.boxId = id;
+        },
+        objectToFB: (SignInPostResponse object, fb.Builder fbb) {
+          final xAccessTokenOffset = object.xAccessToken == null
+              ? null
+              : fbb.writeString(object.xAccessToken!);
+          fbb.startTable(3);
+          fbb.addInt64(0, object.boxId);
+          fbb.addOffset(1, xAccessTokenOffset);
+          fbb.finish(fbb.endTable());
+          return object.boxId;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = SignInPostResponse(
+              boxId: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              xAccessToken: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 6));
+
+          return object;
         })
   };
 
@@ -313,4 +362,15 @@ class ProfileGetResponseData_ {
   /// see [ProfileGetResponseData.userType]
   static final userType =
       QueryStringProperty<ProfileGetResponseData>(_entities[0].properties[15]);
+}
+
+/// [SignInPostResponse] entity fields to define ObjectBox queries.
+class SignInPostResponse_ {
+  /// see [SignInPostResponse.boxId]
+  static final boxId =
+      QueryIntegerProperty<SignInPostResponse>(_entities[1].properties[0]);
+
+  /// see [SignInPostResponse.xAccessToken]
+  static final xAccessToken =
+      QueryStringProperty<SignInPostResponse>(_entities[1].properties[1]);
 }

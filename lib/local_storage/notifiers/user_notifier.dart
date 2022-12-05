@@ -1,14 +1,13 @@
 import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/sign_in_post_response.dart";
-import "package:app/network/notifiers/api_notifier.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
-import "package:flutter/widgets.dart" show BuildContext;
+import "package:flutter/widgets.dart" show BuildContext, ChangeNotifier;
 import "package:provider/provider.dart"
     show ChangeNotifierProvider, ReadContext;
 import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
-class UserNotifier extends ApiNotifier {
+class UserNotifier extends ChangeNotifier {
   /// Constructor
   UserNotifier();
 

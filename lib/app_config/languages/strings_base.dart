@@ -89,6 +89,8 @@ abstract class StringsBase {
   final String noInternetTitle = "";
   final String noInternetDescription = "";
   final String errorTitle = "";
+  final String errorSignUp = "";
+  final String errorLogIn = "";
   final String errorCheckingPromo = "";
   final String errorLoadingContent = "";
   final String yesTitle = "";
@@ -97,6 +99,10 @@ abstract class StringsBase {
   final String promoDoesNotExist = "";
   final String invalidPromoTitle = "";
   final String emptyPromoNotValid = "";
+  final String authenticatedTitle = "";
+  final String authenticatedMessage = "";
+  final String unauthenticatedTitle = "";
+  final String unauthenticatedMessage = "";
 
   final String generalError = "";
   final String startNetworkCall = "";

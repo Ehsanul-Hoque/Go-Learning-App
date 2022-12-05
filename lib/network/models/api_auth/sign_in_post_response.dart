@@ -1,17 +1,25 @@
 import "package:app/network/models/api_model.dart";
 import "package:json_annotation/json_annotation.dart";
+import "package:objectbox/objectbox.dart";
 
 part "../../../generated/api_auth/sign_in_post_response.g.dart";
 
 @JsonSerializable()
+@Entity()
 class SignInPostResponse extends ApiModel {
+  @JsonKey(ignore: true)
+  @Id()
+  int boxId;
+
   @JsonKey(name: "x-access-token")
-  final String? xAccessToken;
+  String? xAccessToken;
 
   @JsonKey(name: "msg")
-  final String? msg;
+  @Transient()
+  String? msg;
 
-  const SignInPostResponse({
+  SignInPostResponse({
+    this.boxId = 0,
     this.xAccessToken,
     this.msg,
   });

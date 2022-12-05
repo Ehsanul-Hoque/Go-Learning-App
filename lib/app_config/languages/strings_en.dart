@@ -82,7 +82,7 @@ class StringsEn implements StringsBase {
   /// Messages
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";
-  final String passwordTooSmall = "Should be at least 4 characters long.";
+  final String passwordTooSmall = "Should be at least 5 characters long.";
   final String passwordsNotMatched = "Passwords do not match.";
   final String enterPromo = "Please enter a promo.";
   final String copied = "Copied!";
@@ -100,6 +100,10 @@ class StringsEn implements StringsBase {
   final String noInternetDescription =
       "Please check your internet connection and try again.";
   final String errorTitle = "Error!";
+  final String errorSignUp = "Sorry! Could not sign up."
+      " Please try again later.";
+  final String errorLogIn = "Sorry! Could not log in."
+      " Please try again later.";
   final String errorCheckingPromo = "Sorry!"
       " Could not check if this promo is valid. Please try again later.";
   final String errorLoadingContent =
@@ -111,6 +115,10 @@ class StringsEn implements StringsBase {
   final String promoDoesNotExist = "This promo does not exist.";
   final String invalidPromoTitle = "Invalid Promo!";
   final String emptyPromoNotValid = "Empty promo is not a valid promo.";
+  final String authenticatedTitle = "Already logged in!";
+  final String authenticatedMessage = "Please log out first.";
+  final String unauthenticatedTitle = "Unauthenticated!";
+  final String unauthenticatedMessage = "Please log in or sign up first.";
 
   final String generalError = "Sorry! Some type of problem occurred.";
   final String startNetworkCall = "Please start the network call.";

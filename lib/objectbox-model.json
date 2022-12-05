@@ -91,9 +91,28 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:4194898194019581092",
+      "lastPropertyId": "2:9127116001169444972",
+      "name": "SignInPostResponse",
+      "properties": [
+        {
+          "id": "1:6324236751786474627",
+          "name": "boxId",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:9127116001169444972",
+          "name": "xAccessToken",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:8595984982184601627",
+  "lastEntityId": "2:4194898194019581092",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

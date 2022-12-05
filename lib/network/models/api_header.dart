@@ -17,13 +17,16 @@ class ApiHeader extends ApiModel {
   final String? xAccessToken;
 
   const ApiHeader({
-    required this.contentType,
+    this.contentType = "application/json",
     this.xAccessToken,
   });
 
-  factory ApiHeader.fromJson(Map<String, dynamic> json) =>
+  factory ApiHeader.fromJson(Map<String, String> json) =>
       _$ApiHeaderFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$ApiHeaderToJson(this);
+  Map<String, String> toJson() => _$ApiHeaderToJson(this).map(
+        (String key, dynamic value) =>
+            MapEntry<String, String>(key, value as String),
+      );
 }

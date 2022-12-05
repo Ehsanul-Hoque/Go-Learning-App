@@ -31,9 +31,6 @@ class ProfileGetResponseData extends ApiModel {
   @Id()
   int boxId;
 
-  @JsonKey(ignore: true)
-  String? xAccessToken;
-
   @JsonKey(name: "_id")
   String? sId;
 
