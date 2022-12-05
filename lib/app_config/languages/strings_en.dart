@@ -7,6 +7,7 @@ class StringsEn implements StringsBase {
 
   final String logIn = "Log In";
   final String signUp = "Sign Up";
+  final String fullName = "Full Name";
   final String email = "Email";
   final String password = "Password";
   final String confirmPassword = "Confirm Password";
@@ -80,9 +81,13 @@ class StringsEn implements StringsBase {
   final String quizFinished = "Quiz Finished";
 
   /// Messages
+  final String enterName = "Please enter a name.";
+  final String nameTooSmall = "Should be at least 5 characters long.";
+  final String nameTooBig = "Should be at most 20 characters long.";
   final String invalidEmail = "The email is invalid.";
   final String enterPassword = "Please enter a password.";
   final String passwordTooSmall = "Should be at least 5 characters long.";
+  final String passwordTooBig = "Should be at most 20 characters long.";
   final String passwordsNotMatched = "Passwords do not match.";
   final String enterPromo = "Please enter a promo.";
   final String copied = "Copied!";

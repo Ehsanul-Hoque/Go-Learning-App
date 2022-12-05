@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../network/models/api_auth/sign_in_post_request.dart';
+part of '../../network/models/api_auth/sign_up_post_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SignInPostRequest _$SignInPostRequestFromJson(Map<String, dynamic> json) =>
-    SignInPostRequest(
+SignUpPostRequest _$SignUpPostRequestFromJson(Map<String, dynamic> json) =>
+    SignUpPostRequest(
+      name: json['name'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      fingerprintToken: json['fingerprint_token'] as String? ?? "",
     );
 
-Map<String, dynamic> _$SignInPostRequestToJson(SignInPostRequest instance) =>
+Map<String, dynamic> _$SignUpPostRequestToJson(SignUpPostRequest instance) =>
     <String, dynamic>{
+      'name': instance.name,
       'email': instance.email,
       'password': instance.password,
-      'fingerprint_token': instance.fingerprintToken,
     };

@@ -43,7 +43,7 @@ class _CoursesState extends State<Courses> with AutomaticKeepAliveClientMixin {
       child: NetworkWidget(
         callStatusSelector: (BuildContext context) {
           return context.select((CourseApiNotifier? apiNotifier) {
-            return NetworkCallStatus.combine(
+            return NetworkCallStatus.combineInParallel(
               <NetworkCallStatus?>[
                 apiNotifier?.allCategoriesGetResponse.callStatus,
                 apiNotifier?.allCoursesGetResponse.callStatus,

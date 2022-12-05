@@ -1,10 +1,12 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
+import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/interceptors/default_interceptors/access_token_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/sign_in_post_request.dart";
-import "package:app/network/models/api_auth/sign_in_post_response.dart";
+import "package:app/network/models/api_auth/auth_post_response.dart";
+import "package:app/network/models/api_auth/sign_up_post_request.dart";
 import "package:app/network/network.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
@@ -15,6 +17,7 @@ import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
 class AuthApiNotifier extends ApiNotifier {
   /// API endpoints
+  static const String signUpPostApiEndpoint = "/student/signup";
   static const String signInPostApiEndpoint = "/student/signin";
   static const String profileGetApiEndpoint = "/student/profile";
 
@@ -28,7 +31,35 @@ class AuthApiNotifier extends ApiNotifier {
       );
 
   /// Methods to sign in with email and password
-  Future<NetworkResponse<SignInPostResponse>> signInWithEmailPassword(
+  Future<NetworkResponse<AuthPostResponse>> signUpWithEmailPassword(
+    SignUpPostRequest requestBody,
+  ) {
+    return const Network().createExecuteCall(
+      client: defaultClient,
+      requestInterceptors: <NetworkRequestInterceptor>[GuestInterceptor()],
+      request: NetworkRequest.post(
+        apiEndPoint: signUpPostApiEndpoint,
+        body: requestBody.toJson(),
+      ),
+      responseConverter: const JsonObjectConverter<AuthPostResponse>(
+        AuthPostResponse.fromJson,
+      ),
+      updateListener: () => notifyListeners(),
+      checkCacheFirst: false,
+    );
+  }
+
+  NetworkResponse<AuthPostResponse> get signUpWithEmailPasswordResponse =>
+      Network.getOrCreateResponse(
+        defaultClient.baseUrl + signUpPostApiEndpoint,
+      );
+
+  void deleteSignUpWithEmailPasswordResponse() {
+    Network.deleteResponse(defaultClient.baseUrl + signUpPostApiEndpoint);
+  }
+
+  /// Methods to sign in with email and password
+  Future<NetworkResponse<AuthPostResponse>> signInWithEmailPassword(
     SignInPostRequest requestBody,
   ) {
     return const Network().createExecuteCall(
@@ -38,18 +69,22 @@ class AuthApiNotifier extends ApiNotifier {
         apiEndPoint: signInPostApiEndpoint,
         body: requestBody.toJson(),
       ),
-      responseConverter: const JsonObjectConverter<SignInPostResponse>(
-        SignInPostResponse.fromJson,
+      responseConverter: const JsonObjectConverter<AuthPostResponse>(
+        AuthPostResponse.fromJson,
       ),
       updateListener: () => notifyListeners(),
       checkCacheFirst: false,
     );
   }
 
-  NetworkResponse<SignInPostResponse> get signInWithEmailPasswordResponse =>
+  NetworkResponse<AuthPostResponse> get signInWithEmailPasswordResponse =>
       Network.getOrCreateResponse(
         defaultClient.baseUrl + signInPostApiEndpoint,
       );
+
+  void deleteSignInWithEmailPasswordResponse() {
+    Network.deleteResponse(defaultClient.baseUrl + signInPostApiEndpoint);
+  }
 
   /// Methods to get user profile
   Future<NetworkResponse<ProfileGetResponse>> getProfile() {
@@ -73,4 +108,19 @@ class AuthApiNotifier extends ApiNotifier {
       Network.getOrCreateResponse(
         defaultAuthenticatedClient.baseUrl + profileGetApiEndpoint,
       );
+
+  /// Method to clear previous auth responses if not loading.
+  /// Call this method before starting every new
+  /// auth request (sign in or sign up).
+  void deleteAuthResponses() {
+    if (signUpWithEmailPasswordResponse.callStatus !=
+        NetworkCallStatus.loading) {
+      deleteSignUpWithEmailPasswordResponse();
+    }
+
+    if (signInWithEmailPasswordResponse.callStatus !=
+        NetworkCallStatus.loading) {
+      deleteSignInWithEmailPasswordResponse();
+    }
+  }
 }

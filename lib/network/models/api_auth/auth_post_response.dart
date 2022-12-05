@@ -2,11 +2,11 @@ import "package:app/network/models/api_model.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:objectbox/objectbox.dart";
 
-part "../../../generated/api_auth/sign_in_post_response.g.dart";
+part "../../../generated/api_auth/auth_post_response.g.dart";
 
 @JsonSerializable()
 @Entity()
-class SignInPostResponse extends ApiModel {
+class AuthPostResponse extends ApiModel {
   @JsonKey(ignore: true)
   @Id()
   int boxId;
@@ -18,15 +18,15 @@ class SignInPostResponse extends ApiModel {
   @Transient()
   String? msg;
 
-  SignInPostResponse({
+  AuthPostResponse({
     this.boxId = 0,
     this.xAccessToken,
     this.msg,
   });
 
-  factory SignInPostResponse.fromJson(Map<String, dynamic> json) =>
-      _$SignInPostResponseFromJson(json);
+  factory AuthPostResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthPostResponseFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$SignInPostResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AuthPostResponseToJson(this);
 }

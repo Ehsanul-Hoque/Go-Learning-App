@@ -1,12 +1,13 @@
 import "package:app/local_storage/app_objectbox.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
-import "package:app/network/models/api_auth/sign_in_post_response.dart";
+import "package:app/network/models/api_auth/auth_post_response.dart";
+import "package:app/network/network.dart";
 import "package:app/objectbox.g.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 
 class UserBox {
-  static void setAccessToken(SignInPostResponse? signInResponse) {
-    Box<SignInPostResponse> box = appObjectBox.store.box<SignInPostResponse>();
+  static void setAccessToken(AuthPostResponse? signInResponse) {
+    Box<AuthPostResponse> box = appObjectBox.store.box<AuthPostResponse>();
 
     if (signInResponse == null) {
       box.removeAll();
@@ -37,7 +38,7 @@ class UserBox {
   }
 
   static String? get accessToken => appObjectBox.store
-      .box<SignInPostResponse>()
+      .box<AuthPostResponse>()
       .getAll()
       .elementAtOrNull(0)
       ?.xAccessToken;
@@ -61,5 +62,6 @@ class UserBox {
   static void logOut() {
     setAccessToken(null);
     setCurrentUser(null);
+    Network.deleteAllResponses();
   }
 }

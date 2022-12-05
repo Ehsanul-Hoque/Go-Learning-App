@@ -6,18 +6,18 @@ part "../../../generated/api_auth/sign_in_post_request.g.dart";
 @JsonSerializable()
 class SignInPostRequest extends ApiModel {
   @JsonKey(name: "email")
-  final String? email;
+  final String email;
 
   @JsonKey(name: "password")
-  final String? password;
+  final String password;
 
   @JsonKey(name: "fingerprint_token")
-  final String? fingerprintToken;
+  final String fingerprintToken;
 
   const SignInPostRequest({
-    this.email,
-    this.password,
-    this.fingerprintToken,
+    required this.email,
+    required this.password,
+    this.fingerprintToken = "",
   });
 
   factory SignInPostRequest.fromJson(Map<String, dynamic> json) =>

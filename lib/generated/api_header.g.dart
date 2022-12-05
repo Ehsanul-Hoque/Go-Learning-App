@@ -7,7 +7,7 @@ part of '../network/models/api_header.dart';
 // **************************************************************************
 
 ApiHeader _$ApiHeaderFromJson(Map<String, dynamic> json) => ApiHeader(
-      contentType: json['content-type'] as String? ?? 'application/json',
+      contentType: json['content-type'] as String? ?? "application/json",
       xAccessToken: json['x-access-token'] as String?,
     );
 

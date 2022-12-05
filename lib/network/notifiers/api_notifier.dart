@@ -1,5 +1,3 @@
-import "dart:io" show HttpHeaders;
-
 import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/network/models/api_header.dart";
 import "package:app/network/network_client.dart";

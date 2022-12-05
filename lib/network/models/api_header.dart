@@ -7,10 +7,7 @@ part "../../generated/api_header.g.dart";
 
 @JsonSerializable()
 class ApiHeader extends ApiModel {
-  @JsonKey(
-    name: HttpHeaders.contentTypeHeader,
-    defaultValue: "application/json",
-  )
+  @JsonKey(name: HttpHeaders.contentTypeHeader)
   final String contentType;
 
   @JsonKey(name: "x-access-token")

@@ -14,8 +14,8 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import 'network/models/api_auth/auth_post_response.dart';
 import 'network/models/api_auth/profile_get_response.dart';
-import 'network/models/api_auth/sign_in_post_response.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -111,7 +111,7 @@ final _entities = <ModelEntity>[
       backlinks: <ModelBacklink>[]),
   ModelEntity(
       id: const IdUid(2, 4194898194019581092),
-      name: 'SignInPostResponse',
+      name: 'AuthPostResponse',
       lastPropertyId: const IdUid(2, 9127116001169444972),
       flags: 0,
       properties: <ModelProperty>[
@@ -261,15 +261,15 @@ ModelDefinition getObjectBoxModel() {
 
           return object;
         }),
-    SignInPostResponse: EntityDefinition<SignInPostResponse>(
+    AuthPostResponse: EntityDefinition<AuthPostResponse>(
         model: _entities[1],
-        toOneRelations: (SignInPostResponse object) => [],
-        toManyRelations: (SignInPostResponse object) => {},
-        getId: (SignInPostResponse object) => object.boxId,
-        setId: (SignInPostResponse object, int id) {
+        toOneRelations: (AuthPostResponse object) => [],
+        toManyRelations: (AuthPostResponse object) => {},
+        getId: (AuthPostResponse object) => object.boxId,
+        setId: (AuthPostResponse object, int id) {
           object.boxId = id;
         },
-        objectToFB: (SignInPostResponse object, fb.Builder fbb) {
+        objectToFB: (AuthPostResponse object, fb.Builder fbb) {
           final xAccessTokenOffset = object.xAccessToken == null
               ? null
               : fbb.writeString(object.xAccessToken!);
@@ -283,7 +283,7 @@ ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
-          final object = SignInPostResponse(
+          final object = AuthPostResponse(
               boxId: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               xAccessToken: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 6));
@@ -364,13 +364,13 @@ class ProfileGetResponseData_ {
       QueryStringProperty<ProfileGetResponseData>(_entities[0].properties[15]);
 }
 
-/// [SignInPostResponse] entity fields to define ObjectBox queries.
-class SignInPostResponse_ {
-  /// see [SignInPostResponse.boxId]
+/// [AuthPostResponse] entity fields to define ObjectBox queries.
+class AuthPostResponse_ {
+  /// see [AuthPostResponse.boxId]
   static final boxId =
-      QueryIntegerProperty<SignInPostResponse>(_entities[1].properties[0]);
+      QueryIntegerProperty<AuthPostResponse>(_entities[1].properties[0]);
 
-  /// see [SignInPostResponse.xAccessToken]
+  /// see [AuthPostResponse.xAccessToken]
   static final xAccessToken =
-      QueryStringProperty<SignInPostResponse>(_entities[1].properties[1]);
+      QueryStringProperty<AuthPostResponse>(_entities[1].properties[1]);
 }

@@ -106,8 +106,13 @@ class Network {
   static NetworkResponse<DO> getOrCreateResponse<DO>(String key) =>
       getResponse(key) ?? _createResponse(key);
 
-  /// Method to clear the temporary cache
-  static void clearAllResponses() {
+  /// Method to delete a response object from the temporary cache
+  static void deleteResponse<DO>(String key) {
+    _responseMap.remove(key);
+  }
+
+  /// Method to delete the temporary cache
+  static void deleteAllResponses() {
     _responseMap.clear();
   }
 

@@ -95,7 +95,7 @@
     {
       "id": "2:4194898194019581092",
       "lastPropertyId": "2:9127116001169444972",
-      "name": "SignInPostResponse",
+      "name": "AuthPostResponse",
       "properties": [
         {
           "id": "1:6324236751786474627",

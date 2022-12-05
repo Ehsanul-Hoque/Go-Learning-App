@@ -3,6 +3,7 @@ abstract class StringsBase {
 
   final String logIn = "";
   final String signUp = "";
+  final String fullName = "";
   final String email = "";
   final String password = "";
   final String confirmPassword = "";
@@ -73,9 +74,13 @@ abstract class StringsBase {
   final String quizFinished = "";
 
   /// Messages
+  final String enterName = "";
+  final String nameTooSmall = "";
+  final String nameTooBig = "";
   final String invalidEmail = "";
   final String enterPassword = "";
   final String passwordTooSmall = "";
+  final String passwordTooBig = "";
   final String passwordsNotMatched = "";
   final String enterPromo = "";
   final String copied = "";
