@@ -62,6 +62,6 @@ class UserBox {
   static void logOut() {
     setAccessToken(null);
     setCurrentUser(null);
-    Network.deleteAllResponses();
+    Network.resetAllResponses();
   }
 }

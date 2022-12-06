@@ -51,4 +51,9 @@
 - Set up ObjectBox for iOS (using Xcode preferably)
 - Improve SnackBar to integrate WidgetsBinding.instance.addPostFrameCallback when possible
 - Extract common SnackBars, such as "NO INTERNET" SnackBar etc
+- Set Up Google sign in for iOS from https://pub.dev/packages/google_sign_in
+- AuthApiNotifier: remove the "ignore: use_build_context_synchronously" warning
+  and handle the warning properly
+- Convert Google Log In into an interceptor. Also, convert interceptors into async functions
+- Cancel the network calls when resetting
 - 

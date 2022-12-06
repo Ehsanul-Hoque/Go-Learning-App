@@ -1,3 +1,5 @@
+import "dart:ui";
+
 import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/interceptors/interceptor_result.dart";
@@ -106,14 +108,19 @@ class Network {
   static NetworkResponse<DO> getOrCreateResponse<DO>(String key) =>
       getResponse(key) ?? _createResponse(key);
 
-  /// Method to delete a response object from the temporary cache
-  static void deleteResponse<DO>(String key) {
-    _responseMap.remove(key);
+  /// Method to reset a response object in the temporary cache
+  static void resetResponse<DO>(String key, [VoidCallback? updateListener]) {
+    getResponse(key)?.reset();
+    updateListener?.call();
   }
 
-  /// Method to delete the temporary cache
-  static void deleteAllResponses() {
-    _responseMap.clear();
+  /// Method to reset the temporary cache
+  static void resetAllResponses([VoidCallback? updateListener]) {
+    for (String key in _responseMap.keys) {
+      resetResponse(key);
+    }
+
+    updateListener?.call();
   }
 
   /// Private method to create a response object in the temporary cache

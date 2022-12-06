@@ -35,6 +35,14 @@ class NetworkResponse<T> {
   /// Getter to get the HTTP response status code
   int get statusCode => httpResponse?.statusCode ?? -1;
 
+  /// Method to reset values
+  void reset() {
+    callStatus = NetworkCallStatus.none;
+    httpResponse = null;
+    result = null;
+    error = null;
+  }
+
   /// toString() method
   @override
   String toString() {
