@@ -1,8 +1,10 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
+import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/local_storage/notifiers/user_notifier.dart";
 import "package:app/network/converters/default_converters/json_object_converter.dart";
+import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/interceptors/default_interceptors/access_token_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
@@ -51,6 +53,10 @@ class AuthApiNotifier extends ApiNotifier {
         create: (BuildContext context) => AuthApiNotifier(),
       );
 
+  /// Common response object
+  NetworkResponse<ProfileGetResponse> get authResponse =>
+      Network.getOrCreateResponse("auth_response");
+
   /// Methods to sign in with email and password
   Future<NetworkResponse<AuthPostResponse>> signUpWithEmailPassword(
     BuildContext context,
@@ -69,6 +75,9 @@ class AuthApiNotifier extends ApiNotifier {
         AuthPostResponse.fromJson,
       ),
       callback: NetworkCallback<AuthPostResponse>(
+        onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
+        onSuccess: onAccessTokenGetSuccess,
+        onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
         onUpdate: (_) => notifyListeners(),
       ),
       checkCacheFirst: false,
@@ -102,6 +111,9 @@ class AuthApiNotifier extends ApiNotifier {
         AuthPostResponse.fromJson,
       ),
       callback: NetworkCallback<AuthPostResponse>(
+        onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
+        onSuccess: onAccessTokenGetSuccess,
+        onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
         onUpdate: (_) => notifyListeners(),
       ),
       checkCacheFirst: false,
@@ -153,6 +165,9 @@ class AuthApiNotifier extends ApiNotifier {
           AuthPostResponse.fromJson,
         ),
         callback: NetworkCallback<AuthPostResponse>(
+          onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
+          onSuccess: onAccessTokenGetSuccess,
+          onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
           onUpdate: (_) => notifyListeners(),
         ),
         checkCacheFirst: false,
@@ -201,6 +216,9 @@ class AuthApiNotifier extends ApiNotifier {
         ProfileGetResponse.fromJson,
       ),
       callback: NetworkCallback<ProfileGetResponse>(
+        onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
+        onSuccess: onProfileGetSuccess,
+        onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
         onUpdate: (_) => notifyListeners(),
       ),
       checkCacheFirst: false,
@@ -232,4 +250,18 @@ class AuthApiNotifier extends ApiNotifier {
 
     notifyListeners();
   }*/
+
+  /// Method to set access token and start getting profile
+  void onAccessTokenGetSuccess(NetworkResponse<AuthPostResponse> result) {
+    UserBox.setAccessToken(result.result);
+    getProfile();
+  }
+
+  void onProfileGetSuccess(NetworkResponse<ProfileGetResponse> result) {
+    authResponse
+      ..callStatus = NetworkCallStatus.success
+      ..httpResponse = result.httpResponse
+      ..result = result.result;
+    UserBox.setCurrentUser(result.result?.data);
+  }
 }
