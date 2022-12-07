@@ -99,9 +99,11 @@ class NetworkCall<DI, DO> {
 
       if (response.callStatus == NetworkCallStatus.success) {
         callback?.onSuccess?.call(response);
+        callback?.onUpdate?.call(response);
         NetLog().d("$logTag Call succeeded", showLog: logSteps);
       } else {
         callback?.onFailed?.call(response);
+        callback?.onUpdate?.call(response);
         NetLog().e(
           "$logTag Call failed."
           " HTTP ${httpResponse.statusCode}: ${httpResponse.reasonPhrase}",
@@ -110,6 +112,9 @@ class NetworkCall<DI, DO> {
       }
     } catch (e, s) {
       response.callStatus = NetworkCallStatus.failed;
+      callback?.onFailed?.call(response);
+      callback?.onUpdate?.call(response);
+
       NetLog()
           .e("$logTag Call failed", error: e, stackTrace: s, showLog: logSteps);
     }
@@ -123,7 +128,6 @@ class NetworkCall<DI, DO> {
       showLog: logResultModel,
     );
 
-    callback?.onUpdate?.call(response);
     return response;
   }
 

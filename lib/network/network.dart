@@ -38,6 +38,8 @@ class Network {
 
     // Get cached/new response object
     NetworkResponse<DO> response = getOrCreateResponse(cacheKey);
+    callback?.onStart?.call(response);
+    callback?.onUpdate?.call(response);
 
     // Process the request interceptors
     response = _processInterceptors(request, requestInterceptors, response);
