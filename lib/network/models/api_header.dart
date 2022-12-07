@@ -18,12 +18,20 @@ class ApiHeader extends ApiModel {
     this.xAccessToken,
   });
 
-  factory ApiHeader.fromJson(Map<String, String> json) =>
+  factory ApiHeader.fromJson(Map<String, String?> json) =>
       _$ApiHeaderFromJson(json);
 
   @override
-  Map<String, String> toJson() => _$ApiHeaderToJson(this).map(
-        (String key, dynamic value) =>
-            MapEntry<String, String>(key, value as String),
-      );
+  Map<String, String> toJson() {
+    Map<String, dynamic> headerJson = _$ApiHeaderToJson(this);
+    Map<String, String> finalHeaderJson = <String, String>{};
+
+    headerJson.forEach((String key, dynamic value) {
+      if (value != null) {
+        finalHeaderJson[key] = value as String;
+      }
+    });
+
+    return finalHeaderJson;
+  }
 }

@@ -12,6 +12,7 @@ import "package:app/network/models/api_auth/auth_post_response.dart";
 import "package:app/network/models/api_auth/sign_up_post_request.dart";
 import "package:app/network/models/api_auth/tokenize_sign_in_post_request.dart";
 import "package:app/network/network.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
@@ -67,7 +68,9 @@ class AuthApiNotifier extends ApiNotifier {
       responseConverter: const JsonObjectConverter<AuthPostResponse>(
         AuthPostResponse.fromJson,
       ),
-      updateListener: () => notifyListeners(),
+      callback: NetworkCallback<AuthPostResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
       checkCacheFirst: false,
     );
   }
@@ -98,7 +101,9 @@ class AuthApiNotifier extends ApiNotifier {
       responseConverter: const JsonObjectConverter<AuthPostResponse>(
         AuthPostResponse.fromJson,
       ),
-      updateListener: () => notifyListeners(),
+      callback: NetworkCallback<AuthPostResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
       checkCacheFirst: false,
     );
   }
@@ -147,7 +152,9 @@ class AuthApiNotifier extends ApiNotifier {
         responseConverter: const JsonObjectConverter<AuthPostResponse>(
           AuthPostResponse.fromJson,
         ),
-        updateListener: () => notifyListeners(),
+        callback: NetworkCallback<AuthPostResponse>(
+          onUpdate: (_) => notifyListeners(),
+        ),
         checkCacheFirst: false,
       );
     } catch (e, s) {
@@ -193,7 +200,9 @@ class AuthApiNotifier extends ApiNotifier {
       responseConverter: const JsonObjectConverter<ProfileGetResponse>(
         ProfileGetResponse.fromJson,
       ),
-      updateListener: () => notifyListeners(),
+      callback: NetworkCallback<ProfileGetResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
       checkCacheFirst: false,
     );
   }

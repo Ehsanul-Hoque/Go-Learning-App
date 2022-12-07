@@ -1,6 +1,7 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_static_info/static_info_get_response.dart";
 import "package:app/network/network.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
@@ -31,7 +32,9 @@ class StaticInfoApiNotifier extends ApiNotifier {
         responseConverter: const JsonObjectConverter<StaticInfoGetResponse>(
           StaticInfoGetResponse.fromJson,
         ),
-        updateListener: () => notifyListeners(),
+        callback: NetworkCallback<StaticInfoGetResponse>(
+          onUpdate: (_) => notifyListeners(),
+        ),
       );
 
   NetworkResponse<StaticInfoGetResponse> get staticInfoGetResponse =>

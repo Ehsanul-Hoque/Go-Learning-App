@@ -1,66 +1,47 @@
+import "dart:convert";
+
 import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/enums/network_call_type.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_client.dart";
 import "package:app/network/network_error.dart";
 import "package:app/network/network_logger.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/network_utils.dart";
-import "package:app/utils/typedefs.dart" show OnErrorListener;
 import "package:http/http.dart" as http;
-
-typedef OnUpdateListener = void Function();
-typedef OnSuccessListener<DO> = void Function(NetworkResponse<DO> response);
 
 /// DI => Dart object (input) (for serializer)
 /// DO => Dart object (output) (for the final output)
 class NetworkCall<DI, DO> {
   NetworkCall({
-    required NetworkClient client,
-    required NetworkRequest request,
-    required NetworkResponse<DO> response,
-    required JsonConverter<DI, DO> responseConverter,
-    required OnUpdateListener updateListener,
-    OnSuccessListener<DO>? successListener,
-    List<NetworkRequestInterceptor>? requestInterceptors,
-  })  : _client = client,
-        _request = request,
-        _response = response,
-        _responseConverter = responseConverter,
-        _updateListener = updateListener,
-        _successListener = successListener,
-        _requestInterceptors = requestInterceptors;
+    required this.client,
+    required this.request,
+    required this.response,
+    required this.responseConverter,
+    this.requestInterceptors,
+    this.callback,
+  });
 
   /// The client
-  final NetworkClient _client;
-  NetworkClient get client => _client;
+  final NetworkClient client;
 
   /// The request
-  final NetworkRequest _request;
-  NetworkRequest get request => _request;
+  final NetworkRequest request;
 
   /// The response
-  final NetworkResponse<DO> _response;
-  NetworkResponse<DO> get response => _response;
+  final NetworkResponse<DO> response;
 
   /// The converter for the response
-  final JsonConverter<DI, DO> _responseConverter;
-  JsonConverter<DI, DO> get responseConverter => _responseConverter;
+  final JsonConverter<DI, DO> responseConverter;
 
-  /// Update listener
-  final OnUpdateListener _updateListener;
-  OnUpdateListener get updateListener => _updateListener;
-
-  /// Success listener
-  final OnSuccessListener<DO>? _successListener;
-  OnSuccessListener<DO>? get successListener => _successListener;
+  /// Network callback
+  final NetworkCallback<DO>? callback;
 
   /// Request interceptors
-  final List<NetworkRequestInterceptor>? _requestInterceptors;
-  List<NetworkRequestInterceptor>? get requestInterceptors =>
-      _requestInterceptors;
+  final List<NetworkRequestInterceptor>? requestInterceptors;
 
   // Some getters
   String get apiFullUrl =>
@@ -85,36 +66,31 @@ class NetworkCall<DI, DO> {
         "$logTag Already another call ongoing, so no new call has started",
         showLog: logSteps,
       );
-      updateListener();
+      callback?.onLoading?.call(response);
+      callback?.onUpdate?.call(response);
       return response;
     }
 
     try {
       NetLog().d("$logTag Call started", showLog: logSteps);
       response.callStatus = NetworkCallStatus.loading;
-      updateListener();
+      callback?.onLoading?.call(response);
+      callback?.onUpdate?.call(response);
 
       if (!(await NetworkUtils.hasInternetConnection())) {
         NetLog().e("$logTag Call failed due to no internet", showLog: logSteps);
         response.callStatus = NetworkCallStatus.noInternet;
-        updateListener();
+        callback?.onFailed?.call(response);
+        callback?.onUpdate?.call(response);
         return response;
       }
 
-      http.Response? httpResponse = await _getHttpResponse(
-        apiFullUrl,
-        (NetworkCallType callType) {
-          NetLog().e(
-            "$logTag Call failed. Call of type ${callType.name}"
-            " is not supported yet",
-            showLog: logSteps,
-          );
-        },
-      );
+      http.Response? httpResponse = await _getHttpResponse(apiFullUrl);
 
       if (httpResponse == null) {
         response.callStatus = NetworkCallStatus.failed;
-        updateListener();
+        callback?.onFailed?.call(response);
+        callback?.onUpdate?.call(response);
         return response;
       }
 
@@ -122,8 +98,10 @@ class NetworkCall<DI, DO> {
       _processHttpResponse();
 
       if (response.callStatus == NetworkCallStatus.success) {
+        callback?.onSuccess?.call(response);
         NetLog().d("$logTag Call succeeded", showLog: logSteps);
       } else {
+        callback?.onFailed?.call(response);
         NetLog().e(
           "$logTag Call failed."
           " HTTP ${httpResponse.statusCode}: ${httpResponse.reasonPhrase}",
@@ -145,15 +123,12 @@ class NetworkCall<DI, DO> {
       showLog: logResultModel,
     );
 
-    updateListener();
+    callback?.onUpdate?.call(response);
     return response;
   }
 
   /// Private method to get an HTTP response
-  Future<http.Response?> _getHttpResponse(
-    String apiFullUrl,
-    OnErrorListener<NetworkCallType> onError,
-  ) async {
+  Future<http.Response?> _getHttpResponse(String apiFullUrl) async {
     switch (request.callType) {
       case NetworkCallType.get:
         return http.get(
@@ -165,10 +140,8 @@ class NetworkCall<DI, DO> {
         return http.post(
           Uri.parse(apiFullUrl),
           headers: request.headers ?? client.headers,
-          body: request.body ?? <String, dynamic>{},
+          body: jsonEncode(request.body),
         );
-      // onError(NetworkCallType.post);
-      // return null;
     }
   }
 
@@ -185,8 +158,6 @@ class NetworkCall<DI, DO> {
         ..callStatus = NetworkCallStatus.success
         ..httpResponse = httpResponse
         ..result = responseConverter.fromJsonToDart(httpResponse.body);
-
-      successListener?.call(response);
     } else {
       response
         ..callStatus = NetworkCallStatus.failed

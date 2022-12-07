@@ -1,6 +1,7 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/network.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
@@ -39,7 +40,9 @@ class CouponApiNotifier extends ApiNotifier {
       responseConverter: const JsonObjectConverter<CouponGetResponse>(
         CouponGetResponse.fromJson,
       ),
-      updateListener: () => notifyListeners(),
+      callback: NetworkCallback<CouponGetResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
     );
   }
 

@@ -2,6 +2,7 @@ import "package:app/network/converters/default_converters/json_object_converter.
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/models/api_contents/lecture_get_response.dart";
 import "package:app/network/network.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
@@ -46,7 +47,9 @@ class ContentApiNotifier extends ApiNotifier {
       responseConverter: const JsonObjectConverter<ContentTreeGetResponse>(
         ContentTreeGetResponse.fromJson,
       ),
-      updateListener: () => notifyListeners(),
+      callback: NetworkCallback<ContentTreeGetResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
     );
   }
 
@@ -67,7 +70,9 @@ class ContentApiNotifier extends ApiNotifier {
       responseConverter: const JsonObjectConverter<LectureGetResponse>(
         LectureGetResponse.fromJson,
       ),
-      updateListener: () => notifyListeners(),
+      callback: NetworkCallback<LectureGetResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
     );
   }
 

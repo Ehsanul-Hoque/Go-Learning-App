@@ -1,3 +1,5 @@
+import "dart:convert" show json;
+
 import "package:app/network/models/api_model.dart";
 import "package:json_annotation/json_annotation.dart";
 import "package:objectbox/objectbox.dart";
@@ -10,7 +12,7 @@ class ProfileGetResponse extends ApiModel {
   final String? success;
 
   @JsonKey(name: "data")
-  final List<ProfileGetResponseData?>? data;
+  final ProfileGetResponseData? data;
 
   ProfileGetResponse({
     this.success,
@@ -38,12 +40,14 @@ class ProfileGetResponseData extends ApiModel {
   String? institution;
 
   @JsonKey(name: "enrolled_courses")
+  @Transient()
   List<String?>? enrolledCourses;
 
   @JsonKey(name: "verified")
   bool? verified;
 
   @JsonKey(name: "fingerprint_token")
+  @Transient()
   List<String?>? fingerprintToken;
 
   @JsonKey(name: "email")
@@ -100,4 +104,26 @@ class ProfileGetResponseData extends ApiModel {
 
   @override
   Map<String, dynamic> toJson() => _$ProfileGetResponseDataToJson(this);
+
+  String? get dbEnrolledCourses =>
+      enrolledCourses == null ? null : json.encode(enrolledCourses);
+
+  set dbEnrolledCourses(String? dbValue) {
+    if (dbValue == null) {
+      enrolledCourses == null;
+    } else {
+      enrolledCourses = json.decode(dbValue);
+    }
+  }
+
+  String? get dbFingerprintToken =>
+      fingerprintToken == null ? null : json.encode(fingerprintToken);
+
+  set dbFingerprintToken(String? dbValue) {
+    if (dbValue == null) {
+      fingerprintToken == null;
+    } else {
+      fingerprintToken = json.decode(dbValue);
+    }
+  }
 }

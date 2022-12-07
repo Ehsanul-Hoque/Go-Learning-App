@@ -5,6 +5,7 @@ import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/interceptors/interceptor_result.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/network_call.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_client.dart";
 import "package:app/network/network_error.dart";
 import "package:app/network/network_logger.dart";
@@ -25,9 +26,8 @@ class Network {
     required NetworkClient client,
     required NetworkRequest request,
     required JsonConverter<DI, DO> responseConverter,
-    required OnUpdateListener updateListener,
-    OnSuccessListener<DO>? successListener,
     List<NetworkRequestInterceptor>? requestInterceptors,
+    NetworkCallback<DO>? callback,
     bool checkCacheFirst = true,
   }) async {
     // Initialize some fields
@@ -39,30 +39,12 @@ class Network {
     // Get cached/new response object
     NetworkResponse<DO> response = getOrCreateResponse(cacheKey);
 
-    // Run the request interceptors
-    if (requestInterceptors != null) {
-      NetworkRequest? interceptedRequest = request;
-      NetworkError? error;
-
-      for (NetworkRequestInterceptor interceptor in requestInterceptors) {
-        if (interceptedRequest != null) {
-          RequestInterceptorResult interceptorResult =
-              interceptor.intercept(interceptedRequest);
-
-          interceptedRequest = interceptorResult.request;
-          error = interceptorResult.error;
-        } else {
-          break;
-        }
-      }
-
-      if (interceptedRequest == null || error != null) {
-        return response
-          ..callStatus = NetworkCallStatus.failed
-          ..error = error;
-      }
-
-      request = interceptedRequest;
+    // Process the request interceptors
+    response = _processInterceptors(request, requestInterceptors, response);
+    if (response.callStatus == NetworkCallStatus.failed) {
+      callback?.onFailed?.call(response);
+      callback?.onUpdate?.call(response);
+      return response;
     }
 
     // If the call has been completed already, then no need to start a new call.
@@ -79,12 +61,14 @@ class Network {
       NetLog().d("$logTag Result Model:\n${response.result?.toString()}");
 
       response.callStatus = NetworkCallStatus.loading;
-      updateListener();
+      callback?.onLoading?.call(response);
+      callback?.onUpdate?.call(response);
 
       await Future<void>.delayed(const Duration(milliseconds: 200));
 
       response.callStatus = NetworkCallStatus.success;
-      updateListener();
+      callback?.onSuccess?.call(response);
+      callback?.onUpdate?.call(response);
       return response;
     }
 
@@ -94,8 +78,7 @@ class Network {
       request: request,
       response: response,
       responseConverter: responseConverter,
-      updateListener: updateListener,
-      successListener: successListener,
+      callback: callback,
     ).execute();
   }
 
@@ -127,5 +110,39 @@ class Network {
   static NetworkResponse<DO> _createResponse<DO>(String key) {
     _responseMap[key] = NetworkResponse<DO>();
     return _responseMap[key]! as NetworkResponse<DO>;
+  }
+
+  /// Private method to process the request interceptors
+  static NetworkResponse<DO> _processInterceptors<DO>(
+    NetworkRequest request,
+    List<NetworkRequestInterceptor>? requestInterceptors,
+    NetworkResponse<DO> response,
+  ) {
+    if (requestInterceptors != null) {
+      NetworkRequest? interceptedRequest = request;
+      NetworkError? error;
+
+      for (NetworkRequestInterceptor interceptor in requestInterceptors) {
+        if (interceptedRequest != null) {
+          RequestInterceptorResult interceptorResult =
+              interceptor.intercept(interceptedRequest);
+
+          interceptedRequest = interceptorResult.request;
+          error = interceptorResult.error;
+        } else {
+          break;
+        }
+      }
+
+      if (interceptedRequest == null || error != null) {
+        return response
+          ..callStatus = NetworkCallStatus.failed
+          ..error = error;
+      }
+
+      request = interceptedRequest;
+    }
+
+    return response;
   }
 }

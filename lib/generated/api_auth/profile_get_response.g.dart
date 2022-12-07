@@ -9,17 +9,16 @@ part of '../../network/models/api_auth/profile_get_response.dart';
 ProfileGetResponse _$ProfileGetResponseFromJson(Map<String, dynamic> json) =>
     ProfileGetResponse(
       success: json['success'] as String?,
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => e == null
-              ? null
-              : ProfileGetResponseData.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: json['data'] == null
+          ? null
+          : ProfileGetResponseData.fromJson(
+              json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProfileGetResponseToJson(ProfileGetResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
-      'data': instance.data?.map((e) => e?.toJson()).toList(),
+      'data': instance.data?.toJson(),
     };
 
 ProfileGetResponseData _$ProfileGetResponseDataFromJson(

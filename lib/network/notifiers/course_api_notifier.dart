@@ -3,6 +3,7 @@ import "package:app/network/converters/default_converters/json_object_converter.
 import "package:app/network/models/api_courses/category_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/network.dart";
+import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
@@ -35,7 +36,9 @@ class CourseApiNotifier extends ApiNotifier {
         responseConverter: const JsonObjectConverter<CategoryGetResponse>(
           CategoryGetResponse.fromJson,
         ),
-        updateListener: () => notifyListeners(),
+        callback: NetworkCallback<CategoryGetResponse>(
+          onUpdate: (_) => notifyListeners(),
+        ),
       );
 
   NetworkResponse<CategoryGetResponse> get allCategoriesGetResponse =>
@@ -53,7 +56,9 @@ class CourseApiNotifier extends ApiNotifier {
         responseConverter: const JsonArrayConverter<CourseGetResponse>(
           CourseGetResponse.fromJson,
         ),
-        updateListener: () => notifyListeners(),
+        callback: NetworkCallback<List<CourseGetResponse>>(
+          onUpdate: (_) => notifyListeners(),
+        ),
       );
 
   NetworkResponse<List<CourseGetResponse>> get allCoursesGetResponse =>

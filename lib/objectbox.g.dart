@@ -43,8 +43,8 @@ final _entities = <ModelEntity>[
             flags: 0),
         ModelProperty(
             id: const IdUid(4, 1270487638486038302),
-            name: 'enrolledCourses',
-            type: 30,
+            name: 'dbEnrolledCourses',
+            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(5, 5958742046827396388),
@@ -53,8 +53,8 @@ final _entities = <ModelEntity>[
             flags: 0),
         ModelProperty(
             id: const IdUid(6, 6003858945136946266),
-            name: 'fingerprintToken',
-            type: 30,
+            name: 'dbFingerprintToken',
+            type: 9,
             flags: 0),
         ModelProperty(
             id: const IdUid(7, 3251173688984292558),
@@ -177,16 +177,12 @@ ModelDefinition getObjectBoxModel() {
           final institutionOffset = object.institution == null
               ? null
               : fbb.writeString(object.institution!);
-          final enrolledCoursesOffset = object.enrolledCourses == null
+          final dbEnrolledCoursesOffset = object.dbEnrolledCourses == null
               ? null
-              : fbb.writeList(object.enrolledCourses!
-                  .map(fbb.writeString)
-                  .toList(growable: false));
-          final fingerprintTokenOffset = object.fingerprintToken == null
+              : fbb.writeString(object.dbEnrolledCourses!);
+          final dbFingerprintTokenOffset = object.dbFingerprintToken == null
               ? null
-              : fbb.writeList(object.fingerprintToken!
-                  .map(fbb.writeString)
-                  .toList(growable: false));
+              : fbb.writeString(object.dbFingerprintToken!);
           final emailOffset =
               object.email == null ? null : fbb.writeString(object.email!);
           final nameOffset =
@@ -213,9 +209,9 @@ ModelDefinition getObjectBoxModel() {
           fbb.addInt64(0, object.boxId);
           fbb.addOffset(1, sIdOffset);
           fbb.addOffset(2, institutionOffset);
-          fbb.addOffset(3, enrolledCoursesOffset);
+          fbb.addOffset(3, dbEnrolledCoursesOffset);
           fbb.addBool(4, object.verified);
-          fbb.addOffset(5, fingerprintTokenOffset);
+          fbb.addOffset(5, dbFingerprintTokenOffset);
           fbb.addOffset(6, emailOffset);
           fbb.addOffset(7, nameOffset);
           fbb.addOffset(8, createdAtOffset);
@@ -239,25 +235,26 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGetNullable(buffer, rootOffset, 6),
               institution: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 8),
-              enrolledCourses: const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false)
-                  .vTableGetNullable(buffer, rootOffset, 10),
               verified: const fb.BoolReader()
                   .vTableGetNullable(buffer, rootOffset, 12),
-              fingerprintToken:
-                  const fb.ListReader<String>(fb.StringReader(asciiOptimization: true), lazy: false)
-                      .vTableGetNullable(buffer, rootOffset, 14),
               email: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 16),
               name: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 18),
-              createdAt: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 20),
-              updatedAt: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 22),
-              iV: const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 24),
+              createdAt: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 20),
+              updatedAt: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 22),
+              iV: const fb.Int64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 24),
               address: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 26),
               selectedClass: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 28),
               phone: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 30),
               photo: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 32),
-              userType: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 34));
+              userType: const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 34))
+            ..dbEnrolledCourses = const fb.StringReader(asciiOptimization: true)
+                .vTableGetNullable(buffer, rootOffset, 10)
+            ..dbFingerprintToken = const fb.StringReader(asciiOptimization: true).vTableGetNullable(buffer, rootOffset, 14);
 
           return object;
         }),
@@ -309,19 +306,17 @@ class ProfileGetResponseData_ {
   static final institution =
       QueryStringProperty<ProfileGetResponseData>(_entities[0].properties[2]);
 
-  /// see [ProfileGetResponseData.enrolledCourses]
-  static final enrolledCourses =
-      QueryStringVectorProperty<ProfileGetResponseData>(
-          _entities[0].properties[3]);
+  /// see [ProfileGetResponseData.dbEnrolledCourses]
+  static final dbEnrolledCourses =
+      QueryStringProperty<ProfileGetResponseData>(_entities[0].properties[3]);
 
   /// see [ProfileGetResponseData.verified]
   static final verified =
       QueryBooleanProperty<ProfileGetResponseData>(_entities[0].properties[4]);
 
-  /// see [ProfileGetResponseData.fingerprintToken]
-  static final fingerprintToken =
-      QueryStringVectorProperty<ProfileGetResponseData>(
-          _entities[0].properties[5]);
+  /// see [ProfileGetResponseData.dbFingerprintToken]
+  static final dbFingerprintToken =
+      QueryStringProperty<ProfileGetResponseData>(_entities[0].properties[5]);
 
   /// see [ProfileGetResponseData.email]
   static final email =

@@ -26,8 +26,8 @@
         },
         {
           "id": "4:1270487638486038302",
-          "name": "enrolledCourses",
-          "type": 30
+          "name": "dbEnrolledCourses",
+          "type": 9
         },
         {
           "id": "5:5958742046827396388",
@@ -36,8 +36,8 @@
         },
         {
           "id": "6:6003858945136946266",
-          "name": "fingerprintToken",
-          "type": 30
+          "name": "dbFingerprintToken",
+          "type": 9
         },
         {
           "id": "7:3251173688984292558",
