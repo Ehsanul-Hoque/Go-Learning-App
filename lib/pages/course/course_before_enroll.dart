@@ -205,5 +205,5 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   }
 
   void onBuyCourseTap(double finalPrice) =>
-      Routes.openCourseCheckoutPage(context, widget.course, finalPrice);
+      Routes().openCourseCheckoutPage(context, widget.course, finalPrice);
 }

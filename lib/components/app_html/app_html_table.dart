@@ -1,6 +1,5 @@
 import "dart:math";
 
-import "package:app/utils/utils.dart";
 import "package:flutter_layout_grid/flutter_layout_grid.dart";
 import "package:flutter/material.dart";
 import "package:flutter_html/flutter_html.dart";
@@ -32,7 +31,6 @@ Widget _layoutCells(RenderContext context, BoxConstraints constraints) {
   List<TrackSize> columnSizes = <TrackSize>[];
   for (StyledElement child in context.tree.children) {
     if (child is TableStyleElement) {
-      Utils.log("[0] child is TableStyleElement");
       // Map <col> tags to predetermined column track sizes
       columnSizes = child.children
           .where((StyledElement c) => c.name == "col")
@@ -64,10 +62,8 @@ Widget _layoutCells(RenderContext context, BoxConstraints constraints) {
           .expand((List<TrackSize> element) => element)
           .toList(growable: false);
     } else if (child is TableSectionLayoutElement) {
-      Utils.log("[1] child is TableStyleElement");
       rows.addAll(child.children.whereType());
     } else if (child is TableRowLayoutElement) {
-      Utils.log("[2] child is TableStyleElement");
       rows.add(child);
     }
   }
@@ -98,8 +94,6 @@ Widget _layoutCells(RenderContext context, BoxConstraints constraints) {
           .map((TableCellElement cell) => cell.rowspan - 1),
     ];
   }
-
-  Utils.log("Column max = $columnMax");
 
   // Place the cells in the rows/columns
   final List<GridPlacement> cells = <GridPlacement>[];
