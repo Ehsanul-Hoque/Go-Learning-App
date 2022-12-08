@@ -1,6 +1,8 @@
 abstract class StringsBase {
   final String appName = "";
 
+  final String appVersionWithColon = "";
+
   final String logIn = "";
   final String signUp = "";
   final String fullName = "";

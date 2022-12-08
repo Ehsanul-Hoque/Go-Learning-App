@@ -65,6 +65,7 @@ dependencies:
   objectbox_flutter_libs: any
   path: ^1.8.2
   path_provider: ^2.0.11
+  package_info_plus: ^3.0.2
 
   flutter_lorem: ^2.0.0 # TODO Delete in production
 

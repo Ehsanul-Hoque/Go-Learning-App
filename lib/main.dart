@@ -6,7 +6,7 @@ import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/notifiers/coupon_api_notifier.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
-import "package:app/pages/welcome/auth.dart";
+import "package:app/pages/splash_page.dart";
 import "package:flutter/services.dart"
     show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       child: PlatformApp(
         debugShowCheckedModeBanner: false,
         title: Res.str.appName,
-        home: const AuthPage(),
+        home: const SplashPage(),
       ),
     );
   }

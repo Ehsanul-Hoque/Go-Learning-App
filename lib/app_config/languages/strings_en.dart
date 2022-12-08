@@ -5,6 +5,8 @@ import "package:app/app_config/languages/strings_base.dart";
 class StringsEn implements StringsBase {
   final String appName = "GO Learning";
 
+  final String appVersionWithColon = "App version:";
+
   final String logIn = "Log In";
   final String signUp = "Sign Up";
   final String fullName = "Full Name";
