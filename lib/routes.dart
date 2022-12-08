@@ -6,6 +6,7 @@ import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/welcome/auth.dart";
+import "package:app/utils/typedefs.dart";
 import "package:flutter/material.dart" show MaterialPageRoute;
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart";
@@ -15,12 +16,12 @@ class Routes {
   /// Route method to open the authentication page
   static Future<void> openAuthPage(
     BuildContext context, {
-    bool closeAfterAuthDone = false,
+    OnValueListener<BuildContext>? redirectOnSuccess,
   }) =>
       RoutesHelper._to<void>(
         context,
         (BuildContext context) =>
-            AuthPage(closeAfterAuthDone: closeAfterAuthDone),
+            AuthPage(redirectOnSuccess: redirectOnSuccess),
       );
 
   /// Route method to open the landing page (first page after login)

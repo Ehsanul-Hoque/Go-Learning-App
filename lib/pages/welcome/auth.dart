@@ -1,26 +1,40 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_button.dart";
+import "package:app/components/app_circular_progress.dart";
 import "package:app/components/app_divider.dart";
 import "package:app/components/fields/app_form_field.dart";
 import "package:app/components/fields/app_input_field.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
 import "package:app/components/app_container.dart";
+import "package:app/local_storage/boxes/userbox.dart";
+import "package:app/local_storage/notifiers/user_notifier.dart";
 import "package:app/models/page_model.dart";
+import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/models/api_auth/sign_in_post_request.dart";
+import "package:app/network/models/api_auth/sign_up_post_request.dart";
+import "package:app/network/notifiers/auth_api_notifier.dart";
+import "package:app/network/views/network_widget_light.dart";
 import "package:app/routes.dart";
+import "package:app/utils/extensions/context_extension.dart";
+import "package:app/utils/typedefs.dart";
+import "package:app/utils/utils.dart";
 import "package:email_validator/email_validator.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Tab;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 import "package:flutter_svg/flutter_svg.dart";
+import "package:provider/provider.dart";
 
 class AuthPage extends StatefulWidget {
-  final bool closeAfterAuthDone;
+  final OnValueListener<BuildContext>? redirectOnSuccess;
 
   const AuthPage({
     Key? key,
-    this.closeAfterAuthDone = false,
+    this.redirectOnSuccess,
   }) : super(key: key);
 
   @override
@@ -31,6 +45,7 @@ class _AuthPageState extends State<AuthPage> {
   static const String _isLogInPageKey = "isLogInPage";
   late final List<PageModel> _pageModels;
   late GlobalKey<FormState> _formKey;
+  late TextEditingController _nameTextController;
   late TextEditingController _emailTextController;
   late TextEditingController _passwordTextController;
   late TextEditingController _confirmPasswordTextController;
@@ -56,9 +71,12 @@ class _AuthPageState extends State<AuthPage> {
     ];
 
     _formKey = GlobalKey<FormState>();
+    _nameTextController = TextEditingController();
     _emailTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _confirmPasswordTextController = TextEditingController();
+
+    Utils.log("[1] Current access token => ${UserBox.accessToken}");
 
     super.initState();
   }
@@ -74,211 +92,29 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      backgroundColor: Res.color.pageBg,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: AppContainer(
-              margin: EdgeInsets.all(Res.dimen.largeSpacingValue),
-              padding: EdgeInsets.all(Res.dimen.largeSpacingValue),
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.height,
-              ),
-              child: DefaultTabController(
-                animationDuration: Res.durations.defaultDuration,
-                length: _pageModels.length,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Center(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            maxWidth: 200,
-                          ),
-                          child: AppTabBar(
-                            tabs: _pageModels.map((PageModel page) {
-                              return Tab(
-                                text: page.title,
-                              );
-                            }).toList(),
-                            onTabChange: onTabChange,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: Res.dimen.largeSpacingValue,
-                      ),
-                      AppFormField(
-                        appInputField: AppInputField(
-                          textEditingController: _emailTextController,
-                          label: Res.str.email,
-                          textInputType: TextInputType.emailAddress,
-                          goNextOnComplete: true,
-                          borderRadius: Res.dimen.defaultBorderRadiusValue,
-                          validator: onEmailValidation,
-                        ),
-                      ),
-                      AppFormField(
-                        appInputField: AppInputField(
-                          textEditingController: _passwordTextController,
-                          label: Res.str.password,
-                          textInputType: TextInputType.visiblePassword,
-                          obscureText: _hidePassword,
-                          goNextOnComplete:
-                              isCurrentPageLogInPage ? false : true,
-                          borderRadius: Res.dimen.defaultBorderRadiusValue,
-                          validator: onPasswordValidation,
-                          suffixIcon: IconButton(
-                            focusNode: FocusNode(skipTraversal: true),
-                            onPressed: () {
-                              setState(() {
-                                _hidePassword = !_hidePassword;
-                              });
-                            },
-                            icon: Icon(
-                              _hidePassword
-                                  ? Icons.visibility_off_outlined
-                                  : Icons.visibility_outlined,
-                              color: Res.color.secondaryIconButton,
-                              size: Res.dimen.iconSizeNormal,
-                            ),
-                          ),
-                        ),
-                      ),
-                      AnimatedSizeContainer(
-                        animateForward: !isCurrentPageLogInPage,
-                        animateOnInit: true,
-                        axisAlignment: 1,
-                        axis: Axis.vertical,
-                        child: AppFormField(
-                          appInputField: AppInputField(
-                            textEditingController:
-                                _confirmPasswordTextController,
-                            label: Res.str.confirmPassword,
-                            textInputType: TextInputType.visiblePassword,
-                            obscureText: _hideConfirmPassword,
-                            goNextOnComplete: false,
-                            borderRadius: Res.dimen.defaultBorderRadiusValue,
-                            validator: onConfirmPasswordValidation,
-                            suffixIcon: IconButton(
-                              focusNode: FocusNode(skipTraversal: true),
-                              onPressed: () {
-                                setState(() {
-                                  _hideConfirmPassword = !_hideConfirmPassword;
-                                });
-                              },
-                              icon: Icon(
-                                _hideConfirmPassword
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility_outlined,
-                                color: Res.color.secondaryIconButton,
-                                size: Res.dimen.iconSizeNormal,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: Res.dimen.normalSpacingValue,
-                      ),
-                      AppButton(
-                        text: Text(
-                          isCurrentPageLogInPage
-                              ? Res.str.logIn
-                              : Res.str.signUp,
-                        ),
-                        onTap: onSubmitTap,
-                        borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
-                      ),
-                      SizedBox(
-                        height: Res.dimen.normalSpacingValue,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: AppDivider(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: Res.dimen.normalSpacingValue,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            Res.str.or,
-                            style: Res.textStyles.ternary,
-                          ),
-                          Expanded(
-                            child: AppDivider(
-                              margin: EdgeInsets.symmetric(
-                                horizontal: Res.dimen.normalSpacingValue,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: Res.dimen.normalSpacingValue,
-                      ),
-                      AppButton(
-                        text: Text(Res.str.googleLogIn),
-                        onTap: onGoogleLogInTap,
-                        icon: SvgPicture.asset(
-                          Res.assets.icGoogleSvg,
-                          width: Res.dimen.iconSizeNormal,
-                          height: Res.dimen.iconSizeNormal,
-                        ),
-                        backgroundColor: Res.color.buttonHollowBg,
-                        contentColor: Res.color.buttonHollowContent,
-                        tintIconWithContentColor: false,
-                        borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
-                        border: Border.all(
-                          color: Res.color.buttonHollowBorder,
-                        ),
-                      ),
-                      SizedBox(
-                        height: Res.dimen.hugeSpacingValue,
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: Res.dimen.xsSpacingValue,
-                        runSpacing: Res.dimen.xsSpacingValue,
-                        children: <Widget>[
-                          Text(
-                            Res.str.byContinuingYouAgreeTo,
-                            style: Res.textStyles.secondary,
-                            textAlign: TextAlign.center,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: onPrivacyPolicyTap,
-                                child: Text(
-                                  Res.str.privacyPolicy,
-                                  style: Res.textStyles.link,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Text(
-                                " ${Res.str.and} ",
-                                style: Res.textStyles.secondary,
-                                textAlign: TextAlign.center,
-                              ),
-                              GestureDetector(
-                                onTap: onTermsOfUseTap,
-                                child: Text(
-                                  Res.str.termsOfUse,
-                                  style: Res.textStyles.link,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+    return WillPopScope(
+      onWillPop: () async {
+        return context.read<AuthApiNotifier>().authResponse.callStatus !=
+            NetworkCallStatus.loading;
+      },
+      child: PlatformScaffold(
+        backgroundColor: Res.color.pageBg,
+        body: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              child: AppContainer(
+                animated: true,
+                margin: EdgeInsets.all(Res.dimen.largeSpacingValue),
+                padding: EdgeInsets.all(Res.dimen.largeSpacingValue),
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.height,
+                ),
+                child: DefaultTabController(
+                  animationDuration: Res.durations.defaultDuration,
+                  length: _pageModels.length,
+                  child: Form(
+                    key: _formKey,
+                    child: getFormContentsOrLoading(),
                   ),
                 ),
               ),
@@ -286,6 +122,239 @@ class _AuthPageState extends State<AuthPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget getFormContentsOrLoading() {
+    return NetworkWidgetLight(
+      callStatusSelector: (BuildContext context) {
+        return context.select(
+          (AuthApiNotifier? apiNotifier) =>
+              apiNotifier?.authResponse.callStatus ?? NetworkCallStatus.none,
+        );
+      },
+      onStatusNoInternet: onStatusNoInternet,
+      onStatusFailed: onStatusFailed,
+      onStatusSuccess: onStatusSuccess,
+      childBuilder: (BuildContext context, NetworkCallStatus callStatus) {
+        Widget resultWidget;
+
+        if (callStatus == NetworkCallStatus.loading) {
+          resultWidget = const AppCircularProgress();
+        } else {
+          resultWidget = Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  constraints: const BoxConstraints(
+                    maxWidth: 200,
+                  ),
+                  child: AppTabBar(
+                    tabs: _pageModels.map((PageModel page) {
+                      return Tab(
+                        text: page.title,
+                      );
+                    }).toList(),
+                    onTabChange: onTabChange,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Res.dimen.largeSpacingValue,
+              ),
+              AnimatedSizeContainer(
+                animateForward: !isCurrentPageLogInPage,
+                animateOnInit: true,
+                axisAlignment: 1,
+                axis: Axis.vertical,
+                child: AppFormField(
+                  appInputField: AppInputField(
+                    textEditingController: _nameTextController,
+                    label: Res.str.fullName,
+                    textInputType: TextInputType.name,
+                    goNextOnComplete: true,
+                    borderRadius: Res.dimen.defaultBorderRadiusValue,
+                    validator: onNameValidation,
+                  ),
+                ),
+              ),
+              AppFormField(
+                appInputField: AppInputField(
+                  textEditingController: _emailTextController,
+                  label: Res.str.email,
+                  textInputType: TextInputType.emailAddress,
+                  goNextOnComplete: true,
+                  borderRadius: Res.dimen.defaultBorderRadiusValue,
+                  validator: onEmailValidation,
+                ),
+              ),
+              AppFormField(
+                appInputField: AppInputField(
+                  textEditingController: _passwordTextController,
+                  label: Res.str.password,
+                  textInputType: TextInputType.visiblePassword,
+                  obscureText: _hidePassword,
+                  goNextOnComplete: isCurrentPageLogInPage ? false : true,
+                  borderRadius: Res.dimen.defaultBorderRadiusValue,
+                  validator: onPasswordValidation,
+                  suffixIcon: IconButton(
+                    focusNode: FocusNode(skipTraversal: true),
+                    onPressed: () {
+                      setState(() {
+                        _hidePassword = !_hidePassword;
+                      });
+                    },
+                    icon: Icon(
+                      _hidePassword
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
+                      color: Res.color.secondaryIconButton,
+                      size: Res.dimen.iconSizeNormal,
+                    ),
+                  ),
+                ),
+              ),
+              AnimatedSizeContainer(
+                animateForward: !isCurrentPageLogInPage,
+                animateOnInit: true,
+                axisAlignment: 1,
+                axis: Axis.vertical,
+                child: AppFormField(
+                  appInputField: AppInputField(
+                    textEditingController: _confirmPasswordTextController,
+                    label: Res.str.confirmPassword,
+                    textInputType: TextInputType.visiblePassword,
+                    obscureText: _hideConfirmPassword,
+                    goNextOnComplete: false,
+                    borderRadius: Res.dimen.defaultBorderRadiusValue,
+                    validator: onConfirmPasswordValidation,
+                    suffixIcon: IconButton(
+                      focusNode: FocusNode(skipTraversal: true),
+                      onPressed: () {
+                        setState(() {
+                          _hideConfirmPassword = !_hideConfirmPassword;
+                        });
+                      },
+                      icon: Icon(
+                        _hideConfirmPassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        color: Res.color.secondaryIconButton,
+                        size: Res.dimen.iconSizeNormal,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: Res.dimen.normalSpacingValue,
+              ),
+              AppButton(
+                text: Text(
+                  isCurrentPageLogInPage ? Res.str.logIn : Res.str.signUp,
+                ),
+                onTap: onSubmitTap,
+                borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
+              ),
+              SizedBox(
+                height: Res.dimen.normalSpacingValue,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: AppDivider(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: Res.dimen.normalSpacingValue,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    Res.str.or,
+                    style: Res.textStyles.ternary,
+                  ),
+                  Expanded(
+                    child: AppDivider(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: Res.dimen.normalSpacingValue,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: Res.dimen.normalSpacingValue,
+              ),
+              AppButton(
+                text: Text(Res.str.googleLogIn),
+                onTap: onGoogleLogInTap,
+                icon: SvgPicture.asset(
+                  Res.assets.icGoogleSvg,
+                  width: Res.dimen.iconSizeNormal,
+                  height: Res.dimen.iconSizeNormal,
+                ),
+                backgroundColor: Res.color.buttonHollowBg,
+                contentColor: Res.color.buttonHollowContent,
+                tintIconWithContentColor: false,
+                borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
+                border: Border.all(
+                  color: Res.color.buttonHollowBorder,
+                ),
+              ),
+              SizedBox(
+                height: Res.dimen.hugeSpacingValue,
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: Res.dimen.xsSpacingValue,
+                runSpacing: Res.dimen.xsSpacingValue,
+                children: <Widget>[
+                  Text(
+                    Res.str.byContinuingYouAgreeTo,
+                    style: Res.textStyles.secondary,
+                    textAlign: TextAlign.center,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: onPrivacyPolicyTap,
+                        child: Text(
+                          Res.str.privacyPolicy,
+                          style: Res.textStyles.link,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Text(
+                        " ${Res.str.and} ",
+                        style: Res.textStyles.secondary,
+                        textAlign: TextAlign.center,
+                      ),
+                      GestureDetector(
+                        onTap: onTermsOfUseTap,
+                        child: Text(
+                          Res.str.termsOfUse,
+                          style: Res.textStyles.link,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          );
+        }
+
+        resultWidget = AnimatedSwitcher(
+          duration: Res.durations.defaultDuration,
+          switchInCurve: Res.curves.defaultCurve,
+          switchOutCurve: Res.curves.defaultCurve,
+          child: resultWidget,
+        );
+
+        return resultWidget;
+      },
     );
   }
 
@@ -299,8 +368,26 @@ class _AuthPageState extends State<AuthPage> {
     });
   }
 
+  String? onNameValidation(String? value) {
+    if (isCurrentPageLogInPage) return null;
+
+    String name = _nameTextController.text.trim();
+
+    if (name.isEmpty) {
+      return Res.str.enterName;
+    } else if (name.length < 5) {
+      return Res.str.nameTooSmall;
+    } else if (name.length >= 20) {
+      return Res.str.nameTooBig;
+    }
+
+    return null;
+  }
+
   String? onEmailValidation(String? value) {
-    return EmailValidator.validate(value ?? "") ? null : Res.str.invalidEmail;
+    return EmailValidator.validate(value?.trim() ?? "")
+        ? null
+        : Res.str.invalidEmail;
   }
 
   String? onPasswordValidation(String? value) {
@@ -308,8 +395,10 @@ class _AuthPageState extends State<AuthPage> {
 
     if (password.isEmpty) {
       return Res.str.enterPassword;
-    } else if (password.length < 4) {
+    } else if (password.length < 5) {
       return Res.str.passwordTooSmall;
+    } else if (password.length >= 20) {
+      return Res.str.passwordTooBig;
     }
 
     if (!isCurrentPageLogInPage) {
@@ -323,32 +412,47 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   String? onConfirmPasswordValidation(String? value) {
-    if (!isCurrentPageLogInPage) {
-      String password = _passwordTextController.text;
-      String confirmPassword = _confirmPasswordTextController.text;
-      if (password != confirmPassword) {
-        return Res.str.passwordsNotMatched;
-      }
+    if (isCurrentPageLogInPage) return null;
+
+    String password = _passwordTextController.text;
+    String confirmPassword = _confirmPasswordTextController.text;
+    if (password != confirmPassword) {
+      return Res.str.passwordsNotMatched;
     }
 
     return null;
   }
 
   void onSubmitTap() {
-    // TODO Uncomment validation when auth is properly implemented
-    // if (_formKey.currentState?.validate() ?? false) {
-    // _formKey.currentState?.save();
+    if (handleIfAlreadyAuthenticated()) return;
+    if (_formKey.currentState?.validate() != true) return;
 
-    if (widget.closeAfterAuthDone) {
-      Routes.goBack(context);
+    _formKey.currentState?.save();
+    AuthApiNotifier authNotifier = context.read<AuthApiNotifier>();
+
+    if (isCurrentPageLogInPage) {
+      authNotifier.signInWithEmailPassword(
+        context,
+        SignInPostRequest(
+          email: _emailTextController.text.trim(),
+          password: _passwordTextController.text,
+        ),
+      );
     } else {
-      Routes.openLandingPage(context);
+      authNotifier.signUpWithEmailPassword(
+        context,
+        SignUpPostRequest(
+          name: _nameTextController.text.trim(),
+          email: _emailTextController.text.trim(),
+          password: _passwordTextController.text,
+        ),
+      );
     }
-    // }
   }
 
   void onGoogleLogInTap() {
-    // TODO Implement google log in
+    if (handleIfAlreadyAuthenticated()) return;
+    context.read<AuthApiNotifier>().signInWithGoogle(context);
   }
 
   void onPrivacyPolicyTap() {
@@ -357,5 +461,72 @@ class _AuthPageState extends State<AuthPage> {
 
   void onTermsOfUseTap() {
     // TODO Show terms of use
+  }
+
+  bool handleIfAlreadyAuthenticated() {
+    if (!UserBox.isLoggedIn) return false;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.authenticatedTitle,
+          message: Res.str.authenticatedMessage,
+          contentType: ContentType.help,
+        ),
+      );
+    });
+
+    return true;
+  }
+
+  void onStatusNoInternet() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.noInternetTitle,
+          message: Res.str.noInternetDescription,
+          contentType: ContentType.help,
+        ),
+      );
+    });
+
+    context.read<UserNotifier>().logOut();
+  }
+
+  void onStatusFailed() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.errorTitle,
+          message:
+              isCurrentPageLogInPage ? Res.str.errorLogIn : Res.str.errorSignUp,
+          contentType: ContentType.failure,
+        ),
+      );
+    });
+
+    context.read<UserNotifier>().logOut();
+  }
+
+  void onStatusSuccess() {
+    Utils.log("[2] Current access token => ${UserBox.accessToken}");
+    Utils.log("[2] Current user => ${UserBox.currentUser}");
+
+    if (!UserBox.isLoggedIn) {
+      onStatusFailed();
+      return;
+    }
+
+    Routes.goBack(context);
+    widget.redirectOnSuccess?.call(context);
   }
 }
