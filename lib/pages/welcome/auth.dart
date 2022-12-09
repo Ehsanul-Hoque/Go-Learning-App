@@ -17,7 +17,6 @@ import "package:app/network/models/api_auth/sign_in_post_request.dart";
 import "package:app/network/models/api_auth/sign_up_post_request.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/views/network_widget_light.dart";
-import "package:app/routes.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:app/utils/typedefs.dart";
 import "package:app/utils/utils.dart";
@@ -103,9 +102,11 @@ class _AuthPageState extends State<AuthPage> {
           child: Center(
             child: SingleChildScrollView(
               child: AppContainer(
-                animated: true,
+                // backgroundColor: Res.color.pageBg,
                 margin: EdgeInsets.all(Res.dimen.largeSpacingValue),
                 padding: EdgeInsets.all(Res.dimen.largeSpacingValue),
+                shadow: <BoxShadow>[Res.shadows.lighter],
+                border: Border.all(color: Res.color.containerBorder),
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.height,
                 ),
@@ -194,6 +195,7 @@ class _AuthPageState extends State<AuthPage> {
                   textEditingController: _passwordTextController,
                   label: Res.str.password,
                   textInputType: TextInputType.visiblePassword,
+                  maxLength: 20,
                   obscureText: _hidePassword,
                   goNextOnComplete: isCurrentPageLogInPage ? false : true,
                   borderRadius: Res.dimen.defaultBorderRadiusValue,
@@ -225,6 +227,7 @@ class _AuthPageState extends State<AuthPage> {
                     textEditingController: _confirmPasswordTextController,
                     label: Res.str.confirmPassword,
                     textInputType: TextInputType.visiblePassword,
+                    maxLength: 20,
                     obscureText: _hideConfirmPassword,
                     goNextOnComplete: false,
                     borderRadius: Res.dimen.defaultBorderRadiusValue,
@@ -346,11 +349,15 @@ class _AuthPageState extends State<AuthPage> {
           );
         }
 
-        resultWidget = AnimatedSwitcher(
+        resultWidget = AnimatedSize(
           duration: Res.durations.defaultDuration,
-          switchInCurve: Res.curves.defaultCurve,
-          switchOutCurve: Res.curves.defaultCurve,
-          child: resultWidget,
+          curve: Res.curves.defaultCurve,
+          child: AnimatedSwitcher(
+            duration: Res.durations.defaultDuration,
+            switchInCurve: Res.curves.defaultCurve,
+            switchOutCurve: Res.curves.defaultCurve,
+            child: resultWidget,
+          ),
         );
 
         return resultWidget;
@@ -526,7 +533,6 @@ class _AuthPageState extends State<AuthPage> {
       return;
     }
 
-    Routes.goBack(context);
     widget.redirectOnSuccess?.call(context);
   }
 }
