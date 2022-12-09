@@ -97,7 +97,7 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                 right: 0,
                 child: MyPlatformAppBar(
                   config: MyAppBarConfig(
-                    avatarConfig: MyAppBarAvatarConfig(),
+                    avatarConfig: MyAppBarAvatarConfig(context: context),
                     endActions: <Widget>[
                       IconButton(
                         constraints: const BoxConstraints(),

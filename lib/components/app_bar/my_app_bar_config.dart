@@ -1,4 +1,7 @@
 import "package:app/app_config/resources.dart";
+import "package:app/local_storage/boxes/userbox.dart";
+import "package:app/routes.dart";
+import "package:app/utils/typedefs.dart" show OnTapListener;
 import "package:flutter/widgets.dart";
 
 class MyAppBarConfig {
@@ -47,17 +50,34 @@ class MyAppBarAvatarConfig {
   final double avatarRadius;
   final Duration animationDuration;
   final Curve animationCurve;
+  final OnTapListener onAvatarTap;
 
   MyAppBarAvatarConfig({
+    required BuildContext context,
     Color? avatarBackgroundColor,
     double? avatarCenterX,
     double? avatarRadius,
     Duration? animationDuration,
     Curve? animationCurve,
+    OnTapListener? onAvatarTap,
   })  : avatarBackgroundColor =
             avatarBackgroundColor ?? Res.color.appBarAvatarBg,
         avatarCenterX = avatarCenterX ?? Res.dimen.appBarAvatarCenterX,
         avatarRadius = avatarRadius ?? Res.dimen.appBarAvatarRadius,
         animationDuration = animationDuration ?? Res.durations.defaultDuration,
-        animationCurve = animationCurve ?? Res.curves.defaultCurve;
+        animationCurve = animationCurve ?? Res.curves.defaultCurve,
+        onAvatarTap = onAvatarTap ?? (() => _defaultAvatarTapListener(context));
+
+  static void _defaultAvatarTapListener(BuildContext context) {
+    if (UserBox.hasAccessToken) {
+      Routes().openUserProfilePage(context);
+    } else {
+      Routes().openAuthPage(
+        context,
+        redirectOnSuccess: (BuildContext context) =>
+            Routes(config: const RoutesConfig(replace: true))
+                .openUserProfilePage(context),
+      );
+    }
+  }
 }

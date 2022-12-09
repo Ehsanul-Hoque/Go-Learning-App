@@ -5,6 +5,7 @@ import "package:app/pages/course/course_before_enroll.dart";
 import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/pages/home/landing.dart";
+import "package:app/pages/profile/user_profile.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:app/utils/typedefs.dart";
 import "package:flutter/material.dart" show MaterialPageRoute;
@@ -64,6 +65,14 @@ class Routes {
         context,
         (BuildContext context) =>
             CourseCheckout(course: course, finalPrice: finalPrice),
+        replace: config.replace,
+      );
+
+  /// Route method to open the user profile page
+  Future<void> openUserProfilePage(BuildContext context) =>
+      RoutesHelper._toOrReplace<void>(
+        context,
+        (BuildContext context) => const UserProfile(),
         replace: config.replace,
       );
 

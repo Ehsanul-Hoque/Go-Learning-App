@@ -59,11 +59,14 @@ class MyAppBarFullContent extends StatelessWidget {
             Positioned(
               bottom: -avatarRadius,
               left: avatarCenterX - avatarRadius,
-              child: MyCircleAvatar(
-                imageUrl:
-                    SampleData.avatar, // TODO Get profile picture from API
-                radius: avatarRadius,
-                padding: Res.dimen.defaultBorderThickness,
+              child: GestureDetector(
+                onTap: config.avatarConfig?.onAvatarTap,
+                child: MyCircleAvatar(
+                  imageUrl:
+                      SampleData.avatar, // TODO Get profile picture from API
+                  radius: avatarRadius,
+                  padding: Res.dimen.defaultBorderThickness,
+                ),
               ),
             ),
         ],
