@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "316454647203",
+    "project_id": "go-learning-bd",
+    "storage_bucket": "go-learning-bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:316454647203:android:0fa73bbc0950074335d616",
+        "android_client_info": {
+          "package_name": "com.golearningbd.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "316454647203-pit60au53n3p9uhf6q7mnj8eaeberpmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.golearningbd.app",
+            "certificate_hash": "e79405e29e8dac73d0ff572842009595478b6aa1"
+          }
+        },
+        {
+          "client_id": "316454647203-b7uoqu93lvgcs22vhfk8mc5gqrr05qfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM0mkvAzbYYF4trYxNrf8yadf8g9iw1Q0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "316454647203-b7uoqu93lvgcs22vhfk8mc5gqrr05qfv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

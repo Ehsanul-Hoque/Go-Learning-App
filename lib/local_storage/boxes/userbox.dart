@@ -2,6 +2,7 @@ import "package:app/local_storage/app_objectbox.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/auth_post_response.dart";
 import "package:app/network/network.dart";
+import "package:app/network/notifiers/auth_api_notifier.dart" show googleSignIn;
 import "package:app/objectbox.g.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 
@@ -59,9 +60,10 @@ class UserBox {
 
   static bool get isLoggedIn => hasAccessToken && (currentUser != null);
 
-  static void logOut() {
+  static Future<void> logOut() async {
     setAccessToken(null);
     setCurrentUser(null);
+    await googleSignIn.signOut();
     Network.resetAllResponses();
   }
 }

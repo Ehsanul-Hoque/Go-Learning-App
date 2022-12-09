@@ -85,7 +85,8 @@ class NetworkCall<DI, DO> {
         return response;
       }
 
-      http.Response? httpResponse = await _getHttpResponse(apiFullUrl);
+      http.Response? httpResponse =
+          await _getHttpResponse(apiFullUrl, logSteps: logSteps);
 
       if (httpResponse == null) {
         response.callStatus = NetworkCallStatus.failed;
@@ -132,7 +133,10 @@ class NetworkCall<DI, DO> {
   }
 
   /// Private method to get an HTTP response
-  Future<http.Response?> _getHttpResponse(String apiFullUrl) async {
+  Future<http.Response?> _getHttpResponse(
+    String apiFullUrl, {
+    bool logSteps = true,
+  }) async {
     switch (request.callType) {
       case NetworkCallType.get:
         return http.get(
@@ -141,6 +145,10 @@ class NetworkCall<DI, DO> {
         );
 
       case NetworkCallType.post:
+        NetLog().d(
+          "$logTag post body = ${request.body}",
+          showLog: logSteps,
+        );
         return http.post(
           Uri.parse(apiFullUrl),
           headers: request.headers ?? client.headers,

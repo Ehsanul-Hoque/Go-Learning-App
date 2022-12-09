@@ -40,8 +40,8 @@ class UserNotifier extends ChangeNotifier {
   bool get isLoggedIn => UserBox.isLoggedIn;
 
   /// Method to log out
-  void logOut() {
-    UserBox.logOut();
+  Future<void> logOut() async {
+    await UserBox.logOut();
     notifyListeners();
   }
 }

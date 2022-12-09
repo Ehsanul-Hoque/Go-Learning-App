@@ -26,10 +26,7 @@ import "package:provider/provider.dart"
     show ChangeNotifierProvider, ReadContext;
 import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  clientId:
-      "901568231687-t771hpsgnltpk5f86edui2cakmuk6rpr.apps.googleusercontent.com",
+GoogleSignIn googleSignIn = GoogleSignIn(
   scopes: <String>[
     "email",
     "profile",
@@ -61,8 +58,8 @@ class AuthApiNotifier extends ApiNotifier {
   Future<NetworkResponse<AuthPostResponse>> signUpWithEmailPassword(
     BuildContext context,
     SignUpPostRequest requestBody,
-  ) {
-    context.read<UserNotifier?>()?.logOut();
+  ) async {
+    await context.read<UserNotifier?>()?.logOut();
 
     return const Network().createExecuteCall(
       client: defaultClient,
@@ -97,8 +94,8 @@ class AuthApiNotifier extends ApiNotifier {
   Future<NetworkResponse<AuthPostResponse>> signInWithEmailPassword(
     BuildContext context,
     SignInPostRequest requestBody,
-  ) {
-    context.read<UserNotifier?>()?.logOut();
+  ) async {
+    await context.read<UserNotifier?>()?.logOut();
 
     return const Network().createExecuteCall(
       client: defaultClient,
@@ -133,10 +130,10 @@ class AuthApiNotifier extends ApiNotifier {
   Future<NetworkResponse<AuthPostResponse>> signInWithGoogle(
     BuildContext context,
   ) async {
-    context.read<UserNotifier?>()?.logOut();
+    await context.read<UserNotifier?>()?.logOut();
 
     try {
-      GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+      GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
       GoogleSignInAuthentication? googleAuth =
           await googleSignInAccount?.authentication;
       String? idToken = googleAuth?.idToken;
@@ -176,6 +173,7 @@ class AuthApiNotifier extends ApiNotifier {
       Utils.log("", error: e, stackTrace: s);
 
       try {
+        // ignore: use_build_context_synchronously
         context.showSnackBar(
           AppSnackBarContent(
             title: Res.str.sorryTitle,
