@@ -20,7 +20,9 @@ import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/api_notifier.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:app/utils/utils.dart";
+import "package:dart_jsonwebtoken/dart_jsonwebtoken.dart";
 import "package:flutter/widgets.dart" show BuildContext;
+import "package:flutter_dotenv/flutter_dotenv.dart";
 import "package:google_sign_in/google_sign_in.dart";
 import "package:provider/provider.dart"
     show ChangeNotifierProvider, ReadContext;
@@ -136,9 +138,15 @@ class AuthApiNotifier extends ApiNotifier {
       GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
       GoogleSignInAuthentication? googleAuth =
           await googleSignInAccount?.authentication;
-      String? idToken = googleAuth?.idToken;
+      // String? uid = googleSignInAccount?.id;
+      // String? accessToken = googleAuth?.accessToken;
+      // String? idToken = googleAuth?.idToken;
+      String? authCode = googleSignInAccount?.serverAuthCode;
 
-      if (idToken == null) {
+      // Utils.log("google access token = $accessToken");
+      // Utils.log("google id token = $idToken");
+
+      if (authCode == null) {
         // ignore: use_build_context_synchronously
         context.showSnackBar(
           AppSnackBarContent(
@@ -151,12 +159,24 @@ class AuthApiNotifier extends ApiNotifier {
         return signInWithGoogleResponse;
       }
 
+      JWT jwt = JWT(
+        <String, String?>{
+          "uid": authCode,
+        },
+        issuer: "https://golearningbd.com",
+      );
+
+      String oneTimeToken = jwt.sign(
+        SecretKey(dotenv.env["GOOGLE_TOKEN_SECRET"]!),
+        expiresIn: const Duration(days: 30),
+      );
+
       return const Network().createExecuteCall(
         client: defaultClient,
         requestInterceptors: <NetworkRequestInterceptor>[GuestInterceptor()],
         request: NetworkRequest.post(
           apiEndPoint: signInTokenizePostApiEndpoint,
-          body: TokenizeSignInPostRequest(onetimeToken: idToken).toJson(),
+          body: TokenizeSignInPostRequest(onetimeToken: oneTimeToken).toJson(),
         ),
         responseConverter: const JsonObjectConverter<AuthPostResponse>(
           AuthPostResponse.fromJson,

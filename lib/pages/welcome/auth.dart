@@ -2,7 +2,6 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_button.dart";
 import "package:app/components/app_circular_progress.dart";
-import "package:app/components/app_divider.dart";
 import "package:app/components/fields/app_form_field.dart";
 import "package:app/components/fields/app_input_field.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
@@ -25,7 +24,6 @@ import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Tab;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
-import "package:flutter_svg/flutter_svg.dart";
 import "package:provider/provider.dart";
 
 class AuthPage extends StatefulWidget {
@@ -260,7 +258,7 @@ class _AuthPageState extends State<AuthPage> {
                 onTap: onSubmitTap,
                 borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
               ),
-              SizedBox(
+              /*SizedBox(
                 height: Res.dimen.normalSpacingValue,
               ),
               Row(
@@ -303,7 +301,7 @@ class _AuthPageState extends State<AuthPage> {
                 border: Border.all(
                   color: Res.color.buttonHollowBorder,
                 ),
-              ),
+              ),*/
               SizedBox(
                 height: Res.dimen.hugeSpacingValue,
               ),

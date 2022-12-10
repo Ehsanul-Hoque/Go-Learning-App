@@ -10,6 +10,7 @@ import "package:app/pages/splash_page.dart";
 import "package:flutter/services.dart"
     show SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
+import "package:flutter_dotenv/flutter_dotenv.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart"
     show PlatformApp;
 import "package:provider/provider.dart" show MultiProvider;
@@ -26,6 +27,7 @@ void main() async {
       (FlutterErrorDetails details) => AppErrorScreen(error: details.exception);*/
 
   appObjectBox = await AppObjectBox.create();
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }
