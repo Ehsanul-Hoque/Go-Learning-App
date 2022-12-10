@@ -1,20 +1,20 @@
-enum AuthResponseMessage {
+enum AuthResponseMessageType {
   noAccount("no account found"),
   alreadyHasAccount("the email is already in use"),
   invalidPassword("incorrect password"),
   tooSmallPassword("\"password\" length must be at least"),
   tooSmallName("\"name\" length must be at least"),
-  unknown("");
+  unknown("---");
 
   final String message;
 
-  const AuthResponseMessage(this.message);
+  const AuthResponseMessageType(this.message);
 
-  static AuthResponseMessage valueOf(String message) {
-    return AuthResponseMessage.values.firstWhere(
-      (AuthResponseMessage element) =>
+  static AuthResponseMessageType valueOf(String message) {
+    return AuthResponseMessageType.values.firstWhere(
+      (AuthResponseMessageType element) =>
           message.toLowerCase().contains(element.message.toLowerCase()),
-      orElse: () => AuthResponseMessage.unknown,
+      orElse: () => AuthResponseMessageType.unknown,
     );
   }
 }

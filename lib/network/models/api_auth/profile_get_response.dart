@@ -112,7 +112,8 @@ class ProfileGetResponseData extends ApiModel {
     if (dbValue == null) {
       enrolledCourses == null;
     } else {
-      enrolledCourses = json.decode(dbValue);
+      enrolledCourses =
+          (json.decode(dbValue) as List<dynamic>?)?.cast<String?>();
     }
   }
 

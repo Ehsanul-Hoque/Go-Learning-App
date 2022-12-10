@@ -43,6 +43,14 @@ class NetworkResponse<T> {
     error = null;
   }
 
+  /// Method to copy from another response object
+  void copyFrom(NetworkResponse<T> other) {
+    callStatus = other.callStatus;
+    httpResponse = other.httpResponse;
+    result = other.result;
+    error = other.error;
+  }
+
   /// toString() method
   @override
   String toString() {

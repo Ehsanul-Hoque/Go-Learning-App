@@ -24,11 +24,11 @@ class RawResponseInterceptorResult {
 }
 
 class ProcessedResponseInterceptorResult<DO> {
-  final NetworkResponse<DO>? response;
+  final NetworkResponse<DO> response;
   final NetworkError? error;
 
   ProcessedResponseInterceptorResult({
-    this.response,
+    required this.response,
     this.error,
   });
 }

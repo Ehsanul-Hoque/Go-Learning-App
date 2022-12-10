@@ -16,6 +16,7 @@ abstract class StringsBase {
   final String termsOfUse = "";
   final String and = "";
 
+  final String profile = "";
   final String editProfile = "";
   final String paymentHistory = "";
   final String logOut = "";
@@ -110,6 +111,12 @@ abstract class StringsBase {
   final String authenticatedMessage = "";
   final String unauthenticatedTitle = "";
   final String unauthenticatedMessage = "";
+
+  final String emailNotRegistered = "";
+  final String accountAlreadyExists = "";
+  final String incorrectPassword = "";
+  final String passwordTooSmallLongMessage = "";
+  final String nameTooSmallLongMessage = "";
 
   final String generalError = "";
   final String startNetworkCall = "";

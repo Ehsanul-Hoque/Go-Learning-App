@@ -3,6 +3,7 @@ import "dart:convert";
 import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/enums/network_call_type.dart";
+import "package:app/network/interceptors/interceptor_result.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/network_callback.dart";
 import "package:app/network/network_client.dart";
@@ -22,6 +23,7 @@ class NetworkCall<DI, DO> {
     required this.response,
     required this.responseConverter,
     this.requestInterceptors,
+    this.responseInterceptors,
     this.callback,
   });
 
@@ -42,6 +44,9 @@ class NetworkCall<DI, DO> {
 
   /// Request interceptors
   final List<NetworkRequestInterceptor>? requestInterceptors;
+
+  /// Request interceptors
+  final List<NetworkResponseInterceptor<DO>>? responseInterceptors;
 
   // Some getters
   String get apiFullUrl =>
@@ -88,6 +93,9 @@ class NetworkCall<DI, DO> {
       http.Response? httpResponse =
           await _getHttpResponse(apiFullUrl, logSteps: logSteps);
 
+      httpResponse =
+          _runRawResponseInterceptors(responseInterceptors, httpResponse);
+
       if (httpResponse == null) {
         response.callStatus = NetworkCallStatus.failed;
         callback?.onFailed?.call(response);
@@ -97,6 +105,9 @@ class NetworkCall<DI, DO> {
 
       response.httpResponse = httpResponse;
       _processHttpResponse();
+      // Utils.log("response [3]: $response");
+      _runProcessedResponseInterceptors(responseInterceptors, response);
+      // Utils.log("response [4]: $response");
 
       if (response.callStatus == NetworkCallStatus.success) {
         callback?.onSuccess?.call(response);
@@ -166,10 +177,7 @@ class NetworkCall<DI, DO> {
     }
 
     if (httpResponse.statusCode >= 200 && httpResponse.statusCode < 300) {
-      response
-        ..callStatus = NetworkCallStatus.success
-        ..httpResponse = httpResponse
-        ..result = responseConverter.fromJsonToDart(httpResponse.body);
+      response.callStatus = NetworkCallStatus.success;
     } else {
       response
         ..callStatus = NetworkCallStatus.failed
@@ -177,6 +185,54 @@ class NetworkCall<DI, DO> {
           title: "${httpResponse.statusCode}!",
           message: httpResponse.reasonPhrase ?? "",
         );
+    }
+
+    response
+      ..httpResponse = httpResponse
+      ..result = responseConverter.fromJsonToDart(httpResponse.body);
+  }
+
+  /// Private method to run the raw response interceptors
+  static http.Response? _runRawResponseInterceptors<DO>(
+    List<NetworkResponseInterceptor<DO>>? responseInterceptors,
+    http.Response? httpResponse,
+  ) {
+    if (responseInterceptors != null) {
+      http.Response? interceptedResponse = httpResponse;
+
+      for (NetworkResponseInterceptor<DO> interceptor in responseInterceptors) {
+        if (interceptedResponse != null) {
+          RawResponseInterceptorResult interceptorResult =
+              interceptor.interceptRawResponseBody(interceptedResponse);
+
+          interceptedResponse = interceptorResult.httpResponse;
+        } else {
+          break;
+        }
+      }
+
+      httpResponse = interceptedResponse;
+    }
+
+    return httpResponse;
+  }
+
+  /// Private method to run the processed response interceptors
+  static void _runProcessedResponseInterceptors<DO>(
+    List<NetworkResponseInterceptor<DO>>? responseInterceptors,
+    NetworkResponse<DO> response,
+  ) {
+    if (responseInterceptors != null) {
+      NetworkResponse<DO> interceptedResponse = response;
+
+      for (NetworkResponseInterceptor<DO> interceptor in responseInterceptors) {
+        ProcessedResponseInterceptorResult<DO> interceptorResult =
+            interceptor.interceptProcessedResponse(interceptedResponse);
+
+        interceptedResponse = interceptorResult.response;
+      }
+
+      response.copyFrom(interceptedResponse);
     }
   }
 }

@@ -13,7 +13,7 @@ abstract class NetworkRequestInterceptor {
 abstract class NetworkResponseInterceptor<DO> {
   /// Process raw response
   RawResponseInterceptorResult interceptRawResponseBody(
-    http.Response? httpResponse,
+    http.Response httpResponse,
   );
 
   /// Process response body after it has been converted to dart model

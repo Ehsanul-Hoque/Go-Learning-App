@@ -27,6 +27,7 @@ class Network {
     required NetworkRequest request,
     required JsonConverter<DI, DO> responseConverter,
     List<NetworkRequestInterceptor>? requestInterceptors,
+    List<NetworkResponseInterceptor<DO>>? responseInterceptors,
     NetworkCallback<DO>? callback,
     bool checkCacheFirst = true,
   }) async {
@@ -80,6 +81,8 @@ class Network {
       request: request,
       response: response,
       responseConverter: responseConverter,
+      requestInterceptors: requestInterceptors,
+      responseInterceptors: responseInterceptors,
       callback: callback,
     ).execute();
   }

@@ -20,6 +20,7 @@ class StringsEn implements StringsBase {
   final String termsOfUse = "Terms of Use";
   final String and = "and";
 
+  final String profile = "Profile";
   final String editProfile = "Edit Profile";
   final String paymentHistory = "Payment History";
   final String logOut = "Log Out";
@@ -126,6 +127,18 @@ class StringsEn implements StringsBase {
   final String authenticatedMessage = "Please log out first.";
   final String unauthenticatedTitle = "Unauthenticated!";
   final String unauthenticatedMessage = "Please log in or sign up first.";
+
+  final String emailNotRegistered =
+      "This email has not been registered yet. Please sign up first.";
+  final String accountAlreadyExists =
+      "Already an account exists with this email."
+      " Please log in with this email.";
+  final String incorrectPassword = "Your password is incorrect."
+      " Please write the password again carefully.";
+  final String passwordTooSmallLongMessage = "The password is too small."
+      " Password has to contain minimum 5 characters.";
+  final String nameTooSmallLongMessage = "The name is too small."
+      " Name has to contain minimum 5 characters.";
 
   final String generalError = "Sorry! Some type of problem occurred.";
   final String startNetworkCall = "Please start the network call.";
