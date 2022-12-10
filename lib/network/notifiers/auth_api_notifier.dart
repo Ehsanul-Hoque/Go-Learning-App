@@ -6,6 +6,7 @@ import "package:app/local_storage/notifiers/user_notifier.dart";
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/interceptors/default_interceptors/access_token_interceptor.dart";
+import "package:app/network/interceptors/default_interceptors/auth_response_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
@@ -53,7 +54,7 @@ class AuthApiNotifier extends ApiNotifier {
       );
 
   /// Common response object
-  NetworkResponse<ProfileGetResponse> get authResponse =>
+  NetworkResponse<Object> get authResponse =>
       Network.getOrCreateResponse("auth_response");
 
   /// Methods to sign in with email and password
@@ -70,13 +71,16 @@ class AuthApiNotifier extends ApiNotifier {
         apiEndPoint: signUpPostApiEndpoint,
         body: requestBody.toJson(),
       ),
+      responseInterceptors: <NetworkResponseInterceptor<AuthPostResponse>>[
+        AuthResponseInterceptor(),
+      ],
       responseConverter: const JsonObjectConverter<AuthPostResponse>(
         AuthPostResponse.fromJson,
       ),
       callback: NetworkCallback<AuthPostResponse>(
         onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
         onSuccess: onAccessTokenGetSuccess,
-        onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
+        onFailed: onAccessTokenGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
       checkCacheFirst: false,
@@ -106,13 +110,16 @@ class AuthApiNotifier extends ApiNotifier {
         apiEndPoint: signInPostApiEndpoint,
         body: requestBody.toJson(),
       ),
+      responseInterceptors: <NetworkResponseInterceptor<AuthPostResponse>>[
+        AuthResponseInterceptor(),
+      ],
       responseConverter: const JsonObjectConverter<AuthPostResponse>(
         AuthPostResponse.fromJson,
       ),
       callback: NetworkCallback<AuthPostResponse>(
         onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
         onSuccess: onAccessTokenGetSuccess,
-        onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
+        onFailed: onAccessTokenGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
       checkCacheFirst: false,
@@ -136,8 +143,8 @@ class AuthApiNotifier extends ApiNotifier {
 
     try {
       GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-      GoogleSignInAuthentication? googleAuth =
-          await googleSignInAccount?.authentication;
+      // GoogleSignInAuthentication? googleAuth =
+      //     await googleSignInAccount?.authentication;
       // String? uid = googleSignInAccount?.id;
       // String? accessToken = googleAuth?.accessToken;
       // String? idToken = googleAuth?.idToken;
@@ -178,13 +185,16 @@ class AuthApiNotifier extends ApiNotifier {
           apiEndPoint: signInTokenizePostApiEndpoint,
           body: TokenizeSignInPostRequest(onetimeToken: oneTimeToken).toJson(),
         ),
+        responseInterceptors: <NetworkResponseInterceptor<AuthPostResponse>>[
+          AuthResponseInterceptor(),
+        ],
         responseConverter: const JsonObjectConverter<AuthPostResponse>(
           AuthPostResponse.fromJson,
         ),
         callback: NetworkCallback<AuthPostResponse>(
           onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
           onSuccess: onAccessTokenGetSuccess,
-          onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
+          onFailed: onAccessTokenGetFailed,
           onUpdate: (_) => notifyListeners(),
         ),
         checkCacheFirst: false,
@@ -236,7 +246,7 @@ class AuthApiNotifier extends ApiNotifier {
       callback: NetworkCallback<ProfileGetResponse>(
         onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
         onSuccess: onProfileGetSuccess,
-        onFailed: (_) => authResponse.callStatus = NetworkCallStatus.failed,
+        onFailed: onProfileGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
       checkCacheFirst: false,
@@ -271,15 +281,31 @@ class AuthApiNotifier extends ApiNotifier {
 
   /// Method to set access token and start getting profile
   void onAccessTokenGetSuccess(NetworkResponse<AuthPostResponse> result) {
+    authResponse
+      ..copyFrom(result)
+      // Set to loading instead of success because we have to get profile now
+      ..callStatus = NetworkCallStatus.loading;
+
     UserBox.setAccessToken(result.result);
     getProfile();
   }
 
+  void onAccessTokenGetFailed(NetworkResponse<AuthPostResponse> result) {
+    authResponse
+      ..copyFrom(result)
+      ..callStatus = NetworkCallStatus.failed;
+  }
+
   void onProfileGetSuccess(NetworkResponse<ProfileGetResponse> result) {
     authResponse
-      ..callStatus = NetworkCallStatus.success
-      ..httpResponse = result.httpResponse
-      ..result = result.result;
+      ..copyFrom(result)
+      ..callStatus = NetworkCallStatus.success;
     UserBox.setCurrentUser(result.result?.data);
+  }
+
+  void onProfileGetFailed(NetworkResponse<ProfileGetResponse> result) {
+    authResponse
+      ..copyFrom(result)
+      ..callStatus = NetworkCallStatus.failed;
   }
 }

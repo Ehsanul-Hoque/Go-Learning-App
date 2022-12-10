@@ -14,11 +14,12 @@ import "package:app/models/page_model.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_auth/sign_in_post_request.dart";
 import "package:app/network/models/api_auth/sign_up_post_request.dart";
+import "package:app/network/network_error.dart";
+import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/views/network_widget_light.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:app/utils/typedefs.dart";
-import "package:app/utils/utils.dart";
 import "package:email_validator/email_validator.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Tab;
@@ -72,8 +73,6 @@ class _AuthPageState extends State<AuthPage> {
     _emailTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _confirmPasswordTextController = TextEditingController();
-
-    Utils.log("[1] Current access token => ${UserBox.accessToken}");
 
     super.initState();
   }
@@ -509,11 +508,17 @@ class _AuthPageState extends State<AuthPage> {
       // Execute callback if page is mounted
       if (!mounted) return;
 
+      NetworkResponse<Object> authResponse =
+          context.read<AuthApiNotifier>().authResponse;
+      NetworkError? error = authResponse.error;
+
       context.showSnackBar(
         AppSnackBarContent(
-          title: Res.str.errorTitle,
-          message:
-              isCurrentPageLogInPage ? Res.str.errorLogIn : Res.str.errorSignUp,
+          title: error?.title ?? Res.str.errorTitle,
+          message: error?.message ??
+              (isCurrentPageLogInPage
+                  ? Res.str.errorLogIn
+                  : Res.str.errorSignUp),
           contentType: ContentType.failure,
         ),
       );
@@ -523,9 +528,6 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void onStatusSuccess() {
-    Utils.log("[2] Current access token => ${UserBox.accessToken}");
-    Utils.log("[2] Current user => ${UserBox.currentUser}");
-
     if (!UserBox.isLoggedIn) {
       onStatusFailed();
       return;
