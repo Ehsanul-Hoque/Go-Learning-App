@@ -54,6 +54,18 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   @override
+  void dispose() {
+    _nameTextController.dispose();
+    _emailTextController.dispose();
+    _phoneTextController.dispose();
+    _addressTextController.dispose();
+    _institutionNameTextController.dispose();
+    _currentClassTextController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
       backgroundColor: Res.color.pageBg,

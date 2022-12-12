@@ -79,6 +79,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   void dispose() {
+    _nameTextController.dispose();
     _emailTextController.dispose();
     _passwordTextController.dispose();
     _confirmPasswordTextController.dispose();

@@ -33,6 +33,15 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
   }
 
   @override
+  void dispose() {
+    _personalNumberTextController.dispose();
+    _transactionIdTextController.dispose();
+    _mfsNumberTextController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
