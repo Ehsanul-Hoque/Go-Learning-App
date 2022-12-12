@@ -33,6 +33,10 @@ class ProfileGetResponseData extends ApiModel {
   @Id()
   int boxId;
 
+  @JsonKey(ignore: true)
+  @Transient()
+  bool isGuest;
+
   @JsonKey(name: "_id")
   String? sId;
 
@@ -82,6 +86,7 @@ class ProfileGetResponseData extends ApiModel {
 
   ProfileGetResponseData({
     this.boxId = 0,
+    this.isGuest = false,
     this.sId,
     this.institution,
     this.enrolledCourses,

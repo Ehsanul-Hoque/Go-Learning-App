@@ -25,6 +25,13 @@ class StringsEn implements StringsBase {
   final String paymentHistory = "Payment History";
   final String logOut = "Log Out";
 
+  final String phone = "Phone Number";
+  final String address = "Current Address";
+  final String institutionName = "Institution Name";
+  final String currentClass = "Current Class";
+  final String update = "Update";
+  final String guest = "Guest";
+
   final String admission = "Admission";
   final String explore = "Explore";
   final String favourites = "Favourites";
@@ -84,7 +91,7 @@ class StringsEn implements StringsBase {
   final String quizFinished = "Quiz Finished";
 
   /// Messages
-  final String enterName = "Please enter a name.";
+  final String enterName = "Please enter your name.";
   final String nameTooSmall = "Should be at least 5 characters long.";
   final String nameTooBig = "Should be at most 20 characters long.";
   final String invalidEmail = "The email is invalid.";
@@ -92,10 +99,14 @@ class StringsEn implements StringsBase {
   final String passwordTooSmall = "Should be at least 5 characters long.";
   final String passwordTooBig = "Should be at most 20 characters long.";
   final String passwordsNotMatched = "Passwords do not match.";
+  final String enterPhoneNumber = "Please enter your phone number.";
+  final String invalidPhoneNumber = "The phone number is invalid.";
+  final String enterAddress = "Please enter your address.";
+  final String enterInstitutionName = "Please enter your institution name.";
+  final String enterCurrentClass = "Please enter your current class.";
   final String enterPromo = "Please enter a promo.";
   final String copied = "Copied!";
   final String numberCopied = "The number has been copied to the clipboard.";
-  final String enterPhoneNumber = "Please enter your phone number.";
   final String enterTransactionId = "Please enter the transaction ID.";
   final String enterMfsNumber =
       "Please enter the phone number the money is sent from.";
@@ -116,6 +127,8 @@ class StringsEn implements StringsBase {
       " Could not check if this promo is valid. Please try again later.";
   final String errorLoadingContent =
       "Sorry! Could not load the content. Please try again later.";
+  final String errorLoadingProfile =
+      "Sorry! Could not load the profile. Please try again later.";
   final String yesTitle = "Yes!";
   final String promoValidAndDiscountApplied = "This promo is valid."
       " Discount applied to the previous price.";

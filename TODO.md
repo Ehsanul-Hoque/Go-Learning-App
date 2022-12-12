@@ -56,4 +56,9 @@
   and handle the warning properly
 - Convert Google Log In into an interceptor. Also, convert interceptors into async functions
 - Cancel the network calls when resetting
+- Option to update profile picture in user profile
+- Update UserNotifier to update properly when AuthApiNotifier is updated
+- Change AuthApiNotifier name to something more clear about what it does
+- Do not cache for POST calls
+- *** REMOVE SAMPLE DATA FILE ***
 - 

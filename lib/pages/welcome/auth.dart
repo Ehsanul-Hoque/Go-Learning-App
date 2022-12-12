@@ -171,6 +171,7 @@ class _AuthPageState extends State<AuthPage> {
                     textEditingController: _nameTextController,
                     label: Res.str.fullName,
                     textInputType: TextInputType.name,
+                    maxLength: 20,
                     goNextOnComplete: true,
                     borderRadius: Res.dimen.defaultBorderRadiusValue,
                     validator: onNameValidation,
@@ -381,7 +382,7 @@ class _AuthPageState extends State<AuthPage> {
       return Res.str.enterName;
     } else if (name.length < 5) {
       return Res.str.nameTooSmall;
-    } else if (name.length >= 20) {
+    } else if (name.length > 20) {
       return Res.str.nameTooBig;
     }
 
@@ -401,7 +402,7 @@ class _AuthPageState extends State<AuthPage> {
       return Res.str.enterPassword;
     } else if (password.length < 5) {
       return Res.str.passwordTooSmall;
-    } else if (password.length >= 20) {
+    } else if (password.length > 20) {
       return Res.str.passwordTooBig;
     }
 
@@ -528,7 +529,7 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void onStatusSuccess() {
-    if (!UserBox.isLoggedIn) {
+    if (!UserBox.hasProfileInfo) {
       onStatusFailed();
       return;
     }

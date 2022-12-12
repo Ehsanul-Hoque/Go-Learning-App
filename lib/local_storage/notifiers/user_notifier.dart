@@ -3,7 +3,7 @@ import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/auth_post_response.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:flutter/widgets.dart" show BuildContext, ChangeNotifier;
-import "package:provider/provider.dart" show ProxyProvider;
+import "package:provider/provider.dart" show ChangeNotifierProxyProvider;
 import "package:provider/single_child_widget.dart" show SingleChildWidget;
 
 class UserNotifier extends ChangeNotifier {
@@ -12,7 +12,7 @@ class UserNotifier extends ChangeNotifier {
 
   /// Static method to create simple provider
   static SingleChildWidget createProxyProvider() {
-    return ProxyProvider<AuthApiNotifier, UserNotifier>(
+    return ChangeNotifierProxyProvider<AuthApiNotifier, UserNotifier>(
       create: (BuildContext context) => UserNotifier(),
       update: (_, AuthApiNotifier authNotifier, UserNotifier? previous) {
         UserNotifier userNotifier = previous ?? UserNotifier();

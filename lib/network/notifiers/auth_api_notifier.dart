@@ -247,7 +247,7 @@ class AuthApiNotifier extends ApiNotifier {
         onFailed: onProfileGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
-      checkCacheFirst: false,
+      checkCacheFirst: true,
     );
   }
 

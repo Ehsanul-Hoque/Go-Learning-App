@@ -21,6 +21,13 @@ abstract class StringsBase {
   final String paymentHistory = "";
   final String logOut = "";
 
+  final String phone = "";
+  final String address = "";
+  final String institutionName = "";
+  final String currentClass = "";
+  final String update = "";
+  final String guest = "";
+
   final String admission = "";
   final String explore = "";
   final String favourites = "";
@@ -85,10 +92,14 @@ abstract class StringsBase {
   final String passwordTooSmall = "";
   final String passwordTooBig = "";
   final String passwordsNotMatched = "";
+  final String enterPhoneNumber = "";
+  final String invalidPhoneNumber = "";
+  final String enterAddress = "";
+  final String enterInstitutionName = "";
+  final String enterCurrentClass = "";
   final String enterPromo = "";
   final String copied = "";
   final String numberCopied = "";
-  final String enterPhoneNumber = "";
   final String enterTransactionId = "";
   final String enterMfsNumber = "";
 
@@ -101,6 +112,7 @@ abstract class StringsBase {
   final String errorLogIn = "";
   final String errorCheckingPromo = "";
   final String errorLoadingContent = "";
+  final String errorLoadingProfile = "";
   final String yesTitle = "";
   final String promoValidAndDiscountApplied = "";
   final String sorryTitle = "";

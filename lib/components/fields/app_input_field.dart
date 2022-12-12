@@ -98,7 +98,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
       readOnly: !enabled,
       expands: expands,
       style: Res.textStyles.general.copyWith(
-        color: textColor,
+        color: enabled ? textColor : Res.color.textTernary,
         fontSize: fontSize,
       ),
       keyboardType: textInputType ?? TextInputType.text,
@@ -143,6 +143,7 @@ class AppInputField extends StatelessWidget implements AppInputBaseWidget {
         contentPadding: contentPadding,
         isCollapsed: isCollapsed,
         isDense: isDense,
+        enabled: enabled,
       ),
     );
   }

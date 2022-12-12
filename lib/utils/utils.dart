@@ -118,9 +118,11 @@ class Utils {
     EdgeInsets? contentPadding,
     bool? isCollapsed,
     bool? isDense,
+    bool enabled = true,
   }) {
     borderRadius ??= Res.dimen.defaultBorderRadiusValue;
-    hintOrLabelColor ??= Res.color.textSecondary;
+    hintOrLabelColor ??=
+        enabled ? Res.color.textSecondary : Res.color.textTernary;
     errorColor ??= Res.color.textError;
     errorBorderColor ??= Res.color.outlineError;
     enabledBorderColor ??= Res.color.outline;
