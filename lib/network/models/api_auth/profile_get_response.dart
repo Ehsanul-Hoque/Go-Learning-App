@@ -124,7 +124,8 @@ class ProfileGetResponseData extends ApiModel {
     if (dbValue == null) {
       fingerprintToken == null;
     } else {
-      fingerprintToken = json.decode(dbValue);
+      fingerprintToken =
+          (json.decode(dbValue) as List<dynamic>?)?.cast<String?>();
     }
   }
 }

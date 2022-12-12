@@ -5,7 +5,7 @@ import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/local_storage/notifiers/user_notifier.dart";
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/interceptors/default_interceptors/access_token_interceptor.dart";
+import "package:app/network/interceptors/default_interceptors/auth_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/auth_response_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
@@ -234,9 +234,7 @@ class AuthApiNotifier extends ApiNotifier {
   Future<NetworkResponse<ProfileGetResponse>> getProfile() {
     return const Network().createExecuteCall(
       client: defaultAuthenticatedClient,
-      requestInterceptors: <NetworkRequestInterceptor>[
-        AccessTokenInterceptor(),
-      ],
+      requestInterceptors: <NetworkRequestInterceptor>[AuthInterceptor()],
       request: const NetworkRequest.get(
         apiEndPoint: profileGetApiEndpoint,
       ),

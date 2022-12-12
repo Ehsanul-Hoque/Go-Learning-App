@@ -34,10 +34,10 @@ class UserNotifier extends ChangeNotifier {
   ProfileGetResponseData? get currentUser => UserBox.currentUser;
 
   /// Getter method to check if any access token is currently saved.
-  bool get hasAccessToken => UserBox.hasAccessToken;
+  bool get isLoggedIn => UserBox.isLoggedIn;
 
   /// Getter method to check if any user is logged in currently
-  bool get isLoggedIn => UserBox.isLoggedIn;
+  bool get hasProfileInfo => UserBox.hasProfileInfo;
 
   /// Method to log out
   Future<void> logOut() async {

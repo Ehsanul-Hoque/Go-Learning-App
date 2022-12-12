@@ -69,7 +69,7 @@ class MyAppBarAvatarConfig {
         onAvatarTap = onAvatarTap ?? (() => _defaultAvatarTapListener(context));
 
   static void _defaultAvatarTapListener(BuildContext context) {
-    if (UserBox.hasAccessToken) {
+    if (UserBox.isLoggedIn) {
       Routes().openUserProfilePage(context);
     } else {
       Routes().openAuthPage(

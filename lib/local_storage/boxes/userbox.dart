@@ -49,16 +49,12 @@ class UserBox {
       .getAll()
       .elementAtOrNull(0);
 
-  /// This method is needed to get profile information right after
-  /// log in or sign up, because at that time, we have the access token,
-  /// but do not have any user info. So at that time,
-  /// [isLoggedIn] getter method can't be applied.
-  static bool get hasAccessToken {
+  static bool get isLoggedIn {
     String? token = accessToken;
     return (token != null) && token.isNotEmpty;
   }
 
-  static bool get isLoggedIn => hasAccessToken && (currentUser != null);
+  static bool get hasProfileInfo => isLoggedIn && (currentUser != null);
 
   static Future<void> logOut() async {
     setAccessToken(null);

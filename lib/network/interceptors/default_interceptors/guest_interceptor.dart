@@ -5,7 +5,7 @@ import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/network_error.dart";
 import "package:app/network/network_request.dart";
 
-/// Allow request only if the any user is logged in
+/// Allow request only if no user is logged in
 class GuestInterceptor extends NetworkRequestInterceptor {
   @override
   RequestInterceptorResult intercept(NetworkRequest request) {
