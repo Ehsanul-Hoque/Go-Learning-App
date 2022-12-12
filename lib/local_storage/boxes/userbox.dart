@@ -38,6 +38,9 @@ class UserBox {
     box.put(profileData);
   }
 
+  static AuthPostResponse? get accessTokenResponse =>
+      appObjectBox.store.box<AuthPostResponse>().getAll().elementAtOrNull(0);
+
   static String? get accessToken => appObjectBox.store
       .box<AuthPostResponse>()
       .getAll()

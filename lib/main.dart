@@ -39,12 +39,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: <SingleChildWidget>[
-        UserNotifier.createProvider(),
         AuthApiNotifier.createProvider(),
         StaticInfoApiNotifier.createProvider(),
         CourseApiNotifier.createProvider(),
         ContentApiNotifier.createProvider(),
         CouponApiNotifier.createProvider(),
+        UserNotifier.createProxyProvider(),
       ],
       child: PlatformApp(
         debugShowCheckedModeBanner: false,
