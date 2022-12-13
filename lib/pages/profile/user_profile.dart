@@ -90,7 +90,6 @@ class _UserProfileState extends State<UserProfile> {
                   showGuestIfNoInternet: false,
                   showGuestIfFailed: false,
                   childBuilder: (
-                    Key? key,
                     BuildContext context,
                     ProfileGetResponseData profileData,
                   ) {

@@ -1,5 +1,3 @@
-import "dart:convert";
-
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_loading_anim.dart";
 import "package:app/components/status_text.dart";
@@ -13,7 +11,6 @@ import "package:provider/provider.dart";
 import "package:sliver_tools/sliver_tools.dart";
 
 typedef SuccessChildBuilder = Widget Function(
-  Key? key,
   BuildContext context,
   ProfileGetResponseData profileData,
 );
@@ -58,11 +55,7 @@ class UserBoxWidget extends StatelessWidget {
         Widget? widget;
 
         if (profileData != null) {
-          widget = childBuilder(
-            ValueKey<String>(jsonEncode(profileData.toJson())),
-            context,
-            profileData,
-          );
+          widget = childBuilder(context, profileData);
         } else {
           switch (authResponseCallStatus) {
             case NetworkCallStatus.noInternet:
@@ -96,11 +89,7 @@ class UserBoxWidget extends StatelessWidget {
         ProfileGetResponseData newProfileData =
             profileData ?? UserUtils.guestUser;
 
-        widget ??= childBuilder(
-          ValueKey<String>(jsonEncode(newProfileData.toJson())),
-          context,
-          newProfileData,
-        );
+        widget ??= childBuilder(context, newProfileData);
 
         widget = AnimatedSize(
           duration: Res.durations.defaultDuration,

@@ -91,7 +91,9 @@ class Dimensions {
   final double circularProgressThicknessNarrow = 2;
   final double maxWidthSmall = 348;
   final double maxWidthNormal = 512;
-  final double homeBannerViewportFraction = 0.8;
+  final double homeBannerViewportFraction = 0.9;
+  final double homeBannerAspectRatioWidth = 1920;
+  final double homeBannerAspectRatioHeight = 546;
   final double checkoutPaymentMethodsMaxWidth = 348;
   final double quizCurrentQuesNumBorderThickness = 2;
   final double inViewTopLimitFraction = 0.4;

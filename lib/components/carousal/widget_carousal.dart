@@ -53,7 +53,9 @@ class _WidgetCarousalState extends State<WidgetCarousal> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         AspectRatio(
-          aspectRatio: Res.dimen.bannerAspectRatioAfterPadding,
+          aspectRatio: Res.dimen.homeBannerAspectRatioWidth /
+              (Res.dimen.homeBannerAspectRatioHeight *
+                  Res.dimen.homeBannerViewportFraction),
           child: PageView.builder(
             controller: _pageController,
             itemCount: widget.images.length,
@@ -61,24 +63,31 @@ class _WidgetCarousalState extends State<WidgetCarousal> {
               String url = widget.images[index];
               bool activePage = (currentPageIndex == index);
 
-              return AnimatedContainer(
-                duration: animationDuration,
-                curve: animationCurve,
-                padding: EdgeInsets.all(
-                  activePage
-                      ? Res.dimen.smallSpacingValue
-                      : Res.dimen.mlSpacingValue,
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    Res.dimen.defaultBorderRadiusValue,
-                  ),
-                  child: MyCachedImage(
-                    imageUrl: url,
-                    animationDuration: animationDuration,
-                    animationCurve: animationCurve,
-                  ),
-                ),
+              return LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return AnimatedContainer(
+                    duration: animationDuration,
+                    curve: animationCurve,
+                    padding: EdgeInsets.symmetric(
+                      vertical: activePage
+                          ? (constraints.maxHeight * 0.01)
+                          : (constraints.maxHeight * 0.05),
+                      horizontal: activePage
+                          ? (constraints.maxWidth * 0.01)
+                          : (constraints.maxWidth * 0.05),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                        Res.dimen.defaultBorderRadiusValue,
+                      ),
+                      child: MyCachedImage(
+                        imageUrl: url,
+                        animationDuration: animationDuration,
+                        animationCurve: animationCurve,
+                      ),
+                    ),
+                  );
+                },
               );
             },
             onPageChanged: (int newSelectedIndex) {
