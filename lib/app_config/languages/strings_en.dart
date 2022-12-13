@@ -39,7 +39,8 @@ class StringsEn implements StringsBase {
   final String favourites = "Favourites";
   final String exams = "Exams";
 
-  final String courses = "Courses";
+  final String myCourses = "My Courses";
+  final String allCourses = "All Courses";
   final String by = "by";
   final String tkDot = "Tk.";
 
@@ -92,6 +93,9 @@ class StringsEn implements StringsBase {
   final String yes = "Yes";
   final String finishQuiz = "Finish Quiz";
   final String quizFinished = "Quiz Finished";
+
+  final String please = "Please";
+  final String firstFullStop = "first.";
 
   /// Messages
   final String enterName = "Please enter your name.";
@@ -146,6 +150,9 @@ class StringsEn implements StringsBase {
   final String authenticatedMessage = "Please log out first.";
   final String unauthenticatedTitle = "Unauthenticated!";
   final String unauthenticatedMessage = "Please log in or sign up first.";
+  final String youAreInGuestMood = "You are in guest mood.";
+  final String noEnrolledCourse = "You haven't got enrolled in any courses yet!"
+      "\nLet's enroll a course from below.";
 
   final String emailNotRegistered =
       "This email has not been registered yet. Please sign up first.";
@@ -162,7 +169,7 @@ class StringsEn implements StringsBase {
   final String generalError = "Sorry! Some type of problem occurred.";
   final String startNetworkCall = "Please start the network call.";
   final String noInternet = "Sorry! Internet is not available."
-      " Please check your network connection.";
+      "\nPlease check your network connection.";
   final String noContents = "Sorry! There are no contents available.";
   final String noCourses = "Sorry! There are no courses available.";
   final String invalidCourse = "Sorry! This course may not be valid right now.";

@@ -39,7 +39,7 @@ class Dimensions {
   final double toolbarHeight = 56;
   final double bottomNavBarContentMinWidth = 56;
   final double bottomNavBarHeight = 56;
-  final double carousalIndicatorItemSize = 12;
+  final double carousalIndicatorItemSize = 8;
   final double tabIndicatorHeight = 2;
   final double tabBarBottomBorderThickness = 1;
   final double inputFieldHeight = 56;

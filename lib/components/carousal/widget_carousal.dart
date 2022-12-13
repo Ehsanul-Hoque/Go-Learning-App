@@ -98,7 +98,7 @@ class _WidgetCarousalState extends State<WidgetCarousal> {
           ),
         ),
         SizedBox(
-          height: Res.dimen.smallSpacingValue,
+          height: Res.dimen.normalSpacingValue,
         ),
         SmoothPageIndicator(
           controller: _pageController, // PageController

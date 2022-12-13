@@ -18,6 +18,7 @@ import "package:app/network/network_error.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/views/network_widget_light.dart";
+import "package:app/routes.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:app/utils/typedefs.dart";
 import "package:email_validator/email_validator.dart";
@@ -535,6 +536,11 @@ class _AuthPageState extends State<AuthPage> {
       return;
     }
 
-    widget.redirectOnSuccess?.call(context);
+    OnValueListener<BuildContext>? redirectOnSuccess = widget.redirectOnSuccess;
+    if (redirectOnSuccess != null) {
+      redirectOnSuccess.call(context);
+    } else {
+      Routes.goBack(context);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import "package:app/app_config/resources.dart";
+import "package:app/components/status_text_widget.dart";
 import "package:flutter/widgets.dart";
 
 class StatusText extends StatelessWidget {
@@ -13,18 +13,9 @@ class StatusText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding ??
-          EdgeInsets.symmetric(
-            vertical: Res.dimen.hugeSpacingValue,
-          ),
-      child: Center(
-        child: Text(
-          text,
-          style: Res.textStyles.secondary,
-          textAlign: TextAlign.center,
-        ),
-      ),
+    return StatusTextWidget(
+      text: text,
+      padding: padding,
     );
   }
 }

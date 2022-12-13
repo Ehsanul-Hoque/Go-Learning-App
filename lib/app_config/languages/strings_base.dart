@@ -35,7 +35,8 @@ abstract class StringsBase {
   final String favourites = "";
   final String exams = "";
 
-  final String courses = "";
+  final String myCourses = "";
+  final String allCourses = "";
   final String by = "";
   final String tkDot = "";
 
@@ -86,6 +87,9 @@ abstract class StringsBase {
   final String finishQuiz = "";
   final String quizFinished = "";
 
+  final String please = "";
+  final String firstFullStop = "";
+
   /// Messages
   final String enterName = "";
   final String nameTooSmall = "";
@@ -128,6 +132,8 @@ abstract class StringsBase {
   final String authenticatedMessage = "";
   final String unauthenticatedTitle = "";
   final String unauthenticatedMessage = "";
+  final String youAreInGuestMood = "";
+  final String noEnrolledCourse = "";
 
   final String emailNotRegistered = "";
   final String accountAlreadyExists = "";

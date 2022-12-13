@@ -4,7 +4,9 @@ import "package:app/components/column_row_grid.dart";
 import "package:app/components/course_item.dart";
 import "package:app/components/debouncer.dart";
 import "package:app/components/sliver_sized_box.dart";
+import "package:app/components/userbox_network_widget.dart";
 import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
@@ -101,17 +103,106 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   );
                 },
               ),
+
+              /// "My Courses" heading
               SliverPadding(
                 padding: EdgeInsets.symmetric(
                   horizontal: Res.dimen.normalSpacingValue,
                 ),
                 sliver: SliverToBoxAdapter(
                   child: Text(
-                    " ${Res.str.courses}",
+                    " ${Res.str.myCourses}",
                     style: Res.textStyles.label,
                   ),
                 ),
               ),
+
+              /// My courses grid view
+              SliverPadding(
+                padding: EdgeInsets.all(_courseGridPadding),
+                sliver: UserBoxNetworkWidget(
+                  shouldOutputBeSliver: true,
+                  callStatusSelector: (BuildContext context) => context.select(
+                    (CourseApiNotifier? apiNotifier) =>
+                        apiNotifier?.allCoursesGetResponse.callStatus ??
+                        NetworkCallStatus.none,
+                  ),
+                  noContentChecker: (ProfileGetResponseData profileData) {
+                    List<CourseGetResponse> allCourses = context
+                            .read<CourseApiNotifier?>()
+                            ?.allCoursesGetResponse
+                            .result
+                            ?.getNonNulls()
+                            .toList() ??
+                        <CourseGetResponse>[];
+
+                    List<String> enrolledCourseIds =
+                        profileData.enrolledCourses?.getNonNulls().toList() ??
+                            <String>[];
+
+                    List<CourseGetResponse> enrolledCourses = allCourses.where(
+                      (CourseGetResponse course) {
+                        return enrolledCourseIds.contains(course.sId);
+                      },
+                    ).toList();
+
+                    return enrolledCourses.isEmpty;
+                  },
+                  noContentText: Res.str.noEnrolledCourse,
+                  childBuilder: (
+                    BuildContext context,
+                    ProfileGetResponseData profileData,
+                  ) {
+                    List<CourseGetResponse> allCourses = context
+                            .read<CourseApiNotifier?>()
+                            ?.allCoursesGetResponse
+                            .result
+                            ?.getNonNulls()
+                            .toList() ??
+                        <CourseGetResponse>[];
+
+                    List<String> enrolledCourseIds =
+                        profileData.enrolledCourses?.getNonNulls().toList() ??
+                            <String>[];
+
+                    List<CourseGetResponse> enrolledCourses = allCourses.where(
+                      (CourseGetResponse course) {
+                        return enrolledCourseIds.contains(course.sId);
+                      },
+                    ).toList();
+
+                    return ColumnRowGrid(
+                      itemCount: enrolledCourses.length,
+                      crossAxisCount: courseGridCrossAxisCount,
+                      itemWidth: courseGridItemWidth,
+                      itemHeight: courseGridItemHeight,
+                      mainAxisSpacing: _courseGridVerticalGap,
+                      crossAxisSpacing: _courseGridHorizontalGap,
+                      itemBuilder: (BuildContext context, int index) =>
+                          CourseItem(course: enrolledCourses[index]),
+                    );
+                  },
+                ),
+              ),
+
+              SliverSizedBox(
+                height: Res.dimen.normalSpacingValue,
+              ),
+
+              /// "All Courses" heading
+              SliverPadding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Res.dimen.normalSpacingValue,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Text(
+                    " ${Res.str.allCourses}",
+                    style: Res.textStyles.label,
+                  ),
+                ),
+              ),
+
+              /// All courses grid view
               SliverPadding(
                 padding: EdgeInsets.all(_courseGridPadding),
                 sliver: NetworkWidget(
