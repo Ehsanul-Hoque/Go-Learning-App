@@ -71,6 +71,7 @@ class StringsEn implements StringsBase {
   final String transactionId = "transaction ID";
   final String numberTheMoneySentFrom = "number the money is sent from";
   final String bdCountryCode = "+880";
+  final String bdCountryCodeShort = "+88";
   final String submit = "Submit";
 
   final String questions = "Questions";
@@ -129,9 +130,12 @@ class StringsEn implements StringsBase {
       "Sorry! Could not load the content. Please try again later.";
   final String errorLoadingProfile =
       "Sorry! Could not load the profile. Please try again later.";
+  final String errorUpdatingProfile =
+      "Sorry! Could not update profile info. Please try again later.";
   final String yesTitle = "Yes!";
   final String promoValidAndDiscountApplied = "This promo is valid."
       " Discount applied to the previous price.";
+  final String profileUpdatedSuccessfully = "Profile has been updated.";
   final String sorryTitle = "Sorry!";
   final String promoDoesNotExist = "This promo does not exist.";
   final String invalidPromoTitle = "Invalid Promo!";

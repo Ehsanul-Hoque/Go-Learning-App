@@ -165,6 +165,17 @@ class NetworkCall<DI, DO> {
           headers: request.headers ?? client.headers,
           body: jsonEncode(request.body),
         );
+
+      case NetworkCallType.put:
+        NetLog().d(
+          "$logTag put body = ${request.body}",
+          showLog: logSteps,
+        );
+        return http.put(
+          Uri.parse(apiFullUrl),
+          headers: request.headers ?? client.headers,
+          body: jsonEncode(request.body),
+        );
     }
   }
 

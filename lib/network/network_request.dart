@@ -18,6 +18,15 @@ class NetworkRequest {
   })  : assert(body != null),
         callType = NetworkCallType.post;
 
+  /// Named constructor for PUT request
+  const NetworkRequest.put({
+    required this.apiEndPoint,
+    required this.body,
+    this.baseUrl,
+    this.headers,
+  })  : assert(body != null),
+        callType = NetworkCallType.put;
+
   /// Network call method name (GET, POST etc)
   final NetworkCallType callType;
 

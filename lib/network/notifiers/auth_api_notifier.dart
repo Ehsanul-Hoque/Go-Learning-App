@@ -9,6 +9,8 @@ import "package:app/network/interceptors/default_interceptors/auth_interceptor.d
 import "package:app/network/interceptors/default_interceptors/auth_response_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
+import "package:app/network/models/api_auth/edit_profile_post_request.dart";
+import "package:app/network/models/api_auth/edit_profile_post_response.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/sign_in_post_request.dart";
 import "package:app/network/models/api_auth/auth_post_response.dart";
@@ -43,6 +45,7 @@ class AuthApiNotifier extends ApiNotifier {
   static const String signInTokenizePostApiEndpoint =
       "/student/tokenize_signin";
   static const String profileGetApiEndpoint = "/student/profile";
+  static const String editProfilePutApiEndpoint = "/student/edit_profile";
 
   /// Constructor
   AuthApiNotifier();
@@ -247,13 +250,47 @@ class AuthApiNotifier extends ApiNotifier {
         onFailed: onProfileGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
-      checkCacheFirst: true,
     );
   }
 
   NetworkResponse<ProfileGetResponse> get profileGetResponse =>
       Network.getOrCreateResponse(
         defaultAuthenticatedClient.baseUrl + profileGetApiEndpoint,
+      );
+
+  void _resetProfileGetResponse() => Network.resetResponse(
+        defaultAuthenticatedClient.baseUrl + profileGetApiEndpoint,
+      );
+
+  /// Methods to update user profile
+  Future<NetworkResponse<EditProfilePostResponse>> updateProfile(
+    EditProfilePostRequest requestBody,
+  ) {
+    return const Network().createExecuteCall(
+      client: defaultAuthenticatedClient,
+      requestInterceptors: <NetworkRequestInterceptor>[AuthInterceptor()],
+      request: NetworkRequest.put(
+        apiEndPoint: editProfilePutApiEndpoint,
+        body: requestBody.toJson(),
+      ),
+      responseConverter: const JsonObjectConverter<EditProfilePostResponse>(
+        EditProfilePostResponse.fromJson,
+      ),
+      callback: NetworkCallback<EditProfilePostResponse>(
+        onSuccess: (_) => updateSavedUser(requestBody),
+        onUpdate: (_) => notifyListeners(),
+      ),
+      checkCacheFirst: false,
+    );
+  }
+
+  NetworkResponse<EditProfilePostResponse> get updateProfilePutResponse =>
+      Network.getOrCreateResponse(
+        defaultAuthenticatedClient.baseUrl + editProfilePutApiEndpoint,
+      );
+
+  void _resetUpdateProfilePutResponse() => Network.resetResponse(
+        defaultAuthenticatedClient.baseUrl + editProfilePutApiEndpoint,
       );
 
   /*/// Method to clear previous auth responses if not loading.
@@ -277,7 +314,9 @@ class AuthApiNotifier extends ApiNotifier {
     notifyListeners();
   }*/
 
-  /// Method to set access token and start getting profile
+  /// Method to set access token and start getting profile.
+  /// notifyListeners() is not called because it will be called
+  /// in the onUpdate() callback method in the network function.
   void onAccessTokenGetSuccess(NetworkResponse<AuthPostResponse> result) {
     authResponse
       ..copyFrom(result)
@@ -288,12 +327,18 @@ class AuthApiNotifier extends ApiNotifier {
     getProfile();
   }
 
+  /// Method to fire if could not get the access token.
+  /// notifyListeners() is not called because it will be called
+  /// in the onUpdate() callback method in the network function.
   void onAccessTokenGetFailed(NetworkResponse<AuthPostResponse> result) {
     authResponse
       ..copyFrom(result)
       ..callStatus = NetworkCallStatus.failed;
   }
 
+  /// Method to set user profile as the current user.
+  /// notifyListeners() is not called because it will be called
+  /// in the onUpdate() callback method in the network function.
   void onProfileGetSuccess(NetworkResponse<ProfileGetResponse> result) {
     authResponse
       ..copyFrom(result)
@@ -301,9 +346,37 @@ class AuthApiNotifier extends ApiNotifier {
     UserBox.setCurrentUser(result.result?.data);
   }
 
+  /// Method to fire if could not get the user profile.
+  /// notifyListeners() is not called because it will be called
+  /// in the onUpdate() callback method in the network function.
   void onProfileGetFailed(NetworkResponse<ProfileGetResponse> result) {
     authResponse
       ..copyFrom(result)
       ..callStatus = NetworkCallStatus.failed;
+  }
+
+  /// Method to update the saved user profile after a successful edit.
+  void updateSavedUser(EditProfilePostRequest requestBody) {
+    ProfileGetResponseData? currentUser = UserBox.currentUser;
+    if (currentUser != null) {
+      currentUser.name = requestBody.name;
+      currentUser.address = requestBody.address;
+      currentUser.phone = requestBody.phone;
+      currentUser.institution = requestBody.institution;
+      currentUser.selectedClass = requestBody.selectedClass;
+      currentUser.photo = requestBody.photo;
+
+      UserBox.setCurrentUser(currentUser);
+      notifyListeners();
+
+      // Delay the reset to make sure notifyListeners() is fired
+      Future<void>.delayed(
+        const Duration(milliseconds: 500),
+        () {
+          _resetUpdateProfilePutResponse();
+          _resetProfileGetResponse();
+        },
+      );
+    }
   }
 }

@@ -2,18 +2,25 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
+import "package:app/components/app_circular_progress.dart";
 import "package:app/components/app_divider.dart";
 import "package:app/components/fields/app_form_field.dart";
 import "package:app/components/fields/app_input_field.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/my_circle_avatar.dart";
 import "package:app/components/userbox_widget.dart";
+import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/models/api_auth/edit_profile_post_request.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
+import "package:app/network/views/network_widget_light.dart";
 import "package:app/routes.dart";
+import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/material.dart" show IconButton, Icons;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
-import "package:provider/provider.dart" show ReadContext;
+import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 part "package:app/pages/profile/edit_profile_form_part.dart";
 
@@ -26,22 +33,12 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   late GlobalKey<FormState> _formKey;
-  late TextEditingController _nameTextController;
-  late TextEditingController _emailTextController;
-  late TextEditingController _phoneTextController;
-  late TextEditingController _addressTextController;
-  late TextEditingController _institutionNameTextController;
-  late TextEditingController _currentClassTextController;
+  late EditProfilePostRequest editInfo;
 
   @override
   void initState() {
     _formKey = GlobalKey<FormState>();
-    _nameTextController = TextEditingController();
-    _emailTextController = TextEditingController();
-    _phoneTextController = TextEditingController();
-    _addressTextController = TextEditingController();
-    _institutionNameTextController = TextEditingController();
-    _currentClassTextController = TextEditingController();
+    editInfo = EditProfilePostRequest.blank();
 
     super.initState();
 
@@ -51,18 +48,6 @@ class _UserProfileState extends State<UserProfile> {
 
       context.read<AuthApiNotifier?>()?.getProfile();
     });
-  }
-
-  @override
-  void dispose() {
-    _nameTextController.dispose();
-    _emailTextController.dispose();
-    _phoneTextController.dispose();
-    _addressTextController.dispose();
-    _institutionNameTextController.dispose();
-    _currentClassTextController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -105,73 +90,68 @@ class _UserProfileState extends State<UserProfile> {
                   showGuestIfNoInternet: false,
                   showGuestIfFailed: false,
                   childBuilder: (
+                    Key? key,
                     BuildContext context,
                     ProfileGetResponseData profileData,
                   ) {
-                    if (_nameTextController.text.isEmpty) {
-                      _nameTextController.text = profileData.name ?? "";
-                    }
-
-                    if (_emailTextController.text.isEmpty) {
-                      _emailTextController.text = profileData.email ?? "";
-                    }
-
-                    if (_phoneTextController.text.isEmpty) {
-                      _phoneTextController.text = profileData.phone ?? "";
-                    }
-
-                    if (_addressTextController.text.isEmpty) {
-                      _addressTextController.text = profileData.address ?? "";
-                    }
-
-                    if (_institutionNameTextController.text.isEmpty) {
-                      _institutionNameTextController.text =
-                          profileData.institution ?? "";
-                    }
-
-                    if (_currentClassTextController.text.isEmpty) {
-                      _currentClassTextController.text =
-                          profileData.selectedClass ?? "";
-                    }
-
                     return Column(
                       children: <Widget>[
                         SizedBox(
                           height: Res.dimen.normalSpacingValue,
                         ),
-                        MyCircleAvatar(
-                          imageUrl: profileData.photo,
-                          radius: Res.dimen.drawerAvatarRadius,
-                          padding: 1,
-                          backgroundColor: Res.color.drawerAvatarBg,
-                          shadow: const <BoxShadow>[],
-                        ),
-                        SizedBox(
-                          height: Res.dimen.normalSpacingValue,
-                        ),
                         EditProfileFormPart(
                           formKey: _formKey,
-                          nameTextController: _nameTextController,
-                          emailTextController: _emailTextController,
-                          phoneTextController: _phoneTextController,
-                          addressTextController: _addressTextController,
-                          institutionNameTextController:
-                              _institutionNameTextController,
-                          currentClassTextController:
-                              _currentClassTextController,
-                          formFieldsEnabled: !profileData.isGuest,
+                          profileData: profileData,
+                          editInfo: editInfo,
+                          // formFieldsEnabled: !profileData.isGuest,
                         ),
                         if (!profileData.isGuest) ...<Widget>[
                           SizedBox(
                             height: Res.dimen.normalSpacingValue,
                           ),
-                          AppButton(
-                            text: Text(
-                              Res.str.submit,
-                            ),
-                            onTap: onUpdateTap,
-                            borderRadius:
-                                Res.dimen.fullRoundedBorderRadiusValue,
+                          NetworkWidgetLight(
+                            callStatusSelector: (BuildContext context) {
+                              return context
+                                  .select((AuthApiNotifier? apiNotifier) {
+                                return apiNotifier
+                                        ?.updateProfilePutResponse.callStatus ??
+                                    NetworkCallStatus.none;
+                              });
+                            },
+                            onStatusNoInternet: onUpdateStatusNoInternet,
+                            onStatusFailed: onUpdateStatusFailed,
+                            onStatusSuccess: onUpdateStatusSuccess,
+                            childBuilder: (
+                              BuildContext context,
+                              NetworkCallStatus callStatus,
+                            ) {
+                              Widget resultWidget;
+
+                              if (callStatus == NetworkCallStatus.loading) {
+                                resultWidget = const AppCircularProgress();
+                              } else {
+                                resultWidget = AppButton(
+                                  text: Text(Res.str.update),
+                                  onTap: onUpdateTap,
+                                  borderRadius:
+                                      Res.dimen.fullRoundedBorderRadiusValue,
+                                );
+                              }
+
+                              resultWidget = AnimatedSize(
+                                duration: Res.durations.defaultDuration,
+                                curve: Res.curves.defaultCurve,
+                                clipBehavior: Clip.none,
+                                child: AnimatedSwitcher(
+                                  duration: Res.durations.defaultDuration,
+                                  switchInCurve: Res.curves.defaultCurve,
+                                  switchOutCurve: Res.curves.defaultCurve,
+                                  child: resultWidget,
+                                ),
+                              );
+
+                              return resultWidget;
+                            },
                           ),
                         ],
                         SizedBox(
@@ -189,60 +169,58 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  String? onNameValidation(String? value) {
-    if (value == null || value.isEmpty) {
-      return Res.str.enterName;
-    } else if (value.length < 5) {
-      return Res.str.nameTooSmall;
-    } else if (value.length >= 20) {
-      return Res.str.nameTooBig;
-    }
-
-    return null;
-  }
-
-  String? onPhoneValidation(String? value) {
-    if (value == null || value.isEmpty) {
-      return Res.str.enterPhoneNumber;
-    } else if (value.length != 11) {
-      return Res.str.invalidPhoneNumber;
-    }
-
-    return null;
-  }
-
-  String? onFieldNotEmptyValidation(String? value, String errorIfEmpty) {
-    if ((value == null) || value.isEmpty) {
-      return errorIfEmpty;
-    }
-
-    return null;
-  }
-
   void onUpdateTap() {
     if (_formKey.currentState?.validate() != true) return;
 
     _formKey.currentState?.save();
-    // TODO update profile
-    /*AuthApiNotifier authNotifier = context.read<AuthApiNotifier>();
 
-    if (isCurrentPageLogInPage) {
-      authNotifier.signInWithEmailPassword(
-        context,
-        SignInPostRequest(
-          email: _emailTextController.text.trim(),
-          password: _passwordTextController.text,
+    AuthApiNotifier authNotifier = context.read<AuthApiNotifier>();
+
+    authNotifier.updateProfile(editInfo);
+  }
+
+  void onUpdateStatusNoInternet() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.noInternetTitle,
+          message: Res.str.noInternetDescription,
+          contentType: ContentType.help,
         ),
       );
-    } else {
-      authNotifier.signUpWithEmailPassword(
-        context,
-        SignUpPostRequest(
-          name: _nameTextController.text.trim(),
-          email: _emailTextController.text.trim(),
-          password: _passwordTextController.text,
+    });
+  }
+
+  void onUpdateStatusFailed() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.sorryTitle,
+          message: Res.str.errorUpdatingProfile,
+          contentType: ContentType.failure,
         ),
       );
-    }*/
+    });
+  }
+
+  void onUpdateStatusSuccess() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.yesTitle,
+          message: Res.str.profileUpdatedSuccessfully,
+          contentType: ContentType.success,
+        ),
+      );
+    });
   }
 }

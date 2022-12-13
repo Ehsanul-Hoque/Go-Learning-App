@@ -61,4 +61,5 @@
 - Change AuthApiNotifier name to something more clear about what it does
 - Do not cache for POST calls
 - *** REMOVE SAMPLE DATA FILE ***
+- Handle unauthenticated or other responses properly
 - 

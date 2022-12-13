@@ -65,6 +65,7 @@ abstract class StringsBase {
   final String transactionId = "";
   final String numberTheMoneySentFrom = "";
   final String bdCountryCode = "";
+  final String bdCountryCodeShort = "";
   final String submit = "";
 
   final String questions = "";
@@ -113,8 +114,10 @@ abstract class StringsBase {
   final String errorCheckingPromo = "";
   final String errorLoadingContent = "";
   final String errorLoadingProfile = "";
+  final String errorUpdatingProfile = "";
   final String yesTitle = "";
   final String promoValidAndDiscountApplied = "";
+  final String profileUpdatedSuccessfully = "";
   final String sorryTitle = "";
   final String promoDoesNotExist = "";
   final String invalidPromoTitle = "";

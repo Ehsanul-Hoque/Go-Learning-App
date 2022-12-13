@@ -1,6 +1,7 @@
 enum NetworkCallType {
   get("GET"),
-  post("POST");
+  post("POST"),
+  put("PUT");
 
   final String name;
 
