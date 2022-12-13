@@ -6,6 +6,7 @@ import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/profile/user_profile.dart";
+import "package:app/pages/splash_page.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:app/utils/typedefs.dart";
 import "package:flutter/material.dart" show MaterialPageRoute;
@@ -17,6 +18,13 @@ class Routes {
   Routes({this.config = const RoutesConfig()});
 
   final RoutesConfig config;
+
+  /// Route method to open the authentication page
+  Future<void> openSplashPage(BuildContext context) =>
+      RoutesHelper._removeAllAndTo<void>(
+        context,
+        (BuildContext context) => const SplashPage(),
+      );
 
   /// Route method to open the authentication page
   Future<void> openAuthPage(
@@ -124,6 +132,19 @@ class RoutesHelper {
       MaterialPageRoute<T>(
         builder: (BuildContext context) => page(context),
       ),
+    );
+  }
+
+  static Future<T?> _removeAllAndTo<T>(
+    BuildContext context,
+    Widget Function(BuildContext context) page,
+  ) {
+    return Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute<T>(
+        builder: (BuildContext context) => page(context),
+      ),
+      (Route<dynamic> route) => false,
     );
   }
 

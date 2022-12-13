@@ -24,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
 
     appVersionStringFuture = getAppVersionString();
     Timer(
-      const Duration(seconds: 1),
+      const Duration(seconds: 2),
       () => Routes(config: const RoutesConfig(replace: true))
           .openLandingPage(context),
     );

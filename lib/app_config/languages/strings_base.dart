@@ -13,7 +13,9 @@ abstract class StringsBase {
   final String googleLogIn = "";
   final String byContinuingYouAgreeTo = "";
   final String privacyPolicy = "";
+  final String refundPolicy = "";
   final String termsOfUse = "";
+  final String aboutUs = "";
   final String and = "";
 
   final String profile = "";

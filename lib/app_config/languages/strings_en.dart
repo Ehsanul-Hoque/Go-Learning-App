@@ -17,7 +17,9 @@ class StringsEn implements StringsBase {
   final String googleLogIn = "Log In with Google";
   final String byContinuingYouAgreeTo = "By continuing, you agree to the";
   final String privacyPolicy = "Privacy Policy";
+  final String refundPolicy = "Refund Policy";
   final String termsOfUse = "Terms of Use";
+  final String aboutUs = "About GO Learning BD";
   final String and = "and";
 
   final String profile = "Profile";

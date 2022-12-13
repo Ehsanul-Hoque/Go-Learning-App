@@ -1,8 +1,9 @@
 import "package:app/app_config/resources.dart";
-import "package:app/app_config/sample_data.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/views/my_app_bar_toolbar.dart";
 import "package:app/components/my_circle_avatar.dart";
+import "package:app/components/userbox_widget.dart";
+import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/utils/painters/app_bar_with_avatar_painter.dart";
 import "package:flutter/widgets.dart";
 
@@ -59,14 +60,23 @@ class MyAppBarFullContent extends StatelessWidget {
             Positioned(
               bottom: -avatarRadius,
               left: avatarCenterX - avatarRadius,
-              child: GestureDetector(
-                onTap: config.avatarConfig?.onAvatarTap,
-                child: MyCircleAvatar(
-                  imageUrl:
-                      SampleData.avatar, // TODO Get profile picture from API
-                  radius: avatarRadius,
-                  padding: Res.dimen.defaultBorderThickness,
-                ),
+              child: UserBoxWidget(
+                showGuestWhileLoading: true,
+                showGuestIfNoInternet: true,
+                showGuestIfFailed: true,
+                childBuilder: (
+                  BuildContext context,
+                  ProfileGetResponseData profileData,
+                ) {
+                  return GestureDetector(
+                    onTap: config.avatarConfig?.onAvatarTap,
+                    child: MyCircleAvatar(
+                      imageUrl: profileData.photo,
+                      radius: avatarRadius,
+                      padding: Res.dimen.defaultBorderThickness,
+                    ),
+                  );
+                },
               ),
             ),
         ],

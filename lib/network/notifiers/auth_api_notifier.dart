@@ -358,7 +358,7 @@ class AuthApiNotifier extends ApiNotifier {
   /// Method to update the saved user profile after a successful edit.
   void updateSavedUser(EditProfilePostRequest requestBody) {
     ProfileGetResponseData? currentUser = UserBox.currentUser;
-    if (currentUser != null) {
+    if (currentUser != null && !currentUser.isGuest) {
       currentUser.name = requestBody.name;
       currentUser.address = requestBody.address;
       currentUser.phone = requestBody.phone;

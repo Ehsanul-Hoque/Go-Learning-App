@@ -60,9 +60,9 @@ class UserBox {
   static bool get hasProfileInfo => isLoggedIn && (currentUser != null);
 
   static Future<void> logOut() async {
+    Network.resetAllResponses();
     setAccessToken(null);
     setCurrentUser(null);
     await googleSignIn.signOut();
-    Network.resetAllResponses();
   }
 }

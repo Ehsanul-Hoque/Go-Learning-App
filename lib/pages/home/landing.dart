@@ -7,12 +7,15 @@ import "package:app/components/app_drawer/my_app_drawer_config.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
 import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
+import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/models/page_model.dart";
+import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/pages/home/exams.dart";
 import "package:app/pages/home/explore.dart";
 import "package:app/pages/home/favourites.dart";
 import "package:app/pages/home/home.dart";
+import "package:app/routes.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/material.dart" show IconButton, Icons, Scaffold;
 import "package:flutter/widgets.dart";
@@ -29,7 +32,7 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   late final List<AppDrawerItemModel> _appDrawerItems;
   late final ZoomDrawerController _drawerController;
 
@@ -41,24 +44,36 @@ class _LandingPageState extends State<LandingPage> {
         text: Res.str.editProfile,
         onTap: onEditProfileTap,
       ),
-      AppDrawerItemModel(
+      /*AppDrawerItemModel(
         iconData: Icons.payments_outlined,
         text: Res.str.paymentHistory,
         onTap: onPaymentHistoryTap,
-      ),
-      AppDrawerItemModel(
+      ),*/
+      /*AppDrawerItemModel(
         iconData: Icons.notes_outlined,
         text: Res.str.termsOfUse,
         onTap: onTermsOfUseTap,
-      ),
+      ),*/
       AppDrawerItemModel(
         iconData: Icons.privacy_tip_outlined,
         text: Res.str.privacyPolicy,
         onTap: onPrivacyPolicyTap,
       ),
+      AppDrawerItemModel(
+        iconData: CupertinoIcons.money_dollar_circle,
+        text: Res.str.refundPolicy,
+        onTap: onRefundPolicyTap,
+      ),
+      AppDrawerItemModel(
+        iconData: Icons.description_outlined,
+        text: Res.str.aboutUs,
+        onTap: onAboutUsTap,
+      ),
     ];
 
     _drawerController = ZoomDrawerController();
+
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -67,6 +82,24 @@ class _LandingPageState extends State<LandingPage> {
 
       context.read<StaticInfoApiNotifier?>()?.getStaticInfo();
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Execute callback if page is mounted
+        if (!mounted) return;
+
+        context.read<AuthApiNotifier?>()?.getProfile();
+      });
+    }
   }
 
   @override
@@ -96,18 +129,36 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void onEditProfileTap() {
-    // TODO Go to edit profile
+    if (UserBox.isLoggedIn) {
+      Routes().openUserProfilePage(context);
+    } else {
+      Routes().openAuthPage(
+        context,
+        redirectOnSuccess: (BuildContext context) =>
+            Routes(config: const RoutesConfig(replace: true))
+                .openUserProfilePage(context),
+      );
+    }
   }
 
-  void onPaymentHistoryTap() {
+  /*void onPaymentHistoryTap() {
     // TODO Show payment history
   }
 
   void onTermsOfUseTap() {
     // TODO Show terms of use
-  }
+  }*/
 
   void onPrivacyPolicyTap() {
-    // TODO Show privacy policy
+    Routes()
+        .openWebViewPage(context, "https://golearningbd.com/privacy-policy");
+  }
+
+  void onRefundPolicyTap() {
+    Routes().openWebViewPage(context, "https://golearningbd.com/refund-policy");
+  }
+
+  void onAboutUsTap() {
+    Routes().openWebViewPage(context, "https://golearningbd.com/about");
   }
 }

@@ -22,6 +22,7 @@ class StatusText extends StatelessWidget {
         child: Text(
           text,
           style: Res.textStyles.secondary,
+          textAlign: TextAlign.center,
         ),
       ),
     );

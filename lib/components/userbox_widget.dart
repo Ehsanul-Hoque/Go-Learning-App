@@ -17,10 +17,7 @@ typedef SuccessChildBuilder = Widget Function(
 
 class UserBoxWidget extends StatelessWidget {
   final SuccessChildBuilder childBuilder;
-  final Widget? statusNoneWidget,
-      statusNoInternetWidget,
-      statusLoadingWidget,
-      statusFailedWidget;
+  final Widget? statusNoInternetWidget, statusLoadingWidget, statusFailedWidget;
   final bool shouldOutputBeSliver,
       showGuestWhileLoading,
       showGuestIfNoInternet,
@@ -29,7 +26,6 @@ class UserBoxWidget extends StatelessWidget {
   const UserBoxWidget({
     Key? key,
     required this.childBuilder,
-    this.statusNoneWidget,
     this.statusNoInternetWidget,
     this.statusLoadingWidget,
     this.statusFailedWidget,
@@ -54,7 +50,7 @@ class UserBoxWidget extends StatelessWidget {
 
         Widget? widget;
 
-        if (profileData != null) {
+        if (profileData != null && !profileData.isGuest) {
           widget = childBuilder(context, profileData);
         } else {
           switch (authResponseCallStatus) {
@@ -82,9 +78,6 @@ class UserBoxWidget extends StatelessWidget {
               break;
           }
         }
-
-        /*ProfileGetResponseData? profileDataNew =
-            context.read<UserNotifier?>()?.currentUser;*/
 
         ProfileGetResponseData newProfileData =
             profileData ?? UserUtils.guestUser;
