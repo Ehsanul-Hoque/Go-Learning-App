@@ -137,6 +137,7 @@ abstract class ColorsBase {
   final Color strikethroughPrice = AppColors.transparent;
   final Color strikethroughPrice2 = AppColors.transparent;
   final Color priceBg = AppColors.transparent;
+  final Color enrolledCoursePriceBg = AppColors.transparent;
   final Color widgetCheckBoxSelectedShade = AppColors.transparent;
   final Color contentOnDark = AppColors.transparent;
   final Color acsvAutoScrollHighlight = AppColors.transparent;

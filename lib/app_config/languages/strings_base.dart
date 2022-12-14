@@ -39,6 +39,8 @@ abstract class StringsBase {
   final String allCourses = "";
   final String by = "";
   final String tkDot = "";
+  final String enrolledExclamation = "";
+  final String freeExclamation = "";
 
   final String courseDetails = "";
   final String coursePlaylist = "";

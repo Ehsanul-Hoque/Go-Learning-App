@@ -6,6 +6,12 @@ part "../../../generated/api_courses/course_get_response.g.dart";
 
 @JsonSerializable()
 class CourseGetResponse extends ApiModel {
+  @JsonKey(ignore: true)
+  bool hasEnrolled;
+
+  @JsonKey(ignore: true)
+  bool isFree;
+
   @JsonKey(name: "_id")
   final String? sId;
 
@@ -75,7 +81,7 @@ class CourseGetResponse extends ApiModel {
   @JsonKey(name: "__v")
   final int? iV;
 
-  const CourseGetResponse({
+  CourseGetResponse({
     this.sId,
     this.rating,
     this.filter,
@@ -99,7 +105,8 @@ class CourseGetResponse extends ApiModel {
     this.thumbnail,
     this.immediateCategory,
     this.iV,
-  });
+  })  : isFree = (price ?? 0) <= 0,
+        hasEnrolled = (price ?? 0) <= 0;
 
   factory CourseGetResponse.fromJson(Map<String, dynamic> json) =>
       _$CourseGetResponseFromJson(json);

@@ -43,6 +43,8 @@ class StringsEn implements StringsBase {
   final String allCourses = "All Courses";
   final String by = "by";
   final String tkDot = "Tk.";
+  final String enrolledExclamation = "Enrolled!";
+  final String freeExclamation = "Free!";
 
   final String courseDetails = "Course Details";
   final String coursePlaylist = "Course Playlist";

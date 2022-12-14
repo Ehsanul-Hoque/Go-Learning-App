@@ -1,3 +1,4 @@
+import "package:app/app_config/colors/app_colors.dart";
 import "package:app/app_config/resources.dart";
 import "package:flutter/widgets.dart";
 
@@ -10,6 +11,11 @@ class PriceBgPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    Paint bgPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true
+      ..color = AppColors.white;
+
     Paint paint = Paint()
       ..style = PaintingStyle.fill
       ..isAntiAlias = true
@@ -27,6 +33,7 @@ class PriceBgPainter extends CustomPainter {
       ..lineTo(topRight.dx, topRight.dy)
       ..close();
 
+    canvas.drawPath(path, bgPaint);
     canvas.drawPath(path, paint);
   }
 

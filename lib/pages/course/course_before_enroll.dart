@@ -139,16 +139,17 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: PromoBuyPanel(
-                  initialPrice: widget.course.originalPrice?.toDouble() ?? 0,
-                  discountedPrice: widget.course.price?.toDouble(),
-                  onBuyCourseTap: onBuyCourseTap,
+              if (!widget.course.hasEnrolled)
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: PromoBuyPanel(
+                    initialPrice: widget.course.originalPrice?.toDouble() ?? 0,
+                    discountedPrice: widget.course.price?.toDouble(),
+                    onBuyCourseTap: onBuyCourseTap,
+                  ),
                 ),
-              ),
             ],
           ),
         ),

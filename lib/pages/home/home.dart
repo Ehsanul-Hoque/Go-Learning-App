@@ -171,6 +171,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       },
                     ).toList();
 
+                    for (CourseGetResponse course in enrolledCourses) {
+                      course.hasEnrolled = true;
+                    }
+
                     return ColumnRowGrid(
                       itemCount: enrolledCourses.length,
                       crossAxisCount: courseGridCrossAxisCount,
@@ -182,6 +186,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                         return CourseItem(
                           course: enrolledCourses[index],
                           showRootCategory: true,
+                          listenToUserNotifier: false,
+                          // No need to listen, because this grid is in the
+                          // [UserBoxNetworkWidget] widget
+                          // which already listens to the user notifier
                         );
                       },
                     );
