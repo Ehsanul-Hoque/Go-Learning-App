@@ -503,7 +503,7 @@ class _AuthPageState extends State<AuthPage> {
       );
     });
 
-    context.read<UserNotifier>().logOut();
+    context.read<UserNotifier>().logOut(resetNetworkCalls: false);
   }
 
   void onStatusFailed() {
@@ -527,7 +527,7 @@ class _AuthPageState extends State<AuthPage> {
       );
     });
 
-    context.read<UserNotifier>().logOut();
+    context.read<UserNotifier>().logOut(resetNetworkCalls: false);
   }
 
   void onStatusSuccess() {
@@ -536,11 +536,18 @@ class _AuthPageState extends State<AuthPage> {
       return;
     }
 
-    OnValueListener<BuildContext>? redirectOnSuccess = widget.redirectOnSuccess;
-    if (redirectOnSuccess != null) {
-      redirectOnSuccess.call(context);
-    } else {
-      Routes.goBack(context);
-    }
+    Future<void>.delayed(
+      const Duration(milliseconds: 200),
+      () {
+        OnValueListener<BuildContext>? redirectOnSuccess =
+            widget.redirectOnSuccess;
+
+        if (redirectOnSuccess != null) {
+          redirectOnSuccess.call(context);
+        } else {
+          Routes.goBack(context);
+        }
+      },
+    );
   }
 }

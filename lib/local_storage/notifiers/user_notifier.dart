@@ -16,15 +16,13 @@ class UserNotifier extends ChangeNotifier {
       create: (BuildContext context) => UserNotifier(),
       update: (_, AuthApiNotifier authNotifier, UserNotifier? previous) {
         UserNotifier userNotifier = previous ?? UserNotifier();
-        userNotifier.setAccessToken(UserBox.accessTokenResponse);
-        userNotifier.setCurrentUser(UserBox.currentUser);
-
+        userNotifier.notifyListeners();
         return userNotifier;
       },
     );
   }
 
-  /// Method to set the current user access token
+  /*/// Method to set the current user access token
   void setAccessToken(AuthPostResponse? authResponse) {
     if (authResponse != null) {
       UserBox.setAccessToken(authResponse);
@@ -38,7 +36,7 @@ class UserNotifier extends ChangeNotifier {
   void setCurrentUser(ProfileGetResponseData? profileData) {
     UserBox.setCurrentUser(profileData);
     notifyListeners();
-  }
+  }*/
 
   /// Getter method to get the current user access token response
   AuthPostResponse? get accessTokenResponse => UserBox.accessTokenResponse;
@@ -56,8 +54,8 @@ class UserNotifier extends ChangeNotifier {
   bool get hasProfileInfo => UserBox.hasProfileInfo;
 
   /// Method to log out
-  Future<void> logOut() async {
-    await UserBox.logOut();
+  Future<void> logOut({bool resetNetworkCalls = true}) async {
+    await UserBox.logOut(resetNetworkCalls: resetNetworkCalls);
     notifyListeners();
   }
 }

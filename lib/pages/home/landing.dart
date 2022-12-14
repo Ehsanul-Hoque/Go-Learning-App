@@ -32,7 +32,7 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
+class _LandingPageState extends State<LandingPage> {
   late final List<AppDrawerItemModel> _appDrawerItems;
   late final ZoomDrawerController _drawerController;
 
@@ -73,7 +73,6 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
 
     _drawerController = ZoomDrawerController();
 
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -81,25 +80,10 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       if (!mounted) return;
 
       context.read<StaticInfoApiNotifier?>()?.getStaticInfo();
-    });
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Execute callback if page is mounted
-        if (!mounted) return;
-
+      if (UserBox.isLoggedIn) {
         context.read<AuthApiNotifier?>()?.getProfile();
-      });
-    }
+      }
+    });
   }
 
   @override

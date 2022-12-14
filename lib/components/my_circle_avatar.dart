@@ -1,4 +1,5 @@
 import "dart:io";
+import "dart:math";
 
 import "package:app/app_config/resources.dart";
 import "package:app/components/my_cached_image.dart";
@@ -55,7 +56,7 @@ class MyCircleAvatar extends StatelessWidget {
             : (imageUrl?.isEmpty != false)
                 ? Icon(
                     CupertinoIcons.person_crop_circle,
-                    size: 2 * (radius - padding),
+                    size: max(0, 2 * (radius - padding)),
                     color: Res.color.appBarAvatarIcon,
                   )
                 : MyCachedImage(
@@ -81,7 +82,7 @@ class MyCircleAvatar extends StatelessWidget {
                       } else {
                         return Icon(
                           CupertinoIcons.person_crop_circle,
-                          size: 2 * (radius - padding),
+                          size: max(0, 2 * (radius - padding)),
                           color: Res.color.appBarAvatarIcon,
                         );
                       }

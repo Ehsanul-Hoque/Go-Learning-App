@@ -65,7 +65,7 @@ class AuthApiNotifier extends ApiNotifier {
     BuildContext context,
     SignUpPostRequest requestBody,
   ) async {
-    await context.read<UserNotifier?>()?.logOut();
+    await resetAuth(context);
 
     return const Network().createExecuteCall(
       client: defaultClient,
@@ -95,16 +95,16 @@ class AuthApiNotifier extends ApiNotifier {
         defaultClient.baseUrl + signUpPostApiEndpoint,
       );
 
-  /*void _resetSignUpWithEmailPasswordResponse() {
+  void _resetSignUpWithEmailPasswordResponse() {
     Network.resetResponse(defaultClient.baseUrl + signUpPostApiEndpoint);
-  }*/
+  }
 
   /// Methods to sign in with email and password
   Future<NetworkResponse<AuthPostResponse>> signInWithEmailPassword(
     BuildContext context,
     SignInPostRequest requestBody,
   ) async {
-    await context.read<UserNotifier?>()?.logOut();
+    await resetAuth(context);
 
     return const Network().createExecuteCall(
       client: defaultClient,
@@ -134,15 +134,15 @@ class AuthApiNotifier extends ApiNotifier {
         defaultClient.baseUrl + signInPostApiEndpoint,
       );
 
-  /*void _resetSignInWithEmailPasswordResponse() {
+  void _resetSignInWithEmailPasswordResponse() {
     Network.resetResponse(defaultClient.baseUrl + signInPostApiEndpoint);
-  }*/
+  }
 
   /// Methods to sign in with email and password
   Future<NetworkResponse<AuthPostResponse>> signInWithGoogle(
     BuildContext context,
   ) async {
-    await context.read<UserNotifier?>()?.logOut();
+    await resetAuth(context);
 
     try {
       GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
@@ -227,11 +227,11 @@ class AuthApiNotifier extends ApiNotifier {
         defaultClient.baseUrl + signInTokenizePostApiEndpoint,
       );
 
-  /*void _resetSignInWithGoogleResponse() {
+  void _resetSignInWithGoogleResponse() {
     Network.resetResponse(
       defaultClient.baseUrl + signInTokenizePostApiEndpoint,
     );
-  }*/
+  }
 
   /// Methods to get user profile
   Future<NetworkResponse<ProfileGetResponse>> getProfile() {
@@ -293,26 +293,20 @@ class AuthApiNotifier extends ApiNotifier {
         defaultAuthenticatedClient.baseUrl + editProfilePutApiEndpoint,
       );
 
-  /*/// Method to clear previous auth responses if not loading.
+  /// Method to clear previous auth responses.
   /// Call this method before starting every new
   /// auth request (sign in or sign up).
-  void resetAuthResponses() {
-    if (signUpWithEmailPasswordResponse.callStatus !=
-        NetworkCallStatus.loading) {
-      _resetSignUpWithEmailPasswordResponse();
-    }
+  Future<void> resetAuth(BuildContext context) async {
+    _resetSignUpWithEmailPasswordResponse();
+    _resetSignInWithEmailPasswordResponse();
+    _resetSignInWithGoogleResponse();
+    _resetProfileGetResponse();
+    _resetUpdateProfilePutResponse();
 
-    if (signInWithEmailPasswordResponse.callStatus !=
-        NetworkCallStatus.loading) {
-      _resetSignInWithEmailPasswordResponse();
-    }
+    await context.read<UserNotifier?>()?.logOut(resetNetworkCalls: false);
 
-    if (signInWithGoogleResponse.callStatus != NetworkCallStatus.loading) {
-      _resetSignInWithGoogleResponse();
-    }
-
-    notifyListeners();
-  }*/
+    return;
+  }
 
   /// Method to set access token and start getting profile.
   /// notifyListeners() is not called because it will be called
@@ -375,6 +369,7 @@ class AuthApiNotifier extends ApiNotifier {
         () {
           _resetUpdateProfilePutResponse();
           _resetProfileGetResponse();
+          getProfile();
         },
       );
     }

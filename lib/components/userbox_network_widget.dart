@@ -100,9 +100,7 @@ class UserBoxNetworkWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           );
-        } else if (profileData != null && !profileData.isGuest) {
-          widget = childBuilder(context, profileData);
-        } else {
+        } else if (profileData == null || profileData.isGuest) {
           NetworkCallStatus combinedCallStatus =
               NetworkCallStatus.combineInParallel(<NetworkCallStatus>[
             authResponseCallStatus,
@@ -130,21 +128,16 @@ class UserBoxNetworkWidget extends StatelessWidget {
               break;
 
             case NetworkCallStatus.success:
-              if (profileData == null) {
-                widget = statusFailedWidget ??
-                    StatusText(statusFailedText ?? Res.str.generalError);
-                break;
-              }
-
-              if (noContentChecker?.call(profileData) == true) {
-                widget = noContentWidget ??
-                    StatusText(noContentText ?? Res.str.noContents);
-                break;
-              }
-
-              widget = childBuilder(context, profileData);
-
+              // No need to do anything,
+              // because this case will be handled by the else block below
               break;
+          }
+        } else {
+          if (noContentChecker?.call(profileData) == true) {
+            widget = noContentWidget ??
+                StatusText(noContentText ?? Res.str.noContents);
+          } else {
+            widget = childBuilder(context, profileData);
           }
         }
 
