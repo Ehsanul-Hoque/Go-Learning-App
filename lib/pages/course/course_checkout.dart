@@ -2,6 +2,7 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
+import "package:app/components/app_circular_progress.dart";
 import "package:app/components/app_divider.dart";
 import "package:app/components/fields/app_form_field.dart";
 import "package:app/components/fields/app_input_field.dart";
@@ -10,12 +11,14 @@ import "package:app/components/floating_messages/enums/floating_messages_content
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
+import "package:app/network/models/api_courses/course_order_post_request.dart";
 import "package:app/network/models/api_static_info/static_info_get_response.dart";
+import "package:app/network/notifiers/course_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
+import "package:app/network/views/network_widget_light.dart";
 import "package:app/routes.dart";
 import "package:app/utils/extensions/context_extension.dart";
-import "package:app/utils/typedefs.dart" show OnTapListener3;
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart" show IconButton, Icons;
 import "package:flutter/services.dart" show Clipboard, ClipboardData;
@@ -42,8 +45,17 @@ class CourseCheckout extends StatefulWidget {
 }
 
 class _CourseCheckoutState extends State<CourseCheckout> {
+  late GlobalKey<FormState> _formKey;
+  late CourseOrderPostRequest _orderInfo;
+
   @override
   void initState() {
+    _formKey = GlobalKey<FormState>();
+    _orderInfo = CourseOrderPostRequest.blank();
+    _orderInfo.courseId = widget.course.sId ?? "";
+    _orderInfo.paymentProvider = "bkash";
+    _orderInfo.coupon = widget.appliedCoupon?.coupon ?? "";
+
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -106,10 +118,63 @@ class _CourseCheckoutState extends State<CourseCheckout> {
                           constraints: BoxConstraints(
                             maxWidth: Res.dimen.maxWidthNormal,
                           ),
-                          child: CourseCheckoutForm(
-                            finalPrice: widget.finalPrice,
-                            bkashNumber: bkashNumber,
-                            onSubmitTap: onSubmitTap,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              CourseCheckoutForm(
+                                formKey: _formKey,
+                                finalPrice: widget.finalPrice,
+                                bkashNumber: bkashNumber,
+                                orderInfo: _orderInfo,
+                              ),
+                              SizedBox(
+                                height: Res.dimen.normalSpacingValue,
+                              ),
+                              NetworkWidgetLight(
+                                callStatusSelector: (BuildContext context) {
+                                  return context
+                                      .select((CourseApiNotifier? apiNotifier) {
+                                    return apiNotifier?.courseOrderPostResponse
+                                            .callStatus ??
+                                        NetworkCallStatus.none;
+                                  });
+                                },
+                                onStatusNoInternet: onSubmitStatusNoInternet,
+                                onStatusFailed: onSubmitStatusFailed,
+                                onStatusSuccess: onSubmitStatusSuccess,
+                                childBuilder: (
+                                  BuildContext context,
+                                  NetworkCallStatus callStatus,
+                                ) {
+                                  Widget resultWidget;
+
+                                  if (callStatus == NetworkCallStatus.loading) {
+                                    resultWidget = const AppCircularProgress();
+                                  } else {
+                                    resultWidget = AppButton(
+                                      text: Text(Res.str.submit),
+                                      onTap: onSubmitTap,
+                                      borderRadius: Res
+                                          .dimen.fullRoundedBorderRadiusValue,
+                                    );
+                                  }
+
+                                  resultWidget = AnimatedSize(
+                                    duration: Res.durations.defaultDuration,
+                                    curve: Res.curves.defaultCurve,
+                                    clipBehavior: Clip.none,
+                                    child: AnimatedSwitcher(
+                                      duration: Res.durations.defaultDuration,
+                                      switchInCurve: Res.curves.defaultCurve,
+                                      switchOutCurve: Res.curves.defaultCurve,
+                                      child: resultWidget,
+                                    ),
+                                  );
+
+                                  return resultWidget;
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -124,16 +189,58 @@ class _CourseCheckoutState extends State<CourseCheckout> {
     );
   }
 
-  void onSubmitTap(
-    String personalNumber,
-    String transactionId,
-    String mfsNumber,
-  ) {
-    // TODO Uncomment validation when submission is properly implemented
-    // if (_formKey.currentState?.validate() ?? false) {
-    //   _formKey.currentState?.save();
+  void onSubmitTap() {
+    if (_formKey.currentState?.validate() != true) return;
+    _formKey.currentState?.save();
 
-    Routes.goBack(context);
-    // }
+    CourseApiNotifier courseNotifier = context.read<CourseApiNotifier>();
+    courseNotifier.postCourseOrder(_orderInfo);
+  }
+
+  void onSubmitStatusNoInternet() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.noInternetTitle,
+          message: Res.str.noInternetDescription,
+          contentType: ContentType.help,
+        ),
+      );
+    });
+  }
+
+  void onSubmitStatusFailed() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.sorryTitle,
+          message: Res.str.errorOrderingCourse,
+          contentType: ContentType.failure,
+        ),
+      );
+    });
+  }
+
+  void onSubmitStatusSuccess() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      context.showSnackBar(
+        AppSnackBarContent(
+          title: Res.str.yesTitle,
+          message: Res.str.courseOrderedSuccessfully,
+          contentType: ContentType.success,
+        ),
+      );
+    });
+
+    Routes.goHome(context);
   }
 }

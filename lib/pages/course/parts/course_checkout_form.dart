@@ -1,15 +1,17 @@
 part of "package:app/pages/course/course_checkout.dart";
 
 class CourseCheckoutForm extends StatefulWidget {
+  final GlobalKey<FormState> formKey;
   final double finalPrice;
   final String bkashNumber;
-  final OnTapListener3<String, String, String> onSubmitTap;
+  final CourseOrderPostRequest orderInfo;
 
   const CourseCheckoutForm({
     Key? key,
+    required this.formKey,
     required this.finalPrice,
     required this.bkashNumber,
-    required this.onSubmitTap,
+    required this.orderInfo,
   }) : super(key: key);
 
   @override
@@ -17,14 +19,12 @@ class CourseCheckoutForm extends StatefulWidget {
 }
 
 class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
-  late GlobalKey<FormState> _formKey;
   late TextEditingController _personalNumberTextController;
   late TextEditingController _transactionIdTextController;
   late TextEditingController _mfsNumberTextController;
 
   @override
   void initState() {
-    _formKey = GlobalKey<FormState>();
     _personalNumberTextController = TextEditingController();
     _transactionIdTextController = TextEditingController();
     _mfsNumberTextController = TextEditingController();
@@ -44,7 +44,7 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -139,12 +139,15 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
             appInputField: AppInputField(
               textEditingController: _personalNumberTextController,
               label: Res.str.yourNumberForContact,
-              prefixText: "${Res.str.bdCountryCode} ",
+              prefixText: "${Res.str.bdCountryCodeShort} ",
               textInputType: TextInputType.phone,
               goNextOnComplete: true,
               borderRadius: Res.dimen.defaultBorderRadiusValue,
               maxLength: 15,
               validator: onPersonalNumberValidation,
+              onChange: (String value) {
+                widget.orderInfo.phone = value.trim();
+              },
             ),
           ),
           AppFormField(
@@ -157,6 +160,9 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
               borderRadius: Res.dimen.defaultBorderRadiusValue,
               maxLength: 100,
               validator: onTransactionIdValidation,
+              onChange: (String value) {
+                widget.orderInfo.bkashTransactionId = value.trim();
+              },
             ),
           ),
           AppFormField(
@@ -164,21 +170,16 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
               textEditingController: _mfsNumberTextController,
               label: "${Res.str.bkash.toUpperCase()}"
                   " ${Res.str.numberTheMoneySentFrom}",
-              prefixText: "${Res.str.bdCountryCode} ",
+              prefixText: "${Res.str.bdCountryCodeShort} ",
               textInputType: TextInputType.phone,
               goNextOnComplete: false,
               borderRadius: Res.dimen.defaultBorderRadiusValue,
               maxLength: 15,
               validator: onMfsNumberValidation,
+              onChange: (String value) {
+                widget.orderInfo.providerNumber = value.trim();
+              },
             ),
-          ),
-          SizedBox(
-            height: Res.dimen.normalSpacingValue,
-          ),
-          AppButton(
-            text: Text(Res.str.submit),
-            onTap: onSubmitTap,
-            borderRadius: Res.dimen.fullRoundedBorderRadiusValue,
           ),
         ],
       ),
@@ -208,7 +209,7 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
     String errorMessage,
   ) {
     /// TODO move this method to a separate Validator class
-    if (value == null || value.isEmpty) {
+    if (value == null || value.trim().isEmpty) {
       return errorMessage;
     }
 
@@ -216,10 +217,15 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
   }
 
   String? onPersonalNumberValidation(String? value) {
-    return onNonEmptyFieldValidation(
-      value,
-      Res.str.enterPhoneNumber,
-    );
+    value = value?.trim();
+
+    if (value == null || value.isEmpty) {
+      return Res.str.enterPhoneNumber;
+    } else if (value.length != 11) {
+      return Res.str.invalidPhoneNumber;
+    }
+
+    return null;
   }
 
   String? onTransactionIdValidation(String? value) {
@@ -230,21 +236,14 @@ class _CourseCheckoutFormState extends State<CourseCheckoutForm> {
   }
 
   String? onMfsNumberValidation(String? value) {
-    return onNonEmptyFieldValidation(
-      value,
-      Res.str.enterMfsNumber,
-    );
-  }
+    value = value?.trim();
 
-  void onSubmitTap() {
-    if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-
-      widget.onSubmitTap(
-        _personalNumberTextController.text,
-        _transactionIdTextController.text,
-        _mfsNumberTextController.text,
-      );
+    if (value == null || value.isEmpty) {
+      return Res.str.enterMfsNumber;
+    } else if (value.length != 11) {
+      return Res.str.invalidPhoneNumber;
     }
+
+    return null;
   }
 }

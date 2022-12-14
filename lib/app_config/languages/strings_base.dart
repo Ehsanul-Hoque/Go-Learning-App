@@ -123,10 +123,12 @@ abstract class StringsBase {
   final String errorLoadingContent = "";
   final String errorLoadingProfile = "";
   final String errorUpdatingProfile = "";
+  final String errorOrderingCourse = "";
   final String yesTitle = "";
   final String heyTitle = "";
   final String promoValidAndDiscountApplied = "";
   final String profileUpdatedSuccessfully = "";
+  final String courseOrderedSuccessfully = "";
   final String sorryTitle = "";
   final String promoDoesNotExist = "";
   final String invalidPromoTitle = "";

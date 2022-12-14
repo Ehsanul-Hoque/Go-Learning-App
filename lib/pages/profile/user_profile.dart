@@ -170,11 +170,9 @@ class _UserProfileState extends State<UserProfile> {
 
   void onUpdateTap() {
     if (_formKey.currentState?.validate() != true) return;
-
     _formKey.currentState?.save();
 
     AuthApiNotifier authNotifier = context.read<AuthApiNotifier>();
-
     authNotifier.updateProfile(editInfo);
   }
 

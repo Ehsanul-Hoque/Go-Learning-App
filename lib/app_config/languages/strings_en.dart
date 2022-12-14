@@ -140,11 +140,15 @@ class StringsEn implements StringsBase {
       "Sorry! Could not load the profile. Please try again later.";
   final String errorUpdatingProfile =
       "Sorry! Could not update profile info. Please try again later.";
+  final String errorOrderingCourse =
+      "Sorry! Could not place order for the course. Please try again later.";
   final String yesTitle = "Yes!";
   final String heyTitle = "Hey!";
   final String promoValidAndDiscountApplied = "This promo is valid."
       " Discount applied to the previous price.";
   final String profileUpdatedSuccessfully = "Profile has been updated.";
+  final String courseOrderedSuccessfully = "Your order has been placed."
+      " An admin will soon review your order.";
   final String sorryTitle = "Sorry!";
   final String promoDoesNotExist = "This promo does not exist.";
   final String invalidPromoTitle = "Invalid Promo!";

@@ -121,6 +121,10 @@ class Routes {
   /// Route method to close the current page if possible
   static Future<bool> goBack<T>(BuildContext context, {T? result}) =>
       RoutesHelper._back(context, result: result);
+
+  /// Route method to close all pages except the first page
+  static void goHome(BuildContext context) =>
+      RoutesHelper._backToFirst(context);
 }
 
 /// Routes config class
@@ -180,5 +184,12 @@ class RoutesHelper {
 
   static Future<bool> _back<T>(BuildContext context, {T? result}) {
     return Navigator.of(context).maybePop(result);
+  }
+
+  static void _backToFirst(BuildContext context) {
+    Navigator.popUntil(
+      context,
+      (Route<dynamic> route) => route.isFirst,
+    );
   }
 }

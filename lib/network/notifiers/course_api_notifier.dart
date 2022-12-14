@@ -1,7 +1,11 @@
 import "package:app/network/converters/default_converters/json_array_converter.dart";
 import "package:app/network/converters/default_converters/json_object_converter.dart";
+import "package:app/network/interceptors/default_interceptors/auth_interceptor.dart";
+import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_courses/category_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
+import "package:app/network/models/api_courses/course_order_post_request.dart";
+import "package:app/network/models/api_courses/course_order_post_response.dart";
 import "package:app/network/network.dart";
 import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
@@ -16,6 +20,7 @@ class CourseApiNotifier extends ApiNotifier {
   static const String allCategoriesGetApiEndpoint =
       "/category/category_tree_view";
   static const String allCoursesGetApiEndpoint = "/course/get";
+  static const String courseOrderPostApiEndpoint = "/order/create";
 
   /// Constructor
   CourseApiNotifier();
@@ -64,5 +69,31 @@ class CourseApiNotifier extends ApiNotifier {
   NetworkResponse<List<CourseGetResponse>> get allCoursesGetResponse =>
       Network.getOrCreateResponse(
         defaultClient.baseUrl + allCoursesGetApiEndpoint,
+      );
+
+  /// Methods to place order for a course
+  Future<NetworkResponse<CourseOrderPostResponse>> postCourseOrder(
+    CourseOrderPostRequest requestBody,
+  ) {
+    return const Network().createExecuteCall(
+      client: defaultAuthenticatedClient,
+      requestInterceptors: <NetworkRequestInterceptor>[AuthInterceptor()],
+      request: NetworkRequest.post(
+        apiEndPoint: courseOrderPostApiEndpoint,
+        body: requestBody.toJson(),
+      ),
+      responseConverter: const JsonObjectConverter<CourseOrderPostResponse>(
+        CourseOrderPostResponse.fromJson,
+      ),
+      callback: NetworkCallback<CourseOrderPostResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
+      checkCacheFirst: false,
+    );
+  }
+
+  NetworkResponse<CourseOrderPostResponse> get courseOrderPostResponse =>
+      Network.getOrCreateResponse(
+        defaultAuthenticatedClient.baseUrl + courseOrderPostApiEndpoint,
       );
 }
