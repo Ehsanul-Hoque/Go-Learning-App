@@ -63,6 +63,10 @@ class AppDrawer extends StatelessWidget {
                     height: Res.dimen.hugeSpacingValue,
                   ),
                   ...config.drawerItems.map((AppDrawerItemModel item) {
+                    if (item.requireAuth && !UserBox.isLoggedIn) {
+                      return const SizedBox.shrink();
+                    }
+
                     return AppButton(
                       text: Text(item.text),
                       onTap: item.onTap,

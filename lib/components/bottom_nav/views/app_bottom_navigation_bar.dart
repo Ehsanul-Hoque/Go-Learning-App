@@ -1,3 +1,5 @@
+import "dart:math" show min;
+
 import "package:app/app_config/resources.dart";
 import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
 import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
@@ -86,7 +88,10 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     width = widget.width ??
-        MediaQuery.of(context).size.width - (Res.dimen.navBarMargin * 2);
+        min(
+          MediaQuery.of(context).size.width - (Res.dimen.navBarMargin * 2),
+          400,
+        );
 
     return Container(
       width: width,

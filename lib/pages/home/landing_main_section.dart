@@ -26,14 +26,14 @@ class _LandingMainSectionState extends State<LandingMainSection> {
         icon: const Icon(CupertinoIcons.home),
         page: const Home(),
       ),
-      // TODO uncomment the bottom pages
-      //  if they are fully functional and needed
-      /*PageModel(
+      PageModel(
         title: Res.str.explore,
         icon: const Icon(CupertinoIcons.search_circle),
         page: const Courses(),
       ),
-      PageModel(
+      // TODO uncomment the bottom pages
+      //  if they are fully functional and needed
+      /*PageModel(
         title: Res.str.favourites,
         icon: const Icon(CupertinoIcons.square_favorites_alt),
         page: const Favourites(),
@@ -124,8 +124,6 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                   ),
                 ),
               ),
-              /*
-              TODO Show bottom bar when more pages are available
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -135,26 +133,28 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                     bool isPortrait = (MediaQuery.of(context).orientation ==
                         Orientation.portrait);
 
-                    return AppBottomNavigationBar(
-                      key: ValueKey<bool>(isPortrait),
-                      items: _pageModels.map((PageModel model) {
-                        return AppBottomNavigationBarModel(
-                          icon: model.icon,
-                          text: model.title,
-                        );
-                      }).toList(),
-                      selectedIndex: _currentPageIndex,
-                      itemSize: AppBottomNavigationItemSize.flex,
-                      flex: isPortrait ? 2 : 1,
-                      showOnlyIconForInactiveItem: isPortrait,
-                      onItemChange: (int newSelectedIndex) {
-                        _pageViewScrolling = true;
-                        updatePage(newSelectedIndex, true);
-                      },
+                    return Center(
+                      child: AppBottomNavigationBar(
+                        key: ValueKey<bool>(isPortrait),
+                        items: _pageModels.map((PageModel model) {
+                          return AppBottomNavigationBarModel(
+                            icon: model.icon,
+                            text: model.title,
+                          );
+                        }).toList(),
+                        selectedIndex: _currentPageIndex,
+                        itemSize: AppBottomNavigationItemSize.flex,
+                        // flex: isPortrait ? 2 : 1,
+                        showOnlyIconForInactiveItem: false, // isPortrait,
+                        onItemChange: (int newSelectedIndex) {
+                          _pageViewScrolling = true;
+                          updatePage(newSelectedIndex, true);
+                        },
+                      ),
                     );
                   },
                 ),
-              ),*/
+              ),
             ],
           ),
         ),

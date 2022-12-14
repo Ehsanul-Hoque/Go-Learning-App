@@ -1,5 +1,4 @@
 import "package:app/app_config/resources.dart";
-import "package:app/app_config/sample_data.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 
 class UserUtils {
@@ -21,7 +20,7 @@ class UserUtils {
         address: "",
         selectedClass: "",
         phone: "",
-        photo: SampleData.avatar,
+        photo: "",
         userType: "",
       );
 }

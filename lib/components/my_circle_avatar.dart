@@ -5,8 +5,8 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/utils/typedefs.dart" show ErrorBuilder, PlaceholderBuilder;
 import "package:app/utils/utils.dart";
-import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
+import "package:flutter_svg/flutter_svg.dart";
 
 class MyCircleAvatar extends StatelessWidget {
   final File? imageFile;
@@ -54,10 +54,10 @@ class MyCircleAvatar extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : (imageUrl?.isEmpty != false)
-                ? Icon(
-                    CupertinoIcons.person_crop_circle,
-                    size: max(0, 2 * (radius - padding)),
-                    color: Res.color.appBarAvatarIcon,
+                ? SvgPicture.asset(
+                    Res.assets.defaultAvatarSvg,
+                    width: max(0, 2 * (radius - padding)),
+                    height: max(0, 2 * (radius - padding)),
                   )
                 : MyCachedImage(
                     imageUrl: imageUrl ?? "",
@@ -80,10 +80,10 @@ class MyCircleAvatar extends StatelessWidget {
                       if (errorBuilder != null) {
                         return errorBuilder!(context, url, error);
                       } else {
-                        return Icon(
-                          CupertinoIcons.person_crop_circle,
-                          size: max(0, 2 * (radius - padding)),
-                          color: Res.color.appBarAvatarIcon,
+                        return SvgPicture.asset(
+                          Res.assets.defaultAvatarSvg,
+                          width: max(0, 2 * (radius - padding)),
+                          height: max(0, 2 * (radius - padding)),
                         );
                       }
                     },
