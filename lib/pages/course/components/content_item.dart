@@ -17,12 +17,13 @@ import "package:provider/provider.dart";
 
 class ContentItem extends StatelessWidget {
   final ContentTreeGetResponseContents content;
-  final bool isFirst, isSelected;
+  final bool isFirst, isSelected, hasCourseEnrolled;
   final OnContentItemClickListener onContentClick;
   final double? leftMargin;
 
   const ContentItem({
     Key? key,
+    required this.hasCourseEnrolled,
     required this.content,
     required this.isSelected,
     required this.onContentClick,
@@ -32,7 +33,7 @@ class ContentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isLocked = content.locked ?? true;
+    bool isLocked = content.isActuallyLocked(hasCourseEnrolled);
 
     return AppContainer(
       animated: true,

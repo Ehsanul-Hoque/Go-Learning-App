@@ -105,10 +105,14 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                     );
 
                     return ContentItem(
+                      hasCourseEnrolled:
+                          true, // Because preview video will be available always
                       content: ContentTreeGetResponseContents(
                         contentType: CourseContentType.lecture.name,
-                        publicToAccess: true,
-                        locked: false,
+                        publicToAccess:
+                            true, // Because preview video will be available always
+                        locked:
+                            false, // Because preview video will be available always
                         title: Res.str.previewVideo,
                         courseId: courseId,
                       ),
@@ -160,6 +164,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                         chapter: item,
                         expandedList: getExpandedChaptersList(chapters.length),
                         index: index,
+                        hasCourseEnrolled: widget.course.hasEnrolled,
                       );
                     },
                   ),

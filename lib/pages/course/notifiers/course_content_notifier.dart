@@ -22,8 +22,11 @@ class CourseContentNotifier extends ChangeNotifier {
   bool selectContent(
     BuildContext context,
     ContentTreeGetResponseContents? contentItem,
+    bool hasCourseEnrolled,
   ) {
-    if (contentItem?.locked ?? false) {
+    bool locked = contentItem?.isActuallyLocked(hasCourseEnrolled) ?? true;
+
+    if (locked) {
       context.showSnackBar(
         AppSnackBarContent(
           title: Res.str.lockedTitle,
@@ -56,7 +59,8 @@ class CourseContentNotifier extends ChangeNotifier {
     return true;
   }
 
-  bool selectPreviewVideo(BuildContext context) => selectContent(context, null);
+  bool selectPreviewVideo(BuildContext context) =>
+      selectContent(context, null, true);
 
   bool isPreviewVideoSelected() => _selectedContentItem == null;
 

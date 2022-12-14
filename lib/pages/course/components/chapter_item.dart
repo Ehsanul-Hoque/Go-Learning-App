@@ -25,12 +25,14 @@ class ChapterItem extends StatefulWidget {
   final ContentTreeGetResponseModule chapter;
   final List<bool> expandedList;
   final int index;
+  final bool hasCourseEnrolled;
 
   const ChapterItem({
     Key? key,
     required this.chapter,
     required this.expandedList,
     required this.index,
+    required this.hasCourseEnrolled,
   }) : super(key: key);
 
   @override
@@ -121,6 +123,7 @@ class _ChapterItemState extends State<ChapterItem> {
                 ? ChapterVideoListPart(
                     key: const ValueKey<String>("chapter_video_list"),
                     contents: _contents,
+                    hasCourseEnrolled: widget.hasCourseEnrolled,
                   )
                 : const SizedBox.shrink())
             : AnimatedSizeContainer(
@@ -131,6 +134,7 @@ class _ChapterItemState extends State<ChapterItem> {
                 child: ChapterVideoListPart(
                   key: const ValueKey<String>("chapter_video_list"),
                   contents: _contents,
+                  hasCourseEnrolled: widget.hasCourseEnrolled,
                 ),
               ),
         SizedBox(

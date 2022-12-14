@@ -118,4 +118,18 @@ class ContentTreeGetResponseContents extends ApiModel {
 
   @override
   Map<String, dynamic> toJson() => _$ContentTreeGetResponseContentsToJson(this);
+
+  bool isActuallyLocked(bool hasCourseEnrolled) {
+    bool contentLocked = locked ?? false;
+    bool contentPublic = publicToAccess ?? false;
+    bool actuallyLocked = true;
+
+    if (hasCourseEnrolled) {
+      actuallyLocked = contentLocked;
+    } else {
+      actuallyLocked = !contentPublic || contentLocked;
+    }
+
+    return actuallyLocked;
+  }
 }

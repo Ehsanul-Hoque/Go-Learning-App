@@ -34,16 +34,29 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   void initState() {
     _pageController = PageController(initialPage: 0);
 
-    _pageModels = <PageModel>[
-      PageModel(
-        title: Res.str.courseDetails,
-        page: CourseDetails(course: widget.course),
-      ),
-      PageModel(
-        title: Res.str.coursePlaylist,
-        page: CoursePlaylist(course: widget.course),
-      ),
-    ];
+    if (widget.course.hasEnrolled) {
+      _pageModels = <PageModel>[
+        PageModel(
+          title: Res.str.coursePlaylist,
+          page: CoursePlaylist(course: widget.course),
+        ),
+        PageModel(
+          title: Res.str.courseDetails,
+          page: CourseDetails(course: widget.course),
+        ),
+      ];
+    } else {
+      _pageModels = <PageModel>[
+        PageModel(
+          title: Res.str.courseDetails,
+          page: CourseDetails(course: widget.course),
+        ),
+        PageModel(
+          title: Res.str.coursePlaylist,
+          page: CoursePlaylist(course: widget.course),
+        ),
+      ];
+    }
 
     super.initState();
   }
