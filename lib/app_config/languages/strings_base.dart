@@ -30,7 +30,7 @@ abstract class StringsBase {
   final String update = "";
   final String guest = "";
 
-  final String admission = "";
+  final String home = "";
   final String explore = "";
   final String favourites = "";
   final String exams = "";

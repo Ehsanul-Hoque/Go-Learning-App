@@ -22,11 +22,13 @@ class _LandingMainSectionState extends State<LandingMainSection> {
   void initState() {
     _pageModels = <PageModel>[
       PageModel(
-        title: Res.str.admission,
+        title: Res.str.home,
         icon: const Icon(CupertinoIcons.home),
         page: const Home(),
       ),
-      PageModel(
+      // TODO uncomment the bottom pages
+      //  if they are fully functional and needed
+      /*PageModel(
         title: Res.str.explore,
         icon: const Icon(CupertinoIcons.search_circle),
         page: const Courses(),
@@ -40,7 +42,7 @@ class _LandingMainSectionState extends State<LandingMainSection> {
         title: Res.str.exams,
         icon: const Icon(CupertinoIcons.pencil_outline),
         page: const Exams(),
-      ),
+      ),*/
     ];
 
     _pageController = PageController(initialPage: 0);
@@ -122,6 +124,8 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                   ),
                 ),
               ),
+              /*
+              TODO Show bottom bar when more pages are available
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -150,7 +154,7 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                     );
                   },
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

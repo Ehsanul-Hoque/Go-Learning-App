@@ -34,7 +34,7 @@ class StringsEn implements StringsBase {
   final String update = "Update";
   final String guest = "Guest";
 
-  final String admission = "Admission";
+  final String home = "Home";
   final String explore = "Explore";
   final String favourites = "Favourites";
   final String exams = "Exams";

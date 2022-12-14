@@ -317,31 +317,14 @@ class _AuthPageState extends State<AuthPage> {
                     style: Res.textStyles.secondary,
                     textAlign: TextAlign.center,
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: onPrivacyPolicyTap,
-                        child: Text(
-                          Res.str.privacyPolicy,
-                          style: Res.textStyles.link,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Text(
-                        " ${Res.str.and} ",
-                        style: Res.textStyles.secondary,
-                        textAlign: TextAlign.center,
-                      ),
-                      GestureDetector(
-                        onTap: onTermsOfUseTap,
-                        child: Text(
-                          Res.str.termsOfUse,
-                          style: Res.textStyles.link,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: onPrivacyPolicyTap,
+                    child: Text(
+                      "${Res.str.privacyPolicy} ${Res.str.and}"
+                      " ${Res.str.termsOfUse}",
+                      style: Res.textStyles.link,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
@@ -463,11 +446,8 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void onPrivacyPolicyTap() {
-    // TODO Show privacy policy
-  }
-
-  void onTermsOfUseTap() {
-    // TODO Show terms of use
+    Routes()
+        .openWebViewPage(context, "https://golearningbd.com/privacy-policy");
   }
 
   bool handleIfAlreadyAuthenticated() {

@@ -66,6 +66,7 @@ class ColorsLightMode implements ColorsBase {
   final Color drawerAvatarIcon = AppColors.white;
   final Color drawerAvatarBg = AppColors.themeYellow;
   final Color drawerItem = AppColors.themeBlue;
+  final Color drawerLogInItem = AppColors.flatBluePeterRiver;
   final Color drawerLogOutItem = AppColors.redAccent;
 
   /// Carousal Indicator

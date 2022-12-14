@@ -63,6 +63,7 @@ abstract class ColorsBase {
   final Color drawerAvatarIcon = AppColors.transparent;
   final Color drawerAvatarBg = AppColors.transparent;
   final Color drawerItem = AppColors.transparent;
+  final Color drawerLogInItem = AppColors.transparent;
   final Color drawerLogOutItem = AppColors.transparent;
 
   /// Carousal Indicator

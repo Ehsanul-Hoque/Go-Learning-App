@@ -4,16 +4,10 @@ import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_drawer/app_drawer.dart";
 import "package:app/components/app_drawer/app_drawer_item_model.dart";
 import "package:app/components/app_drawer/my_app_drawer_config.dart";
-import "package:app/components/bottom_nav/enums/app_bottom_navigation_item_size.dart";
-import "package:app/components/bottom_nav/models/app_bottom_navigation_button_model.dart";
-import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
 import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/models/page_model.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
-import "package:app/pages/home/exams.dart";
-import "package:app/pages/home/explore.dart";
-import "package:app/pages/home/favourites.dart";
 import "package:app/pages/home/home.dart";
 import "package:app/routes.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
@@ -40,20 +34,17 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     _appDrawerItems = <AppDrawerItemModel>[
-      AppDrawerItemModel(
-        iconData: Icons.edit_note_outlined,
-        text: Res.str.editProfile,
-        onTap: onEditProfileTap,
-      ),
+      if (UserBox.isLoggedIn)
+        AppDrawerItemModel(
+          iconData: Icons.edit_note_outlined,
+          text: Res.str.editProfile,
+          onTap: onEditProfileTap,
+        ),
+      // TODO uncomment the bottom item if fully functional
       /*AppDrawerItemModel(
         iconData: Icons.payments_outlined,
         text: Res.str.paymentHistory,
         onTap: onPaymentHistoryTap,
-      ),*/
-      /*AppDrawerItemModel(
-        iconData: Icons.notes_outlined,
-        text: Res.str.termsOfUse,
-        onTap: onTermsOfUseTap,
       ),*/
       AppDrawerItemModel(
         iconData: Icons.privacy_tip_outlined,
@@ -128,10 +119,6 @@ class _LandingPageState extends State<LandingPage> {
 
   /*void onPaymentHistoryTap() {
     // TODO Show payment history
-  }
-
-  void onTermsOfUseTap() {
-    // TODO Show terms of use
   }*/
 
   void onPrivacyPolicyTap() {

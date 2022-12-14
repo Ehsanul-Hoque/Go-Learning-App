@@ -79,19 +79,35 @@ class AppDrawer extends StatelessWidget {
                   SizedBox(
                     height: Res.dimen.hugeSpacingValue,
                   ),
-                  AppButton(
-                    text: Text(Res.str.logOut),
-                    onTap: () => onLogOutTap(context),
-                    icon: Icon(
-                      Icons.logout_rounded,
-                      size: Res.dimen.iconSizeNormal,
+                  if (UserBox.isLoggedIn)
+                    AppButton(
+                      text: Text(Res.str.logOut),
+                      onTap: () => onLogOutTap(context),
+                      icon: Icon(
+                        Icons.logout_rounded,
+                        size: Res.dimen.iconSizeNormal,
+                      ),
+                      backgroundColor: Res.color.buttonHollowBg,
+                      contentColor: Res.color.drawerLogOutItem,
+                      // padding: EdgeInsets.zero,
+                      fontSize: Res.dimen.fontSizeMedium,
+                      alignCenter: false,
+                    )
+                  else
+                    AppButton(
+                      text: Text("${Res.str.logIn} ${Res.str.or}"
+                          " ${Res.str.signUp}"),
+                      onTap: () => onLogInTap(context),
+                      icon: Icon(
+                        Icons.logout_rounded,
+                        size: Res.dimen.iconSizeNormal,
+                      ),
+                      backgroundColor: Res.color.buttonHollowBg,
+                      contentColor: Res.color.drawerLogInItem,
+                      // padding: EdgeInsets.zero,
+                      fontSize: Res.dimen.fontSizeMedium,
+                      alignCenter: false,
                     ),
-                    backgroundColor: Res.color.buttonHollowBg,
-                    contentColor: Res.color.drawerLogOutItem,
-                    // padding: EdgeInsets.zero,
-                    fontSize: Res.dimen.fontSizeMedium,
-                    alignCenter: false,
-                  ),
                   SizedBox(
                     height: Res.dimen.largeSpacingValue,
                   ),
@@ -102,6 +118,14 @@ class AppDrawer extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onLogInTap(BuildContext context) {
+    if (!UserBox.isLoggedIn) {
+      Routes().openAuthPage(context);
+    } else {
+      // TODO show snack bar that the user is already authenticated
+    }
   }
 
   void onLogOutTap(BuildContext context) {
