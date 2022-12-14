@@ -1,4 +1,4 @@
-import "package:app/components/app_video_player/notifiers/video_notifier.dart";
+import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/app_webview.dart";
 import "package:app/pages/course/course_before_enroll.dart";
@@ -7,6 +7,7 @@ import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/profile/user_profile.dart";
 import "package:app/pages/splash_page.dart";
+import "package:app/pages/video_player/app_fullscreen_player.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:app/utils/typedefs.dart";
 import "package:flutter/material.dart" show MaterialPageRoute;
@@ -56,7 +57,7 @@ class Routes {
         (BuildContext context) => MultiProvider(
           providers: <SingleChildWidget>[
             CourseContentNotifier.createProvider(),
-            VideoNotifier.createProvider(initialVideoUrl: course.preview ?? ""),
+            // VideoNotifier.createProvider(initialVideoUrl: course.preview ?? ""),
           ],
           child: CourseBeforeEnroll(course: course),
         ),
@@ -81,6 +82,23 @@ class Routes {
       RoutesHelper._toOrReplace<void>(
         context,
         (BuildContext context) => const UserProfile(),
+        replace: config.replace,
+      );
+
+  /// Route method to open the fullscreen video page
+  Future<void> openVideoPage(
+    BuildContext context,
+    AppVideoPlayerConfig videoConfig,
+    VoidCallback? onEnterFullScreen,
+    VoidCallback? onExitFullScreen,
+  ) =>
+      RoutesHelper._toOrReplace<void>(
+        context,
+        (BuildContext context) => AppFullScreenPlayer(
+          config: videoConfig,
+          onEnterFullScreen: onEnterFullScreen,
+          onExitFullScreen: onExitFullScreen,
+        ),
         replace: config.replace,
       );
 

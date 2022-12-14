@@ -1,6 +1,4 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_video_player/app_video_player_builder.dart";
-import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
@@ -10,7 +8,6 @@ import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
 import "package:app/routes.dart";
-import "package:app/utils/utils.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
 import "package:flutter/widgets.dart";
@@ -64,125 +61,95 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Res.color.pageBg,
-          body: AppVideoPlayerBuilder(
-            config: AppVideoPlayerConfig(
-              thumbnail: widget.course.thumbnail,
-            ),
-            builder: (BuildContext context, Widget player) {
-              return Stack(
-                children: <Widget>[
-                  NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification notification) {
-                      if (notification.depth == 0 &&
-                          notification is ScrollEndNotification) {
-                        _pageViewScrolling = false;
-                      }
-                      return false;
-                    },
-                    child: DefaultTabController(
-                      animationDuration: Res.durations.defaultDuration,
-                      length: _pageModels.length,
-                      child: Column(
-                        children: <Widget>[
-                          AspectRatio(
-                            aspectRatio: Res.dimen.videoAspectRatio,
-                            child: Container(
-                              color: Res.color.videoBg,
-                              child: player,
-                            ),
-                          ),
-                          SizedBox(
-                            height: Res.dimen.smallSpacingValue,
-                          ),
-                          MyPlatformAppBar(
-                            config: MyAppBarConfig(
-                              backgroundColor: Res.color.appBarBgTransparent,
-                              shadow: const <BoxShadow>[],
-                              title: Text(
-                                widget.course.title ?? "",
-                              ),
-                              subtitle: Text(
-                                "${Res.str.by} ${widget.course.instructorName ?? ""}",
-                              ),
-                              startActions: <Widget>[
-                                IconButton(
-                                  // TODO extract this back button as a component
-                                  constraints: const BoxConstraints(),
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios_new_rounded,
-                                  ),
-                                  iconSize: Res.dimen.iconSizeNormal,
-                                  color: Res.color.iconButton,
-                                  onPressed: () => Routes.goBack(context),
-                                ),
-                              ],
-                              endActions: <Widget>[
-                                IconButton(
-                                  // TODO extract this fullscreen button as a component
-                                  // (button for app bar - something like that)
-                                  constraints: const BoxConstraints(),
-                                  icon: const Icon(
-                                    Icons.fullscreen_rounded,
-                                  ),
-                                  iconSize: Res.dimen.iconSizeNormal,
-                                  color: Res.color.iconButton,
-                                  onPressed: () {
-                                    Utils.toggleFullScreenMode(true);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: Res.dimen.normalSpacingValue,
-                            ),
-                            child: AppTabBar(
-                              tabs: _pageModels.map((PageModel page) {
-                                return Tab(
-                                  text: page.title,
-                                );
-                              }).toList(),
-                              onTabChange: (int newSelectedIndex) {
-                                _pageViewScrolling = true;
-                                updatePage(newSelectedIndex, true);
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: PageView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              controller: _pageController,
-                              children: _pageModels.map((PageModel model) {
-                                return model.page;
-                              }).toList(),
-                              onPageChanged: (int newSelectedIndex) {
-                                if (!_pageViewScrolling) {
-                                  updatePage(newSelectedIndex, false);
-                                }
-
-                                _pageViewScrolling = true;
-                              },
-                            ),
-                          ),
-                        ],
+          body: Stack(
+            children: <Widget>[
+              NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification notification) {
+                  if (notification.depth == 0 &&
+                      notification is ScrollEndNotification) {
+                    _pageViewScrolling = false;
+                  }
+                  return false;
+                },
+                child: DefaultTabController(
+                  animationDuration: Res.durations.defaultDuration,
+                  length: _pageModels.length,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: Res.dimen.smallSpacingValue,
                       ),
-                    ),
+                      MyPlatformAppBar(
+                        config: MyAppBarConfig(
+                          backgroundColor: Res.color.appBarBgTransparent,
+                          shadow: const <BoxShadow>[],
+                          title: Text(
+                            widget.course.title ?? "",
+                          ),
+                          subtitle: Text(
+                            "${Res.str.by} ${widget.course.instructorName ?? ""}",
+                          ),
+                          startActions: <Widget>[
+                            IconButton(
+                              // TODO extract this back button as a component
+                              constraints: const BoxConstraints(),
+                              icon: const Icon(
+                                Icons.arrow_back_ios_new_rounded,
+                              ),
+                              iconSize: Res.dimen.iconSizeNormal,
+                              color: Res.color.iconButton,
+                              onPressed: () => Routes.goBack(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: Res.dimen.normalSpacingValue,
+                        ),
+                        child: AppTabBar(
+                          tabs: _pageModels.map((PageModel page) {
+                            return Tab(
+                              text: page.title,
+                            );
+                          }).toList(),
+                          onTabChange: (int newSelectedIndex) {
+                            _pageViewScrolling = true;
+                            updatePage(newSelectedIndex, true);
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: PageView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: _pageController,
+                          children: _pageModels.map((PageModel model) {
+                            return model.page;
+                          }).toList(),
+                          onPageChanged: (int newSelectedIndex) {
+                            if (!_pageViewScrolling) {
+                              updatePage(newSelectedIndex, false);
+                            }
+
+                            _pageViewScrolling = true;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: PromoBuyPanel(
-                      initialPrice:
-                          widget.course.originalPrice?.toDouble() ?? 0,
-                      discountedPrice: widget.course.price?.toDouble(),
-                      onBuyCourseTap: onBuyCourseTap,
-                    ),
-                  ),
-                ],
-              );
-            },
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: PromoBuyPanel(
+                  initialPrice: widget.course.originalPrice?.toDouble() ?? 0,
+                  discountedPrice: widget.course.price?.toDouble(),
+                  onBuyCourseTap: onBuyCourseTap,
+                ),
+              ),
+            ],
           ),
         ),
       ),

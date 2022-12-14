@@ -1,4 +1,5 @@
 import "package:app/app_config/resources.dart";
+import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/network/enums/api_contents/course_content_type.dart";
@@ -10,6 +11,7 @@ import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
+import "package:app/routes.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
@@ -119,6 +121,15 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                         context
                             .read<VideoNotifier>()
                             .setVideo(widget.course.preview ?? "");
+
+                        Routes().openVideoPage(
+                          context,
+                          AppVideoPlayerConfig(
+                            thumbnail: widget.course.thumbnail,
+                          ),
+                          null,
+                          null,
+                        );
                       },
                     );
                   },

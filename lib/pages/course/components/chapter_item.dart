@@ -2,6 +2,7 @@ import "package:app/app_config/colors/app_colors.dart";
 import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_container.dart";
+import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/splash_effect.dart";
 import "package:app/network/enums/api_contents/course_content_type.dart";
@@ -12,6 +13,7 @@ import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/pages/course/components/content_item.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
+import "package:app/routes.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
@@ -181,6 +183,13 @@ class _ChapterItemState extends State<ChapterItem> {
             // "https://www.youtube.com/watch?v=La0IJPt0t4Q",
             response.result?.data?.elementAtOrNull(0)?.link ?? "",
           );
+
+      Routes().openVideoPage(
+        context,
+        const AppVideoPlayerConfig(),
+        null,
+        null,
+      );
     }
   }
 }
