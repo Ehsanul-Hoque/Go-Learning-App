@@ -141,6 +141,7 @@ class StringsEn implements StringsBase {
   final String errorUpdatingProfile =
       "Sorry! Could not update profile info. Please try again later.";
   final String yesTitle = "Yes!";
+  final String heyTitle = "Hey!";
   final String promoValidAndDiscountApplied = "This promo is valid."
       " Discount applied to the previous price.";
   final String profileUpdatedSuccessfully = "Profile has been updated.";
@@ -155,6 +156,8 @@ class StringsEn implements StringsBase {
   final String youAreInGuestMood = "You are in guest mood.";
   final String noEnrolledCourse = "You haven't got enrolled in any courses yet!"
       "\nLet's enroll a course from below.";
+  final String alreadyEnrolledCourse =
+      "You are already enrolled in this course!";
 
   final String emailNotRegistered =
       "This email has not been registered yet. Please sign up first.";

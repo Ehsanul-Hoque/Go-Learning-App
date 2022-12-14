@@ -1,4 +1,5 @@
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
+import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/app_webview.dart";
 import "package:app/pages/course/course_before_enroll.dart";
@@ -68,12 +69,16 @@ class Routes {
   Future<void> openCourseCheckoutPage(
     BuildContext context,
     CourseGetResponse course,
+    CouponGetResponseData? appliedCoupon,
     double finalPrice,
   ) =>
       RoutesHelper._toOrReplace<void>(
         context,
-        (BuildContext context) =>
-            CourseCheckout(course: course, finalPrice: finalPrice),
+        (BuildContext context) => CourseCheckout(
+          course: course,
+          appliedCoupon: appliedCoupon,
+          finalPrice: finalPrice,
+        ),
         replace: config.replace,
       );
 

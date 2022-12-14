@@ -22,11 +22,13 @@ import "package:provider/provider.dart" show ReadContext, SelectContext;
 class PromoBuyPanel extends StatefulWidget {
   final double initialPrice;
   final double discountedPrice;
+  final OnValueListener<CouponGetResponseData> onPromoApplied;
   final OnValueListener<double> onBuyCourseTap;
 
   const PromoBuyPanel({
     Key? key,
     required this.initialPrice,
+    required this.onPromoApplied,
     required this.onBuyCourseTap,
     double? discountedPrice,
   })  : discountedPrice = discountedPrice ?? initialPrice,
@@ -188,6 +190,9 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
     if (coupon != null) {
       promoState = PromoState.promoAppliedAndBuy;
       promoDiscountAmount = coupon.discount?.toDouble() ?? 0;
+
+      widget.onPromoApplied(coupon);
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // Execute callback if page is mounted
         if (!mounted) return;

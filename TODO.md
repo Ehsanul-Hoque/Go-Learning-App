@@ -62,4 +62,6 @@
 - Do not cache for POST calls
 - *** REMOVE SAMPLE DATA FILE ***
 - Handle unauthenticated or other responses properly
+- Refresh course_before_enroll.dart in case user logged in from there
+  and see that he/she is already enrolled in that course
 - 

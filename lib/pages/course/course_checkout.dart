@@ -8,6 +8,7 @@ import "package:app/components/fields/app_input_field.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
+import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/models/api_static_info/static_info_get_response.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
@@ -26,12 +27,14 @@ part "package:app/pages/course/parts/course_checkout_form.dart";
 
 class CourseCheckout extends StatefulWidget {
   final CourseGetResponse course;
+  final CouponGetResponseData? appliedCoupon;
   final double finalPrice;
 
   const CourseCheckout({
     Key? key,
     required this.course,
     required this.finalPrice,
+    this.appliedCoupon,
   }) : super(key: key);
 
   @override

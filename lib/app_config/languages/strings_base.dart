@@ -124,6 +124,7 @@ abstract class StringsBase {
   final String errorLoadingProfile = "";
   final String errorUpdatingProfile = "";
   final String yesTitle = "";
+  final String heyTitle = "";
   final String promoValidAndDiscountApplied = "";
   final String profileUpdatedSuccessfully = "";
   final String sorryTitle = "";
@@ -136,6 +137,7 @@ abstract class StringsBase {
   final String unauthenticatedMessage = "";
   final String youAreInGuestMood = "";
   final String noEnrolledCourse = "";
+  final String alreadyEnrolledCourse = "";
 
   final String emailNotRegistered = "";
   final String accountAlreadyExists = "";

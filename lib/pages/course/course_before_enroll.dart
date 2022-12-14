@@ -1,13 +1,19 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
+import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
+import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/promo_buy_panel/promo_buy_panel.dart";
 import "package:app/components/tab_bar/views/app_tab_bar.dart";
+import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/models/page_model.dart";
+import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/course_details.dart";
 import "package:app/pages/course/course_playlist.dart";
 import "package:app/routes.dart";
+import "package:app/utils/extensions/context_extension.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/material.dart"
     show DefaultTabController, IconButton, Icons, Scaffold, Tab;
 import "package:flutter/widgets.dart";
@@ -29,6 +35,7 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   late final PageController _pageController;
   int _selectedTabBarIndex = 0;
   bool _pageViewScrolling = false;
+  CouponGetResponseData? appliedPromo;
 
   @override
   void initState() {
@@ -160,6 +167,8 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                   child: PromoBuyPanel(
                     initialPrice: widget.course.originalPrice?.toDouble() ?? 0,
                     discountedPrice: widget.course.price?.toDouble(),
+                    onPromoApplied: (CouponGetResponseData promo) =>
+                        appliedPromo = promo,
                     onBuyCourseTap: onBuyCourseTap,
                   ),
                 ),
@@ -185,6 +194,69 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
     });
   }
 
-  void onBuyCourseTap(double finalPrice) =>
-      Routes().openCourseCheckoutPage(context, widget.course, finalPrice);
+  void onBuyCourseTap(double finalPrice) {
+    if (UserBox.hasProfileInfo) {
+      if (isEnrolledAlready()) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Execute callback if page is mounted
+          if (!mounted) return;
+
+          context.showSnackBar(
+            AppSnackBarContent(
+              title: Res.str.heyTitle,
+              message: Res.str.alreadyEnrolledCourse,
+              contentType: ContentType.help,
+            ),
+            marginBottom: Res.dimen.snackBarBottomMarginLarge,
+          );
+        });
+      } else {
+        Routes().openCourseCheckoutPage(
+          context,
+          widget.course,
+          appliedPromo,
+          finalPrice,
+        );
+      }
+    } else {
+      Routes().openAuthPage(
+        context,
+        redirectOnSuccess: (BuildContext context) {
+          if (isEnrolledAlready()) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              // Execute callback if page is mounted
+              if (!mounted) return;
+
+              context.showSnackBar(
+                AppSnackBarContent(
+                  title: Res.str.heyTitle,
+                  message: Res.str.alreadyEnrolledCourse,
+                  contentType: ContentType.help,
+                ),
+                marginBottom: Res.dimen.snackBarBottomMarginLarge,
+              );
+            });
+
+            Routes.goBack(context);
+          } else {
+            Routes(config: const RoutesConfig(replace: true))
+                .openCourseCheckoutPage(
+              context,
+              widget.course,
+              appliedPromo,
+              finalPrice,
+            );
+          }
+        },
+      );
+    }
+  }
+
+  bool isEnrolledAlready() {
+    List<String> enrolledCourseIds =
+        UserBox.currentUser?.enrolledCourses?.getNonNulls().toList() ??
+            <String>[];
+
+    return enrolledCourseIds.contains(widget.course.sId);
+  }
 }
