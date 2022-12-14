@@ -31,6 +31,7 @@ class CoursePlaylist extends StatefulWidget {
 class _CoursePlaylistState extends State<CoursePlaylist>
     with AutomaticKeepAliveClientMixin {
   String? courseId;
+  List<bool>? expandedChapters;
 
   @override
   bool get wantKeepAlive => true;
@@ -157,7 +158,8 @@ class _CoursePlaylistState extends State<CoursePlaylist>
 
                       return ChapterItem(
                         chapter: item,
-                        expanded: index == 0,
+                        expandedList: getExpandedChaptersList(chapters.length),
+                        index: index,
                       );
                     },
                   ),
@@ -171,5 +173,16 @@ class _CoursePlaylistState extends State<CoursePlaylist>
         },
       ),
     );
+  }
+
+  List<bool> getExpandedChaptersList(int length) {
+    if (expandedChapters == null) {
+      expandedChapters = List<bool>.filled(length, false);
+      if (expandedChapters!.isNotEmpty) {
+        expandedChapters![0] = true;
+      }
+    }
+
+    return expandedChapters ?? <bool>[];
   }
 }

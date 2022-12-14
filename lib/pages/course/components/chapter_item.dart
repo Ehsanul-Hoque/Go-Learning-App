@@ -19,14 +19,18 @@ import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
 
+part "package:app/pages/course/components/chapter_video_list_part.dart";
+
 class ChapterItem extends StatefulWidget {
   final ContentTreeGetResponseModule chapter;
-  final bool expanded;
+  final List<bool> expandedList;
+  final int index;
 
   const ChapterItem({
     Key? key,
     required this.chapter,
-    this.expanded = false,
+    required this.expandedList,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -36,19 +40,23 @@ class ChapterItem extends StatefulWidget {
 class _ChapterItemState extends State<ChapterItem> {
   late List<ContentTreeGetResponseContents> _contents;
   late bool _expanded;
+  late bool _firstTime;
+  // TODO improve the [_firstTime] bool so the first animation
+  //  does not jump to completion, but still scrolls smoothly
 
   @override
   void initState() {
     _contents = widget.chapter.contents?.getNonNulls().toList() ??
         <ContentTreeGetResponseContents>[];
-    _expanded = widget.expanded;
+    _expanded = widget.expandedList.elementAtOrNull(widget.index) == true;
+    _firstTime = true;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    Widget result = Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         AppContainer(
@@ -85,111 +93,64 @@ class _ChapterItemState extends State<ChapterItem> {
                   SizedBox(
                     width: Res.dimen.normalSpacingValue,
                   ),
-                  AnimatedRotation(
-                    duration: Res.durations.defaultDuration,
-                    turns: _expanded ? -0.5 : 0,
-                    child: const Icon(
-                      CupertinoIcons.chevron_down,
-                      color: AppColors.grey900,
-                    ),
-                  ),
+                  _firstTime
+                      ? RotatedBox(
+                          quarterTurns: _expanded ? 2 : 0,
+                          child: const Icon(
+                            CupertinoIcons.chevron_down,
+                            key: ValueKey<String>("chapter_chevron_icon"),
+                            color: AppColors.grey900,
+                          ),
+                        )
+                      : AnimatedRotation(
+                          duration: Res.durations.defaultDuration,
+                          turns: _expanded ? -0.5 : 0,
+                          child: const Icon(
+                            key: ValueKey<String>("chapter_chevron_icon"),
+                            CupertinoIcons.chevron_down,
+                            color: AppColors.grey900,
+                          ),
+                        ),
                 ],
               ),
             ),
           ),
         ),
-        AnimatedSizeContainer(
-          animateForward: _expanded,
-          animateOnInit: true,
-          axisAlignment: -1,
-          axis: Axis.vertical,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _contents
-                .asMap()
-                .map((int index, ContentTreeGetResponseContents item) {
-                  Widget result = Builder(
-                    builder: (BuildContext context) {
-                      bool isSelected = context
-                          .select((CourseContentNotifier contentNotifier) {
-                        String id1 =
-                            contentNotifier.selectedContentItem?.sId ?? "x";
-                        String id2 = item.sId ?? "y";
-                        return id1 == id2;
-                      });
-
-                      return ContentItem(
-                        content: item,
-                        isSelected: isSelected,
-                        isFirst: index == 0,
-                        onContentClick:
-                            (ContentTreeGetResponseContents content) {
-                          bool hasSelected = context
-                              .read<CourseContentNotifier>()
-                              .selectContent(context, content);
-
-                          if (!hasSelected) {
-                            return;
-                          }
-
-                          CourseContentType contentType =
-                              CourseContentType.valueOf(content.contentType);
-
-                          switch (contentType) {
-                            case CourseContentType.lecture:
-                              context
-                                  .read<ContentApiNotifier?>()
-                                  ?.getLecture(content.sId)
-                                  .then(onLectureGetComplete);
-                              break;
-
-                            // TODO handle other types of contents if available
-
-                            case CourseContentType.unknown:
-                              break;
-                          }
-                        },
-                      );
-                    },
-                  );
-
-                  return MapEntry<int, Widget>(index, result);
-                })
-                .values
-                .toList(),
-          ),
-        ),
+        _firstTime
+            ? (_expanded
+                ? ChapterVideoListPart(
+                    key: const ValueKey<String>("chapter_video_list"),
+                    contents: _contents,
+                  )
+                : const SizedBox.shrink())
+            : AnimatedSizeContainer(
+                animateForward: _expanded,
+                animateOnInit: true,
+                axisAlignment: 1,
+                axis: Axis.vertical,
+                child: ChapterVideoListPart(
+                  key: const ValueKey<String>("chapter_video_list"),
+                  contents: _contents,
+                ),
+              ),
         SizedBox(
           height: Res.dimen.normalSpacingValue,
         ),
       ],
     );
+
+    _firstTime = false;
+
+    return result;
   }
 
   void onChapterClick() {
     setState(() {
       _expanded = !_expanded;
+
+      if ((widget.index >= 0) && (widget.index < widget.expandedList.length)) {
+        widget.expandedList[widget.index] = _expanded;
+      }
     });
-  }
-
-  void onLectureGetComplete(
-    NetworkResponse<LectureGetResponse> response,
-  ) {
-    if (!mounted) return;
-
-    if (response.callStatus == NetworkCallStatus.success) {
-      context.read<VideoNotifier>().setVideo(
-            // "https://player.vimeo.com/video/763095383?h=910b42dfd7",
-            // "https://www.youtube.com/watch?v=La0IJPt0t4Q",
-            response.result?.data?.elementAtOrNull(0)?.link ?? "",
-          );
-
-      Routes().openVideoPage(
-        context,
-        const AppVideoPlayerConfig(),
-        null,
-        null,
-      );
-    }
   }
 }
