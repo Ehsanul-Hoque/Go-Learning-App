@@ -131,6 +131,7 @@ abstract class ColorsBase {
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
   final Color divider = AppColors.transparent;
+  final Color courseCategoryChipBg = AppColors.transparent;
   final Color price = AppColors.transparent;
   final Color strikethroughPrice = AppColors.transparent;
   final Color strikethroughPrice2 = AppColors.transparent;

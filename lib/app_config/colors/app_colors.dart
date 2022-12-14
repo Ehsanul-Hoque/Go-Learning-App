@@ -14,6 +14,7 @@ class AppColors {
   static const Color themeBlueAlpha60 = Color(0x9928295B);
   static const Color themeBlueAlpha90 = Color(0xe628295B);
   static const Color themeYellowAlpha05 = Color(0x0dF8AF3E);
+  static const Color themeYellowAlpha50 = Color(0x80F8AF3E);
   static const Color themeYellowAlpha80 = Color(0xccF8AF3E);
 
   /// Shades of black and grey

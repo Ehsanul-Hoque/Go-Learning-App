@@ -3,10 +3,12 @@ import "package:app/components/app_container.dart";
 import "package:app/components/icon_and_text.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/network/models/api_courses/category_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/routes.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
 import "package:app/utils/utils.dart";
+import "package:collection/collection.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
 
@@ -14,6 +16,7 @@ class CourseItem extends StatelessWidget {
   final CourseGetResponse course;
   final double? width, height;
   final EdgeInsets margin;
+  final bool showRootCategory;
 
   const CourseItem({
     Key? key,
@@ -21,6 +24,7 @@ class CourseItem extends StatelessWidget {
     this.width,
     this.height,
     this.margin = EdgeInsets.zero,
+    this.showRootCategory = false,
   }) : super(key: key);
 
   @override
@@ -49,6 +53,45 @@ class CourseItem extends StatelessWidget {
                       fit: BoxFit.fill,
                     ),
                   ),
+                  if (showRootCategory)
+                    Builder(
+                      builder: (BuildContext context) {
+                        String? rootCategoryName = course.categoryId
+                            ?.firstWhereOrNull(
+                              (CategoryGetResponseData? category) =>
+                                  category?.parentId == null,
+                            )
+                            ?.name;
+
+                        if (rootCategoryName == null) {
+                          return const SizedBox.shrink();
+                        }
+
+                        return Positioned(
+                          top: Res.dimen.xsSpacingValue,
+                          right: Res.dimen.xsSpacingValue,
+                          child: AppContainer(
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.only(
+                              left: Res.dimen.smallSpacingValue,
+                              top: Res.dimen.xxsSpacingValue / 2,
+                              right: Res.dimen.smallSpacingValue,
+                              // bottom: Res.dimen.xxsSpacingValue / 2,
+                            ),
+                            shadow: const <BoxShadow>[],
+                            backgroundColor: Res.color.courseCategoryChipBg,
+                            child: Text(
+                              rootCategoryName,
+                              style: Res.textStyles.smallThick.copyWith(
+                                fontSize: Res.dimen.fontSizeXs,
+                                color: Res.color.contentOnDark,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   Positioned(
                     bottom: -2,
                     right: 0,

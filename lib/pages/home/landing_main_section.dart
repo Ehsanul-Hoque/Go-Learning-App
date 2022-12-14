@@ -98,7 +98,17 @@ class _LandingMainSectionState extends State<LandingMainSection> {
                 child: MyPlatformAppBar(
                   config: MyAppBarConfig(
                     avatarConfig: MyAppBarAvatarConfig(context: context),
+                    title: SvgPicture.asset(
+                      Res.assets.logoSvg,
+                      width: 75,
+                      height: 32,
+                      fit: BoxFit.fill,
+                    ),
+                    centerTitle: true,
                     endActions: <Widget>[
+                      SizedBox(
+                        width: Res.dimen.normalSpacingValue,
+                      ),
                       IconButton(
                         constraints: const BoxConstraints(),
                         icon: const Icon(Icons.menu_rounded),

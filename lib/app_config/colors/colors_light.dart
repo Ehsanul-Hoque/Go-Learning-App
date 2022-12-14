@@ -134,6 +134,7 @@ class ColorsLightMode implements ColorsBase {
   /// Miscellaneous
   final Color transparent = AppColors.transparent;
   final Color divider = AppColors.grey300;
+  final Color courseCategoryChipBg = AppColors.themeYellowAlpha50;
   final Color price = AppColors.themeBlue;
   final Color strikethroughPrice = AppColors.whiteAlpha60;
   final Color strikethroughPrice2 = AppColors.themeBlueAlpha60;

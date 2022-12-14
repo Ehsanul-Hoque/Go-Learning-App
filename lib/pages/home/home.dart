@@ -178,8 +178,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       itemHeight: courseGridItemHeight,
                       mainAxisSpacing: _courseGridVerticalGap,
                       crossAxisSpacing: _courseGridHorizontalGap,
-                      itemBuilder: (BuildContext context, int index) =>
-                          CourseItem(course: enrolledCourses[index]),
+                      itemBuilder: (BuildContext context, int index) {
+                        return CourseItem(
+                          course: enrolledCourses[index],
+                          showRootCategory: true,
+                        );
+                      },
                     );
                   },
                 ),
@@ -236,8 +240,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       itemHeight: courseGridItemHeight,
                       mainAxisSpacing: _courseGridVerticalGap,
                       crossAxisSpacing: _courseGridHorizontalGap,
-                      itemBuilder: (BuildContext context, int index) =>
-                          CourseItem(course: allCourses[index]),
+                      itemBuilder: (BuildContext context, int index) {
+                        return CourseItem(
+                          course: allCourses[index],
+                          showRootCategory: true,
+                        );
+                      },
                     );
 
                     /*return SliverGrid(

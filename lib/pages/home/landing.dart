@@ -19,6 +19,7 @@ import "package:app/routes.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/material.dart" show IconButton, Icons, Scaffold;
 import "package:flutter/widgets.dart";
+import "package:flutter_svg/flutter_svg.dart";
 import "package:flutter_zoom_drawer/config.dart";
 import "package:flutter_zoom_drawer/flutter_zoom_drawer.dart";
 import "package:provider/provider.dart" show ReadContext;

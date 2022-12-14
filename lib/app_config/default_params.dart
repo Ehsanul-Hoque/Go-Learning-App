@@ -49,6 +49,7 @@ class Dimensions {
   final double iconSizeSmall = 20;
   final double iconSizeNormal = 20;
   final double iconSizeHuge = 48;
+  final double fontSizeXs = 10;
   final double fontSizeSmall = 12;
   final double fontSizeNormal = 14;
   final double fontSizeMedium = 16;
@@ -91,7 +92,7 @@ class Dimensions {
   final double circularProgressThicknessNarrow = 2;
   final double maxWidthSmall = 348;
   final double maxWidthNormal = 512;
-  final double homeBannerViewportFraction = 0.9;
+  final double homeBannerViewportFraction = 0.85;
   final double homeBannerAspectRatioWidth = 1920;
   final double homeBannerAspectRatioHeight = 546;
   final double checkoutPaymentMethodsMaxWidth = 348;
