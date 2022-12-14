@@ -149,6 +149,9 @@ class TextStyles {
 
   TextStyle get small => general.copyWith(fontSize: Res.dimen.fontSizeSmall);
   TextStyle get smallThick => small.copyWith(fontWeight: FontWeight.w500);
+  TextStyle get extraSmall => general.copyWith(fontSize: Res.dimen.fontSizeXs);
+  TextStyle get extraSmallExtraThick =>
+      extraSmall.copyWith(fontWeight: FontWeight.w700);
 
   TextStyle get h1 => general.copyWith(fontSize: Res.dimen.fontSizeXXXl);
   TextStyle get h2 => general.copyWith(fontSize: Res.dimen.fontSizeXXl);

@@ -82,11 +82,8 @@ class CourseItem extends StatelessWidget {
                             backgroundColor: Res.color.courseCategoryChipBg,
                             child: Text(
                               rootCategoryName,
-                              style: Res.textStyles.smallThick.copyWith(
-                                fontSize: Res.dimen.fontSizeXs,
-                                color: Res.color.contentOnDark,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: Res.textStyles.extraSmallExtraThick
+                                  .copyWith(color: Res.color.contentOnDark),
                             ),
                           ),
                         );
@@ -114,6 +111,7 @@ class CourseItem extends StatelessWidget {
                               Text(
                                 "${course.price?.toStringAsFixed(0) ?? "-"}"
                                 " ${Res.str.tkDot}",
+                                style: Res.textStyles.general,
                               ),
                               if ((course.originalPrice != null) &&
                                   (course.price !=
@@ -122,8 +120,7 @@ class CourseItem extends StatelessWidget {
                                 Text(
                                   "${course.originalPrice?.toStringAsFixed(0) ?? "-"}"
                                   " ${Res.str.tkDot}",
-                                  style: TextStyle(
-                                    fontSize: Res.dimen.fontSizeSmall,
+                                  style: Res.textStyles.small.copyWith(
                                     color: Res.color.strikethroughPrice2,
                                     decoration: TextDecoration.lineThrough,
                                   ),
