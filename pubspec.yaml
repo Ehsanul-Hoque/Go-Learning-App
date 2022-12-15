@@ -69,8 +69,6 @@ dependencies:
   flutter_dotenv: ^5.0.2
   dart_jsonwebtoken: ^2.6.0
 
-  flutter_lorem: ^2.0.0 # TODO Delete in production
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

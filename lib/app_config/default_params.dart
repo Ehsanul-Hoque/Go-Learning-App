@@ -107,7 +107,7 @@ class TextStyles {
 
   TextStyle get general => TextStyle(
         fontSize: Res.dimen.fontSizeNormal,
-        fontFamily: GoogleFonts.hindSiliguri().fontFamily,
+        fontFamily: "HindSiliguri",
         color: Res.color.textPrimary,
         height: 1.2,
       );
