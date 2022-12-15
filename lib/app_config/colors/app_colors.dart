@@ -43,6 +43,7 @@ class AppColors {
   static const Color flatGreenEmeraldAlpha90 = Color(0xe62ECC71);
   static const Color flatGreenEmeraldAlpha20 = Color(0x332ECC71);
   static const Color flatRedAlizarinAlpha20 = Color(0x33E74C3C);
+  static const Color flatBluePeterRiverAlpha50 = Color(0x803498DB);
 
   /// Flat colors
   static const Color flatRedAlizarin = Color(0xffE74C3C);

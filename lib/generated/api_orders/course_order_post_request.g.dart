@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../network/models/api_courses/course_order_post_request.dart';
+part of '../../network/models/api_orders/course_order_post_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

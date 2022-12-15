@@ -11,9 +11,9 @@ import "package:app/components/floating_messages/enums/floating_messages_content
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
-import "package:app/network/models/api_courses/course_order_post_request.dart";
+import "package:app/network/models/api_orders/course_order_post_request.dart";
 import "package:app/network/models/api_static_info/static_info_get_response.dart";
-import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/network/notifiers/order_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/network/views/network_widget_light.dart";
@@ -133,7 +133,7 @@ class _CourseCheckoutState extends State<CourseCheckout> {
                               NetworkWidgetLight(
                                 callStatusSelector: (BuildContext context) {
                                   return context
-                                      .select((CourseApiNotifier? apiNotifier) {
+                                      .select((OrderApiNotifier? apiNotifier) {
                                     return apiNotifier?.courseOrderPostResponse
                                             .callStatus ??
                                         NetworkCallStatus.none;
@@ -193,8 +193,8 @@ class _CourseCheckoutState extends State<CourseCheckout> {
     if (_formKey.currentState?.validate() != true) return;
     _formKey.currentState?.save();
 
-    CourseApiNotifier courseNotifier = context.read<CourseApiNotifier>();
-    courseNotifier.postCourseOrder(_orderInfo);
+    OrderApiNotifier apiNotifier = context.read<OrderApiNotifier>();
+    apiNotifier.postCourseOrder(_orderInfo);
   }
 
   void onSubmitStatusNoInternet() {

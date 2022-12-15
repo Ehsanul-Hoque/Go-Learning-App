@@ -5,10 +5,14 @@ import "package:app/components/course_item.dart";
 import "package:app/components/debouncer.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/components/userbox_network_widget.dart";
+import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
+import "package:app/network/models/api_orders/all_orders_get_response.dart";
+import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/network/notifiers/order_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
@@ -44,6 +48,11 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
       context.read<StaticInfoApiNotifier?>()?.getStaticInfo();
       context.read<CourseApiNotifier?>()?.getAllCourses();
+
+      if (UserBox.isLoggedIn) {
+        context.read<AuthApiNotifier?>()?.getProfile();
+        context.read<OrderApiNotifier?>()?.getAllOrders();
+      }
     });
   }
 
@@ -122,61 +131,58 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                 padding: EdgeInsets.all(_courseGridPadding),
                 sliver: UserBoxNetworkWidget(
                   shouldOutputBeSliver: true,
-                  callStatusSelector: (BuildContext context) => context.select(
-                    (CourseApiNotifier? apiNotifier) =>
-                        apiNotifier?.allCoursesGetResponse.callStatus ??
-                        NetworkCallStatus.none,
-                  ),
+                  callStatusSelector: (BuildContext context) {
+                    NetworkCallStatus allCoursesCallStatus = context.select(
+                      (CourseApiNotifier? apiNotifier) =>
+                          apiNotifier?.allCoursesGetResponse.callStatus ??
+                          NetworkCallStatus.none,
+                    );
+
+                    NetworkCallStatus allOrdersCallStatus = context.select(
+                      (OrderApiNotifier? apiNotifier) =>
+                          apiNotifier?.allOrdersGetResponse.callStatus ??
+                          NetworkCallStatus.none,
+                    );
+
+                    return NetworkCallStatus
+                        .combineInParallel(<NetworkCallStatus>[
+                      allCoursesCallStatus,
+                      allOrdersCallStatus,
+                    ]);
+                  },
                   noContentChecker: (ProfileGetResponseData profileData) {
-                    List<CourseGetResponse> allCourses = context
-                            .read<CourseApiNotifier?>()
-                            ?.allCoursesGetResponse
+                    List<AllOrdersGetResponseOrder> allPendingOrders = context
+                            .read<OrderApiNotifier?>()
+                            ?.allOrdersGetResponse
                             .result
-                            ?.getNonNulls()
+                            ?.data
+                            ?.data
+                            ?.where(
+                              (AllOrdersGetResponseOrder? order) =>
+                                  order?.status == "pending",
+                            )
+                            .getNonNulls()
                             .toList() ??
-                        <CourseGetResponse>[];
+                        <AllOrdersGetResponseOrder>[];
 
                     List<String> enrolledCourseIds =
                         profileData.enrolledCourses?.getNonNulls().toList() ??
                             <String>[];
 
-                    List<CourseGetResponse> enrolledCourses = allCourses.where(
-                      (CourseGetResponse course) {
-                        return enrolledCourseIds.contains(course.sId);
-                      },
-                    ).toList();
-
-                    return enrolledCourses.isEmpty;
+                    return enrolledCourseIds.isEmpty &&
+                        allPendingOrders.isEmpty;
                   },
                   noContentText: Res.str.noEnrolledCourse,
                   childBuilder: (
                     BuildContext context,
                     ProfileGetResponseData profileData,
                   ) {
-                    List<CourseGetResponse> allCourses = context
-                            .read<CourseApiNotifier?>()
-                            ?.allCoursesGetResponse
-                            .result
-                            ?.getNonNulls()
-                            .toList() ??
-                        <CourseGetResponse>[];
-
-                    List<String> enrolledCourseIds =
-                        profileData.enrolledCourses?.getNonNulls().toList() ??
-                            <String>[];
-
-                    List<CourseGetResponse> enrolledCourses = allCourses.where(
-                      (CourseGetResponse course) {
-                        return enrolledCourseIds.contains(course.sId);
-                      },
-                    ).toList();
-
-                    for (CourseGetResponse course in enrolledCourses) {
-                      course.hasEnrolled = true;
-                    }
+                    // Get a combined list of pending and enrolled courses
+                    List<CourseGetResponse> myCourses =
+                        getMyCourses(profileData);
 
                     return ColumnRowGrid(
-                      itemCount: enrolledCourses.length,
+                      itemCount: myCourses.length,
                       crossAxisCount: courseGridCrossAxisCount,
                       itemWidth: courseGridItemWidth,
                       itemHeight: courseGridItemHeight,
@@ -184,7 +190,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       crossAxisSpacing: _courseGridHorizontalGap,
                       itemBuilder: (BuildContext context, int index) {
                         return CourseItem(
-                          course: enrolledCourses[index],
+                          course: myCourses[index],
                           showRootCategory: true,
                           listenToUserNotifier: false,
                           // No need to listen, because this grid is in the
@@ -300,5 +306,71 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
     );
 
     return Res.dimen.getCourseItemHeight(contentWidth);
+  }
+
+  List<CourseGetResponse> getMyCourses(ProfileGetResponseData profileData) {
+    // Get all courses
+    List<CourseGetResponse> allCourses = context
+            .read<CourseApiNotifier?>()
+            ?.allCoursesGetResponse
+            .result
+            ?.getNonNulls()
+            .toList() ??
+        <CourseGetResponse>[];
+
+    // Get pending course ids
+    List<String> pendingCourseIds = context
+            .read<OrderApiNotifier?>()
+            ?.allOrdersGetResponse
+            .result
+            ?.data
+            ?.data
+            ?.where(
+              // Take only pending orders
+              (AllOrdersGetResponseOrder? order) => order?.status == "pending",
+            )
+            .map(
+              // Get a list of course ids
+              (AllOrdersGetResponseOrder? e) => e?.details?.courseId,
+            )
+            .getNonNulls()
+            .toList() ??
+        <String>[];
+
+    // Get enrolled course ids
+    List<String> enrolledCourseIds =
+        profileData.enrolledCourses?.getNonNulls().toList() ?? <String>[];
+
+    // Get pending courses
+    List<CourseGetResponse> pendingCourses = allCourses.where(
+      (CourseGetResponse course) {
+        return pendingCourseIds.contains(course.sId);
+      },
+    ).toList();
+
+    // Get enrolled courses
+    List<CourseGetResponse> enrolledCourses = allCourses.where(
+      (CourseGetResponse course) {
+        return enrolledCourseIds.contains(course.sId);
+      },
+    ).toList();
+
+    // Set parameters for pending courses
+    for (CourseGetResponse course in pendingCourses) {
+      course.isPendingOrder = true;
+      course.hasEnrolled = false;
+    }
+
+    // Set parameters for enrolled courses
+    for (CourseGetResponse course in enrolledCourses) {
+      course.isPendingOrder = false;
+      course.hasEnrolled = true;
+    }
+
+    // Get a combined list of pending and enrolled courses
+    return <CourseGetResponse>[
+      ...enrolledCourses,
+      ...pendingCourses,
+    ];
   }
 }

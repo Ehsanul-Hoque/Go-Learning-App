@@ -3,16 +3,21 @@ import "package:app/components/app_container.dart";
 import "package:app/components/icon_and_text.dart";
 import "package:app/components/my_cached_image.dart";
 import "package:app/components/splash_effect.dart";
-import "package:app/components/userbox_widget.dart";
+import "package:app/components/userbox_network_widget.dart";
+import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_courses/category_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
+import "package:app/network/models/api_orders/all_orders_get_response.dart";
+import "package:app/network/notifiers/order_api_notifier.dart";
 import "package:app/routes.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
 import "package:app/utils/painters/price_bg_painter.dart";
 import "package:app/utils/utils.dart";
 import "package:collection/collection.dart";
 import "package:flutter/cupertino.dart" show CupertinoIcons;
 import "package:flutter/widgets.dart";
+import "package:provider/provider.dart" show ReadContext, SelectContext;
 
 class CourseItem extends StatelessWidget {
   final CourseGetResponse course;
@@ -102,17 +107,48 @@ class CourseItem extends StatelessWidget {
                     bottom: -2,
                     right: 0,
                     child: listenToUserNotifier
-                        ? UserBoxWidget(
+                        ? UserBoxNetworkWidget(
                             showGuestWhileLoading: true,
                             showGuestIfNoInternet: true,
                             showGuestIfFailed: true,
+                            callStatusSelector: (BuildContext context) {
+                              return context.select(
+                                (OrderApiNotifier? apiNotifier) =>
+                                    apiNotifier
+                                        ?.allOrdersGetResponse.callStatus ??
+                                    NetworkCallStatus.none,
+                              );
+                            },
                             childBuilder: (
                               BuildContext context,
                               ProfileGetResponseData profileData,
                             ) {
+                              // Get pending course ids
+                              List<String> pendingCourseIds = context
+                                      .read<OrderApiNotifier?>()
+                                      ?.allOrdersGetResponse
+                                      .result
+                                      ?.data
+                                      ?.data
+                                      ?.where(
+                                        // Take only pending orders
+                                        (AllOrdersGetResponseOrder? order) =>
+                                            order?.status == "pending",
+                                      )
+                                      .map(
+                                        // Get a list of course ids
+                                        (AllOrdersGetResponseOrder? e) =>
+                                            e?.details?.courseId,
+                                      )
+                                      .getNonNulls()
+                                      .toList() ??
+                                  <String>[];
+
                               List<String?> enrolledCourseIds =
                                   profileData.enrolledCourses ?? <String>[];
 
+                              course.isPendingOrder =
+                                  pendingCourseIds.contains(course.sId);
                               course.hasEnrolled =
                                   enrolledCourseIds.contains(course.sId);
 
@@ -186,13 +222,16 @@ class CourseItem extends StatelessWidget {
   }
 
   Widget getPriceWidget() {
-    bool showOriginalPrice = !course.hasEnrolled &&
+    bool showOriginalPrice = !course.isPendingOrder &&
+        !course.hasEnrolled &&
         !course.isFree &&
         course.originalPrice != null &&
         course.price != course.originalPrice;
 
     String currentPriceText;
-    if (course.hasEnrolled) {
+    if (course.isPendingOrder) {
+      currentPriceText = Res.str.pendingThreeDots;
+    } else if (course.hasEnrolled) {
       currentPriceText = Res.str.enrolledExclamation;
     } else if (course.isFree) {
       currentPriceText = Res.str.freeExclamation;
@@ -212,9 +251,11 @@ class CourseItem extends StatelessWidget {
       ),
       child: CustomPaint(
         painter: PriceBgPainter(
-          color: (course.hasEnrolled || course.isFree)
-              ? Res.color.enrolledCoursePriceBg
-              : null,
+          color: course.isPendingOrder
+              ? Res.color.pendingCoursePriceBg
+              : ((course.hasEnrolled || course.isFree)
+                  ? Res.color.enrolledCoursePriceBg
+                  : null),
         ),
         child: Padding(
           padding: EdgeInsets.only(

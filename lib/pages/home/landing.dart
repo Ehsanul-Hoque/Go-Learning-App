@@ -10,6 +10,7 @@ import "package:app/components/bottom_nav/views/app_bottom_navigation_bar.dart";
 import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/models/page_model.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
+import "package:app/network/notifiers/order_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/pages/home/explore.dart";
 import "package:app/pages/home/home.dart";
@@ -78,6 +79,7 @@ class _LandingPageState extends State<LandingPage> {
       context.read<StaticInfoApiNotifier?>()?.getStaticInfo();
       if (UserBox.isLoggedIn) {
         context.read<AuthApiNotifier?>()?.getProfile();
+        context.read<OrderApiNotifier?>()?.getAllOrders();
       }
     });
   }

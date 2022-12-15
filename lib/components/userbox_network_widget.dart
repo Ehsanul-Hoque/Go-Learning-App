@@ -33,7 +33,11 @@ class UserBoxNetworkWidget extends StatelessWidget {
       statusFailedText,
       noContentText;
   final NoContentFunction? noContentChecker;
-  final bool shouldOutputBeSliver;
+  final bool shouldOutputBeSliver,
+      showGuestIfStatusNone,
+      showGuestWhileLoading,
+      showGuestIfNoInternet,
+      showGuestIfFailed;
 
   const UserBoxNetworkWidget({
     Key? key,
@@ -50,6 +54,10 @@ class UserBoxNetworkWidget extends StatelessWidget {
     this.noContentText,
     this.noContentChecker,
     this.shouldOutputBeSliver = false,
+    this.showGuestIfStatusNone = false,
+    this.showGuestWhileLoading = false,
+    this.showGuestIfNoInternet = false,
+    this.showGuestIfFailed = false,
   }) : super(key: key);
 
   @override
@@ -100,7 +108,8 @@ class UserBoxNetworkWidget extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           );
-        } else if (profileData == null || profileData.isGuest) {
+        } else {
+          // else if (profileData == null || profileData.isGuest) {
           NetworkCallStatus combinedCallStatus =
               NetworkCallStatus.combineInParallel(<NetworkCallStatus>[
             authResponseCallStatus,
@@ -109,35 +118,49 @@ class UserBoxNetworkWidget extends StatelessWidget {
 
           switch (combinedCallStatus) {
             case NetworkCallStatus.none:
-              widget = statusNoneWidget ??
-                  StatusText(statusNoneText ?? Res.str.startNetworkCall);
+              if (!showGuestIfStatusNone) {
+                widget = statusNoneWidget ??
+                    StatusText(statusNoneText ?? Res.str.startNetworkCall);
+              }
               break;
 
             case NetworkCallStatus.noInternet:
-              widget = statusNoInternetWidget ??
-                  StatusText(statusNoInternetText ?? Res.str.noInternet);
+              if (!showGuestIfNoInternet) {
+                widget = statusNoInternetWidget ??
+                    StatusText(statusNoInternetText ?? Res.str.noInternet);
+              }
               break;
 
             case NetworkCallStatus.loading:
-              widget = statusLoadingWidget ?? const AppLoadingAnim();
+              if (!showGuestWhileLoading) {
+                widget = statusLoadingWidget ?? const AppLoadingAnim();
+              }
               break;
 
             case NetworkCallStatus.failed:
-              widget = statusFailedWidget ??
-                  StatusText(statusFailedText ?? Res.str.generalError);
+              if (!showGuestIfFailed) {
+                widget = statusFailedWidget ??
+                    StatusText(statusFailedText ?? Res.str.generalError);
+              }
               break;
 
             case NetworkCallStatus.success:
-              // No need to do anything,
-              // because this case will be handled by the else block below
               break;
           }
-        } else {
-          if (noContentChecker?.call(profileData) == true) {
-            widget = noContentWidget ??
-                StatusText(noContentText ?? Res.str.noContents);
-          } else {
-            widget = childBuilder(context, profileData);
+
+          // } else {
+
+          if (widget == null) {
+            if (profileData == null) {
+              widget = statusFailedWidget ??
+                  StatusText(statusFailedText ?? Res.str.generalError);
+            } else if (noContentChecker != null &&
+                noContentChecker!(profileData) == true) {
+              widget = noContentWidget ??
+                  StatusText(noContentText ?? Res.str.noContents);
+            } else {
+              widget = childBuilder(context, profileData);
+            }
           }
         }
 

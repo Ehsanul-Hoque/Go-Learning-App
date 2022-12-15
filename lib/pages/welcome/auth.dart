@@ -17,6 +17,7 @@ import "package:app/network/models/api_auth/sign_up_post_request.dart";
 import "package:app/network/network_error.dart";
 import "package:app/network/network_response.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
+import "package:app/network/notifiers/order_api_notifier.dart";
 import "package:app/network/views/network_widget_light.dart";
 import "package:app/routes.dart";
 import "package:app/utils/extensions/context_extension.dart";
@@ -516,6 +517,8 @@ class _AuthPageState extends State<AuthPage> {
       return;
     }
 
+    loadNecessaryInfo();
+
     Future<void>.delayed(
       const Duration(milliseconds: 200),
       () {
@@ -529,5 +532,9 @@ class _AuthPageState extends State<AuthPage> {
         }
       },
     );
+  }
+
+  void loadNecessaryInfo() {
+    context.read<OrderApiNotifier>().getAllOrders();
   }
 }

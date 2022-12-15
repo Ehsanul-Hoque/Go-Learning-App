@@ -367,9 +367,11 @@ class AuthApiNotifier extends ApiNotifier {
       Future<void>.delayed(
         const Duration(milliseconds: 500),
         () {
-          _resetUpdateProfilePutResponse();
-          _resetProfileGetResponse();
-          getProfile();
+          if (UserBox.isLoggedIn) {
+            _resetUpdateProfilePutResponse();
+            _resetProfileGetResponse();
+            getProfile();
+          }
         },
       );
     }

@@ -6,6 +6,7 @@ import "package:app/network/notifiers/auth_api_notifier.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/notifiers/coupon_api_notifier.dart";
 import "package:app/network/notifiers/course_api_notifier.dart";
+import "package:app/network/notifiers/order_api_notifier.dart";
 import "package:app/network/notifiers/static_info_api_notifier.dart";
 import "package:app/pages/splash_page.dart";
 import "package:flutter/services.dart"
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         CourseApiNotifier.createProvider(),
         ContentApiNotifier.createProvider(),
         CouponApiNotifier.createProvider(),
+        OrderApiNotifier.createProvider(),
         UserNotifier.createProxyProvider(),
         VideoNotifier.createProvider(),
       ],

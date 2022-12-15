@@ -159,7 +159,7 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                   ),
                 ),
               ),
-              if (!widget.course.hasEnrolled)
+              if (!widget.course.isPendingOrder && !widget.course.hasEnrolled)
                 Positioned(
                   bottom: 0,
                   left: 0,
