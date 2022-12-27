@@ -81,6 +81,7 @@ class _AppFullScreenPlayerState extends State<AppFullScreenPlayer>
   @override
   Widget build(BuildContext context) {
     VideoNotifier? videoNotifier = context.read<VideoNotifier?>();
+    String videoUrl = videoNotifier?.videoUrl ?? "";
     String videoId = videoNotifier?.videoId ?? "";
     VideoHost videoHost = videoNotifier?.videoHost ?? VideoHost.unknown;
     Widget player;
@@ -90,7 +91,7 @@ class _AppFullScreenPlayerState extends State<AppFullScreenPlayer>
         player = VimeoVideoPlayer(
           key: ValueKey<String>("vimeo_video_player_$videoId"),
           config: widget.config,
-          videoId: videoId,
+          videoUrl: videoUrl,
         );
         break;
 

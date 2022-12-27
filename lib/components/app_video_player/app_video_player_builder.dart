@@ -63,6 +63,7 @@ class _AppVideoPlayerBuilderState extends State<AppVideoPlayerBuilder>
       builder: (BuildContext context, String value, Widget? child) {
         VideoNotifier? videoNotifier = context.read<VideoNotifier?>();
 
+        String videoUrl = videoNotifier?.videoUrl ?? "";
         String videoId = videoNotifier?.videoId ?? "";
         VideoHost videoHost = videoNotifier?.videoHost ?? VideoHost.unknown;
         Widget player;
@@ -72,7 +73,7 @@ class _AppVideoPlayerBuilderState extends State<AppVideoPlayerBuilder>
             player = VimeoVideoPlayer(
               key: ValueKey<String>("vimeo_video_player_$videoId"),
               config: widget.config,
-              videoId: videoId,
+              videoUrl: videoUrl,
             );
             break;
 

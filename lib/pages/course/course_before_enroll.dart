@@ -78,10 +78,10 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
   Widget build(BuildContext context) {
     return Container(
       color: Res.color.pageRootBg,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Res.color.pageBg,
-          body: Stack(
+      child: Scaffold(
+        backgroundColor: Res.color.pageBg,
+        body: SafeArea(
+          child: Stack(
             children: <Widget>[
               NotificationListener<ScrollNotification>(
                 onNotification: (ScrollNotification notification) {

@@ -40,7 +40,6 @@ dependencies:
   flutter_zoom_drawer: ^3.0.3
   http: ^0.13.5
   youtube_player_flutter: ^8.1.0
-  vimeo_player_flutter: ^0.0.3+2
   html: ^0.15.0
   flutter_html: ^3.0.0-alpha.5
   flutter_html_svg: ^3.0.0-alpha.4
