@@ -1,6 +1,7 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/models/api_contents/lecture_get_response.dart";
+import "package:app/network/models/api_contents/resource_get_response.dart";
 import "package:app/network/network.dart";
 import "package:app/network/network_callback.dart";
 import "package:app/network/network_request.dart";
@@ -20,10 +21,18 @@ class ContentApiNotifier extends ApiNotifier {
             : "/full_course/get_full_course_tree?course_id=$courseId");
   }
 
-  static String lectureGetApiEndpoint(String? lectureId) {
-    return (lectureId == null)
+  static String lectureGetApiEndpoint(String? contentId) {
+    return (contentId == null)
         ? "/lecture/get"
-        : (lectureId.isEmpty ? "/lecture/get" : "/lecture/get?_id=$lectureId");
+        : (contentId.isEmpty ? "/lecture/get" : "/lecture/get?_id=$contentId");
+  }
+
+  static String resourceGetApiEndpoint(String? contentId) {
+    return (contentId == null)
+        ? "/resource/get"
+        : (contentId.isEmpty
+            ? "/resource/get"
+            : "/resource/get?_id=$contentId");
   }
 
   /// Constructor
@@ -61,11 +70,11 @@ class ContentApiNotifier extends ApiNotifier {
       );
 
   /// Methods to get a lecture (a type of content) of a course
-  Future<NetworkResponse<LectureGetResponse>> getLecture(String? lectureId) {
+  Future<NetworkResponse<LectureGetResponse>> getLecture(String? contentId) {
     return const Network().createExecuteCall(
       client: defaultClient,
       request: NetworkRequest.get(
-        apiEndPoint: lectureGetApiEndpoint(lectureId),
+        apiEndPoint: lectureGetApiEndpoint(contentId),
       ),
       responseConverter: const JsonObjectConverter<LectureGetResponse>(
         LectureGetResponse.fromJson,
@@ -76,8 +85,29 @@ class ContentApiNotifier extends ApiNotifier {
     );
   }
 
-  NetworkResponse<LectureGetResponse> lectureGetResponse(String? lectureId) =>
+  NetworkResponse<LectureGetResponse> lectureGetResponse(String? contentId) =>
       Network.getOrCreateResponse(
-        defaultClient.baseUrl + lectureGetApiEndpoint(lectureId),
+        defaultClient.baseUrl + lectureGetApiEndpoint(contentId),
+      );
+
+  /// Methods to get a resource (a type of content) of a course
+  Future<NetworkResponse<ResourceGetResponse>> getResource(String? contentId) {
+    return const Network().createExecuteCall(
+      client: defaultClient,
+      request: NetworkRequest.get(
+        apiEndPoint: resourceGetApiEndpoint(contentId),
+      ),
+      responseConverter: const JsonObjectConverter<ResourceGetResponse>(
+        ResourceGetResponse.fromJson,
+      ),
+      callback: NetworkCallback<ResourceGetResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
+    );
+  }
+
+  NetworkResponse<ResourceGetResponse> resourceGetResponse(String? contentId) =>
+      Network.getOrCreateResponse(
+        defaultClient.baseUrl + resourceGetApiEndpoint(contentId),
       );
 }
