@@ -21,7 +21,7 @@ class CourseContentNotifier extends ChangeNotifier {
     ContentTreeGetResponseContents? contentItem,
     bool hasCourseEnrolled,
   ) {
-    bool locked = contentItem?.isActuallyLocked(hasCourseEnrolled) ?? true;
+    bool locked = contentItem?.isActuallyLocked(hasCourseEnrolled) ?? false;
 
     if (locked) {
       context.showSnackBar(
