@@ -6,6 +6,7 @@ import "package:app/pages/course/course_before_enroll.dart";
 import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
 import "package:app/pages/home/landing.dart";
+import "package:app/pages/pdf_viewer/app_pdf_viewer.dart";
 import "package:app/pages/profile/user_profile.dart";
 import "package:app/pages/splash_page.dart";
 import "package:app/pages/video_player/app_fullscreen_player.dart";
@@ -104,6 +105,17 @@ class Routes {
           onEnterFullScreen: onEnterFullScreen,
           onExitFullScreen: onExitFullScreen,
         ),
+        replace: config.replace,
+      );
+
+  /// Route method to open the pdf view page
+  Future<void> openPdfViewerPage(
+    BuildContext context,
+    String url,
+  ) =>
+      RoutesHelper._toOrReplace<void>(
+        context,
+        (BuildContext context) => AppPdfViewer(url: url),
         replace: config.replace,
       );
 

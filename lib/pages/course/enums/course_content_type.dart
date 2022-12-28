@@ -4,6 +4,7 @@ import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/course/workers/lecture_worker.dart";
+import "package:app/pages/course/workers/resource_worker.dart";
 import "package:flutter/cupertino.dart" show Color, CupertinoIcons, IconData;
 
 typedef GetResponseFunction = NetworkCallStatus Function(
@@ -39,7 +40,13 @@ class CourseContentType {
     name: "resource",
     iconData: CupertinoIcons.doc_text,
     color: Res.color.resourceItemIcon,
-    isAvailable: false,
+    worker: ResourceWorker(),
+    getResponseCallback: (
+      ContentApiNotifier? apiNotifier,
+      ContentTreeGetResponseContents? content,
+    ) =>
+        apiNotifier?.resourceGetResponse(content?.sId).callStatus ??
+        NetworkCallStatus.none,
   );
 
   /// Unknown type
