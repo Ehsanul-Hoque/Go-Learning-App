@@ -34,6 +34,7 @@ class UserBoxNetworkWidget extends StatelessWidget {
       noContentText;
   final NoContentFunction? noContentChecker;
   final bool shouldOutputBeSliver,
+      showPromptIfNotAuthenticated,
       showGuestIfStatusNone,
       showGuestWhileLoading,
       showGuestIfNoInternet,
@@ -54,6 +55,7 @@ class UserBoxNetworkWidget extends StatelessWidget {
     this.noContentText,
     this.noContentChecker,
     this.shouldOutputBeSliver = false,
+    this.showPromptIfNotAuthenticated = true,
     this.showGuestIfStatusNone = false,
     this.showGuestWhileLoading = false,
     this.showGuestIfNoInternet = false,
@@ -78,36 +80,38 @@ class UserBoxNetworkWidget extends StatelessWidget {
         Widget? widget;
 
         if (!UserBox.isLoggedIn) {
-          widget = StatusTextWidget(
-            child: Text.rich(
-              TextSpan(
-                children: <TextSpan>[
-                  TextSpan(
-                    text: "${Res.str.youAreInGuestMood} ${Res.str.please} ",
-                  ),
-                  TextSpan(
-                    text: Res.str.logIn,
-                    style: TextStyle(
-                      color: Res.color.textLink,
-                      decoration: TextDecoration.underline,
+          if (showPromptIfNotAuthenticated) {
+            widget = StatusTextWidget(
+              child: Text.rich(
+                TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "${Res.str.youAreInGuestMood} ${Res.str.please} ",
                     ),
-                    recognizer: onAuthTapGesture(context),
-                  ),
-                  TextSpan(text: " ${Res.str.or} "),
-                  TextSpan(
-                    text: Res.str.signUp,
-                    style: TextStyle(
-                      color: Res.color.textLink,
-                      decoration: TextDecoration.underline,
+                    TextSpan(
+                      text: Res.str.logIn,
+                      style: TextStyle(
+                        color: Res.color.textLink,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: onAuthTapGesture(context),
                     ),
-                    recognizer: onAuthTapGesture(context),
-                  ),
-                  TextSpan(text: " ${Res.str.firstFullStop}"),
-                ],
+                    TextSpan(text: " ${Res.str.or} "),
+                    TextSpan(
+                      text: Res.str.signUp,
+                      style: TextStyle(
+                        color: Res.color.textLink,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: onAuthTapGesture(context),
+                    ),
+                    TextSpan(text: " ${Res.str.firstFullStop}"),
+                  ],
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          );
+            );
+          }
         } else {
           // else if (profileData == null || profileData.isGuest) {
           NetworkCallStatus combinedCallStatus =

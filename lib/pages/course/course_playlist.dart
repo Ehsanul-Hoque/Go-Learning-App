@@ -2,7 +2,7 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/sliver_sized_box.dart";
-import "package:app/network/enums/api_contents/course_content_type.dart";
+import "package:app/pages/course/enums/course_content_type.dart";
 import "package:app/pages/course/components/chapter_item.dart";
 import "package:app/pages/course/components/content_item.dart";
 import "package:app/network/enums/network_call_status.dart";

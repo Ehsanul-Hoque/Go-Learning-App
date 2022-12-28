@@ -143,6 +143,7 @@ abstract class ColorsBase {
   final Color contentOnDark = AppColors.transparent;
   final Color acsvAutoScrollHighlight = AppColors.transparent;
   final Color textSuccess = AppColors.transparent;
+  final Color unknownItemIcon = AppColors.transparent;
 
   /// Private const constructor
   const ColorsBase._();

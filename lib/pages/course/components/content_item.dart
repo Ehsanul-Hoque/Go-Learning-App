@@ -4,7 +4,7 @@ import "package:app/components/app_container.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
 import "package:app/components/splash_effect.dart";
-import "package:app/network/enums/api_contents/course_content_type.dart";
+import "package:app/pages/course/enums/course_content_type.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
@@ -34,6 +34,8 @@ class ContentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isLocked = content.isActuallyLocked(hasCourseEnrolled);
+    CourseContentType contentType =
+        CourseContentType.valueOf(content.contentType);
 
     return AppContainer(
       animated: true,
@@ -42,9 +44,7 @@ class ContentItem extends StatelessWidget {
         top: isFirst ? Res.dimen.smallSpacingValue : Res.dimen.xsSpacingValue,
         left: leftMargin ?? Res.dimen.normalSpacingValue,
       ),
-      backgroundColor: isSelected
-          ? Res.color.contentItemSelectedBg
-          : Res.color.contentItemBg,
+      backgroundColor: isSelected ? contentType.color : Res.color.contentItemBg,
       shadow: const <BoxShadow>[],
       child: SplashEffect(
         onTap: () => onContentClick(content),
@@ -54,28 +54,14 @@ class ContentItem extends StatelessWidget {
             children: <Widget>[
               NetworkWidgetLight(
                 callStatusSelector: (BuildContext context) {
-                  return context.select((ContentApiNotifier? apiNotifier) {
-                    String contentId = content.sId ?? "";
-                    CourseContentType contentType =
-                        CourseContentType.valueOf(content.contentType);
-
-                    if (contentId.isNotEmpty) {
-                      switch (contentType) {
-                        case CourseContentType.lecture:
-                          return apiNotifier
-                                  ?.lectureGetResponse(contentId)
-                                  .callStatus ??
-                              NetworkCallStatus.none;
-
-                        // TODO handle other types of contents if available
-
-                        case CourseContentType.unknown:
-                          return NetworkCallStatus.none;
-                      }
-                    } else {
-                      return NetworkCallStatus.none;
-                    }
-                  });
+                  return context.select(
+                    (ContentApiNotifier? apiNotifier) {
+                      return CourseContentType.valueOf(content.contentType)
+                              .getResponseCallback
+                              ?.call(apiNotifier, content) ??
+                          NetworkCallStatus.none;
+                    },
+                  );
                 },
                 onStatusNoInternet: () => onStatusNoInternet(context),
                 onStatusFailed: () => onStatusFailed(context),
@@ -93,12 +79,12 @@ class ContentItem extends StatelessWidget {
                     );
                   } else {
                     resultWidget = Icon(
-                      CupertinoIcons.play_arrow_solid,
+                      contentType.iconData,
                       color: isLocked
                           ? Res.color.contentItemContentLocked
                           : isSelected
                               ? Res.color.contentItemContentSelected
-                              : Res.color.videoItemIcon,
+                              : contentType.color,
                     );
                   }
 

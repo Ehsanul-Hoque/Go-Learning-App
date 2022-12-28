@@ -108,6 +108,7 @@ class CourseItem extends StatelessWidget {
                     right: 0,
                     child: listenToUserNotifier
                         ? UserBoxNetworkWidget(
+                            showPromptIfNotAuthenticated: false,
                             showGuestWhileLoading: true,
                             showGuestIfNoInternet: true,
                             showGuestIfFailed: true,

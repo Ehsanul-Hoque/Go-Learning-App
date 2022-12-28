@@ -146,6 +146,7 @@ class ColorsLightMode implements ColorsBase {
   final Color contentOnDark = AppColors.white;
   final Color acsvAutoScrollHighlight = AppColors.themeYellowAlpha05;
   final Color textSuccess = AppColors.flatGreenEmerald;
+  final Color unknownItemIcon = AppColors.flatRedAlizarin;
 
   /// const constructor
   const ColorsLightMode();

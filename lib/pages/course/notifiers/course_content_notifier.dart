@@ -1,25 +1,22 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/floating_messages/app_snack_bar_content/app_snack_bar_content.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
-import "package:app/network/enums/api_contents/course_content_type.dart";
+import "package:app/pages/course/enums/course_content_type.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/utils/extensions/context_extension.dart";
 import "package:flutter/foundation.dart" show ChangeNotifier;
 import "package:flutter/widgets.dart" show BuildContext;
 import "package:provider/provider.dart" show ChangeNotifierProvider;
 import "package:provider/single_child_widget.dart";
-import "package:youtube_player_flutter/youtube_player_flutter.dart";
 
 class CourseContentNotifier extends ChangeNotifier {
   CourseContentNotifier();
 
   ContentTreeGetResponseContents? _selectedContentItem;
-  YoutubePlayerController? youtubePlayerController;
-
   ContentTreeGetResponseContents? get selectedContentItem =>
       _selectedContentItem;
 
-  bool selectContent(
+  bool _isContentSelectable(
     BuildContext context,
     ContentTreeGetResponseContents? contentItem,
     bool hasCourseEnrolled,
@@ -39,9 +36,10 @@ class CourseContentNotifier extends ChangeNotifier {
       return false;
     }
 
-    // TODO remove/modify this if clause
-    //  to make more type of contents accessible
-    if (contentItem?.contentType != CourseContentType.lecture.name) {
+    CourseContentType contentType =
+        CourseContentType.valueOf(contentItem?.contentType);
+
+    if (!contentType.isAvailable) {
       context.showSnackBar(
         AppSnackBarContent(
           title: Res.str.contentNotAccessibleTitle,
@@ -51,6 +49,18 @@ class CourseContentNotifier extends ChangeNotifier {
         marginBottom: Res.dimen.snackBarBottomMarginLarge,
       );
 
+      return false;
+    }
+
+    return true;
+  }
+
+  bool selectContent(
+    BuildContext context,
+    ContentTreeGetResponseContents? contentItem,
+    bool hasCourseEnrolled,
+  ) {
+    if (!_isContentSelectable(context, contentItem, hasCourseEnrolled)) {
       return false;
     }
 

@@ -36,39 +36,7 @@ class _ChapterVideoListPartState extends State<ChapterVideoListPart> {
                   content: item,
                   isSelected: isSelected,
                   isFirst: index == 0,
-                  onContentClick: (ContentTreeGetResponseContents content) {
-                    bool hasSelected =
-                        context.read<CourseContentNotifier>().selectContent(
-                              context,
-                              content,
-                              widget.hasCourseEnrolled,
-                            );
-
-                    if (!hasSelected) {
-                      return;
-                    }
-
-                    CourseContentType contentType =
-                        CourseContentType.valueOf(content.contentType);
-
-                    switch (contentType) {
-                      case CourseContentType.lecture:
-                        context
-                            .read<ContentApiNotifier?>()
-                            ?.getLecture(content.sId)
-                            .then(onLectureGetComplete);
-
-                        // FIXME Do NOT fire [onLectureGetComplete] method
-                        //  in the then clause, rather check if the state
-                        //  is still alive and than fire the method
-                        break;
-
-                      // TODO handle other types of contents if available
-
-                      case CourseContentType.unknown:
-                        break;
-                    }
-                  },
+                  onContentClick: onContentItemClick,
                 );
               },
             );
@@ -80,22 +48,18 @@ class _ChapterVideoListPartState extends State<ChapterVideoListPart> {
     );
   }
 
-  void onLectureGetComplete(NetworkResponse<LectureGetResponse> response) {
-    if (!mounted) return;
+  void onContentItemClick(ContentTreeGetResponseContents contentItem) {
+    bool hasSelected = context
+        .read<CourseContentNotifier>()
+        .selectContent(context, contentItem, widget.hasCourseEnrolled);
 
-    if (response.callStatus == NetworkCallStatus.success) {
-      context.read<VideoNotifier>().setVideo(
-            // "https://player.vimeo.com/video/763095383?h=910b42dfd7",
-            // "https://www.youtube.com/watch?v=La0IJPt0t4Q",
-            response.result?.data?.elementAtOrNull(0)?.link ?? "",
-          );
-
-      Routes().openVideoPage(
-        context,
-        const AppVideoPlayerConfig(),
-        null,
-        null,
-      );
+    if (!hasSelected) {
+      return;
     }
+
+    CourseContentType contentType =
+        CourseContentType.valueOf(contentItem.contentType);
+
+    contentType.worker?.work(context, contentItem);
   }
 }
