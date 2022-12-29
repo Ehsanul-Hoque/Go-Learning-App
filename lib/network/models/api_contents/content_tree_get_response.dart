@@ -1,4 +1,5 @@
 import "package:app/network/models/api_contents/lecture_get_response_timestamp.dart";
+import "package:app/network/models/api_contents/resource_get_response_link.dart";
 import "package:app/network/models/api_model.dart";
 import "package:json_annotation/json_annotation.dart";
 
@@ -91,8 +92,31 @@ class ContentTreeGetResponseContents extends ApiModel {
   @JsonKey(name: "serial")
   final int? serial;
 
+  /// Only for lecture type contents
   @JsonKey(name: "time_stamp")
   final List<LectureGetResponseTimeStamp?>? timeStamp;
+
+  /// Only for lecture or resource type contents.
+  /// For lecture types, this variable will contain a string value.
+  /// For resource types, this variable will contain a
+  /// [ResourceGetResponseLink] type.
+  /// DO NOT USE this field to get link.
+  /// Use [getLectureVideoLink] method to get lecture video link
+  /// and [getResourceLink] method to get resource link.
+  @JsonKey(name: "link")
+  final Object? link;
+
+  /// Only for quiz type contents
+  @JsonKey(name: "questions")
+  final List<String?>? questions;
+
+  /// Only for quiz type contents
+  @JsonKey(name: "duration")
+  final int? durationInMinutes;
+
+  /// Only for quiz type contents
+  @JsonKey(name: "description")
+  final String? description;
 
   @JsonKey(name: "course_id")
   final String? courseId;
@@ -109,6 +133,10 @@ class ContentTreeGetResponseContents extends ApiModel {
     this.moduleId,
     this.serial,
     this.timeStamp,
+    this.link,
+    this.questions,
+    this.durationInMinutes,
+    this.description,
     this.courseId,
     this.iV,
   });
@@ -118,6 +146,28 @@ class ContentTreeGetResponseContents extends ApiModel {
 
   @override
   Map<String, dynamic> toJson() => _$ContentTreeGetResponseContentsToJson(this);
+
+  String? getLectureVideoLink() {
+    try {
+      return link as String?;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  List<ResourceGetResponseLink?>? getResourceLink() {
+    try {
+      return (link as List<dynamic>?)?.map((Object? e) {
+        return e == null
+            ? null
+            : ResourceGetResponseLink.fromJson(
+                e as Map<String, dynamic>,
+              );
+      }).toList();
+    } catch (e) {
+      return null;
+    }
+  }
 
   bool isActuallyLocked(bool hasCourseEnrolled) {
     bool contentLocked = locked ?? false;

@@ -38,7 +38,7 @@ class QuizItem extends StatelessWidget {
                 CupertinoIcons.pencil_circle,
                 color: isLocked
                     ? Res.color.contentItemContentLocked
-                    : Res.color.quizItemIcon,
+                    : Res.color.quizItem,
               ),
               SizedBox(
                 width: Res.dimen.normalSpacingValue,

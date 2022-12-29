@@ -104,10 +104,10 @@ class ColorsLightMode implements ColorsBase {
   final Color videoProgressIndicator = AppColors.themeYellow;
   final Color videoProgressPlayed = AppColors.themeYellow;
   final Color videoProgressHandle = AppColors.flatYellowSunflower;
-  final Color videoItemIcon = AppColors.themeYellow;
+  final Color videoItem = AppColors.themeYellow;
 
   /// Quiz
-  final Color quizItemIcon = AppColors.flatBluePeterRiver;
+  final Color quizItem = AppColors.flatBluePeterRiver;
   final Color quizTimerBg = AppColors.grey300;
   final Color quizTimerProgress = AppColors.flatPurpleShyMoment;
   final Color quizCurrentBorder = AppColors.themeYellow;
@@ -124,7 +124,7 @@ class ColorsLightMode implements ColorsBase {
   final Color quizIncorrectBorder = AppColors.flatRedAlizarin;
 
   /// Resource
-  final Color resourceItemIcon = AppColors.flatPurpleAmethyst;
+  final Color resourceItem = AppColors.flatPurpleAmethyst;
 
   /// Progress
   final Color progressBg = AppColors.themeBlueAlpha10;

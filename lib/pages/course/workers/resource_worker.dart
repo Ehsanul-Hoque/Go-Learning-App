@@ -12,6 +12,13 @@ import "package:provider/provider.dart" show ReadContext;
 class ResourceWorker extends ContentWorker {
   @override
   void work(BuildContext context, ContentTreeGetResponseContents contentItem) {
+    String? resourceLink =
+        contentItem.getResourceLink()?.elementAtOrNull(0)?.link;
+
+    if (resourceLink != null) {
+      return openResourceFile(context, resourceLink);
+    }
+
     context
         .read<ContentApiNotifier?>()
         ?.getResource(contentItem.sId)
@@ -19,7 +26,7 @@ class ResourceWorker extends ContentWorker {
       onResourceGetComplete(context, response);
     });
 
-    // FIXME Do NOT fire [onLectureGetComplete] method
+    // FIXME Do NOT fire [onResourceGetComplete] method
     //  in the then clause, rather check if the state
     //  is still alive and than fire the method
   }
@@ -31,25 +38,22 @@ class ResourceWorker extends ContentWorker {
     // if (!mounted) return;
 
     if (response.callStatus == NetworkCallStatus.success) {
-      Routes().openPdfViewerPage(
-        context,
-        response.result?.data
-                ?.elementAtOrNull(0)
-                ?.link
-                ?.elementAtOrNull(0)
-                ?.link ??
-            "",
-      );
-      /*context.read<VideoNotifier>().setVideo(
-            response.result?.data?.elementAtOrNull(0)?.link ?? "",
-          );
+      String? resourceLink = response.result?.data
+          ?.elementAtOrNull(0)
+          ?.link
+          ?.elementAtOrNull(0)
+          ?.link;
 
-      Routes().openVideoPage(
-        context,
-        const AppVideoPlayerConfig(),
-        null,
-        null,
-      );*/
+      if (resourceLink != null) {
+        return openResourceFile(context, resourceLink);
+      }
+
+      // TODO show error that no resource found
+    } else {
+      // TODO show error that network call failed
     }
   }
+
+  void openResourceFile(BuildContext context, String resourceLink) =>
+      Routes().openPdfViewerPage(context, resourceLink);
 }

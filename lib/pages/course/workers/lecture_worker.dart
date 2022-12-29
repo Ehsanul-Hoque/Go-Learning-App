@@ -14,6 +14,12 @@ import "package:provider/provider.dart" show ReadContext;
 class LectureWorker extends ContentWorker {
   @override
   void work(BuildContext context, ContentTreeGetResponseContents contentItem) {
+    String? lectureVideoLink = contentItem.getLectureVideoLink();
+
+    if (lectureVideoLink != null) {
+      return playLectureVideo(context, lectureVideoLink);
+    }
+
     context
         .read<ContentApiNotifier?>()
         ?.getLecture(contentItem.sId)
@@ -33,16 +39,21 @@ class LectureWorker extends ContentWorker {
     // if (!mounted) return;
 
     if (response.callStatus == NetworkCallStatus.success) {
-      context.read<VideoNotifier>().setVideo(
-            response.result?.data?.elementAtOrNull(0)?.link ?? "",
-          );
+      String? lectureVideoLink =
+          response.result?.data?.elementAtOrNull(0)?.link;
 
-      Routes().openVideoPage(
-        context,
-        const AppVideoPlayerConfig(),
-        null,
-        null,
-      );
+      if (lectureVideoLink != null) {
+        return playLectureVideo(context, lectureVideoLink);
+      }
+
+      // TODO show error that no video found
+    } else {
+      // TODO show error that network call failed
     }
+  }
+
+  void playLectureVideo(BuildContext context, String lectureVideoLink) {
+    context.read<VideoNotifier>().setVideo(lectureVideoLink);
+    Routes().openVideoPage(context, const AppVideoPlayerConfig(), null, null);
   }
 }

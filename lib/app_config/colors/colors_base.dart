@@ -101,10 +101,10 @@ abstract class ColorsBase {
   final Color videoProgressIndicator = AppColors.transparent;
   final Color videoProgressPlayed = AppColors.transparent;
   final Color videoProgressHandle = AppColors.transparent;
-  final Color videoItemIcon = AppColors.transparent;
+  final Color videoItem = AppColors.transparent;
 
   /// Quiz
-  final Color quizItemIcon = AppColors.transparent;
+  final Color quizItem = AppColors.transparent;
   final Color quizTimerBg = AppColors.transparent;
   final Color quizTimerProgress = AppColors.transparent;
   final Color quizCurrentBorder = AppColors.transparent;
@@ -121,7 +121,7 @@ abstract class ColorsBase {
   final Color quizIncorrectBorder = AppColors.transparent;
 
   /// Resource
-  final Color resourceItemIcon = AppColors.transparent;
+  final Color resourceItem = AppColors.transparent;
 
   /// Progress
   final Color progressBg = AppColors.transparent;

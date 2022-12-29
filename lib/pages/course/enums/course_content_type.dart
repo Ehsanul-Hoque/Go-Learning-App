@@ -17,7 +17,7 @@ class CourseContentType {
   static CourseContentType lecture = CourseContentType(
     name: "lecture",
     iconData: CupertinoIcons.play_arrow_solid,
-    color: Res.color.videoItemIcon,
+    color: Res.color.videoItem,
     worker: LectureWorker(),
     getResponseCallback: (
       ContentApiNotifier? apiNotifier,
@@ -31,7 +31,7 @@ class CourseContentType {
   static CourseContentType quiz = CourseContentType(
     name: "quiz",
     iconData: CupertinoIcons.pencil_outline,
-    color: Res.color.quizItemIcon,
+    color: Res.color.quizItem,
     isAvailable: false,
   );
 
@@ -39,7 +39,7 @@ class CourseContentType {
   static CourseContentType resource = CourseContentType(
     name: "resource",
     iconData: CupertinoIcons.doc_text,
-    color: Res.color.resourceItemIcon,
+    color: Res.color.resourceItem,
     worker: ResourceWorker(),
     getResponseCallback: (
       ContentApiNotifier? apiNotifier,

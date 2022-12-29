@@ -49,7 +49,7 @@ class ContentApiNotifier extends ApiNotifier {
     String? courseId,
   ) {
     return const Network().createExecuteCall(
-      client: defaultClient,
+      client: defaultAuthenticatedClient,
       request: NetworkRequest.get(
         apiEndPoint: contentsTreeGetApiEndpoint(courseId),
       ),

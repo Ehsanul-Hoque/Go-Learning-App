@@ -76,6 +76,12 @@ ContentTreeGetResponseContents _$ContentTreeGetResponseContentsFromJson(
               ? null
               : LectureGetResponseTimeStamp.fromJson(e as Map<String, dynamic>))
           .toList(),
+      link: json['link'],
+      questions: (json['questions'] as List<dynamic>?)
+          ?.map((e) => e as String?)
+          .toList(),
+      durationInMinutes: json['duration'] as int?,
+      description: json['description'] as String?,
       courseId: json['course_id'] as String?,
       iV: json['__v'] as int?,
     );
@@ -91,6 +97,10 @@ Map<String, dynamic> _$ContentTreeGetResponseContentsToJson(
       'module_id': instance.moduleId,
       'serial': instance.serial,
       'time_stamp': instance.timeStamp?.map((e) => e?.toJson()).toList(),
+      'link': instance.link,
+      'questions': instance.questions,
+      'duration': instance.durationInMinutes,
+      'description': instance.description,
       'course_id': instance.courseId,
       '__v': instance.iV,
     };
