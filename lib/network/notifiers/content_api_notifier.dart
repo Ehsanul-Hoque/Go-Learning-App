@@ -1,6 +1,9 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
+import "package:app/network/interceptors/default_interceptors/auth_interceptor.dart";
+import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/models/api_contents/lecture_get_response.dart";
+import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
 import "package:app/network/models/api_contents/resource_get_response.dart";
 import "package:app/network/network.dart";
 import "package:app/network/network_callback.dart";
@@ -14,25 +17,27 @@ import "package:provider/single_child_widget.dart" show SingleChildWidget;
 class ContentApiNotifier extends ApiNotifier {
   /// API endpoints
   static String contentsTreeGetApiEndpoint(String? courseId) {
-    return (courseId == null)
+    return (courseId == null || courseId.isEmpty)
         ? "/full_course/get_full_course_tree"
-        : (courseId.isEmpty
-            ? "/full_course/get_full_course_tree"
-            : "/full_course/get_full_course_tree?course_id=$courseId");
+        : "/full_course/get_full_course_tree?course_id=$courseId";
   }
 
   static String lectureGetApiEndpoint(String? contentId) {
-    return (contentId == null)
+    return (contentId == null || contentId.isEmpty)
         ? "/lecture/get"
-        : (contentId.isEmpty ? "/lecture/get" : "/lecture/get?_id=$contentId");
+        : "/lecture/get?_id=$contentId";
+  }
+
+  static String quizAttemptGetApiEndpoint(String? contentId) {
+    return (contentId == null || contentId.isEmpty)
+        ? "/quiz_attempt/get"
+        : "/quiz_attempt/get?quiz_id=$contentId";
   }
 
   static String resourceGetApiEndpoint(String? contentId) {
-    return (contentId == null)
+    return (contentId == null || contentId.isEmpty)
         ? "/resource/get"
-        : (contentId.isEmpty
-            ? "/resource/get"
-            : "/resource/get?_id=$contentId");
+        : "/resource/get?_id=$contentId";
   }
 
   /// Constructor
@@ -88,6 +93,32 @@ class ContentApiNotifier extends ApiNotifier {
   NetworkResponse<LectureGetResponse> lectureGetResponse(String? contentId) =>
       Network.getOrCreateResponse(
         defaultClient.baseUrl + lectureGetApiEndpoint(contentId),
+      );
+
+  /// Methods to get a quiz (a type of content) of a course
+  Future<NetworkResponse<QuizAttemptGetResponse>> getQuizAttempt(
+    String? contentId,
+  ) {
+    return const Network().createExecuteCall(
+      client: defaultAuthenticatedClient,
+      requestInterceptors: <NetworkRequestInterceptor>[AuthInterceptor()],
+      request: NetworkRequest.get(
+        apiEndPoint: quizAttemptGetApiEndpoint(contentId),
+      ),
+      responseConverter: const JsonObjectConverter<QuizAttemptGetResponse>(
+        QuizAttemptGetResponse.fromJson,
+      ),
+      callback: NetworkCallback<QuizAttemptGetResponse>(
+        onUpdate: (_) => notifyListeners(),
+      ),
+      checkCacheFirst: false,
+    );
+  }
+
+  NetworkResponse<QuizAttemptGetResponse> quizGetResponse(String? contentId) =>
+      Network.getOrCreateResponse(
+        defaultAuthenticatedClient.baseUrl +
+            quizAttemptGetApiEndpoint(contentId),
       );
 
   /// Methods to get a resource (a type of content) of a course
