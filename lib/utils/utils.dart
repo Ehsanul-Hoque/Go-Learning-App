@@ -38,6 +38,7 @@ class Utils {
     } else {
       SystemChrome.setPreferredOrientations(<DeviceOrientation>[
         DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
       ]);
     }
   }

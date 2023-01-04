@@ -1,5 +1,4 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/local_storage/app_objectbox.dart";
 import "package:app/local_storage/notifiers/user_notifier.dart";
 import "package:app/network/notifiers/auth_api_notifier.dart";
@@ -48,7 +47,6 @@ class MyApp extends StatelessWidget {
         CouponApiNotifier.createProvider(),
         OrderApiNotifier.createProvider(),
         UserNotifier.createProxyProvider(),
-        VideoNotifier.createProvider(),
       ],
       child: PlatformApp(
         debugShowCheckedModeBanner: false,

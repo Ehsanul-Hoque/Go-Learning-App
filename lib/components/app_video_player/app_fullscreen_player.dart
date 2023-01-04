@@ -1,28 +1,35 @@
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
-import "package:app/components/app_video_player/enums/video_host.dart";
-import "package:app/components/app_video_player/notifiers/video_notifier.dart";
-import "package:app/components/app_video_player/sub_players/vimeo_video_player.dart";
-import "package:app/components/app_video_player/sub_players/youtube_video_player.dart";
+import "package:app/components/app_video_player/enums/video_host_type.dart";
 import "package:app/components/status_text.dart";
+import "package:app/network/notifiers/content_api_notifier.dart";
+import "package:app/network/views/network_widget.dart";
+import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/scheduler.dart";
 import "package:flutter/services.dart"
     show DeviceOrientation, SystemChrome, SystemUiMode, SystemUiOverlay;
 import "package:flutter/widgets.dart";
-import "package:provider/provider.dart" show ReadContext;
+import "package:provider/provider.dart";
+
+part "package:app/components/app_video_player/app_fullscreen_player_part.dart";
 
 class AppFullScreenPlayer extends StatefulWidget {
   final AppVideoPlayerConfig config;
+  final String? url;
+  final ContentWorker<String>? contentWorker;
   final VoidCallback? onEnterFullScreen;
   final VoidCallback? onExitFullScreen;
 
   const AppFullScreenPlayer({
     Key? key,
     required this.config,
+    this.url,
+    this.contentWorker,
     this.onEnterFullScreen,
     this.onExitFullScreen,
-  }) : super(key: key);
+  })  : assert(url != null || contentWorker != null),
+        super(key: key);
 
   @override
   State<AppFullScreenPlayer> createState() => _AppFullScreenPlayerState();
@@ -30,11 +37,22 @@ class AppFullScreenPlayer extends StatefulWidget {
 
 class _AppFullScreenPlayerState extends State<AppFullScreenPlayer>
     with WidgetsBindingObserver {
+  late bool isValidUrl;
   bool isFullScreen = false;
 
   @override
   void initState() {
     super.initState();
+    isValidUrl = (widget.url ?? "").trim().isNotEmpty;
+
+    if (!isValidUrl) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Execute callback if page is mounted
+        if (!mounted) return;
+
+        widget.contentWorker?.loadContentData(context);
+      });
+    }
 
     SystemChrome.setPreferredOrientations(<DeviceOrientation>[
       DeviceOrientation.landscapeRight,
@@ -80,53 +98,32 @@ class _AppFullScreenPlayerState extends State<AppFullScreenPlayer>
 
   @override
   Widget build(BuildContext context) {
-    VideoNotifier? videoNotifier = context.read<VideoNotifier?>();
-    String videoUrl = videoNotifier?.videoUrl ?? "";
-    String videoId = videoNotifier?.videoId ?? "";
-    VideoHost videoHost = videoNotifier?.videoHost ?? VideoHost.unknown;
-    Widget player;
+    ContentWorker<String>? contentWorker = widget.contentWorker;
 
-    switch (videoHost) {
-      case VideoHost.vimeo:
-        player = VimeoVideoPlayer(
-          key: ValueKey<String>("vimeo_video_player_$videoId"),
-          config: widget.config,
-          videoUrl: videoUrl,
-        );
-        break;
+    if (isValidUrl) {
+      return AppFullScreenPlayerPart(
+        config: widget.config,
+        isFullScreen: isFullScreen,
+        url: widget.url ?? "",
+      );
+    } else if (contentWorker != null) {
+      return NetworkWidget(
+        callStatusSelector: (BuildContext context) => context.select(
+          (ContentApiNotifier? apiNotifier) =>
+              contentWorker.getResponseCallStatus(context, apiNotifier),
+        ),
+        childBuilder: (BuildContext context) {
+          String url = contentWorker.getResponseObject(context);
 
-      case VideoHost.youtube:
-        player = YouTubeVideoPlayer(
-          key: ValueKey<String>("youtube_video_player_$videoId"),
-          config: widget.config,
-          videoId: videoId,
-        );
-        break;
-
-      default:
-        if (videoNotifier?.hasSelectedVideo ?? false) {
-          player = StatusText(Res.str.generalError);
-        } else {
-          player = StatusText(Res.str.selectVideoFirst);
-        }
-
-        break;
-    }
-
-    player = Container(
-      key: const ValueKey<String>("app_video_player"),
-      child: WillPopScope(
-        onWillPop: () async {
-          if (isFullScreen) {
-            Utils.toggleFullScreenMode(false);
-            return false;
-          }
-          return true;
+          return AppFullScreenPlayerPart(
+            config: widget.config,
+            isFullScreen: isFullScreen,
+            url: url,
+          );
         },
-        child: player,
-      ),
-    );
-
-    return player;
+      );
+    } else {
+      return StatusText(Res.str.generalError);
+    }
   }
 }

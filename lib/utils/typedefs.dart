@@ -1,4 +1,5 @@
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/pages/course/workers/content_worker.dart";
 import "package:flutter/widgets.dart"
     show AnimationController, BuildContext, Widget;
 import "package:scroll_to_index/scroll_to_index.dart" show AutoScrollController;
@@ -55,4 +56,8 @@ typedef AppInViewNotifierWidgetBuilder = Widget Function(
 typedef VideoPlayerChildBuilder = Widget Function(
   BuildContext context,
   Widget player,
+);
+
+typedef ContentWorkerCreator<T> = ContentWorker<T> Function(
+  ContentTreeGetResponseContents contentItem,
 );

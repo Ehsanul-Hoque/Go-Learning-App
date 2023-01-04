@@ -5,11 +5,12 @@ import "package:app/pages/app_webview.dart";
 import "package:app/pages/course/course_before_enroll.dart";
 import "package:app/pages/course/course_checkout.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
+import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/pdf_viewer/app_pdf_viewer.dart";
 import "package:app/pages/profile/user_profile.dart";
 import "package:app/pages/splash_page.dart";
-import "package:app/pages/video_player/app_fullscreen_player.dart";
+import "package:app/components/app_video_player/app_fullscreen_player.dart";
 import "package:app/pages/welcome/auth.dart";
 import "package:app/utils/typedefs.dart";
 import "package:flutter/material.dart" show MaterialPageRoute;
@@ -59,7 +60,6 @@ class Routes {
         (BuildContext context) => MultiProvider(
           providers: <SingleChildWidget>[
             CourseContentNotifier.createProvider(),
-            // VideoNotifier.createProvider(initialVideoUrl: course.preview ?? ""),
           ],
           child: CourseBeforeEnroll(course: course),
         ),
@@ -91,31 +91,45 @@ class Routes {
         replace: config.replace,
       );
 
-  /// Route method to open the fullscreen video page
-  Future<void> openVideoPage(
-    BuildContext context,
-    AppVideoPlayerConfig videoConfig,
+  /// Route method to open the fullscreen video page.
+  /// Either 'url' (of the video) or 'contentWorker'
+  /// (which can fetch the url of the video) is needed.
+  /// If both are given, then 'url' is used.
+  Future<void> openVideoPage({
+    required BuildContext context,
+    required AppVideoPlayerConfig videoConfig,
+    String? url,
+    ContentWorker<String>? contentWorker,
     VoidCallback? onEnterFullScreen,
     VoidCallback? onExitFullScreen,
-  ) =>
+  }) =>
       RoutesHelper._toOrReplace<void>(
         context,
         (BuildContext context) => AppFullScreenPlayer(
           config: videoConfig,
+          url: url,
+          contentWorker: contentWorker,
           onEnterFullScreen: onEnterFullScreen,
           onExitFullScreen: onExitFullScreen,
         ),
         replace: config.replace,
       );
 
-  /// Route method to open the pdf view page
-  Future<void> openPdfViewerPage(
-    BuildContext context,
-    String url,
-  ) =>
+  /// Route method to open the pdf view page.
+  /// Either 'url' (of the pdf) or 'contentWorker'
+  /// (which can fetch the url of the pdf) is needed.
+  /// If both are given, then 'url' is used.
+  Future<void> openPdfViewerPage({
+    required BuildContext context,
+    String? url,
+    ContentWorker<String>? contentWorker,
+  }) =>
       RoutesHelper._toOrReplace<void>(
         context,
-        (BuildContext context) => AppPdfViewer(url: url),
+        (BuildContext context) => AppPdfViewer(
+          url: url,
+          contentWorker: contentWorker,
+        ),
         replace: config.replace,
       );
 

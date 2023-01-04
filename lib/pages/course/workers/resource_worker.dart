@@ -1,7 +1,5 @@
 import "package:app/network/enums/network_call_status.dart";
-import "package:app/network/models/api_contents/content_tree_get_response.dart";
-import "package:app/network/models/api_contents/resource_get_response.dart";
-import "package:app/network/network_response.dart";
+import "package:app/network/notifiers/api_notifier.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/routes.dart";
@@ -9,51 +7,63 @@ import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext;
 
-class ResourceWorker extends ContentWorker {
+class ResourceWorker extends ContentWorker<String> {
+  ResourceWorker(super.contentItem);
+
   @override
-  void work(BuildContext context, ContentTreeGetResponseContents contentItem) {
-    String? resourceLink =
-        contentItem.getResourceLink()?.elementAtOrNull(0)?.link;
-
-    if (resourceLink != null) {
-      return openResourceFile(context, resourceLink);
-    }
-
-    context
-        .read<ContentApiNotifier?>()
-        ?.getResource(contentItem.sId)
-        .then((NetworkResponse<ResourceGetResponse> response) {
-      onResourceGetComplete(context, response);
-    });
-
-    // FIXME Do NOT fire [onResourceGetComplete] method
-    //  in the then clause, rather check if the state
-    //  is still alive and than fire the method
+  void onTap(BuildContext context) {
+    Routes().openPdfViewerPage(
+      context: context,
+      url: contentItem.getResourceLink()?.elementAtOrNull(0)?.link,
+      contentWorker: this,
+    );
   }
 
-  void onResourceGetComplete(
+  @override
+  void loadContentData(
+    BuildContext context, [
+    ApiNotifier? apiNotifier,
+  ]) {
+    apiNotifier ??= context.read<ContentApiNotifier?>();
+    String? contentId = contentItem.sId;
+
+    if (contentId != null && apiNotifier is ContentApiNotifier?) {
+      apiNotifier?.getResource(contentId);
+    }
+  }
+
+  @override
+  NetworkCallStatus getResponseCallStatus(
     BuildContext context,
-    NetworkResponse<ResourceGetResponse> response,
+    ApiNotifier? apiNotifier,
   ) {
-    // if (!mounted) return;
-
-    if (response.callStatus == NetworkCallStatus.success) {
-      String? resourceLink = response.result?.data
-          ?.elementAtOrNull(0)
-          ?.link
-          ?.elementAtOrNull(0)
-          ?.link;
-
-      if (resourceLink != null) {
-        return openResourceFile(context, resourceLink);
-      }
-
-      // TODO show error that no resource found
-    } else {
-      // TODO show error that network call failed
+    if (apiNotifier is ContentApiNotifier?) {
+      return apiNotifier?.resourceGetResponse(contentItem.sId).callStatus ??
+          NetworkCallStatus.none;
     }
+
+    return NetworkCallStatus.none;
   }
 
-  void openResourceFile(BuildContext context, String resourceLink) =>
-      Routes().openPdfViewerPage(context, resourceLink);
+  @override
+  String getResponseObject(
+    BuildContext context, [
+    ApiNotifier? apiNotifier,
+  ]) {
+    apiNotifier ??= context.read<ContentApiNotifier?>();
+
+    if (apiNotifier is ContentApiNotifier?) {
+      return apiNotifier
+              ?.resourceGetResponse(contentItem.sId)
+              .result
+              ?.data
+              ?.elementAtOrNull(0)
+              ?.link
+              ?.elementAtOrNull(0)
+              ?.link ??
+          "";
+    }
+
+    return "";
+  }
 }

@@ -1,6 +1,4 @@
 import "package:app/app_config/resources.dart";
-import "package:app/components/app_video_player/config/app_video_player_config.dart";
-import "package:app/components/app_video_player/notifiers/video_notifier.dart";
 import "package:app/components/sliver_sized_box.dart";
 import "package:app/pages/course/enums/course_content_type.dart";
 import "package:app/pages/course/components/chapter_item.dart";
@@ -11,7 +9,6 @@ import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/pages/course/notifiers/course_content_notifier.dart";
-import "package:app/routes.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext, SelectContext;
@@ -32,6 +29,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
     with AutomaticKeepAliveClientMixin {
   String? courseId;
   List<bool>? expandedChapters;
+  late ContentTreeGetResponseContents previewVideoContent;
 
   @override
   bool get wantKeepAlive => true;
@@ -39,6 +37,16 @@ class _CoursePlaylistState extends State<CoursePlaylist>
   @override
   void initState() {
     super.initState();
+
+    previewVideoContent = ContentTreeGetResponseContents(
+      contentType: CourseContentType.lecture.name,
+      publicToAccess: true, // Because preview video will be available always
+      locked: false, // Because preview video will be available always
+      title: Res.str.previewVideo,
+      link: widget.course.preview ?? "",
+      courseId: courseId,
+      lectureThumbnail: widget.course.thumbnail,
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Execute callback if page is mounted
@@ -107,35 +115,10 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                     return ContentItem(
                       hasCourseEnrolled:
                           true, // Because preview video will be available always
-                      content: ContentTreeGetResponseContents(
-                        contentType: CourseContentType.lecture.name,
-                        publicToAccess:
-                            true, // Because preview video will be available always
-                        locked:
-                            false, // Because preview video will be available always
-                        title: Res.str.previewVideo,
-                        courseId: courseId,
-                      ),
+                      content: previewVideoContent,
                       isSelected: isSelected,
                       leftMargin: 0,
-                      onContentClick: (ContentTreeGetResponseContents lecture) {
-                        context
-                            .read<CourseContentNotifier>()
-                            .selectPreviewVideo(context);
-
-                        context
-                            .read<VideoNotifier>()
-                            .setVideo(widget.course.preview ?? "");
-
-                        Routes().openVideoPage(
-                          context,
-                          AppVideoPlayerConfig(
-                            thumbnail: widget.course.thumbnail,
-                          ),
-                          null,
-                          null,
-                        );
-                      },
+                      onContentClick: onPreviewContentItemClick,
                     );
                   },
                 ),
@@ -189,5 +172,13 @@ class _CoursePlaylistState extends State<CoursePlaylist>
     }
 
     return expandedChapters ?? <bool>[];
+  }
+
+  void onPreviewContentItemClick(ContentTreeGetResponseContents contentItem) {
+    context.read<CourseContentNotifier>().selectPreviewVideo(context);
+
+    CourseContentType contentType =
+        CourseContentType.valueOf(contentItem.contentType);
+    contentType.workerCreator?.call(contentItem).onTap(context);
   }
 }

@@ -124,6 +124,10 @@ class ContentTreeGetResponseContents extends ApiModel {
   @JsonKey(name: "__v")
   final int? iV;
 
+  /// Only for lecture type contents
+  @JsonKey(ignore: true)
+  final String? lectureThumbnail;
+
   const ContentTreeGetResponseContents({
     this.sId,
     this.contentType,
@@ -139,6 +143,7 @@ class ContentTreeGetResponseContents extends ApiModel {
     this.description,
     this.courseId,
     this.iV,
+    this.lectureThumbnail,
   });
 
   factory ContentTreeGetResponseContents.fromJson(Map<String, dynamic> json) =>
@@ -146,6 +151,8 @@ class ContentTreeGetResponseContents extends ApiModel {
 
   @override
   Map<String, dynamic> toJson() => _$ContentTreeGetResponseContentsToJson(this);
+
+  bool get isPreviewContent => (sId ?? "").trim().isEmpty;
 
   String? getLectureVideoLink() {
     try {

@@ -60,6 +60,6 @@ class _ChapterVideoListPartState extends State<ChapterVideoListPart> {
     CourseContentType contentType =
         CourseContentType.valueOf(contentItem.contentType);
 
-    contentType.worker?.work(context, contentItem);
+    contentType.workerCreator?.call(contentItem).onTap(context);
   }
 }

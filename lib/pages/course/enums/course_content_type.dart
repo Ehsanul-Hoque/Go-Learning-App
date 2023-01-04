@@ -1,16 +1,9 @@
 import "package:app/app_config/resources.dart";
-import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
-import "package:app/network/notifiers/content_api_notifier.dart";
-import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/course/workers/lecture_worker.dart";
 import "package:app/pages/course/workers/resource_worker.dart";
+import "package:app/utils/typedefs.dart";
 import "package:flutter/cupertino.dart" show Color, CupertinoIcons, IconData;
-
-typedef GetResponseFunction = NetworkCallStatus Function(
-  ContentApiNotifier? apiNotifier,
-  ContentTreeGetResponseContents? content,
-);
 
 class CourseContentType {
   /// Lecture type
@@ -18,13 +11,8 @@ class CourseContentType {
     name: "lecture",
     iconData: CupertinoIcons.play_arrow_solid,
     color: Res.color.videoItem,
-    worker: LectureWorker(),
-    getResponseCallback: (
-      ContentApiNotifier? apiNotifier,
-      ContentTreeGetResponseContents? content,
-    ) =>
-        apiNotifier?.lectureGetResponse(content?.sId).callStatus ??
-        NetworkCallStatus.none,
+    workerCreator: (ContentTreeGetResponseContents contentItem) =>
+        LectureWorker(contentItem),
   );
 
   /// Quiz type
@@ -32,7 +20,8 @@ class CourseContentType {
     name: "quiz",
     iconData: CupertinoIcons.pencil_outline,
     color: Res.color.quizItem,
-    isAvailable: false,
+    /*workerCreator: (ContentTreeGetResponseContents contentItem) =>
+        QuizWorker(contentItem),*/
   );
 
   /// Resource type
@@ -40,13 +29,8 @@ class CourseContentType {
     name: "resource",
     iconData: CupertinoIcons.doc_text,
     color: Res.color.resourceItem,
-    worker: ResourceWorker(),
-    getResponseCallback: (
-      ContentApiNotifier? apiNotifier,
-      ContentTreeGetResponseContents? content,
-    ) =>
-        apiNotifier?.resourceGetResponse(content?.sId).callStatus ??
-        NetworkCallStatus.none,
+    workerCreator: (ContentTreeGetResponseContents contentItem) =>
+        ResourceWorker(contentItem),
   );
 
   /// Unknown type
@@ -61,19 +45,20 @@ class CourseContentType {
     required this.name,
     required this.iconData,
     required this.color,
-    this.worker,
-    this.getResponseCallback,
-    this.isAvailable = true,
+    this.workerCreator,
   });
 
   final String name;
   final IconData iconData;
   final Color color;
-  final ContentWorker? worker;
-  final GetResponseFunction? getResponseCallback;
-  final bool isAvailable;
+  final ContentWorkerCreator<Object>? workerCreator;
 
-  /// Field to get all values
+  /// Getter method to check if this type is available or not
+  bool get isAvailable => workerCreator != null;
+
+  /// Field to get all values.
+  /// Must change this list if any static field in this class
+  /// is added/modified/removed.
   static List<CourseContentType> values = <CourseContentType>[
     lecture,
     quiz,
