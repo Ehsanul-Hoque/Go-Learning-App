@@ -8,10 +8,10 @@ import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext;
 
 class ResourceWorker extends ContentWorker<String> {
-  ResourceWorker(super.contentItem);
+  ResourceWorker(super.contentItem, [super.courseItem]);
 
   @override
-  void onTap(BuildContext context) {
+  void onTap(BuildContext context, [Map<String, Object?>? args]) {
     Routes().openPdfViewerPage(
       context: context,
       url: contentItem.getResourceLink()?.elementAtOrNull(0)?.link,

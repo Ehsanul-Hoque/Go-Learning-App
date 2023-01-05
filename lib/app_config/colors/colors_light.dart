@@ -28,6 +28,7 @@ class ColorsLightMode implements ColorsBase {
   final Color textLink = AppColors.flatBluePeterRiver;
   final Color textError = AppColors.redAccent;
   final Color textFocusing = AppColors.flatRedAlizarin;
+  final Color textInfoContainerBottom = AppColors.blackAlpha60;
 
   /// Input fields
   final Color inputFieldBg = AppColors.transparent;

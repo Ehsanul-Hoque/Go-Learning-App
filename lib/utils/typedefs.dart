@@ -1,4 +1,5 @@
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/workers/content_worker.dart";
 import "package:flutter/widgets.dart"
     show AnimationController, BuildContext, Widget;
@@ -59,5 +60,6 @@ typedef VideoPlayerChildBuilder = Widget Function(
 );
 
 typedef ContentWorkerCreator<T> = ContentWorker<T> Function(
+  CourseGetResponse? courseItem,
   ContentTreeGetResponseContents contentItem,
 );

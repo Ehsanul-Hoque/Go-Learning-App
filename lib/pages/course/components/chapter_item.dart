@@ -3,6 +3,7 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/animated_size_container.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/splash_effect.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/enums/course_content_type.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/pages/course/components/content_item.dart";
@@ -15,6 +16,7 @@ import "package:provider/provider.dart" show ReadContext, SelectContext;
 part "package:app/pages/course/components/chapter_video_list_part.dart";
 
 class ChapterItem extends StatefulWidget {
+  final CourseGetResponse course;
   final ContentTreeGetResponseModule chapter;
   final List<bool> expandedList;
   final int index;
@@ -22,6 +24,7 @@ class ChapterItem extends StatefulWidget {
 
   const ChapterItem({
     Key? key,
+    required this.course,
     required this.chapter,
     required this.expandedList,
     required this.index,
@@ -117,6 +120,7 @@ class _ChapterItemState extends State<ChapterItem> {
                     key: const ValueKey<String>("chapter_video_list"),
                     contents: _contents,
                     hasCourseEnrolled: widget.hasCourseEnrolled,
+                    course: widget.course,
                   )
                 : const SizedBox.shrink())
             : AnimatedSizeContainer(
@@ -128,6 +132,7 @@ class _ChapterItemState extends State<ChapterItem> {
                   key: const ValueKey<String>("chapter_video_list"),
                   contents: _contents,
                   hasCourseEnrolled: widget.hasCourseEnrolled,
+                  course: widget.course,
                 ),
               ),
         SizedBox(

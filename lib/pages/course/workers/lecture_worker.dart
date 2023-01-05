@@ -9,10 +9,10 @@ import "package:flutter/widgets.dart";
 import "package:provider/provider.dart" show ReadContext;
 
 class LectureWorker extends ContentWorker<String> {
-  LectureWorker(super.contentItem);
+  LectureWorker(super.contentItem, [super.courseItem]);
 
   @override
-  void onTap(BuildContext context) {
+  void onTap(BuildContext context, [Map<String, Object?>? args]) {
     Routes().openVideoPage(
       context: context,
       videoConfig: AppVideoPlayerConfig(

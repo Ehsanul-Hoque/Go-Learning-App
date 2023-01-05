@@ -1,6 +1,8 @@
 import "package:app/app_config/resources.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/workers/lecture_worker.dart";
+import "package:app/pages/course/workers/quiz_worker.dart";
 import "package:app/pages/course/workers/resource_worker.dart";
 import "package:app/utils/typedefs.dart";
 import "package:flutter/cupertino.dart" show Color, CupertinoIcons, IconData;
@@ -11,7 +13,7 @@ class CourseContentType {
     name: "lecture",
     iconData: CupertinoIcons.play_arrow_solid,
     color: Res.color.videoItem,
-    workerCreator: (ContentTreeGetResponseContents contentItem) =>
+    workerCreator: (_, ContentTreeGetResponseContents contentItem) =>
         LectureWorker(contentItem),
   );
 
@@ -20,8 +22,11 @@ class CourseContentType {
     name: "quiz",
     iconData: CupertinoIcons.pencil_outline,
     color: Res.color.quizItem,
-    /*workerCreator: (ContentTreeGetResponseContents contentItem) =>
-        QuizWorker(contentItem),*/
+    workerCreator: (
+      CourseGetResponse? courseItem,
+      ContentTreeGetResponseContents contentItem,
+    ) =>
+        QuizWorker(contentItem, courseItem),
   );
 
   /// Resource type
@@ -29,7 +34,7 @@ class CourseContentType {
     name: "resource",
     iconData: CupertinoIcons.doc_text,
     color: Res.color.resourceItem,
-    workerCreator: (ContentTreeGetResponseContents contentItem) =>
+    workerCreator: (_, ContentTreeGetResponseContents contentItem) =>
         ResourceWorker(contentItem),
   );
 

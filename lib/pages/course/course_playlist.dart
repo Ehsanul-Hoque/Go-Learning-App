@@ -113,8 +113,8 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                     );
 
                     return ContentItem(
-                      hasCourseEnrolled:
-                          true, // Because preview video will be available always
+                      hasCourseEnrolled: true,
+                      // Because preview video will be available always
                       content: previewVideoContent,
                       isSelected: isSelected,
                       leftMargin: 0,
@@ -144,6 +144,7 @@ class _CoursePlaylistState extends State<CoursePlaylist>
                       ContentTreeGetResponseModule item = chapters[index];
 
                       return ChapterItem(
+                        course: widget.course,
                         chapter: item,
                         expandedList: getExpandedChaptersList(chapters.length),
                         index: index,
@@ -179,6 +180,6 @@ class _CoursePlaylistState extends State<CoursePlaylist>
 
     CourseContentType contentType =
         CourseContentType.valueOf(contentItem.contentType);
-    contentType.workerCreator?.call(contentItem).onTap(context);
+    contentType.workerCreator?.call(widget.course, contentItem).onTap(context);
   }
 }

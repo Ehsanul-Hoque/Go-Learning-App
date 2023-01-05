@@ -9,6 +9,7 @@ import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/pdf_viewer/app_pdf_viewer.dart";
 import "package:app/pages/profile/user_profile.dart";
+import "package:app/pages/quiz/quiz_intro.dart";
 import "package:app/pages/splash_page.dart";
 import "package:app/components/app_video_player/app_fullscreen_player.dart";
 import "package:app/pages/welcome/auth.dart";
@@ -112,6 +113,19 @@ class Routes {
           onEnterFullScreen: onEnterFullScreen,
           onExitFullScreen: onExitFullScreen,
         ),
+        replace: config.replace,
+      );
+
+  /// Route method to open the quiz intro page
+  Future<void> openQuizIntroPage({
+    required BuildContext context,
+    required CourseGetResponse course,
+    required ContentWorker<String> contentWorker,
+  }) =>
+      RoutesHelper._toOrReplace<void>(
+        context,
+        (BuildContext context) =>
+            QuizIntro(course: course, contentWorker: contentWorker),
         replace: config.replace,
       );
 

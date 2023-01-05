@@ -1,11 +1,13 @@
 part of "package:app/pages/course/components/chapter_item.dart";
 
 class ChapterVideoListPart extends StatefulWidget {
+  final CourseGetResponse course;
   final List<ContentTreeGetResponseContents> contents;
   final bool hasCourseEnrolled;
 
   const ChapterVideoListPart({
     Key? key,
+    required this.course,
     required this.contents,
     required this.hasCourseEnrolled,
   }) : super(key: key);
@@ -60,6 +62,6 @@ class _ChapterVideoListPartState extends State<ChapterVideoListPart> {
     CourseContentType contentType =
         CourseContentType.valueOf(contentItem.contentType);
 
-    contentType.workerCreator?.call(contentItem).onTap(context);
+    contentType.workerCreator?.call(widget.course, contentItem).onTap(context);
   }
 }
