@@ -1,6 +1,7 @@
 import "package:app/network/models/api_contents/lecture_get_response_timestamp.dart";
 import "package:app/network/models/api_contents/resource_get_response_link.dart";
 import "package:app/network/models/api_model.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
 import "package:json_annotation/json_annotation.dart";
 
 part "../../../generated/api_contents/content_tree_get_response.g.dart";
@@ -153,6 +154,10 @@ class ContentTreeGetResponseContents extends ApiModel {
   Map<String, dynamic> toJson() => _$ContentTreeGetResponseContentsToJson(this);
 
   bool get isPreviewContent => (sId ?? "").trim().isEmpty;
+
+  bool get isAccessibleQuizContent =>
+      (questions ?? <String?>[]).getNonNulls().isNotEmpty &&
+      durationInMinutes != null;
 
   String? getLectureVideoLink() {
     try {

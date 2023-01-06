@@ -53,19 +53,22 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
     Widget pdfViewer;
 
     if (isValidUrl) {
-      pdfFuture ??= PDFDocument.fromURL(widget.url ?? "");
+      pdfFuture ??= PDFDocument.fromURL(widget.url?.trim() ?? "");
       pdfViewer = AppPdfViewerPart(pdfFuture: pdfFuture!);
     } else if (contentWorker != null) {
-      return NetworkWidget(
+      pdfViewer = NetworkWidget(
         callStatusSelector: (BuildContext context) => context.select(
           (ContentApiNotifier? apiNotifier) =>
               contentWorker.getResponseCallStatus(context, apiNotifier),
         ),
         childBuilder: (BuildContext context) {
-          String url = contentWorker.getResponseObject(context);
-          pdfFuture ??= PDFDocument.fromURL(url);
-          pdfViewer = AppPdfViewerPart(pdfFuture: pdfFuture!);
-          return pdfViewer;
+          String? url = contentWorker.getResponseObject(context);
+          if (url != null && url.trim().isNotEmpty) {
+            pdfFuture ??= PDFDocument.fromURL(url.trim());
+            return AppPdfViewerPart(pdfFuture: pdfFuture!);
+          }
+
+          return StatusText(Res.str.generalError);
         },
       );
     } else {

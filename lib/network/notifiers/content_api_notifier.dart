@@ -115,7 +115,9 @@ class ContentApiNotifier extends ApiNotifier {
     );
   }
 
-  NetworkResponse<QuizAttemptGetResponse> quizGetResponse(String? contentId) =>
+  NetworkResponse<QuizAttemptGetResponse> quizAttemptGetResponse(
+    String? contentId,
+  ) =>
       Network.getOrCreateResponse(
         defaultAuthenticatedClient.baseUrl +
             quizAttemptGetApiEndpoint(contentId),

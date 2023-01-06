@@ -104,7 +104,7 @@ class _AppFullScreenPlayerState extends State<AppFullScreenPlayer>
       return AppFullScreenPlayerPart(
         config: widget.config,
         isFullScreen: isFullScreen,
-        url: widget.url ?? "",
+        url: widget.url?.trim() ?? "",
       );
     } else if (contentWorker != null) {
       return NetworkWidget(
@@ -113,13 +113,16 @@ class _AppFullScreenPlayerState extends State<AppFullScreenPlayer>
               contentWorker.getResponseCallStatus(context, apiNotifier),
         ),
         childBuilder: (BuildContext context) {
-          String url = contentWorker.getResponseObject(context);
+          String? url = contentWorker.getResponseObject(context);
+          if (url != null && url.trim().isNotEmpty) {
+            return AppFullScreenPlayerPart(
+              config: widget.config,
+              isFullScreen: isFullScreen,
+              url: url.trim(),
+            );
+          }
 
-          return AppFullScreenPlayerPart(
-            config: widget.config,
-            isFullScreen: isFullScreen,
-            url: url,
-          );
+          return StatusText(Res.str.generalError);
         },
       );
     } else {

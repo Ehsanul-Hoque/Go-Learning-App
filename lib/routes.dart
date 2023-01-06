@@ -1,4 +1,5 @@
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
+import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
 import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/app_webview.dart";
@@ -120,7 +121,7 @@ class Routes {
   Future<void> openQuizIntroPage({
     required BuildContext context,
     required CourseGetResponse course,
-    required ContentWorker<String> contentWorker,
+    required ContentWorker<QuizAttemptGetResponse> contentWorker,
   }) =>
       RoutesHelper._toOrReplace<void>(
         context,

@@ -5,6 +5,7 @@ import "package:app/components/app_button.dart";
 import "package:app/components/two_line_info.dart";
 import "package:app/models/two_line_info_model.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/routes.dart";
@@ -15,7 +16,7 @@ import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 
 class QuizIntro extends StatefulWidget {
   final CourseGetResponse course;
-  final ContentWorker<String> contentWorker;
+  final ContentWorker<QuizAttemptGetResponse> contentWorker;
 
   const QuizIntro({
     Key? key,

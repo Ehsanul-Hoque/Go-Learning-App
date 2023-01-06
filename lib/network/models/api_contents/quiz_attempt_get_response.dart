@@ -1,4 +1,5 @@
 import "package:app/network/models/api_model.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
 import "package:json_annotation/json_annotation.dart";
 
 part "../../../generated/api_contents/quiz_attempt_get_response.g.dart";
@@ -128,6 +129,24 @@ class QuizAttemptGetResponseQuestion extends ApiModel {
   @JsonKey(name: "d")
   final String? d;
 
+  @JsonKey(name: "e")
+  final String? e;
+
+  @JsonKey(name: "f")
+  final String? f;
+
+  @JsonKey(name: "g")
+  final String? g;
+
+  @JsonKey(name: "h")
+  final String? h;
+
+  @JsonKey(name: "i")
+  final String? i;
+
+  @JsonKey(name: "j")
+  final String? j;
+
   /// This indicates if the user has answered this question correctly or not
   @JsonKey(name: "status")
   final bool? status;
@@ -149,6 +168,12 @@ class QuizAttemptGetResponseQuestion extends ApiModel {
     this.b,
     this.c,
     this.d,
+    this.e,
+    this.f,
+    this.g,
+    this.h,
+    this.i,
+    this.j,
     this.status,
     this.iV,
   });
@@ -158,6 +183,9 @@ class QuizAttemptGetResponseQuestion extends ApiModel {
 
   @override
   Map<String, dynamic> toJson() => _$QuizAttemptGetResponseQuestionToJson(this);
+
+  List<String> get allAnswersList =>
+      (<String?>[a, b, c, d, e, f, g, h, i, j]).getNonNulls().toList();
 }
 
 class QuizAttemptGetResponseDataConverter

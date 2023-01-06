@@ -50,7 +50,7 @@ class LectureWorker extends ContentWorker<String> {
   }
 
   @override
-  String getResponseObject(
+  String? getResponseObject(
     BuildContext context, [
     ApiNotifier? apiNotifier,
   ]) {
@@ -58,14 +58,13 @@ class LectureWorker extends ContentWorker<String> {
 
     if (apiNotifier is ContentApiNotifier?) {
       return apiNotifier
-              ?.lectureGetResponse(contentItem.sId)
-              .result
-              ?.data
-              ?.elementAtOrNull(0)
-              ?.link ??
-          "";
+          ?.lectureGetResponse(contentItem.sId)
+          .result
+          ?.data
+          ?.elementAtOrNull(0)
+          ?.link;
     }
 
-    return "";
+    return null;
   }
 }

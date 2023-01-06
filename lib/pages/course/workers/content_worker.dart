@@ -22,7 +22,7 @@ abstract class ContentWorker<T> {
     ApiNotifier? apiNotifier,
   );
 
-  T getResponseObject(
+  T? getResponseObject(
     BuildContext context, [
     ApiNotifier? apiNotifier,
   ]);

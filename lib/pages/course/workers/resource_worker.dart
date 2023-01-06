@@ -46,7 +46,7 @@ class ResourceWorker extends ContentWorker<String> {
   }
 
   @override
-  String getResponseObject(
+  String? getResponseObject(
     BuildContext context, [
     ApiNotifier? apiNotifier,
   ]) {
@@ -54,16 +54,15 @@ class ResourceWorker extends ContentWorker<String> {
 
     if (apiNotifier is ContentApiNotifier?) {
       return apiNotifier
-              ?.resourceGetResponse(contentItem.sId)
-              .result
-              ?.data
-              ?.elementAtOrNull(0)
-              ?.link
-              ?.elementAtOrNull(0)
-              ?.link ??
-          "";
+          ?.resourceGetResponse(contentItem.sId)
+          .result
+          ?.data
+          ?.elementAtOrNull(0)
+          ?.link
+          ?.elementAtOrNull(0)
+          ?.link;
     }
 
-    return "";
+    return null;
   }
 }
