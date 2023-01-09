@@ -81,6 +81,8 @@ abstract class StringsBase {
   final String marksPerBlankAns = "";
   final String minMarksToPass = "";
   final String instructions = "";
+  final String lastBestScoreColon = "";
+  final String none = "";
   final String bestOfLuck = "";
   final String letsStart = "";
 

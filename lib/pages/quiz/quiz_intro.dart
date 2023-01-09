@@ -2,17 +2,26 @@ import "package:app/app_config/resources.dart";
 import "package:app/components/app_bar/my_app_bar_config.dart";
 import "package:app/components/app_bar/my_platform_app_bar.dart";
 import "package:app/components/app_button.dart";
+import "package:app/components/status_text.dart";
 import "package:app/components/two_line_info.dart";
 import "package:app/models/two_line_info_model.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
+import "package:app/network/notifiers/content_api_notifier.dart";
+import "package:app/network/views/network_widget.dart";
 import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/routes.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
+import "package:app/utils/typedefs.dart";
 import "package:app/utils/utils.dart";
+import "package:collection/collection.dart";
 import "package:flutter/material.dart" show IconButton, Icons;
 import "package:flutter/widgets.dart";
 import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
+import "package:provider/provider.dart";
+
+part "package:app/pages/quiz/quiz_intro_part.dart";
 
 class QuizIntro extends StatefulWidget {
   final CourseGetResponse course;
@@ -29,60 +38,16 @@ class QuizIntro extends StatefulWidget {
 }
 
 class _QuizIntroState extends State<QuizIntro> {
-  late final List<TwoLineInfoModel> _quizInfoItems;
-
   @override
   void initState() {
-    ContentTreeGetResponseContents contentItem =
-        widget.contentWorker.contentItem;
-    TextStyle bottomTextStyle = Res.textStyles.smallThick
-        .copyWith(color: Res.color.textInfoContainerBottom);
-
-    _quizInfoItems = <TwoLineInfoModel>[
-      TwoLineInfoModel(
-        topText: contentItem.questions?.length.toString() ?? 0.toString(),
-        bottomText: Res.str.questions,
-        backgroundColor: Res.color.infoContainerBg1,
-        bottomTextStyle: bottomTextStyle,
-      ),
-      TwoLineInfoModel(
-        topText: Utils.getMmSsFormat(
-          Duration(
-            milliseconds: Duration(minutes: contentItem.durationInMinutes ?? 0)
-                .inMilliseconds,
-          ), // TODO Get from API
-        ),
-        bottomText: Res.str.minutes,
-        backgroundColor: Res.color.infoContainerBg3,
-        bottomTextStyle: bottomTextStyle,
-      ),
-      TwoLineInfoModel(
-        topText: "+${1.toString()}", // TODO Get from API
-        bottomText: Res.str.positiveMarksPerCorrectAns,
-        backgroundColor: Res.color.infoContainerBg2,
-        bottomTextStyle: bottomTextStyle,
-      ),
-      TwoLineInfoModel(
-        topText: "-${(0.25).toString()}", // TODO Get from API
-        bottomText: Res.str.negativeMarksPerWrongAns,
-        backgroundColor: Res.color.infoContainerBg4,
-        bottomTextStyle: bottomTextStyle,
-      ),
-      TwoLineInfoModel(
-        topText: 0.toString(),
-        bottomText: Res.str.marksPerBlankAns,
-        backgroundColor: Res.color.infoContainerBg5,
-        bottomTextStyle: bottomTextStyle,
-      ),
-      /*TwoLineInfoModel(
-        topText: "${80.toString()}%", // TODO Get from API
-        bottomText: Res.str.minMarksToPass,
-        backgroundColor: Res.color.infoContainerBg6,
-        bottomTextStyle: bottomTextStyle,
-      )*/
-    ];
-
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Execute callback if page is mounted
+      if (!mounted) return;
+
+      widget.contentWorker.loadContentData(context);
+    });
   }
 
   @override
@@ -118,77 +83,30 @@ class _QuizIntroState extends State<QuizIntro> {
               ),
             ),
             Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.all(Res.dimen.normalSpacingValue),
-                  child: Center(
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: Res.dimen.maxWidthNormal,
+              child: NetworkWidget(
+                callStatusSelector: (BuildContext context) {
+                  return context.select(
+                    (ContentApiNotifier? apiNotifier) => widget.contentWorker
+                        .getResponseCallStatus(context, apiNotifier),
+                  );
+                },
+                childBuilder: (BuildContext context) {
+                  QuizAttemptGetResponse? bestQuizAttemptResponse =
+                      widget.contentWorker.getResponseObject(context);
+
+                  if (bestQuizAttemptResponse != null) {
+                    return QuizIntroPart(
+                      contentItem: widget.contentWorker.contentItem,
+                      bestQuizAttemptResponse: bestQuizAttemptResponse,
+                      onButtonTap: () => onStartTap(
+                        widget.contentWorker.contentItem,
+                        bestQuizAttemptResponse,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            Res.str.instructions,
-                            style: Res.textStyles.label,
-                          ),
-                          SizedBox(
-                            height: Res.dimen.normalSpacingValue,
-                          ),
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: Res.dimen.maxWidthSmall,
-                            ),
-                            child: LayoutBuilder(
-                              builder: (
-                                BuildContext context,
-                                BoxConstraints constraints,
-                              ) {
-                                return Wrap(
-                                  alignment: WrapAlignment.center,
-                                  children: _quizInfoItems
-                                      .map((TwoLineInfoModel item) {
-                                    return SizedBox(
-                                      width: constraints.maxWidth / 2,
-                                      child: TwoLineInfo(
-                                        topText: item.topText,
-                                        bottomText: item.bottomText,
-                                        topTextStyle: item.topTextStyle ??
-                                            Res.textStyles.header,
-                                        bottomTextStyle: item.bottomTextStyle,
-                                        backgroundColor: item.backgroundColor,
-                                      ),
-                                    );
-                                  }).toList(),
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: Res.dimen.hugeSpacingValue,
-                          ),
-                          Text(
-                            Res.str.bestOfLuck,
-                            style: Res.textStyles.label,
-                          ),
-                          SizedBox(
-                            height: Res.dimen.hugeSpacingValue,
-                          ),
-                          AppButton(
-                            text: Text(Res.str.letsStart),
-                            onTap: onStartTap,
-                            borderRadius:
-                                Res.dimen.fullRoundedBorderRadiusValue,
-                          ),
-                          SizedBox(
-                            height: Res.dimen.hugeSpacingValue,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                    );
+                  }
+
+                  return StatusText(Res.str.generalError);
+                },
               ),
             ),
           ],
@@ -197,7 +115,10 @@ class _QuizIntroState extends State<QuizIntro> {
     );
   }
 
-  void onStartTap() {
+  void onStartTap(
+    ContentTreeGetResponseContents quizContent,
+    QuizAttemptGetResponse response,
+  ) {
     // TODO open quiz page
     /*PageNav.replace(
       context,

@@ -88,6 +88,8 @@ class StringsEn implements StringsBase {
   final String marksPerBlankAns = "Marks\nper Blank Answer";
   final String minMarksToPass = "Minimum Marks\nNeeded to Pass";
   final String instructions = "Instructions";
+  final String lastBestScoreColon = "Previous Best Score:";
+  final String none = "None!";
   final String bestOfLuck = "Best of Luck!";
   final String letsStart = "Let's Start";
 
