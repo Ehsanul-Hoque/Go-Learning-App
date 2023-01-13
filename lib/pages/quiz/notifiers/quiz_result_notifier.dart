@@ -2,6 +2,7 @@ import "dart:collection" show UnmodifiableListView;
 
 import "package:flutter/foundation.dart" show ChangeNotifier;
 
+@Deprecated("Use QuizNotifier instead")
 class QuizResultNotifier extends ChangeNotifier {
   late final List<int> _selectedAnswers;
   late final List<int> _correctAnswers;

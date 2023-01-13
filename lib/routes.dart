@@ -1,4 +1,7 @@
+import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
+import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
 import "package:app/network/models/api_coupons/coupon_get_response.dart";
 import "package:app/network/models/api_courses/course_get_response.dart";
@@ -10,6 +13,7 @@ import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/pdf_viewer/app_pdf_viewer.dart";
 import "package:app/pages/profile/user_profile.dart";
+import "package:app/pages/quiz/notifiers/quiz_notifier.dart";
 import "package:app/pages/quiz/quiz_intro.dart";
 import "package:app/pages/splash_page.dart";
 import "package:app/components/app_video_player/app_fullscreen_player.dart";
@@ -129,6 +133,48 @@ class Routes {
             QuizIntro(course: course, contentWorker: contentWorker),
         replace: config.replace,
       );
+
+  /// Route method to open the quiz page
+  Future<void> openQuizPage({
+    required BuildContext context,
+    required CourseGetResponse course,
+    required ContentTreeGetResponseContents quizContent,
+    required QuizAttemptGetResponse previousBestAttempt,
+    bool? showPreviousAttemptAtStart,
+  }) {
+    QuizAttemptGetResponseData? prevAttemptData = previousBestAttempt.data;
+
+    int totalMinutes = prevAttemptData?.durationInMinutes ??
+        quizContent.durationInMinutes ??
+        0;
+
+    return RoutesHelper._toOrReplace<void>(
+      context,
+      (BuildContext context) {
+        return MultiProvider(
+          providers: <SingleChildWidget>[
+            CountdownTimerNotifier.createProvider(
+              Duration(minutes: totalMinutes),
+            ),
+            QuizNotifier.createProviderWithPrevAttempt(
+              prevAttemptData?.questions,
+              prevAttemptData?.submittedAns,
+            ),
+            AcsvScrollNotifier.createProvider(),
+          ],
+          child: Container(),
+          /*Quiz(
+            course: course,
+            quizContent: quizContent,
+            previousBestAttemptData: prevAttemptData,
+            showPreviousAttemptAtStart:
+                showPreviousAttemptAtStart ?? (prevAttemptData != null),
+          )*/
+        );
+      },
+      replace: config.replace,
+    );
+  }
 
   /// Route method to open the pdf view page.
   /// Either 'url' (of the pdf) or 'contentWorker'

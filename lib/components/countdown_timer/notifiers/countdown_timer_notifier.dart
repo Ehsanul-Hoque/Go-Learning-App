@@ -1,7 +1,9 @@
 import "dart:async";
 
 import "package:app/components/countdown_timer/enums/countdown_timer_state.dart";
-import "package:flutter/foundation.dart" show ChangeNotifier;
+import "package:flutter/widgets.dart" show BuildContext, ChangeNotifier;
+import "package:provider/provider.dart" show ChangeNotifierProvider;
+import "package:provider/single_child_widget.dart";
 
 class CountdownTimerNotifier extends ChangeNotifier {
   final Duration totalDuration, tickDuration;
@@ -18,6 +20,13 @@ class CountdownTimerNotifier extends ChangeNotifier {
     required this.totalDuration,
     this.tickDuration = const Duration(seconds: 1),
   });
+
+  /// Static method to create simple provider
+  static SingleChildWidget createProvider(Duration totalDuration) =>
+      ChangeNotifierProvider<CountdownTimerNotifier>(
+        create: (BuildContext context) =>
+            CountdownTimerNotifier(totalDuration: totalDuration),
+      );
 
   int prevTickMillis = 0;
 

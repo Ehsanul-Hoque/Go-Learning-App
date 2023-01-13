@@ -11,6 +11,7 @@ import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/network/notifiers/content_api_notifier.dart";
 import "package:app/network/views/network_widget.dart";
 import "package:app/pages/course/workers/content_worker.dart";
+import "package:app/pages/quiz/constants/quiz_constants.dart";
 import "package:app/routes.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:app/utils/typedefs.dart";
@@ -117,8 +118,14 @@ class _QuizIntroState extends State<QuizIntro> {
 
   void onStartTap(
     ContentTreeGetResponseContents quizContent,
-    QuizAttemptGetResponse response,
+    QuizAttemptGetResponse previousBestAttempt,
   ) {
+    Routes().openQuizPage(
+      context: context,
+      course: widget.course,
+      quizContent: quizContent,
+      previousBestAttempt: previousBestAttempt,
+    );
     // TODO open quiz page
     /*PageNav.replace(
       context,

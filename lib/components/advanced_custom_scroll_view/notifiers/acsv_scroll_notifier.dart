@@ -1,4 +1,6 @@
-import "package:flutter/foundation.dart" show ChangeNotifier;
+import "package:flutter/widgets.dart" show BuildContext, ChangeNotifier;
+import "package:provider/provider.dart" show ChangeNotifierProvider;
+import "package:provider/single_child_widget.dart";
 
 class AcsvScrollNotifier extends ChangeNotifier {
   String? _notifierId;
@@ -8,6 +10,12 @@ class AcsvScrollNotifier extends ChangeNotifier {
   String? get notifierId => _notifierId;
   int get currentVisibleIndex => _currentVisibleIndex;
   bool get updateScrollView => _updateScrollView;
+
+  /// Static method to create simple provider
+  static SingleChildWidget createProvider() =>
+      ChangeNotifierProvider<AcsvScrollNotifier>(
+        create: (BuildContext context) => AcsvScrollNotifier(),
+      );
 
   void updateCurrentVisibleIndex({
     required String notifierId,

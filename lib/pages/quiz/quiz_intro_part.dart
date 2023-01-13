@@ -17,18 +17,22 @@ class QuizIntroPart extends StatelessWidget {
     TextStyle bottomTextStyle = Res.textStyles.smallThick
         .copyWith(color: Res.color.textInfoContainerBottom);
 
-    QuizAttemptGetResponseData? prevAttempt = bestQuizAttemptResponse.data;
+    QuizAttemptGetResponseData? prevAttemptData = bestQuizAttemptResponse.data;
     Iterable<QuizAttemptGetResponseQuestion>? prevAttemptQuestions =
-        prevAttempt?.questions?.getNonNulls();
+        prevAttemptData?.questions?.getNonNulls();
 
     int totalQuestions = prevAttemptQuestions?.length ??
         contentItem.questions?.getNonNulls().length ??
         0;
-    int totalMinutes =
-        prevAttempt?.durationInMinutes ?? contentItem.durationInMinutes ?? 0;
-    double positiveMarksPerAns = prevAttemptQuestions?.firstOrNull?.mark ?? 1;
+    int totalMinutes = prevAttemptData?.durationInMinutes ??
+        contentItem.durationInMinutes ??
+        QuizConstants.defaultDurationInMinutes;
+    double positiveMarksPerAns = prevAttemptQuestions?.firstOrNull?.mark ??
+        QuizConstants.defaultPositiveMarksPerAns;
     double negativeMarksPerAns =
-        prevAttemptQuestions?.firstOrNull?.negativeMark ?? 0.25;
+        prevAttemptQuestions?.firstOrNull?.negativeMark ??
+            QuizConstants.defaultNegativeMarksPerAns;
+    double marksPerBlankAns = QuizConstants.defaultMarksPerBlankAns;
 
     quizInfoItems = <TwoLineInfoModel>[
       TwoLineInfoModel(
@@ -48,21 +52,19 @@ class QuizIntroPart extends StatelessWidget {
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText:
-            "+${positiveMarksPerAns.toStringAsFixed(2)}", // TODO Get from API
+        topText: "+${positiveMarksPerAns.toStringAsFixed(2)}",
         bottomText: Res.str.positiveMarksPerCorrectAns,
         backgroundColor: Res.color.infoContainerBg2,
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText:
-            "-${negativeMarksPerAns.toStringAsFixed(2)}", // TODO Get from API
+        topText: "-${negativeMarksPerAns.toStringAsFixed(2)}",
         bottomText: Res.str.negativeMarksPerWrongAns,
         backgroundColor: Res.color.infoContainerBg4,
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText: 0.toString(),
+        topText: "-${marksPerBlankAns.toStringAsFixed(2)}",
         bottomText: Res.str.marksPerBlankAns,
         backgroundColor: Res.color.infoContainerBg5,
         bottomTextStyle: bottomTextStyle,
