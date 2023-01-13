@@ -1,43 +1,37 @@
 import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
+import "package:app/pages/quiz/enums/quiz_state.dart";
+import "package:app/pages/quiz/models/question_answer_pair.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/widgets.dart" show BuildContext, ChangeNotifier;
 import "package:provider/provider.dart" show ChangeNotifierProvider;
 import "package:provider/single_child_widget.dart";
 
-class QuestionAnswerPair {
-  QuizAttemptGetResponseQuestion question;
-  Set<int> selectedAnswers; // 0-based
-  Set<int> correctAnswers; // 0-based
-
-  QuestionAnswerPair({
-    required this.question,
-    required this.selectedAnswers,
-    required this.correctAnswers,
-  });
-}
-
 class QuizNotifier extends ChangeNotifier {
-  final Map<String, QuestionAnswerPair> prevAttemptQuesAns;
-  final Map<String, QuestionAnswerPair> currentAttemptQuesAns;
+  QuizState currentState;
+
+  final Map<String, QuestionAnswerPair> prevAttemptQuesAns =
+      <String, QuestionAnswerPair>{};
+  final Map<String, QuestionAnswerPair> currentAttemptQuesAns =
+      <String, QuestionAnswerPair>{};
   // int questionCount;
 
-  QuizNotifier(/*{required this.questionCount}*/)
-      : prevAttemptQuesAns = <String, QuestionAnswerPair>{},
-        currentAttemptQuesAns = <String, QuestionAnswerPair>{};
+  QuizNotifier({required this.currentState});
 
   /// Static method to create simple provider
-  static SingleChildWidget createProvider() =>
+  static SingleChildWidget createProvider(QuizState quizCurrentState) =>
       ChangeNotifierProvider<QuizNotifier>(
-        create: (BuildContext context) => QuizNotifier(),
+        create: (BuildContext context) =>
+            QuizNotifier(currentState: quizCurrentState),
       );
 
   /// Static method to create simple provider
   /// with previous quiz attempt information
   static SingleChildWidget createProviderWithPrevAttempt(
+    QuizState quizCurrentState,
     List<QuizAttemptGetResponseQuestion?>? questions,
     Map<String, List<String?>?>? submittedAns,
   ) {
-    QuizNotifier quizNotifier = QuizNotifier();
+    QuizNotifier quizNotifier = QuizNotifier(currentState: quizCurrentState);
     quizNotifier.setPrevAttempt(questions, submittedAns);
 
     return ChangeNotifierProvider<QuizNotifier>(

@@ -13,6 +13,7 @@ import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/home/landing.dart";
 import "package:app/pages/pdf_viewer/app_pdf_viewer.dart";
 import "package:app/pages/profile/user_profile.dart";
+import "package:app/pages/quiz/enums/quiz_state.dart";
 import "package:app/pages/quiz/notifiers/quiz_notifier.dart";
 import "package:app/pages/quiz/quiz_intro.dart";
 import "package:app/pages/splash_page.dart";
@@ -143,6 +144,7 @@ class Routes {
     bool? showPreviousAttemptAtStart,
   }) {
     QuizAttemptGetResponseData? prevAttemptData = previousBestAttempt.data;
+    showPreviousAttemptAtStart ??= (prevAttemptData != null);
 
     int totalMinutes = prevAttemptData?.durationInMinutes ??
         quizContent.durationInMinutes ??
@@ -157,6 +159,9 @@ class Routes {
               Duration(minutes: totalMinutes),
             ),
             QuizNotifier.createProviderWithPrevAttempt(
+              (showPreviousAttemptAtStart ?? true)
+                  ? QuizState.previousAttemptHistory
+                  : QuizState.currentAttempt,
               prevAttemptData?.questions,
               prevAttemptData?.submittedAns,
             ),
@@ -168,7 +173,7 @@ class Routes {
             quizContent: quizContent,
             previousBestAttemptData: prevAttemptData,
             showPreviousAttemptAtStart:
-                showPreviousAttemptAtStart ?? (prevAttemptData != null),
+                showPreviousAttemptAtStart ?? true,
           )*/
         );
       },
