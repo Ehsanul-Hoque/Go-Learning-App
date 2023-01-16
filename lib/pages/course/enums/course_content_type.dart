@@ -8,8 +8,10 @@ import "package:app/utils/typedefs.dart";
 import "package:flutter/cupertino.dart" show Color, CupertinoIcons, IconData;
 
 class CourseContentType {
+  // --------------------------------------------------------------------------
+
   /// Lecture type
-  static CourseContentType lecture = CourseContentType(
+  static CourseContentType lecture = CourseContentType._(
     name: "lecture",
     iconData: CupertinoIcons.play_arrow_solid,
     color: Res.color.videoItem,
@@ -18,7 +20,7 @@ class CourseContentType {
   );
 
   /// Quiz type
-  static CourseContentType quiz = CourseContentType(
+  static CourseContentType quiz = CourseContentType._(
     name: "quiz",
     iconData: CupertinoIcons.pencil_outline,
     color: Res.color.quizItem,
@@ -30,7 +32,7 @@ class CourseContentType {
   );
 
   /// Resource type
-  static CourseContentType resource = CourseContentType(
+  static CourseContentType resource = CourseContentType._(
     name: "resource",
     iconData: CupertinoIcons.doc_text,
     color: Res.color.resourceItem,
@@ -39,14 +41,16 @@ class CourseContentType {
   );
 
   /// Unknown type
-  static CourseContentType unknown = CourseContentType(
+  static CourseContentType unknown = CourseContentType._(
     name: "unknown",
     iconData: CupertinoIcons.exclamationmark_circle,
     color: Res.color.unknownItemIcon,
   );
 
+  // --------------------------------------------------------------------------
+
   /// All-argument constructor
-  const CourseContentType({
+  const CourseContentType._({
     required this.name,
     required this.iconData,
     required this.color,
