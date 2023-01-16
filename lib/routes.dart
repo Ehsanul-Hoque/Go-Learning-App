@@ -138,26 +138,24 @@ class Routes {
   /// Route method to open the quiz page
   Future<void> openQuizPage({
     required BuildContext context,
-    required CourseGetResponse course,
     required ContentTreeGetResponseContents quizContent,
     required QuizAttemptGetResponse previousBestAttempt,
+    CourseGetResponse? course,
     bool? showPreviousAttemptAtStart,
   }) {
     QuizAttemptGetResponseData? prevAttemptData = previousBestAttempt.data;
     showPreviousAttemptAtStart ??= (prevAttemptData != null);
 
-    int totalMinutes = prevAttemptData?.durationInMinutes ??
+    /*int totalMinutes = prevAttemptData?.durationInMinutes ??
         quizContent.durationInMinutes ??
-        0;
+        0;*/
 
     return RoutesHelper._toOrReplace<void>(
       context,
       (BuildContext context) {
         return MultiProvider(
           providers: <SingleChildWidget>[
-            CountdownTimerNotifier.createProvider(
-              Duration(minutes: totalMinutes),
-            ),
+            CountdownTimerNotifier.createProvider(),
             QuizNotifier.createProviderWithPrevAttempt(
               (showPreviousAttemptAtStart ?? true)
                   ? QuizState.previousAttemptHistory
