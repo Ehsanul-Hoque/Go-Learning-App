@@ -24,15 +24,18 @@ class QuizIntroPart extends StatelessWidget {
     int totalQuestions = prevAttemptQuestions?.length ??
         contentItem.questions?.getNonNulls().length ??
         0;
-    int totalMinutes = prevAttemptData?.durationInMinutes ??
-        contentItem.durationInMinutes ??
-        QuizConstants.defaultDurationInMinutes;
+    int totalSeconds = (prevAttemptData?.durationInMinutes ??
+            contentItem.durationInMinutes ??
+            QuizConstants.defaultDurationInMinutes) *
+        Duration.secondsPerMinute;
     double positiveMarksPerAns = prevAttemptQuestions?.firstOrNull?.mark ??
         QuizConstants.defaultPositiveMarksPerAns;
     double negativeMarksPerAns =
         prevAttemptQuestions?.firstOrNull?.negativeMark ??
             QuizConstants.defaultNegativeMarksPerAns;
     double marksPerBlankAns = QuizConstants.defaultMarksPerBlankAns;
+
+    bool unlimitedTime = (totalSeconds <= 0);
 
     quizInfoItems = <TwoLineInfoModel>[
       TwoLineInfoModel(
@@ -42,12 +45,14 @@ class QuizIntroPart extends StatelessWidget {
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText: Utils.getMmSsFormat(
-          Duration(
-            milliseconds: Duration(minutes: totalMinutes).inMilliseconds,
-          ),
-        ),
-        bottomText: Res.str.minutes,
+        topText: unlimitedTime
+            ? Res.str.unlimited
+            : Utils.getMmSsFormat(
+                Duration(
+                  milliseconds: Duration(seconds: totalSeconds).inMilliseconds,
+                ),
+              ),
+        bottomText: unlimitedTime ? Res.str.time : Res.str.minutes,
         backgroundColor: Res.color.infoContainerBg3,
         bottomTextStyle: bottomTextStyle,
       ),

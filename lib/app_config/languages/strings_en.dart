@@ -81,6 +81,8 @@ class StringsEn implements StringsBase {
   final String submit = "Submit";
 
   final String questions = "Questions";
+  final String unlimited = "Unlimited";
+  final String time = "Time";
   final String minutes = "Minutes";
   final String positiveMarksPerCorrectAns =
       "Positive Marks\nper Correct Answer";

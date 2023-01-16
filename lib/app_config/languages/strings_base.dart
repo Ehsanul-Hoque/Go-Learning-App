@@ -75,6 +75,8 @@ abstract class StringsBase {
   final String submit = "";
 
   final String questions = "";
+  final String unlimited = "";
+  final String time = "";
   final String minutes = "";
   final String positiveMarksPerCorrectAns = "";
   final String negativeMarksPerWrongAns = "";
