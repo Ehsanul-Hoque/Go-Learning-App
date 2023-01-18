@@ -21,11 +21,11 @@ class QuizIntroPart extends StatelessWidget {
     Iterable<QuizAttemptGetResponseQuestion>? prevAttemptQuestions =
         prevAttemptData?.questions?.getNonNulls();
 
-    int totalQuestions = prevAttemptQuestions?.length ??
-        contentItem.questions?.getNonNulls().length ??
+    int totalQuestions = contentItem.questions?.getNonNulls().length ??
+        prevAttemptQuestions?.length ??
         0;
-    int totalSeconds = (prevAttemptData?.durationInMinutes ??
-            contentItem.durationInMinutes ??
+    int totalSeconds = (contentItem.durationInMinutes ??
+            prevAttemptData?.durationInMinutes ??
             QuizConstants.defaultDurationInMinutes) *
         Duration.secondsPerMinute;
     double positiveMarksPerAns = prevAttemptQuestions?.firstOrNull?.mark ??
