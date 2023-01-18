@@ -68,4 +68,6 @@
 - Create and implement text input validator classes
 - Hide preview video for courses with null preview video
 - Add back button in fullscreen video page
+- Check if course field is really needed in QuizNotifier and Quiz files.
+  If not, remove them for less dependency.
 - 

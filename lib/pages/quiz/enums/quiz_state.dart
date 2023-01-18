@@ -1,5 +1,5 @@
 enum QuizState {
-  previousAttemptHistory,
+  previousAttempt,
   currentAttempt,
   result,
 }

@@ -146,23 +146,20 @@ class Routes {
     QuizAttemptGetResponseData? prevAttemptData = previousBestAttempt.data;
     showPreviousAttemptAtStart ??= (prevAttemptData != null);
 
-    /*int totalMinutes = prevAttemptData?.durationInMinutes ??
-        quizContent.durationInMinutes ??
-        0;*/
-
     return RoutesHelper._toOrReplace<void>(
       context,
       (BuildContext context) {
         return MultiProvider(
           providers: <SingleChildWidget>[
-            CountdownTimerNotifier.createProvider(),
             QuizNotifier.createProviderWithPrevAttempt(
-              (showPreviousAttemptAtStart ?? true)
-                  ? QuizState.previousAttemptHistory
+              initialState: (showPreviousAttemptAtStart ?? true)
+                  ? QuizState.previousAttempt
                   : QuizState.currentAttempt,
-              prevAttemptData?.questions,
-              prevAttemptData?.submittedAns,
+              quizContent: quizContent,
+              prevAttemptData: prevAttemptData,
+              course: course,
             ),
+            CountdownTimerNotifier.createQuizNotifierProxyProvider(),
             AcsvScrollNotifier.createProvider(),
           ],
           child: Container(),

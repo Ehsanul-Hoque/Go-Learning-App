@@ -1,9 +1,11 @@
 import "dart:async";
 
 import "package:app/components/countdown_timer/enums/countdown_timer_state.dart";
+import "package:app/pages/quiz/notifiers/quiz_notifier.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/widgets.dart" show BuildContext, ChangeNotifier;
-import "package:provider/provider.dart" show ChangeNotifierProvider;
+import "package:provider/provider.dart"
+    show ChangeNotifierProvider, ChangeNotifierProxyProvider;
 import "package:provider/single_child_widget.dart";
 
 class CountdownTimerNotifier extends ChangeNotifier {
@@ -60,18 +62,6 @@ class CountdownTimerNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Static method to create simple provider
-  static SingleChildWidget createProvider({
-    Duration? totalDuration,
-    Duration? tickDuration,
-  }) =>
-      ChangeNotifierProvider<CountdownTimerNotifier>(
-        create: (BuildContext context) => CountdownTimerNotifier(
-          totalDuration: totalDuration,
-          tickDuration: tickDuration,
-        ),
-      );
-
   /// Method to start the countdown timer
   void start() {
     if (!isValidDurations) return;
@@ -81,16 +71,10 @@ class CountdownTimerNotifier extends ChangeNotifier {
 
     _timer = Timer(
       Duration(
-        milliseconds:
-            totalDuration.inMilliseconds - (tickDuration.inMilliseconds * tick),
+        milliseconds: totalDuration.inMilliseconds -
+            (tickDuration.inMilliseconds * _prevTick),
       ),
-      () {
-        _tick =
-            (totalDuration.inMilliseconds / tickDuration.inMilliseconds).ceil();
-        _cancelTimers(resetTick: false);
-        _state = CountdownTimerState.finished;
-        notifyListeners();
-      },
+      completeTimer,
     );
 
     _periodicTimer = Timer.periodic(
@@ -150,6 +134,16 @@ class CountdownTimerNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Method to complete the countdown timer immediately
+  void completeTimer() {
+    if (!isValidDurations) return;
+
+    _tick = (totalDuration.inMilliseconds / tickDuration.inMilliseconds).ceil();
+    _cancelTimers(resetTick: false);
+    _state = CountdownTimerState.finished;
+    notifyListeners();
+  }
+
   /// Method to get the current progress of the countdown timer
   /// (between 0 and 1 (inclusive))
   double getCurrentProgress() {
@@ -166,5 +160,41 @@ class CountdownTimerNotifier extends ChangeNotifier {
     if (_timer?.isActive == true) _timer?.cancel();
     if (_periodicTimer?.isActive == true) _periodicTimer?.cancel();
     if (resetTick) _tick = 0;
+  }
+
+  /// Static method to create simple provider
+  static SingleChildWidget createProvider({
+    Duration? totalDuration,
+    Duration? tickDuration,
+  }) =>
+      ChangeNotifierProvider<CountdownTimerNotifier>(
+        create: (BuildContext context) => CountdownTimerNotifier(
+          totalDuration: totalDuration,
+          tickDuration: tickDuration,
+        ),
+      );
+
+  /// Static method to create simple provider
+  static SingleChildWidget createQuizNotifierProxyProvider({
+    Duration? tickDuration,
+  }) {
+    return ChangeNotifierProxyProvider<QuizNotifier, CountdownTimerNotifier>(
+      create: (BuildContext context) {
+        return CountdownTimerNotifier(tickDuration: tickDuration);
+      },
+      update: (_, QuizNotifier quizNotifier, CountdownTimerNotifier? previous) {
+        CountdownTimerNotifier timerNotifier =
+            previous ?? CountdownTimerNotifier(tickDuration: tickDuration);
+        Duration? totalDuration =
+            quizNotifier.currentStateQuizInfo?.totalDuration;
+
+        if (totalDuration != null) {
+          timerNotifier.totalDuration = totalDuration;
+        }
+
+        timerNotifier.notifyListeners();
+        return timerNotifier;
+      },
+    );
   }
 }
