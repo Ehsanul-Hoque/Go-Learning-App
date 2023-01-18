@@ -138,8 +138,8 @@ class CountdownTimerNotifier extends ChangeNotifier {
   void completeTimer() {
     if (!isValidDurations) return;
 
-    _tick = (totalDuration.inMilliseconds / tickDuration.inMilliseconds).ceil();
     _cancelTimers(resetTick: false);
+    _tick = (totalDuration.inMilliseconds / tickDuration.inMilliseconds).ceil();
     _state = CountdownTimerState.finished;
     notifyListeners();
   }
@@ -188,8 +188,14 @@ class CountdownTimerNotifier extends ChangeNotifier {
         Duration? totalDuration =
             quizNotifier.currentStateQuizInfo?.totalDuration;
 
-        if (totalDuration != null) {
-          timerNotifier.totalDuration = totalDuration;
+        if ((totalDuration == null) ||
+            (totalDuration == timerNotifier.totalDuration)) {
+          return timerNotifier;
+        }
+
+        timerNotifier.totalDuration = totalDuration;
+        if (timerNotifier.getCurrentProgress() >= 1) {
+          timerNotifier.completeTimer();
         }
 
         timerNotifier.notifyListeners();
