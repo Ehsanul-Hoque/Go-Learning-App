@@ -88,6 +88,7 @@ class _UserProfileState extends State<UserProfile> {
                 child: UserBoxWidget(
                   showGuestWhileLoading: false,
                   showGuestIfNoInternet: false,
+                  showGuestIfCancelled: false,
                   showGuestIfFailed: false,
                   childBuilder: (
                     BuildContext context,

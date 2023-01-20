@@ -38,7 +38,8 @@ class Network {
     String logTag = "[HTTP ${request.callType.name}] [$apiFullUrl]";
 
     // Get cached/new response object
-    NetworkResponse<DO> response = getOrCreateResponse(cacheKey);
+    NetworkResponse<DO> response =
+        getOrCreateResponse(cacheKey, storeInCache: true);
     callback?.onStart?.call(response);
     callback?.onUpdate?.call(response);
 
@@ -93,8 +94,11 @@ class Network {
 
   /// Method to get a response object from the temporary cache,
   /// or create if it does not exist
-  static NetworkResponse<DO> getOrCreateResponse<DO>(String key) =>
-      getResponse(key) ?? _createResponse(key);
+  static NetworkResponse<DO> getOrCreateResponse<DO>(
+    String key, {
+    bool storeInCache = false,
+  }) =>
+      getResponse(key) ?? _createResponse(key, storeInCache);
 
   /// Method to reset a response object in the temporary cache
   static void resetResponse<DO>(String key, [VoidCallback? updateListener]) {
@@ -112,8 +116,14 @@ class Network {
   }
 
   /// Private method to create a response object in the temporary cache
-  static NetworkResponse<DO> _createResponse<DO>(String key) {
-    _responseMap[key] = NetworkResponse<DO>();
+  static NetworkResponse<DO> _createResponse<DO>(
+    String key,
+    bool storeInCache,
+  ) {
+    NetworkResponse<DO> networkResponse = NetworkResponse<DO>();
+    if (!storeInCache) return networkResponse;
+
+    _responseMap[key] = networkResponse;
     return _responseMap[key]! as NetworkResponse<DO>;
   }
 

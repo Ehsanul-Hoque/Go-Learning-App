@@ -135,6 +135,7 @@ class _AuthPageState extends State<AuthPage> {
         );
       },
       onStatusNoInternet: onStatusNoInternet,
+      onStatusCancelled: onStatusCancelled,
       onStatusFailed: onStatusFailed,
       onStatusSuccess: onStatusSuccess,
       childBuilder: (BuildContext context, NetworkCallStatus callStatus) {
@@ -484,6 +485,10 @@ class _AuthPageState extends State<AuthPage> {
       );
     });
 
+    context.read<UserNotifier>().logOut(resetNetworkCalls: false);
+  }
+
+  void onStatusCancelled() {
     context.read<UserNotifier>().logOut(resetNetworkCalls: false);
   }
 

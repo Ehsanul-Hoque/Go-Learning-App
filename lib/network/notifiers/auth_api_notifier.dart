@@ -58,7 +58,7 @@ class AuthApiNotifier extends ApiNotifier {
 
   /// Common response object
   NetworkResponse<Object> get authResponse =>
-      Network.getOrCreateResponse("auth_response");
+      Network.getOrCreateResponse("auth_response", storeInCache: true);
 
   /// Methods to sign in with email and password
   Future<NetworkResponse<AuthPostResponse>> signUpWithEmailPassword(
@@ -83,6 +83,7 @@ class AuthApiNotifier extends ApiNotifier {
       callback: NetworkCallback<AuthPostResponse>(
         onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
         onSuccess: onAccessTokenGetSuccess,
+        onCancelled: onAccessTokenGetCancelled,
         onFailed: onAccessTokenGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
@@ -122,6 +123,7 @@ class AuthApiNotifier extends ApiNotifier {
       callback: NetworkCallback<AuthPostResponse>(
         onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
         onSuccess: onAccessTokenGetSuccess,
+        onCancelled: onAccessTokenGetCancelled,
         onFailed: onAccessTokenGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
@@ -197,6 +199,7 @@ class AuthApiNotifier extends ApiNotifier {
         callback: NetworkCallback<AuthPostResponse>(
           onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
           onSuccess: onAccessTokenGetSuccess,
+          onCancelled: onAccessTokenGetCancelled,
           onFailed: onAccessTokenGetFailed,
           onUpdate: (_) => notifyListeners(),
         ),
@@ -247,6 +250,7 @@ class AuthApiNotifier extends ApiNotifier {
       callback: NetworkCallback<ProfileGetResponse>(
         onLoading: (_) => authResponse.callStatus = NetworkCallStatus.loading,
         onSuccess: onProfileGetSuccess,
+        onCancelled: onProfileGetCancelled,
         onFailed: onProfileGetFailed,
         onUpdate: (_) => notifyListeners(),
       ),
@@ -321,6 +325,16 @@ class AuthApiNotifier extends ApiNotifier {
     getProfile();
   }
 
+  /// Method to fire if the network call to get the access token
+  /// has been cancelled.
+  /// notifyListeners() is not called because it will be called
+  /// in the onUpdate() callback method in the network function.
+  void onAccessTokenGetCancelled(NetworkResponse<AuthPostResponse> result) {
+    authResponse
+      ..copyFrom(result)
+      ..callStatus = NetworkCallStatus.cancelled;
+  }
+
   /// Method to fire if could not get the access token.
   /// notifyListeners() is not called because it will be called
   /// in the onUpdate() callback method in the network function.
@@ -338,6 +352,16 @@ class AuthApiNotifier extends ApiNotifier {
       ..copyFrom(result)
       ..callStatus = NetworkCallStatus.success;
     UserBox.setCurrentUser(result.result?.data);
+  }
+
+  /// Method to fire if the network call to get the user profile
+  /// has been cancelled.
+  /// notifyListeners() is not called because it will be called
+  /// in the onUpdate() callback method in the network function.
+  void onProfileGetCancelled(NetworkResponse<ProfileGetResponse> result) {
+    authResponse
+      ..copyFrom(result)
+      ..callStatus = NetworkCallStatus.cancelled;
   }
 
   /// Method to fire if could not get the user profile.

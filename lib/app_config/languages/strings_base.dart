@@ -154,6 +154,7 @@ abstract class StringsBase {
 
   final String generalError = "";
   final String startNetworkCall = "";
+  final String networkCallCancelled = "";
   final String noInternet = "";
   final String noContents = "";
   final String noCourses = "";

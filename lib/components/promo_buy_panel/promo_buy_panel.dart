@@ -81,6 +81,7 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
         onStatusNone: onStatusNone,
         onStatusNoInternet: onStatusNoInternet,
         onStatusLoading: onStatusLoading,
+        onStatusCancelled: onStatusCancelled,
         onStatusFailed: onStatusFailed,
         onStatusSuccess: onStatusSuccess,
         childBuilder: (BuildContext context, NetworkCallStatus callStatus) {
@@ -167,6 +168,8 @@ class _PromoBuyPanelState extends State<PromoBuyPanel> {
   }
 
   void onStatusLoading() => promoState = PromoState.loading;
+
+  void onStatusCancelled() => promoState = PromoState.applyPromo;
 
   void onStatusFailed() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

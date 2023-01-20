@@ -111,6 +111,7 @@ class CourseItem extends StatelessWidget {
                             showPromptIfNotAuthenticated: false,
                             showGuestWhileLoading: true,
                             showGuestIfNoInternet: true,
+                            showGuestIfCancelled: true,
                             showGuestIfFailed: true,
                             callStatusSelector: (BuildContext context) {
                               return context.select(

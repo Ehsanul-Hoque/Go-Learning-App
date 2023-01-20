@@ -26,10 +26,12 @@ class UserBoxNetworkWidget extends StatelessWidget {
   final Widget? statusNoneWidget,
       statusNoInternetWidget,
       statusLoadingWidget,
+      statusCancelledWidget,
       statusFailedWidget,
       noContentWidget;
   final String? statusNoneText,
       statusNoInternetText,
+      statusCancelledText,
       statusFailedText,
       noContentText;
   final NoContentFunction? noContentChecker;
@@ -38,6 +40,7 @@ class UserBoxNetworkWidget extends StatelessWidget {
       showGuestIfStatusNone,
       showGuestWhileLoading,
       showGuestIfNoInternet,
+      showGuestIfCancelled,
       showGuestIfFailed;
 
   const UserBoxNetworkWidget({
@@ -47,10 +50,12 @@ class UserBoxNetworkWidget extends StatelessWidget {
     this.statusNoneWidget,
     this.statusNoInternetWidget,
     this.statusLoadingWidget,
+    this.statusCancelledWidget,
     this.statusFailedWidget,
     this.noContentWidget,
     this.statusNoneText,
     this.statusNoInternetText,
+    this.statusCancelledText,
     this.statusFailedText,
     this.noContentText,
     this.noContentChecker,
@@ -59,6 +64,7 @@ class UserBoxNetworkWidget extends StatelessWidget {
     this.showGuestIfStatusNone = false,
     this.showGuestWhileLoading = false,
     this.showGuestIfNoInternet = false,
+    this.showGuestIfCancelled = false,
     this.showGuestIfFailed = false,
   }) : super(key: key);
 
@@ -138,6 +144,15 @@ class UserBoxNetworkWidget extends StatelessWidget {
             case NetworkCallStatus.loading:
               if (!showGuestWhileLoading) {
                 widget = statusLoadingWidget ?? const AppLoadingAnim();
+              }
+              break;
+
+            case NetworkCallStatus.cancelled:
+              if (!showGuestIfCancelled) {
+                widget = statusCancelledWidget ??
+                    StatusText(
+                      statusCancelledText ?? Res.str.networkCallCancelled,
+                    );
               }
               break;
 

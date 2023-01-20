@@ -34,6 +34,7 @@ class AppDrawer extends StatelessWidget {
           child: UserBoxWidget(
             showGuestWhileLoading: true,
             showGuestIfNoInternet: true,
+            showGuestIfCancelled: true,
             showGuestIfFailed: true,
             childBuilder:
                 (BuildContext context, ProfileGetResponseData profileData) {

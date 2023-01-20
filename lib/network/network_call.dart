@@ -1,5 +1,6 @@
 import "dart:convert";
 
+import "package:app/app_config/app_state.dart";
 import "package:app/network/converters/json_converter.dart";
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/enums/network_call_type.dart";
@@ -48,6 +49,9 @@ class NetworkCall<DI, DO> {
   /// Request interceptors
   final List<NetworkResponseInterceptor<DO>>? responseInterceptors;
 
+  /// The session key for the network request (private)
+  final String _sessionKey = AppState.currentSessionKey;
+
   // Some getters
   String get apiFullUrl =>
       (request.baseUrl ?? client.baseUrl) + request.apiEndPoint;
@@ -90,8 +94,12 @@ class NetworkCall<DI, DO> {
         return response;
       }
 
+      if (_isCallCancelled(logSteps: logSteps)) return response;
+
       http.Response? httpResponse =
           await _getHttpResponse(apiFullUrl, logSteps: logSteps);
+
+      if (_isCallCancelled(logSteps: logSteps)) return response;
 
       httpResponse =
           _runRawResponseInterceptors(responseInterceptors, httpResponse);
@@ -201,6 +209,22 @@ class NetworkCall<DI, DO> {
     response
       ..httpResponse = httpResponse
       ..result = responseConverter.fromJsonToDart(httpResponse.body);
+  }
+
+  /// Private method to mark the network call as cancelled
+  bool _isCallCancelled({required bool logSteps}) {
+    if (!AppState.isValidSessionKey(_sessionKey)) {
+      NetLog().e(
+        "$logTag Call cancelled (Session key has been changed).",
+        showLog: logSteps,
+      );
+      response.callStatus = NetworkCallStatus.cancelled;
+      callback?.onCancelled?.call(response);
+      callback?.onUpdate?.call(response);
+      return true;
+    }
+
+    return false;
   }
 
   /// Private method to run the raw response interceptors

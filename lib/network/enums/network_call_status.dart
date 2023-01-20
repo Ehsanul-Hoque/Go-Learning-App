@@ -3,6 +3,7 @@ enum NetworkCallStatus {
   noInternet,
   loading,
   success,
+  cancelled,
   failed;
 
   static NetworkCallStatus combineInParallel(
@@ -10,6 +11,7 @@ enum NetworkCallStatus {
   ) {
     if (statusList.contains(null) || statusList.contains(none)) return none;
     if (statusList.contains(noInternet)) return noInternet;
+    if (statusList.contains(cancelled)) return cancelled;
     if (statusList.contains(failed)) return failed;
     if (statusList.contains(loading)) return loading;
     return success;
@@ -20,6 +22,7 @@ enum NetworkCallStatus {
     bool returnSuccessOnlyIfAllSuccess = false,
   }) {
     if (statusList.contains(noInternet)) return noInternet;
+    if (statusList.contains(cancelled)) return cancelled;
     if (statusList.contains(failed)) return failed;
     if (statusList.contains(loading)) return loading;
 

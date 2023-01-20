@@ -17,10 +17,14 @@ typedef SuccessChildBuilder = Widget Function(
 
 class UserBoxWidget extends StatelessWidget {
   final SuccessChildBuilder childBuilder;
-  final Widget? statusNoInternetWidget, statusLoadingWidget, statusFailedWidget;
+  final Widget? statusNoInternetWidget,
+      statusLoadingWidget,
+      statusCancelledWidget,
+      statusFailedWidget;
   final bool shouldOutputBeSliver,
       showGuestWhileLoading,
       showGuestIfNoInternet,
+      showGuestIfCancelled,
       showGuestIfFailed;
 
   const UserBoxWidget({
@@ -28,10 +32,12 @@ class UserBoxWidget extends StatelessWidget {
     required this.childBuilder,
     this.statusNoInternetWidget,
     this.statusLoadingWidget,
+    this.statusCancelledWidget,
     this.statusFailedWidget,
     this.shouldOutputBeSliver = false,
     this.showGuestWhileLoading = true,
     this.showGuestIfNoInternet = true,
+    this.showGuestIfCancelled = true,
     this.showGuestIfFailed = true,
   }) : super(key: key);
 
@@ -67,6 +73,13 @@ class UserBoxWidget extends StatelessWidget {
               }
               break;
 
+            case NetworkCallStatus.cancelled:
+              if (!showGuestIfCancelled) {
+                widget = statusCancelledWidget ??
+                    StatusText(Res.str.networkCallCancelled);
+              }
+              break;
+
             case NetworkCallStatus.failed:
               if (!showGuestIfFailed) {
                 widget = statusFailedWidget ??
@@ -74,7 +87,8 @@ class UserBoxWidget extends StatelessWidget {
               }
               break;
 
-            default:
+            case NetworkCallStatus.none:
+            case NetworkCallStatus.success:
               break;
           }
         }

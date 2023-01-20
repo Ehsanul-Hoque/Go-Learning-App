@@ -182,6 +182,7 @@ class StringsEn implements StringsBase {
 
   final String generalError = "Sorry! Some type of problem occurred.";
   final String startNetworkCall = "Please start the network call.";
+  final String networkCallCancelled = "The network call has been cancelled.";
   final String noInternet = "Sorry! Internet is not available."
       "\nPlease check your network connection.";
   final String noContents = "Sorry! There are no contents available.";

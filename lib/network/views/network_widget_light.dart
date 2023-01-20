@@ -13,6 +13,7 @@ class NetworkWidgetLight extends StatefulWidget {
   final void Function()? onStatusNone,
       onStatusNoInternet,
       onStatusLoading,
+      onStatusCancelled,
       onStatusFailed,
       onStatusSuccess;
 
@@ -23,6 +24,7 @@ class NetworkWidgetLight extends StatefulWidget {
     this.onStatusNone,
     this.onStatusNoInternet,
     this.onStatusLoading,
+    this.onStatusCancelled,
     this.onStatusFailed,
     this.onStatusSuccess,
   }) : super(key: key);
@@ -43,25 +45,27 @@ class _NetworkWidgetLightState extends State<NetworkWidgetLight> {
         if (previousCallStatus != callStatus) {
           switch (callStatus) {
             case NetworkCallStatus.none:
-              if (widget.onStatusNone != null) widget.onStatusNone!();
+              widget.onStatusNone?.call();
               break;
 
             case NetworkCallStatus.noInternet:
-              if (widget.onStatusNoInternet != null) {
-                widget.onStatusNoInternet!();
-              }
+              widget.onStatusNoInternet?.call();
               break;
 
             case NetworkCallStatus.loading:
-              if (widget.onStatusLoading != null) widget.onStatusLoading!();
+              widget.onStatusLoading?.call();
+              break;
+
+            case NetworkCallStatus.cancelled:
+              widget.onStatusCancelled?.call();
               break;
 
             case NetworkCallStatus.failed:
-              if (widget.onStatusFailed != null) widget.onStatusFailed!();
+              widget.onStatusFailed?.call();
               break;
 
             case NetworkCallStatus.success:
-              if (widget.onStatusSuccess != null) widget.onStatusSuccess!();
+              widget.onStatusSuccess?.call();
               break;
           }
 

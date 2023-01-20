@@ -15,10 +15,12 @@ class NetworkWidget extends StatelessWidget {
   final Widget? statusNoneWidget,
       statusNoInternetWidget,
       statusLoadingWidget,
+      statusCancelledWidget,
       statusFailedWidget,
       noContentWidget;
   final String? statusNoneText,
       statusNoInternetText,
+      statusCancelledText,
       statusFailedText,
       noContentText;
   final NoContentFunction? noContentChecker;
@@ -31,10 +33,12 @@ class NetworkWidget extends StatelessWidget {
     this.statusNoneWidget,
     this.statusNoInternetWidget,
     this.statusLoadingWidget,
+    this.statusCancelledWidget,
     this.statusFailedWidget,
     this.noContentWidget,
     this.statusNoneText,
     this.statusNoInternetText,
+    this.statusCancelledText,
     this.statusFailedText,
     this.noContentText,
     this.noContentChecker,
@@ -63,12 +67,17 @@ class NetworkWidget extends StatelessWidget {
             widget = statusLoadingWidget ?? const AppLoadingAnim();
             break;
 
+          case NetworkCallStatus.cancelled:
+            widget = statusCancelledWidget ??
+                StatusText(statusCancelledText ?? Res.str.networkCallCancelled);
+            break;
+
           case NetworkCallStatus.failed:
             widget = statusFailedWidget ??
                 StatusText(statusFailedText ?? Res.str.generalError);
             break;
 
-          default:
+          case NetworkCallStatus.success:
             break;
         }
 
