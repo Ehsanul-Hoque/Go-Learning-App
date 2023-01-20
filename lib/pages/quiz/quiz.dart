@@ -81,7 +81,7 @@ class _QuizState extends State<Quiz> {
                       ),
                       iconSize: Res.dimen.iconSizeNormal,
                       color: Res.color.iconButton,
-                      onPressed: () => Routes.goBack(context),
+                      onPressed: () => Routes.goBack(context: context),
                     ),
                   ],
                   bottom: QuizAppBarBottom(
@@ -145,7 +145,7 @@ class _QuizState extends State<Quiz> {
               AppDialogButtonModel(
                 text: Res.str.no,
                 onTap: () {
-                  Routes.goBack(context);
+                  Routes.goBack(context: context);
                   closeQuiz = false;
                 },
               ),
@@ -154,7 +154,7 @@ class _QuizState extends State<Quiz> {
                 bgColor: Res.color.buttonHollowBg,
                 contentColor: Res.color.buttonHollowContent2,
                 onTap: () {
-                  Routes.goBack(context);
+                  Routes.goBack(context: context);
                   closeQuiz = true;
                 },
               ),
@@ -193,7 +193,7 @@ class _QuizState extends State<Quiz> {
               AppDialogButtonModel(
                 text: Res.str.no,
                 onTap: () {
-                  Routes.goBack(context);
+                  Routes.goBack(context: context);
                   finishQuiz = false;
                 },
               ),
@@ -202,7 +202,7 @@ class _QuizState extends State<Quiz> {
                 // bgColor: Res.color.buttonHollowBg,
                 // contentColor: Res.color.buttonHollowContent2,
                 onTap: () {
-                  Routes.goBack(context);
+                  Routes.goBack(context: context);
                   finishQuiz = true;
                 },
               ),

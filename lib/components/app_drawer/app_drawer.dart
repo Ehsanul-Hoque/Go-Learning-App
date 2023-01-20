@@ -127,7 +127,7 @@ class AppDrawer extends StatelessWidget {
 
   void onLogInTap(BuildContext context) {
     if (!UserBox.isLoggedIn) {
-      Routes().openAuthPage(context);
+      Routes().openAuthPage(context: context);
     } else {
       // TODO show snack bar that the user is already authenticated
     }

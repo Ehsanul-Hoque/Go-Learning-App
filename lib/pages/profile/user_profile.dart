@@ -72,7 +72,7 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     iconSize: Res.dimen.iconSizeNormal,
                     color: Res.color.iconButton,
-                    onPressed: () => Routes.goBack(context),
+                    onPressed: () => Routes.goBack(context: context),
                   ),
                 ],
                 bottomBorder: AppDivider(

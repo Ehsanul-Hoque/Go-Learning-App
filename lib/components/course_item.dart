@@ -52,7 +52,8 @@ class CourseItem extends StatelessWidget {
         Res.shadows.lighter,
       ],
       child: SplashEffect(
-        onTap: () => Routes().openCourseBeforeEnrollPage(context, course),
+        onTap: () => Routes()
+            .openCourseBeforeEnrollPage(context: context, course: course),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

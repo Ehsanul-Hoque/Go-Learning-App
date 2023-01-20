@@ -1,3 +1,4 @@
+import "package:app/app_config/app_state.dart";
 import "package:app/components/advanced_custom_scroll_view/notifiers/acsv_scroll_notifier.dart";
 import "package:app/components/app_video_player/config/app_video_player_config.dart";
 import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
@@ -31,40 +32,40 @@ class Routes {
   final RoutesConfig config;
 
   /// Route method to open the authentication page
-  Future<void> openSplashPage(BuildContext context) =>
+  Future<void> openSplashPage([BuildContext? context]) =>
       RoutesHelper._removeAllAndTo<void>(
-        context,
-        (BuildContext context) => const SplashPage(),
+        context: context,
+        page: (BuildContext context) => const SplashPage(),
       );
 
   /// Route method to open the authentication page
-  Future<void> openAuthPage(
-    BuildContext context, {
+  Future<void> openAuthPage({
+    BuildContext? context,
     OnValueListener<BuildContext>? redirectOnSuccess,
   }) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) =>
+        context: context,
+        page: (BuildContext context) =>
             AuthPage(redirectOnSuccess: redirectOnSuccess),
         replace: config.replace,
       );
 
   /// Route method to open the landing page (first page after login)
-  Future<void> openLandingPage(BuildContext context) =>
+  Future<void> openLandingPage([BuildContext? context]) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) => const LandingPage(),
+        context: context,
+        page: (BuildContext context) => const LandingPage(),
         replace: config.replace,
       );
 
   /// Route method to open the course page before enrolling to that course
-  Future<void> openCourseBeforeEnrollPage(
-    BuildContext context,
-    CourseGetResponse course,
-  ) =>
+  Future<void> openCourseBeforeEnrollPage({
+    BuildContext? context,
+    required CourseGetResponse course,
+  }) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) => MultiProvider(
+        context: context,
+        page: (BuildContext context) => MultiProvider(
           providers: <SingleChildWidget>[
             CourseContentNotifier.createProvider(),
           ],
@@ -74,15 +75,15 @@ class Routes {
       );
 
   /// Route method to open the course checkout page
-  Future<void> openCourseCheckoutPage(
-    BuildContext context,
-    CourseGetResponse course,
-    CouponGetResponseData? appliedCoupon,
-    double finalPrice,
-  ) =>
+  Future<void> openCourseCheckoutPage({
+    BuildContext? context,
+    required CourseGetResponse course,
+    required CouponGetResponseData? appliedCoupon,
+    required double finalPrice,
+  }) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) => CourseCheckout(
+        context: context,
+        page: (BuildContext context) => CourseCheckout(
           course: course,
           appliedCoupon: appliedCoupon,
           finalPrice: finalPrice,
@@ -91,10 +92,10 @@ class Routes {
       );
 
   /// Route method to open the user profile page
-  Future<void> openUserProfilePage(BuildContext context) =>
+  Future<void> openUserProfilePage([BuildContext? context]) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) => const UserProfile(),
+        context: context,
+        page: (BuildContext context) => const UserProfile(),
         replace: config.replace,
       );
 
@@ -103,7 +104,7 @@ class Routes {
   /// (which can fetch the url of the video) is needed.
   /// If both are given, then 'url' is used.
   Future<void> openVideoPage({
-    required BuildContext context,
+    BuildContext? context,
     required AppVideoPlayerConfig videoConfig,
     String? url,
     ContentWorker<String>? contentWorker,
@@ -111,8 +112,8 @@ class Routes {
     VoidCallback? onExitFullScreen,
   }) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) => AppFullScreenPlayer(
+        context: context,
+        page: (BuildContext context) => AppFullScreenPlayer(
           config: videoConfig,
           url: url,
           contentWorker: contentWorker,
@@ -124,20 +125,20 @@ class Routes {
 
   /// Route method to open the quiz intro page
   Future<void> openQuizIntroPage({
-    required BuildContext context,
+    BuildContext? context,
     required CourseGetResponse course,
     required ContentWorker<QuizAttemptGetResponse> contentWorker,
   }) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) =>
+        context: context,
+        page: (BuildContext context) =>
             QuizIntro(course: course, contentWorker: contentWorker),
         replace: config.replace,
       );
 
   /// Route method to open the quiz page
   Future<void> openQuizPage({
-    required BuildContext context,
+    BuildContext? context,
     required ContentTreeGetResponseContents quizContent,
     required QuizAttemptGetResponse previousBestAttempt,
     CourseGetResponse? course,
@@ -147,8 +148,8 @@ class Routes {
     showPreviousAttemptAtStart ??= (prevAttemptData != null);
 
     return RoutesHelper._toOrReplace<void>(
-      context,
-      (BuildContext context) {
+      context: context,
+      page: (BuildContext context) {
         return MultiProvider(
           providers: <SingleChildWidget>[
             QuizNotifier.createProviderWithPrevAttempt(
@@ -181,13 +182,13 @@ class Routes {
   /// (which can fetch the url of the pdf) is needed.
   /// If both are given, then 'url' is used.
   Future<void> openPdfViewerPage({
-    required BuildContext context,
+    BuildContext? context,
     String? url,
     ContentWorker<String>? contentWorker,
   }) =>
       RoutesHelper._toOrReplace<void>(
-        context,
-        (BuildContext context) => AppPdfViewer(
+        context: context,
+        page: (BuildContext context) => AppPdfViewer(
           url: url,
           contentWorker: contentWorker,
         ),
@@ -195,10 +196,10 @@ class Routes {
       );
 
   /// Route method to open the web view page
-  Future<void> openWebViewPage(BuildContext context, String? url) {
+  Future<void> openWebViewPage({BuildContext? context, required String? url}) {
     return RoutesHelper._toOrReplace<void>(
-      context,
-      (BuildContext context) =>
+      context: context,
+      page: (BuildContext context) =>
           AppWebView(url: url ?? "https://www.golearningbd.com"),
       replace: config.replace,
     );
@@ -206,12 +207,12 @@ class Routes {
   }
 
   /// Route method to close the current page if possible
-  static Future<bool> goBack<T>(BuildContext context, {T? result}) =>
-      RoutesHelper._back(context, result: result);
+  static Future<bool?> goBack<T>({BuildContext? context, T? result}) =>
+      RoutesHelper._back(context: context, result: result);
 
   /// Route method to close all pages except the first page
-  static void goHome(BuildContext context) =>
-      RoutesHelper._backToFirst(context);
+  static void goHome([BuildContext? context]) =>
+      RoutesHelper._backToFirst(context: context);
 }
 
 /// Routes config class
@@ -225,58 +226,84 @@ class RoutesConfig {
 
 // Private static methods for as helpers
 class RoutesHelper {
-  static Future<T?> _to<T>(
-    BuildContext context,
-    Widget Function(BuildContext context) page,
-  ) {
-    return Navigator.push(
-      context,
-      MaterialPageRoute<T>(
-        builder: (BuildContext context) => page(context),
-      ),
-    );
+  static Future<T?> _to<T>({
+    BuildContext? context,
+    required Widget Function(BuildContext context) page,
+  }) {
+    context ??= AppState.navigatorKey.currentContext;
+    if (context != null) {
+      return Navigator.push(
+        context,
+        MaterialPageRoute<T>(
+          builder: (BuildContext context) => page(context),
+        ),
+      );
+    }
+
+    return Future<T>.value(null);
   }
 
-  static Future<T?> _replace<T>(
-    BuildContext context,
-    Widget Function(BuildContext context) page,
-  ) {
-    return Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<T>(
-        builder: (BuildContext context) => page(context),
-      ),
-    );
+  static Future<T?> _replace<T>({
+    BuildContext? context,
+    required Widget Function(BuildContext context) page,
+  }) {
+    context ??= AppState.navigatorKey.currentContext;
+    if (context != null) {
+      return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<T>(
+          builder: (BuildContext context) => page(context),
+        ),
+      );
+    }
+
+    return Future<T>.value(null);
   }
 
-  static Future<T?> _removeAllAndTo<T>(
-    BuildContext context,
-    Widget Function(BuildContext context) page,
-  ) {
-    return Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute<T>(
-        builder: (BuildContext context) => page(context),
-      ),
-      (Route<dynamic> route) => false,
-    );
+  static Future<T?> _removeAllAndTo<T>({
+    BuildContext? context,
+    required Widget Function(BuildContext context) page,
+  }) {
+    context ??= AppState.navigatorKey.currentContext;
+    if (context != null) {
+      return Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute<T>(
+          builder: (BuildContext context) => page(context),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
+
+    return Future<T>.value(null);
   }
 
-  static Future<T?> _toOrReplace<T>(
-    BuildContext context,
-    Widget Function(BuildContext context) page, {
+  static Future<T?> _toOrReplace<T>({
+    BuildContext? context,
+    required Widget Function(BuildContext context) page,
     required bool replace,
-  }) =>
-      replace ? _replace(context, page) : _to(context, page);
-
-  static Future<bool> _back<T>(BuildContext context, {T? result}) {
-    return Navigator.of(context).maybePop(result);
+  }) {
+    return replace
+        ? _replace(context: context, page: page)
+        : _to(context: context, page: page);
   }
 
-  static void _backToFirst(BuildContext context) {
-    Navigator.popUntil(
-      context,
-      (Route<dynamic> route) => route.isFirst,
-    );
+  static Future<bool?> _back<T>({BuildContext? context, T? result}) {
+    context ??= AppState.navigatorKey.currentContext;
+    if (context != null) {
+      return Navigator.of(context).maybePop(result);
+    }
+
+    return Future<bool?>.value(null);
+  }
+
+  static void _backToFirst({BuildContext? context}) {
+    context ??= AppState.navigatorKey.currentContext;
+    if (context != null) {
+      Navigator.popUntil(
+        context,
+        (Route<dynamic> route) => route.isFirst,
+      );
+    }
   }
 }

@@ -89,7 +89,7 @@ class _CourseCheckoutState extends State<CourseCheckout> {
                     ),
                     iconSize: Res.dimen.iconSizeNormal,
                     color: Res.color.iconButton,
-                    onPressed: () => Routes.goBack(context),
+                    onPressed: () => Routes.goBack(context: context),
                   ),
                 ],
               ),

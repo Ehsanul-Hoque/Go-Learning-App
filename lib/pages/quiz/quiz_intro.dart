@@ -78,7 +78,7 @@ class _QuizIntroState extends State<QuizIntro> {
                     ),
                     iconSize: Res.dimen.iconSizeNormal,
                     color: Res.color.iconButton,
-                    onPressed: () => Routes.goBack(context),
+                    onPressed: () => Routes.goBack(context: context),
                   ),
                 ],
               ),

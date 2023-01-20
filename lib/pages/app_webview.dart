@@ -66,7 +66,7 @@ class _AppWebView extends State<AppWebView> {
                       icon: const Icon(Icons.arrow_back_ios_new_rounded),
                       iconSize: Res.dimen.iconSizeNormal,
                       color: Res.color.iconButton,
-                      onPressed: () => Routes.goBack(context),
+                      onPressed: () => Routes.goBack(context: context),
                     ),
                   ],
                 ),

@@ -72,7 +72,7 @@ class HtmlText extends StatelessWidget {
           Map<String, String> attributes,
           dom.Element? element,
         ) =>
-            Routes().openWebViewPage(context, url),
+            Routes().openWebViewPage(context: context, url: url),
       ),
     );
   }

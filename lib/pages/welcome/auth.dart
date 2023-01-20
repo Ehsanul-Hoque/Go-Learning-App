@@ -448,8 +448,10 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void onPrivacyPolicyTap() {
-    Routes()
-        .openWebViewPage(context, "https://golearningbd.com/privacy-policy");
+    Routes().openWebViewPage(
+      context: context,
+      url: "https://golearningbd.com/privacy-policy",
+    );
   }
 
   bool handleIfAlreadyAuthenticated() {
@@ -533,7 +535,7 @@ class _AuthPageState extends State<AuthPage> {
         if (redirectOnSuccess != null) {
           redirectOnSuccess.call(context);
         } else {
-          Routes.goBack(context);
+          Routes.goBack(context: context);
         }
       },
     );

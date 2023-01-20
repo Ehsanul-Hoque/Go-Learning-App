@@ -115,7 +115,7 @@ class _LandingPageState extends State<LandingPage> {
       Routes().openUserProfilePage(context);
     } else {
       Routes().openAuthPage(
-        context,
+        context: context,
         redirectOnSuccess: (BuildContext context) =>
             Routes(config: const RoutesConfig(replace: true))
                 .openUserProfilePage(context),
@@ -128,15 +128,23 @@ class _LandingPageState extends State<LandingPage> {
   }*/
 
   void onPrivacyPolicyTap() {
-    Routes()
-        .openWebViewPage(context, "https://golearningbd.com/privacy-policy");
+    Routes().openWebViewPage(
+      context: context,
+      url: "https://golearningbd.com/privacy-policy",
+    );
   }
 
   void onRefundPolicyTap() {
-    Routes().openWebViewPage(context, "https://golearningbd.com/refund-policy");
+    Routes().openWebViewPage(
+      context: context,
+      url: "https://golearningbd.com/refund-policy",
+    );
   }
 
   void onAboutUsTap() {
-    Routes().openWebViewPage(context, "https://golearningbd.com/about");
+    Routes().openWebViewPage(
+      context: context,
+      url: "https://golearningbd.com/about",
+    );
   }
 }

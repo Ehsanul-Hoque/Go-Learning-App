@@ -73,7 +73,7 @@ class MyAppBarAvatarConfig {
       Routes().openUserProfilePage(context);
     } else {
       Routes().openAuthPage(
-        context,
+        context: context,
         redirectOnSuccess: (BuildContext context) =>
             Routes(config: const RoutesConfig(replace: true))
                 .openUserProfilePage(context),

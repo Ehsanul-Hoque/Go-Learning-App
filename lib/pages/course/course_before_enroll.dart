@@ -118,7 +118,7 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
                               ),
                               iconSize: Res.dimen.iconSizeNormal,
                               color: Res.color.iconButton,
-                              onPressed: () => Routes.goBack(context),
+                              onPressed: () => Routes.goBack(context: context),
                             ),
                           ],
                         ),
@@ -212,15 +212,15 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
         });
       } else {
         Routes().openCourseCheckoutPage(
-          context,
-          widget.course,
-          appliedPromo,
-          finalPrice,
+          context: context,
+          course: widget.course,
+          appliedCoupon: appliedPromo,
+          finalPrice: finalPrice,
         );
       }
     } else {
       Routes().openAuthPage(
-        context,
+        context: context,
         redirectOnSuccess: (BuildContext context) {
           if (isEnrolledAlready()) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -237,14 +237,14 @@ class _CourseBeforeEnrollState extends State<CourseBeforeEnroll> {
               );
             });
 
-            Routes.goBack(context);
+            Routes.goBack(context: context);
           } else {
             Routes(config: const RoutesConfig(replace: true))
                 .openCourseCheckoutPage(
-              context,
-              widget.course,
-              appliedPromo,
-              finalPrice,
+              context: context,
+              course: widget.course,
+              appliedCoupon: appliedPromo,
+              finalPrice: finalPrice,
             );
           }
         },

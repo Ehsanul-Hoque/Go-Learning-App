@@ -217,7 +217,7 @@ class UserBoxNetworkWidget extends StatelessWidget {
 
     tapGestureRecognizer.onTap = () {
       if (!UserBox.isLoggedIn) {
-        Routes().openAuthPage(context);
+        Routes().openAuthPage(context: context);
       } else {
         // TODO show snack bar that the user is already authenticated
       }
