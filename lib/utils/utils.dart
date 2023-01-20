@@ -2,6 +2,7 @@ import "dart:convert";
 import "dart:developer" as devtools show log;
 
 import "package:app/app_config/resources.dart";
+import "package:app/utils/extensions/iterable_extension.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart"
     show
@@ -41,6 +42,20 @@ class Utils {
         DeviceOrientation.portraitDown,
       ]);
     }
+  }
+
+  static String getRandomString(int length) {
+    if (length <= 0) {
+      return "";
+    } else if (length > 100) {
+      length = 100;
+    }
+
+    List<String> allowedChars =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            .split("");
+
+    return allowedChars.getNonNullRandoms(length).join();
   }
 
   static String getModelString(

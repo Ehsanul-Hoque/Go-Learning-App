@@ -19,6 +19,18 @@ extension IterableExt<T> on Iterable<T?> {
     return result;
   }
 
+  List<T> getNonNullRandoms(int length) {
+    Iterable<T> nonNulls = getNonNulls();
+    if (nonNulls.isEmpty) return <T>[];
+
+    List<T> result = <T>[];
+    for (int i = 0; i < length; ++i) {
+      result.add(nonNulls.getRandom() as T);
+    }
+
+    return result;
+  }
+
   Iterable<T> getNonNulls() {
     List<T> result = <T>[];
     for (int i = 0; i < length; ++i) {

@@ -1,3 +1,4 @@
+import "package:app/app_config/app_state.dart";
 import "package:app/app_config/resources.dart";
 import "package:app/local_storage/app_objectbox.dart";
 import "package:app/local_storage/notifiers/user_notifier.dart";
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
       child: PlatformApp(
         debugShowCheckedModeBanner: false,
         title: Res.str.appName,
+        navigatorKey: AppState.navigatorKey,
         home: const SplashPage(),
       ),
     );
