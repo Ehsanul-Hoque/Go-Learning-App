@@ -194,6 +194,8 @@ class StringsEn implements StringsBase {
   final String contentNotAccessibleDescription = "This type of content"
       " is not accessible right now."
       " Please update the app or contact the developers.";
+  final String quizStateNotHandled = "This quiz state is not being handled!"
+      " Please contact developers.";
 
   /// Sample texts
   final String page1 = "Page 1";

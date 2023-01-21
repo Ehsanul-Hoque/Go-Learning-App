@@ -163,6 +163,7 @@ abstract class StringsBase {
   final String lockedDescription = "";
   final String contentNotAccessibleTitle = "";
   final String contentNotAccessibleDescription = "";
+  final String quizStateNotHandled = "";
 
   /// Sample texts
   final String page1 = "";
