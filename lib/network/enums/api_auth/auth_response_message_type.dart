@@ -4,6 +4,7 @@ enum AuthResponseMessageType {
   invalidPassword("incorrect password"),
   tooSmallPassword("\"password\" length must be at least"),
   tooSmallName("\"name\" length must be at least"),
+  jwtExpired("jwt expired"),
   unknown("---");
 
   final String message;

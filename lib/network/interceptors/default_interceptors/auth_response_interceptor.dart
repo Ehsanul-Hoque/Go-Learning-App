@@ -63,6 +63,7 @@ class AuthResponseInterceptor
           );
           break;
 
+        case AuthResponseMessageType.jwtExpired:
         case AuthResponseMessageType.unknown:
           response.error = NetworkError.general();
           break;

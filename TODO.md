@@ -70,4 +70,6 @@
 - Add back button in fullscreen video page
 - Check if course field is really needed in QuizNotifier and Quiz files.
   If not, remove them for less dependency.
+- Pass NetworkResponse object instead of http.Response object as the parameter of
+  interceptRawResponseBody() method in NetworkResponseInterceptor class and its subclasses.
 - 
