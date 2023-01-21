@@ -7,9 +7,10 @@ import "package:app/components/countdown_timer/notifiers/countdown_timer_notifie
 import "package:app/components/floating_messages/app_dialog/app_dialog.dart";
 import "package:app/components/floating_messages/app_dialog/models/app_dialog_button_model.dart";
 import "package:app/components/floating_messages/enums/floating_messages_content_type.dart";
+import "package:app/network/models/api_contents/content_tree_get_response.dart";
+import "package:app/network/models/api_contents/quiz_attempt_get_response.dart";
+import "package:app/network/models/api_courses/course_get_response.dart";
 import "package:app/pages/quiz/components/quiz_app_bar_bottom.dart";
-import "package:app/pages/quiz/components/quiz_questions_list.dart";
-import "package:app/pages/quiz/components/quiz_serial_list.dart";
 import "package:app/routes.dart";
 import "package:flutter/material.dart" show IconButton, Icons, showDialog;
 import "package:flutter/widgets.dart";
@@ -17,15 +18,17 @@ import "package:flutter_platform_widgets/flutter_platform_widgets.dart";
 import "package:provider/provider.dart" show ReadContext;
 
 class Quiz extends StatefulWidget {
-  final Map<String, Object> quiz;
-  final List<Map<String, Object>> questions;
-  final String scrollNotifierId;
+  final ContentTreeGetResponseContents quizContent;
+  final QuizAttemptGetResponseData? previousBestAttemptData;
+  final bool showPreviousAttemptAtStart;
+  final CourseGetResponse? course;
 
   const Quiz({
     Key? key,
-    required this.quiz,
-    required this.questions,
-    this.scrollNotifierId = "1",
+    required this.quizContent,
+    required this.previousBestAttemptData,
+    required this.showPreviousAttemptAtStart,
+    this.course,
   }) : super(key: key);
 
   @override
@@ -69,9 +72,7 @@ class _QuizState extends State<Quiz> {
                 config: MyAppBarConfig(
                   backgroundColor: Res.color.appBarBgTransparent,
                   shadow: const <BoxShadow>[],
-                  title: Text(
-                    widget.quiz["title"]! as String,
-                  ), // TODO Get title from API
+                  title: Text(widget.quizContent.title ?? ""),
                   startActions: <Widget>[
                     IconButton(
                       // TODO extract this back button as a component
@@ -95,7 +96,7 @@ class _QuizState extends State<Quiz> {
                   ),
                 ),
               ),
-              Expanded(
+              /*Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: Res.dimen.normalSpacingValue,
@@ -119,7 +120,7 @@ class _QuizState extends State<Quiz> {
                     ],
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

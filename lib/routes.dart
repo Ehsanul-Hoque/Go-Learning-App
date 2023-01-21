@@ -16,6 +16,7 @@ import "package:app/pages/pdf_viewer/app_pdf_viewer.dart";
 import "package:app/pages/profile/user_profile.dart";
 import "package:app/pages/quiz/enums/quiz_state.dart";
 import "package:app/pages/quiz/notifiers/quiz_notifier.dart";
+import "package:app/pages/quiz/quiz.dart";
 import "package:app/pages/quiz/quiz_intro.dart";
 import "package:app/pages/splash_page.dart";
 import "package:app/components/app_video_player/app_fullscreen_player.dart";
@@ -163,14 +164,12 @@ class Routes {
             CountdownTimerNotifier.createQuizNotifierProxyProvider(),
             AcsvScrollNotifier.createProvider(),
           ],
-          child: Container(),
-          /*Quiz(
+          child: Quiz(
             course: course,
             quizContent: quizContent,
             previousBestAttemptData: prevAttemptData,
-            showPreviousAttemptAtStart:
-                showPreviousAttemptAtStart ?? true,
-          )*/
+            showPreviousAttemptAtStart: showPreviousAttemptAtStart ?? true,
+          ),
         );
       },
       replace: config.replace,
