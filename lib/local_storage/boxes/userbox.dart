@@ -1,3 +1,4 @@
+import "package:app/app_config/app_state.dart";
 import "package:app/local_storage/app_objectbox.dart";
 import "package:app/network/models/api_auth/profile_get_response.dart";
 import "package:app/network/models/api_auth/auth_post_response.dart";
@@ -60,7 +61,11 @@ class UserBox {
   static bool get hasProfileInfo => isLoggedIn && (currentUser != null);
 
   static Future<void> logOut({bool resetNetworkCalls = true}) async {
-    if (resetNetworkCalls) Network.resetAllResponses();
+    if (resetNetworkCalls) {
+      AppState.generateNewSessionKey();
+      Network.resetAllResponses();
+    }
+
     setAccessToken(null);
     setCurrentUser(null);
     await googleSignIn.signOut();

@@ -25,6 +25,7 @@ void main() async {
     overlays: SystemUiOverlay.values,
   );
 
+  AppState.generateNewSessionKey();
   /*ErrorWidget.builder =
       (FlutterErrorDetails details) => AppErrorScreen(error: details.exception);*/
 

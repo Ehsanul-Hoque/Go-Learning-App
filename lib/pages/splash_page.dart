@@ -1,6 +1,5 @@
 import "dart:async";
 
-import "package:app/app_config/app_state.dart";
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_circular_progress.dart";
 import "package:app/routes.dart";
@@ -23,7 +22,6 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    AppState.generateNewSessionKey();
     appVersionStringFuture = getAppVersionString();
     Timer(
       const Duration(seconds: 2),
