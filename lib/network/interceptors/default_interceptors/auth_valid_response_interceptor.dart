@@ -20,7 +20,11 @@ class AuthValidResponseInterceptor<T extends ApiModel>
     try {
       String body = httpResponse.body;
       dynamic rawResponse = jsonDecode(body);
-      String msg = (rawResponse as Map<String, dynamic>)["msg"] as String;
+      String? msg = (rawResponse as Map<String, dynamic>?)?["msg"] as String?;
+
+      if (msg == null) {
+        return RawResponseInterceptorResult(httpResponse: httpResponse);
+      }
 
       AuthResponseMessageType messageType =
           AuthResponseMessageType.valueOf(msg);
