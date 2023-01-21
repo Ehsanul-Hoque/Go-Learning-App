@@ -1,5 +1,6 @@
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/interceptors/default_interceptors/auth_interceptor.dart";
+import "package:app/network/interceptors/default_interceptors/auth_valid_response_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_contents/content_tree_get_response.dart";
 import "package:app/network/models/api_contents/lecture_get_response.dart";
@@ -58,6 +59,10 @@ class ContentApiNotifier extends ApiNotifier {
       request: NetworkRequest.get(
         apiEndPoint: contentsTreeGetApiEndpoint(courseId),
       ),
+      responseInterceptors: <
+          NetworkResponseInterceptor<ContentTreeGetResponse>>[
+        AuthValidResponseInterceptor<ContentTreeGetResponse>(),
+      ],
       responseConverter: const JsonObjectConverter<ContentTreeGetResponse>(
         ContentTreeGetResponse.fromJson,
       ),
@@ -71,7 +76,8 @@ class ContentApiNotifier extends ApiNotifier {
     String? courseId,
   ) =>
       Network.getOrCreateResponse(
-        defaultClient.baseUrl + contentsTreeGetApiEndpoint(courseId),
+        defaultAuthenticatedClient.baseUrl +
+            contentsTreeGetApiEndpoint(courseId),
       );
 
   /// Methods to get a lecture (a type of content) of a course
@@ -105,6 +111,10 @@ class ContentApiNotifier extends ApiNotifier {
       request: NetworkRequest.get(
         apiEndPoint: quizAttemptGetApiEndpoint(contentId),
       ),
+      responseInterceptors: <
+          NetworkResponseInterceptor<QuizAttemptGetResponse>>[
+        AuthValidResponseInterceptor<QuizAttemptGetResponse>(),
+      ],
       responseConverter: const JsonObjectConverter<QuizAttemptGetResponse>(
         QuizAttemptGetResponse.fromJson,
       ),

@@ -1,6 +1,7 @@
 import "package:app/local_storage/boxes/userbox.dart";
 import "package:app/network/converters/default_converters/json_object_converter.dart";
 import "package:app/network/interceptors/default_interceptors/auth_interceptor.dart";
+import "package:app/network/interceptors/default_interceptors/auth_valid_response_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_orders/all_orders_get_response.dart";
 import "package:app/network/models/api_orders/course_order_post_request.dart";
@@ -36,6 +37,9 @@ class OrderApiNotifier extends ApiNotifier {
       request: const NetworkRequest.get(
         apiEndPoint: allOrdersGetApiEndpoint,
       ),
+      responseInterceptors: <NetworkResponseInterceptor<AllOrdersGetResponse>>[
+        AuthValidResponseInterceptor<AllOrdersGetResponse>(),
+      ],
       responseConverter: const JsonObjectConverter<AllOrdersGetResponse>(
         AllOrdersGetResponse.fromJson,
       ),
@@ -65,6 +69,10 @@ class OrderApiNotifier extends ApiNotifier {
         apiEndPoint: courseOrderPostApiEndpoint,
         body: requestBody.toJson(),
       ),
+      responseInterceptors: <
+          NetworkResponseInterceptor<CourseOrderPostResponse>>[
+        AuthValidResponseInterceptor<CourseOrderPostResponse>(),
+      ],
       responseConverter: const JsonObjectConverter<CourseOrderPostResponse>(
         CourseOrderPostResponse.fromJson,
       ),

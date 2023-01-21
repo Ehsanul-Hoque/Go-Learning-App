@@ -7,6 +7,7 @@ import "package:app/network/converters/default_converters/json_object_converter.
 import "package:app/network/enums/network_call_status.dart";
 import "package:app/network/interceptors/default_interceptors/auth_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/auth_response_interceptor.dart";
+import "package:app/network/interceptors/default_interceptors/auth_valid_response_interceptor.dart";
 import "package:app/network/interceptors/default_interceptors/guest_interceptor.dart";
 import "package:app/network/interceptors/network_interceptor.dart";
 import "package:app/network/models/api_auth/edit_profile_post_request.dart";
@@ -244,6 +245,9 @@ class AuthApiNotifier extends ApiNotifier {
       request: const NetworkRequest.get(
         apiEndPoint: profileGetApiEndpoint,
       ),
+      responseInterceptors: <NetworkResponseInterceptor<ProfileGetResponse>>[
+        AuthValidResponseInterceptor<ProfileGetResponse>(),
+      ],
       responseConverter: const JsonObjectConverter<ProfileGetResponse>(
         ProfileGetResponse.fromJson,
       ),
@@ -277,6 +281,10 @@ class AuthApiNotifier extends ApiNotifier {
         apiEndPoint: editProfilePutApiEndpoint,
         body: requestBody.toJson(),
       ),
+      responseInterceptors: <
+          NetworkResponseInterceptor<EditProfilePostResponse>>[
+        AuthValidResponseInterceptor<EditProfilePostResponse>(),
+      ],
       responseConverter: const JsonObjectConverter<EditProfilePostResponse>(
         EditProfilePostResponse.fromJson,
       ),
