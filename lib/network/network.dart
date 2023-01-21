@@ -40,6 +40,7 @@ class Network {
     // Get cached/new response object
     NetworkResponse<DO> response =
         getOrCreateResponse(cacheKey, storeInCache: true);
+    resetResponseIfUnsuccessful(response);
     callback?.onStart?.call(response);
     callback?.onUpdate?.call(response);
 
@@ -48,6 +49,13 @@ class Network {
     if (response.callStatus == NetworkCallStatus.failed) {
       callback?.onFailed?.call(response);
       callback?.onUpdate?.call(response);
+
+      NetLog().e(
+        "$logTag Call failed."
+        " Request could not pass all request interceptors."
+        " Response error = ${response.error}",
+      );
+
       return response;
     }
 
@@ -101,9 +109,32 @@ class Network {
       getResponse(key) ?? _createResponse(key, storeInCache);
 
   /// Method to reset a response object in the temporary cache
-  static void resetResponse<DO>(String key, [VoidCallback? updateListener]) {
+  static void resetResponse(String key, [VoidCallback? updateListener]) {
     getResponse(key)?.reset();
     updateListener?.call();
+  }
+
+  /// Method to reset a response object in the temporary cache
+  /// if the request has been completed unsuccessfully
+  static void resetResponseIfUnsuccessful<DO>(
+    NetworkResponse<DO>? response, [
+    VoidCallback? updateListener,
+  ]) {
+    if (response == null) return;
+
+    switch (response.callStatus) {
+      case NetworkCallStatus.noInternet:
+      case NetworkCallStatus.cancelled:
+      case NetworkCallStatus.failed:
+        response.reset();
+        updateListener?.call();
+        break;
+
+      case NetworkCallStatus.none:
+      case NetworkCallStatus.loading:
+      case NetworkCallStatus.success:
+        break;
+    }
   }
 
   /// Method to reset the temporary cache
