@@ -80,10 +80,13 @@ class AppSnackBarContent extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: Res.dimen.fontSizeXl,
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: Res.dimen.fontSizeXl,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     GestureDetector(
