@@ -14,6 +14,7 @@ import "package:app/pages/course/workers/content_worker.dart";
 import "package:app/pages/quiz/constants/quiz_constants.dart";
 import "package:app/routes.dart";
 import "package:app/utils/extensions/iterable_extension.dart";
+import "package:app/utils/extensions/number_extension.dart";
 import "package:app/utils/typedefs.dart";
 import "package:app/utils/utils.dart";
 import "package:collection/collection.dart";

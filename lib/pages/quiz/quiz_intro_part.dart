@@ -57,19 +57,19 @@ class QuizIntroPart extends StatelessWidget {
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText: "+${positiveMarksPerAns.toStringAsFixed(2)}",
+        topText: "+${positiveMarksPerAns.getCompactString(2)}",
         bottomText: Res.str.positiveMarksPerCorrectAns,
         backgroundColor: Res.color.infoContainerBg2,
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText: "-${negativeMarksPerAns.toStringAsFixed(2)}",
+        topText: "-${negativeMarksPerAns.getCompactString(2)}",
         bottomText: Res.str.negativeMarksPerWrongAns,
         backgroundColor: Res.color.infoContainerBg4,
         bottomTextStyle: bottomTextStyle,
       ),
       TwoLineInfoModel(
-        topText: "-${marksPerBlankAns.toStringAsFixed(2)}",
+        topText: marksPerBlankAns.getCompactString(2),
         bottomText: Res.str.marksPerBlankAns,
         backgroundColor: Res.color.infoContainerBg5,
         bottomTextStyle: bottomTextStyle,

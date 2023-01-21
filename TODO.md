@@ -72,4 +72,7 @@
   If not, remove them for less dependency.
 - Pass NetworkResponse object instead of http.Response object as the parameter of
   interceptRawResponseBody() method in NetworkResponseInterceptor class and its subclasses.
+- Reset and call course GET api and similar APIs again after login because
+  they return different type of response based on if the user is logged in or not
+- Show quiz description text in the quiz intro
 - 
