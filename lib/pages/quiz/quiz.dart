@@ -33,16 +33,19 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
+  late double timerPanelHeight;
+
   @override
   void initState() {
     super.initState();
+    timerPanelHeight = Res.dimen.iconSizeNormal + Res.dimen.xsSpacingValue * 4;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    /*WidgetsBinding.instance.addPostFrameCallback((_) {
       // Execute callback if page is mounted
       if (!mounted) return;
 
       context.read<CountdownTimerNotifier?>()?.start();
-    });
+    });*/
   }
 
   @override
@@ -52,9 +55,6 @@ class _QuizState extends State<Quiz> {
 
   @override
   Widget build(BuildContext context) {
-    double timerPanelSize =
-        Res.dimen.iconSizeNormal + Res.dimen.xsSpacingValue * 4;
-
     return WillPopScope(
       onWillPop: () async {
         return onCancelQuiz();
@@ -85,7 +85,7 @@ class _QuizState extends State<Quiz> {
                     ),
                   ],
                   bottom: QuizAppBarBottom(
-                    timerPanelSize: timerPanelSize,
+                    timerPanelSize: timerPanelHeight,
                     onFinishQuizTap: onFinishQuizTap,
                   ),
                   bottomBorder: AppDivider(
