@@ -87,6 +87,7 @@ abstract class StringsBase {
   final String none = "";
   final String bestOfLuck = "";
   final String letsStart = "";
+  final String minutesVeryShort = "";
 
   final String firstAlphabet = "";
   final String no = "";

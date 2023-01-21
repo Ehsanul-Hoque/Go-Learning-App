@@ -3,6 +3,7 @@ import "dart:math" show max;
 import "package:app/app_config/resources.dart";
 import "package:app/components/app_container.dart";
 import "package:app/components/countdown_timer/notifiers/countdown_timer_notifier.dart";
+import "package:app/pages/quiz/components/quiz_state_builder.dart";
 import "package:app/utils/utils.dart";
 import "package:flutter/material.dart" show Icons;
 import "package:flutter/widgets.dart";
@@ -18,7 +19,7 @@ class QuizTimer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppContainer(
-      margin: EdgeInsets.zero,
+      margin: EdgeInsets.only(right: Res.dimen.smallSpacingValue),
       padding: EdgeInsets.all(Res.dimen.xsSpacingValue),
       borderRadius: BorderRadius.circular(
         Res.dimen.fullRoundedBorderRadiusValue,

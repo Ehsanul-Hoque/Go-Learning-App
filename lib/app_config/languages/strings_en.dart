@@ -94,6 +94,7 @@ class StringsEn implements StringsBase {
   final String none = "None!";
   final String bestOfLuck = "Best of Luck!";
   final String letsStart = "Let's Start";
+  final String minutesVeryShort = "m";
 
   final String firstAlphabet = "a";
   final String no = "No";

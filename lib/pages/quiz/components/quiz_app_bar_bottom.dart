@@ -30,11 +30,16 @@ class QuizAppBarBottom extends StatelessWidget implements PreferredSizeWidget {
           SizedBox(
             width: Res.dimen.normalSpacingValue,
           ),
-          const Expanded(
-            child: QuizTimer(),
-          ),
-          SizedBox(
-            width: Res.dimen.smallSpacingValue,
+          Expanded(
+            child: Builder(
+              builder: (BuildContext context) {
+                bool validDuration = context.select(
+                  (CountdownTimerNotifier timer) => timer.isValidDurations,
+                );
+
+                return validDuration ? const QuizTimer() : Container();
+              },
+            ),
           ),
           AnimatedSize(
             duration: Res.durations.defaultDuration,

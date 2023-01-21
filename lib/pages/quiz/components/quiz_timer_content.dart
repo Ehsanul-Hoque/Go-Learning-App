@@ -17,6 +17,7 @@ class QuizTimerContent extends StatelessWidget {
     String timeMillisPassedText = Utils.getMmSsFormat(
       Duration(milliseconds: timeMillisPassed),
     );
+    String m = Res.str.minutesVeryShort;
 
     return Padding(
       padding: EdgeInsets.all(Res.dimen.xsSpacingValue),
@@ -34,9 +35,19 @@ class QuizTimerContent extends StatelessWidget {
           SizedBox(
             width: Res.dimen.smallSpacingValue,
           ),
-          Text(
-            "$timeMillisPassedText m / $timeMillisTotalText m",
-            style: Res.textStyles.labelSmall,
+          QuizStateBuilder(
+            prevAttemptBuilder: (BuildContext context) {
+              return Text(
+                "$timeMillisTotalText $m",
+                style: Res.textStyles.labelSmall,
+              );
+            },
+            currentAttemptBuilder: (BuildContext context) {
+              return Text(
+                "$timeMillisPassedText $m / $timeMillisTotalText $m",
+                style: Res.textStyles.labelSmall,
+              );
+            },
           ),
         ],
       ),
