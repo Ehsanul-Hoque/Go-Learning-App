@@ -121,7 +121,7 @@ class _QuizIntroState extends State<QuizIntro> {
     ContentTreeGetResponseContents quizContent,
     QuizAttemptGetResponse previousBestAttempt,
   ) {
-    Routes().openQuizPage(
+    Routes(config: const RoutesConfig(replace: true)).openQuizPage(
       context: context,
       course: widget.course,
       quizContent: quizContent,
